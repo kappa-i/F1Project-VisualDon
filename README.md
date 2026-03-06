@@ -77,7 +77,7 @@ Le projet soulève une tension centrale : **peut-on aller plus vite tout en éta
 
 - Tanguy Vaucher
 - Gabriel Cappai
-- Nuno Guilherme Amaro Faria Do Santos Maria Da Silva
+- Nuno Guilherme Amaro Faria 
 
 ---
 
