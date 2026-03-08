@@ -120,7 +120,7 @@ Ces librairies **React, GSAP et autres outils d’interface et d’animation** p
   https://ui.shadcn.com/
 
 - **COSS UI** — collection de composants UI interactifs et visuels pour interfaces web  
-  https://coss.com/ui/docs/components/
+  https://coss.com/ui/
 
 ---
 
