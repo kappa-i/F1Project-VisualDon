@@ -119,16 +119,41 @@ F1Project-VisualDon/
     <img src="./assests/AstonMartinImg2.png" width="45%" alt="Vue de dessus"/>
   </p>
 
-  > **Focus sur l'interaction :** Nous nous inspirons de la transition du début avec le scroll. L'idée serait de faire pivoter la monoplace lors du défilement pour isoler visuellement les innovations de sécurité (ex: le Halo, les structures d'impact). Cela permet de lier directement les données statistiques à la réalité physique de la voiture, rendant l'évolution de la sécurité tangible pour l'utilisateur. Ceci nous permettrait donc de faire pivoter différentes informations tout en utilisant le scroll et focalisant les parties en questions mises en place par la FIA afin de sécurisé le sport et la vie des pilotes.
+  > **Focus sur l'interaction :** Nous nous inspirons de la transition du début avec le scroll. L'idée serait de faire pivoter la monoplace lors du défilement pour isoler visuellement les innovations de sécurité (ex: le Halo, les structures d'impact). Cela permet de lier directement les données statistiques à la réalité physique de la voiture, rendant l'évolution de la sécurité tangible pour l'utilisateur. Ceci nous permettrait donc de faire pivoter différentes informations tout en utilisant le scroll et focalisant les parties en questions mises en place par la FIA afin de sécurisé le sport et la vie des pilotes. On pourrait du coup utiliser ce sytème pour ces informations de la voiture ou autres (par exemple au lieu d'une voiture mettre un circuit formule 1 pour pivoter des informations sur les divers accidents et les divers changements apportés sur les circuits eux mêmes pour améliorer la sécurité. )
 
 - **[CarAddict.ch](https://caraddict.ch/a-propos/)** — site suisse de lifestyle automobile avec une identité visuelle sombre et des accents orange, proche de l'univers F1 que nous voulons retranscrire
+<p align="center">
+    <img src="./assests/FerrariCarAddictImg1.png" width="45%" alt="Vue de profil"/>
+    <img src="./assests/FerrariCarAddictImg2.png" width="45%" alt="Vue de dessus"/>
+  </p>
+
+  > **Focus sur l'interaction :** Dans la même idée que l'inspiration précédente, mais au lieu du scroll en utiliserait le clique pour que l'utilisateur puisse choissir la partie de la voiture et en faire pivoter les diverses informations.
+
 - **[VIITA Race](https://race.viita-watches.com/)** — microsite primé sur Awwwards utilisant le scroll horizontal et GSAP pour immerger l'utilisateur dans l'univers de la course ; inspiration directe pour la gestion du scroll et l'animation
+<p align="center">
+    <img src="./assests/VitaImg1.png" width="45%" alt="Vue début"/>
+    <img src="./assests/VitaImg2.png" width="45%" alt="Vue fin"/>
+  </p>
+
+  > **Focus sur l'interaction :** On s'inspire cette fois-ci avec race vitta pour le scroll horizontale. Pour ne pas avoir un scorll monotome et toujours vertical, on jugerai intéressant d'intégrer cette fonctionnalité du scroll horizontale dans certaines sections de notre. Notamment lors de la partie de l'histoire du sport avec les différents accidents et fatalités dans le sport.
+
 - **[Gen Z Broke the Marketing Funnel](https://genzbrokethefunnel.com)** — scrollytelling longform alliant typographie éditoriale, collages animés et moments WebGL ; modèle de référence pour la narration par le scroll et la hiérarchie visuelle
+<p align="center">
+    <img src="./assests/VogueImg1.png" width="45%" alt="Vue début"/>
+    <img src="./assests/VogueImg2.png" width="45%" alt="Vue fin"/>
+  </p>
+
+  > **Focus sur l'interaction :** Pour Vogue, on voit la hiérarchisation de l'information et visuelle comme une inspiration. L'utilisation des différentes typographies en fonction de leur besoin. Ensuite l'aspect "collage" nois inspire aussi à des éléments contextuelles (photos d'accidents,...). De plus, les différents animations au scroll qui rendent le storytelling et la navigation fluide.
 
 ### Inspirations thématiques
 
 - **[Bidwells — Driving Innovation at Speed](https://www.bidwells.co.uk/insights-reports-events/driving-innovation-at-speed/)** — rapport sur le cluster motorsport britannique, illustrant comment l'industrie F1 génère de l'innovation technologique à travers la contrainte de performance et de sécurité
+<p align="center">
+    <img src="./assests/BidwellsImg1.png" width="45%" alt="Vue début"/>
+    <img src="./assests/BidwellsImg2.png" width="45%" alt="Vue fin"/>
+  </p>
 
+  > **Focus sur l'interaction :** Le rapport de Bidwells constitue pour nous un modèle de « package » complet en termes de design et de communication technique. Nous souhaitons reprendre cette capacité à fondre des infographies complexes dans un écosystème visuel cohérent, où chaque chiffre clé est mis en valeur par une mise en page percutante. L'idée est de ne pas se limiter à des graphiques isolés, mais de construire un outil de conviction qui, à l'image de leur travail, démontre comment les contraintes de performance en sport automobile deviennent des moteurs d'innovation pour la société entière.
 ---
 
 ## Équipe
