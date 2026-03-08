@@ -93,8 +93,34 @@ F1Project-VisualDon/
 
 ## Technologies
 
-- **D3.js ou GSAP** — visualisations interactives
+- **D3.js / GSAP** — visualisations interactives
 - **HTML / CSS / JavaScript** — structure et style
+
+---
+
+## Composants UI
+
+Ces librairies **React, GSAP et autres outils d’interface et d’animation** permettent d’enrichir l’interface utilisateur du projet et d’introduire des composants interactifs avancés. Elles facilitent notamment l’intégration de **visualisations de données, animations au scroll, composants interactifs, timelines ou modules de présentation**, contribuant à rendre la narration et l’exploration des données plus immersives et compréhensibles.
+
+### Librairies et ressources UI
+
+- **React Bits** — bibliothèque de composants React interactifs et animés  
+  https://reactbits.dev/
+
+- **React Bits Pro** — version avancée avec composants et animations supplémentaires  
+  https://pro.reactbits.dev/
+
+- **Aceternity UI** — collection de composants React modernes orientés animations et effets visuels  
+  https://ui.aceternity.com/components
+
+- **Magic UI** — composants UI animés pour interfaces modernes et dashboards  
+  https://magicui.design/docs/components
+
+- **shadcn/ui** — système de composants React basé sur Radix UI et Tailwind, très utilisé pour construire des interfaces modernes  
+  https://ui.shadcn.com/
+
+- **COSS UI** — collection de composants UI interactifs et visuels pour interfaces web  
+  https://coss.com/ui/docs/components/
 
 ---
 
