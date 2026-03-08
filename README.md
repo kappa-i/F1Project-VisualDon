@@ -93,7 +93,7 @@ F1Project-VisualDon/
 
 ## Technologies
 
-- **D3.js / GSAP / Three.js ** — visualisations interactives
+- **D3.js / GSAP / Three.js** — visualisations interactives
 - **HTML / CSS / Tailwind CSS / JavaScript** — structure et style
 - **Node.js / Vite** — environnement de développement et bundling moderne
 
