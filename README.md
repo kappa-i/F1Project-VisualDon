@@ -114,6 +114,13 @@ F1Project-VisualDon/
 ### Inspirations visuelles & interactives
 
 - **[Aston Martin F1 — Interactive 3D Scroll](https://dribbble.com/shots/25945471-Aston-Martin-F1-Interactive-3D-Scroll)** *(Dribbble)* — concept d'interface F1 avec scroll 3D immersif, référence pour l'esthétique racing et les transitions entre sections
+<p align="center">
+    <img src="./assests/AstonMartinImg1.png" width="45%" alt="Vue de profil"/>
+    <img src="./assests/AstonMartinImg2.png width="45%" alt="Vue de dessus"/>
+  </p>
+
+  > **Focus sur l'interaction :** Nous nous inspirons de la transition du début avec le scroll. L'idée serait de faire pivoter la monoplace lors du défilement pour isoler visuellement les innovations de sécurité (ex: le Halo, les structures d'impact). Cela permet de lier directement les données statistiques à la réalité physique de la voiture, rendant l'évolution de la sécurité tangible pour l'utilisateur. Ceci nous permettrait donc de faire pivoter différentes informations tout en utilisant le scroll et focalisant les parties en questions mises en place par la FIA afin de sécurisé le sport et la vie des pilotes.
+
 - **[CarAddict.ch](https://caraddict.ch/a-propos/)** — site suisse de lifestyle automobile avec une identité visuelle sombre et des accents orange, proche de l'univers F1 que nous voulons retranscrire
 - **[VIITA Race](https://race.viita-watches.com/)** — microsite primé sur Awwwards utilisant le scroll horizontal et GSAP pour immerger l'utilisateur dans l'univers de la course ; inspiration directe pour la gestion du scroll et l'animation
 - **[Gen Z Broke the Marketing Funnel](https://genzbrokethefunnel.com)** — scrollytelling longform alliant typographie éditoriale, collages animés et moments WebGL ; modèle de référence pour la narration par le scroll et la hiérarchie visuelle
