@@ -136,35 +136,30 @@ Ces librairies **React, GSAP et autres outils d’interface et d’animation** p
 
 ---
 
-Wireframes & Design de l'expérience
-Afin de structurer notre narration et de définir l'expérience utilisateur, nous avons conçu un wireframe complet sur Figma. Ce document sert de plan pour la hiérarchie visuelle, l'emplacement des graphiques et les mécaniques d'interaction.
+## Wireframes & Design de l'expérience
 
-🔗 Consulter le Wireframe interactif sur Figma
+Afin de structurer notre narration et de définir l'expérience utilisateur, nous avons conçu un wireframe complet sur **Figma**. Ce document sert de plan pour la hiérarchie visuelle, l'emplacement des graphiques et les mécaniques d'interaction.
+
+🔗 **[Consulter le Wireframe interactif sur Figma](https://www.figma.com/design/NScnLEtFSYWRrBWTcuhv4b/F1Project?node-id=0-1&t=meHIixZrsysDpq6a-1)**
 
 <p align="center">
 <img src="./assests/Wireframe_Global.png" width="100%" alt="Aperçu des Wireframes Figma"/>
 </p>
 
-1. Éléments de l'interface
+### 1. Éléments de l'interface
 Le wireframe détaille l'intégration de chaque composant de notre site final :
 
-Graphiques & Data : Zones dédiées aux courbes de performance D3.js et aux indicateurs de mortalité.
+* **Graphiques & Data :** Zones dédiées aux courbes de performance D3.js et aux indicateurs de mortalité.
+* **Boutons & Contrôles :** Éléments interactifs permettant de sélectionner des zones de la voiture ou de naviguer dans les décennies.
+* **Textes & Typographie :** Organisation des blocs narratifs selon une hiérarchie claire (titres d'impact vs textes explicatifs).
+* **Couleurs :** Utilisation d'un thème sombre avec des accents contrastés pour évoquer l'univers racing et la vitesse de la Formule 1.
 
-Boutons & Contrôles : Éléments interactifs permettant de sélectionner des zones de la voiture ou de naviguer dans les décennies.
-
-Textes & Typographie : Organisation des blocs narratifs selon une hiérarchie claire (titres d'impact vs textes explicatifs).
-
-Couleurs : Utilisation d'un thème sombre avec des accents contrastésvpour évoquer l'univers racing, de la vitesse de la Formule 1.
-
-2. Logique d'interactivité & Scroll
+### 2. Logique d'interactivité & Scroll
 Notre wireframe inclut des annotations précises sur le comportement dynamique du site :
 
-Interaction au Scroll : Le défilement vertical déclenche les animations de perspective (rotation de la voiture) et l'apparition progressive des données (collage contextuel).
-
-Section Horizontale : Pour les séquences chronologiques, le wireframe prévoit un verrouillage du scroll vertical pour naviguer de gauche à droite sur la timeline.
-
-Interactions au clic : L'utilisateur peut cliquer sur des points spécifiques du wireframe (ex: le Halo sur la voiture) pour faire apparaître des fenêtres d'information (tooltips) détaillant l'innovation de sécurité.
-
+* **Interaction au Scroll :** Le défilement vertical déclenche les animations de perspective (rotation de la voiture) et l'apparition progressive des données (collage contextuel).
+* **Section Horizontale :** Pour les séquences chronologiques, le wireframe prévoit un verrouillage du scroll vertical pour naviguer de gauche à droite sur la timeline.
+* **Interactions au clic :** L'utilisateur peut cliquer sur des points spécifiques du wireframe (ex: le Halo sur la voiture) pour faire apparaître des fenêtres d'information (tooltips) détaillant l'innovation de sécurité.
 ---
 
 ## Inspirations
