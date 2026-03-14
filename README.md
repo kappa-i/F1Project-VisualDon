@@ -142,10 +142,6 @@ Afin de structurer notre narration et de définir l'expérience utilisateur, nou
 
 🔗 **[Consulter le Wireframe interactif sur Figma](https://www.figma.com/design/NScnLEtFSYWRrBWTcuhv4b/F1Project?node-id=0-1&t=meHIixZrsysDpq6a-1)**
 
-<p align="center">
-<img src="./assests/Wireframe_Global.png" width="100%" alt="Aperçu des Wireframes Figma"/>
-</p>
-
 ### 1. Éléments de l'interface
 Le wireframe détaille l'intégration de chaque composant de notre site final :
 
