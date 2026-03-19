@@ -1,0 +1,464 @@
+[
+  {
+    "annee": 2024,
+    "course": "Las Vegas Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Las_Vegas_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "Abu Dhabi Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Abu_Dhabi_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "77",
+        "pilote": "Valtteri Bottas",
+        "ecurie": "Kick Sauber - Ferrari",
+        "tours": "30",
+        "raison": "Collision damage",
+        "depart": "9"
+      },
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "10"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Saudi Arabian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Saudi_Arabian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "5",
+        "raison": "Accident",
+        "depart": "10"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Italian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "United States Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_United_States_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "44",
+        "pilote": "Lewis Hamilton",
+        "ecurie": "Mercedes",
+        "tours": "1",
+        "raison": "Spun off",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Australian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Australian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "63",
+        "pilote": "George Russell",
+        "ecurie": "Mercedes",
+        "tours": "56",
+        "raison": "Accident",
+        "depart": "7"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Azerbaijan Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Azerbaijan_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "49",
+        "raison": "Collision",
+        "depart": "4"
+      },
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Ferrari",
+        "tours": "49",
+        "raison": "Collision",
+        "depart": "3"
+      },
+      {
+        "numero": "22",
+        "pilote": "Yuki Tsunoda",
+        "ecurie": "RB - Honda RBPT",
+        "tours": "14",
+        "raison": "Collision damage",
+        "depart": "11"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Singapore Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Singapore_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "São Paulo Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_S%C3%A3o_Paulo_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Ferrari",
+        "tours": "38",
+        "raison": "Accident",
+        "depart": "PL"
+      },
+      {
+        "numero": "43",
+        "pilote": "Franco Colapinto",
+        "ecurie": "Williams - Mercedes",
+        "tours": "30",
+        "raison": "Accident",
+        "depart": "16"
+      },
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "0",
+        "raison": "Car damaged",
+        "depart": "— d"
+      },
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "— e"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Bahrain Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Bahrain_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "Miami Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Miami_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "1",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "4",
+        "pilote": "Lando Norris",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      },
+      {
+        "numero": "2",
+        "pilote": "Logan Sargeant",
+        "ecurie": "Williams - Mercedes",
+        "tours": "27",
+        "raison": "Collision",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Dutch Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Dutch_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "Chinese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Chinese_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "14",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "17",
+        "raison": "Collision damage",
+        "depart": "3"
+      },
+      {
+        "numero": "3",
+        "pilote": "Daniel Ricciardo",
+        "ecurie": "RB - Honda RBPT",
+        "tours": "33",
+        "raison": "Collision damage",
+        "depart": "12"
+      },
+      {
+        "numero": "22",
+        "pilote": "Yuki Tsunoda",
+        "ecurie": "RB - Honda RBPT",
+        "tours": "26",
+        "raison": "Collision",
+        "depart": "19"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Japanese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Japanese_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "3",
+        "pilote": "Daniel Ricciardo",
+        "ecurie": "RB - Honda RBPT",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "11"
+      },
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "14"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Emilia Romagna Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Emilia_Romagna_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Monaco_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "31",
+        "pilote": "Esteban Ocon",
+        "ecurie": "Alpine - Renault",
+        "tours": "0",
+        "raison": "Collision damage",
+        "depart": "11"
+      },
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "16"
+      },
+      {
+        "numero": "27",
+        "pilote": "Nico Hülkenberg",
+        "ecurie": "Haas - Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "19"
+      },
+      {
+        "numero": "20",
+        "pilote": "Kevin Magnussen",
+        "ecurie": "Haas - Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "20"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Canadian_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Ferrari",
+        "tours": "52",
+        "raison": "Collision damage",
+        "depart": "12"
+      },
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "52",
+        "raison": "Collision",
+        "depart": "10"
+      },
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "51",
+        "raison": "Accident damage",
+        "depart": "16"
+      },
+      {
+        "numero": "2",
+        "pilote": "Logan Sargeant",
+        "ecurie": "Williams - Mercedes",
+        "tours": "23",
+        "raison": "Accident",
+        "depart": "13"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Spanish_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "Austrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Austrian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "4",
+        "pilote": "Lando Norris",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "64",
+        "raison": "Collision damage c",
+        "depart": "2"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_British_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Hungarian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Belgian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2024,
+    "course": "Mexico City Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Mexico_City_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      },
+      {
+        "numero": "22",
+        "pilote": "Yuki Tsunoda",
+        "ecurie": "RB - Honda RBPT",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "11"
+      }
+    ]
+  },
+  {
+    "annee": 2024,
+    "course": "Qatar Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2024_Qatar_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "27",
+        "pilote": "Nico Hülkenberg",
+        "ecurie": "Haas - Ferrari",
+        "tours": "39",
+        "raison": "Spun off",
+        "depart": "18"
+      },
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "8",
+        "raison": "Collision damage",
+        "depart": "15"
+      },
+      {
+        "numero": "31",
+        "pilote": "Esteban Ocon",
+        "ecurie": "Alpine - Renault",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "20"
+      },
+      {
+        "numero": "43",
+        "pilote": "Franco Colapinto",
+        "ecurie": "Williams - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "19"
+      }
+    ]
+  }
+]

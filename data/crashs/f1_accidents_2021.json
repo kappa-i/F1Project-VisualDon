@@ -1,0 +1,340 @@
+[
+  {
+    "annee": 2021,
+    "course": "Abu Dhabi Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Abu_Dhabi_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "6",
+        "pilote": "Nicholas Latifi",
+        "ecurie": "Williams - Mercedes",
+        "tours": "50",
+        "raison": "Accident",
+        "depart": "16"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "Austrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Austrian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "5",
+        "pilote": "Sebastian Vettel",
+        "ecurie": "Aston Martin - Mercedes",
+        "tours": "69",
+        "raison": "Collision",
+        "depart": "11"
+      },
+      {
+        "numero": "31",
+        "pilote": "Esteban Ocon",
+        "ecurie": "Alpine - Renault",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "Dutch Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Dutch_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2021,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Italian_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "10",
+        "pilote": "Pierre Gasly",
+        "ecurie": "AlphaTauri - Honda",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "6"
+      },
+      {
+        "numero": "44",
+        "pilote": "Lewis Hamilton",
+        "ecurie": "Mercedes",
+        "tours": "25",
+        "raison": "Collision",
+        "depart": "4"
+      },
+      {
+        "numero": "33",
+        "pilote": "Max Verstappen",
+        "ecurie": "Red Bull Racing - Honda",
+        "tours": "25",
+        "raison": "Collision",
+        "depart": "1"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "French Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_French_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2021,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Spanish_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2021,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Belgian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2021,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Hungarian_Grand_Prix",
+    "nb_incidents": 6,
+    "incidents": [
+      {
+        "numero": "9",
+        "pilote": "Nikita Mazepin [ b ]",
+        "ecurie": "Haas - Ferrari",
+        "tours": "3",
+        "raison": "Collision",
+        "depart": "19"
+      },
+      {
+        "numero": "4",
+        "pilote": "Lando Norris",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "2",
+        "raison": "Collision damage",
+        "depart": "6"
+      },
+      {
+        "numero": "77",
+        "pilote": "Valtteri Bottas",
+        "ecurie": "Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "2"
+      },
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "4"
+      },
+      {
+        "numero": "16",
+        "pilote": "Charles Leclerc",
+        "ecurie": "Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "12"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "2021 United States Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_United_States_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2021,
+    "course": "Styrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Styrian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "10",
+        "pilote": "Pierre Gasly",
+        "ecurie": "AlphaTauri - Honda",
+        "tours": "1",
+        "raison": "Collision",
+        "depart": "6"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "Mexico City Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Mexico_City_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "47",
+        "pilote": "Mick Schumacher",
+        "ecurie": "Haas - Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "14"
+      },
+      {
+        "numero": "22",
+        "pilote": "Yuki Tsunoda",
+        "ecurie": "AlphaTauri - Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "Emilia Romagna Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Emilia_Romagna_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "77",
+        "pilote": "Valtteri Bottas",
+        "ecurie": "Mercedes",
+        "tours": "30",
+        "raison": "Collision",
+        "depart": "8"
+      },
+      {
+        "numero": "63",
+        "pilote": "George Russell",
+        "ecurie": "Williams - Mercedes",
+        "tours": "30",
+        "raison": "Collision",
+        "depart": "12"
+      },
+      {
+        "numero": "6",
+        "pilote": "Nicholas Latifi",
+        "ecurie": "Williams - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "14"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "Portuguese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Portuguese_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "7",
+        "pilote": "Kimi Räikkönen",
+        "ecurie": "Alfa Romeo Racing - Ferrari",
+        "tours": "1",
+        "raison": "Collision",
+        "depart": "15"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "Russian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Russian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "6",
+        "pilote": "Nicholas Latifi",
+        "ecurie": "Williams - Mercedes",
+        "tours": "47",
+        "raison": "Accident damage",
+        "depart": "18"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Monaco_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2021,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_British_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "33",
+        "pilote": "Max Verstappen",
+        "ecurie": "Red Bull Racing - Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "1"
+      }
+    ]
+  },
+  {
+    "annee": 2021,
+    "course": "inaugural Saudi Arabian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2021_Saudi_Arabian_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "5",
+        "pilote": "Sebastian Vettel",
+        "ecurie": "Aston Martin - Mercedes",
+        "tours": "44",
+        "raison": "Collision damage",
+        "depart": "17"
+      },
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - Honda",
+        "tours": "14",
+        "raison": "Collision",
+        "depart": "5"
+      },
+      {
+        "numero": "9",
+        "pilote": "Nikita Mazepin [ b ]",
+        "ecurie": "Haas - Ferrari",
+        "tours": "14",
+        "raison": "Collision",
+        "depart": "20"
+      },
+      {
+        "numero": "63",
+        "pilote": "George Russell",
+        "ecurie": "Williams - Mercedes",
+        "tours": "14",
+        "raison": "Collision",
+        "depart": "14"
+      },
+      {
+        "numero": "47",
+        "pilote": "Mick Schumacher",
+        "ecurie": "Haas - Ferrari",
+        "tours": "8",
+        "raison": "Accident",
+        "depart": "19"
+      }
+    ]
+  }
+]

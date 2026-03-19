@@ -1,0 +1,98 @@
+[
+  {
+    "annee": 1960,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1960_Belgian_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "16",
+        "pilote": "Alan Stacey",
+        "ecurie": "Lotus - Climax",
+        "tours": "24",
+        "raison": "Fatal accident",
+        "depart": "17"
+      },
+      {
+        "numero": "36",
+        "pilote": "Chris Bristow",
+        "ecurie": "Cooper - Climax",
+        "tours": "19",
+        "raison": "Fatal accident",
+        "depart": "9"
+      },
+      {
+        "numero": "14",
+        "pilote": "Innes Ireland",
+        "ecurie": "Lotus - Climax",
+        "tours": "13",
+        "raison": "Spun Off/Clutch",
+        "depart": "8"
+      },
+      {
+        "numero": "12",
+        "pilote": "Stirling Moss",
+        "ecurie": "Lotus - Climax",
+        "tours": "",
+        "raison": "Accident",
+        "depart": "3"
+      },
+      {
+        "numero": "20",
+        "pilote": "Mike Taylor",
+        "ecurie": "Lotus - Climax",
+        "tours": "",
+        "raison": "Accident",
+        "depart": ""
+      }
+    ]
+  },
+  {
+    "annee": 1960,
+    "course": "Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1960_Monaco_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "6",
+        "pilote": "Graham Hill",
+        "ecurie": "BRM",
+        "tours": "66",
+        "raison": "Spun Off",
+        "depart": "6"
+      }
+    ]
+  },
+  {
+    "annee": 1960,
+    "course": "Portuguese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1960_Portuguese_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "32",
+        "pilote": "Mário de Araújo Cabral",
+        "ecurie": "Cooper - Maserati",
+        "tours": "38",
+        "raison": "Accident",
+        "depart": "15"
+      },
+      {
+        "numero": "26",
+        "pilote": "Phil Hill",
+        "ecurie": "Ferrari",
+        "tours": "30",
+        "raison": "Accident",
+        "depart": "10"
+      },
+      {
+        "numero": "10",
+        "pilote": "Henry Taylor",
+        "ecurie": "Cooper - Climax",
+        "tours": "",
+        "raison": "Accident",
+        "depart": ""
+      }
+    ]
+  }
+]

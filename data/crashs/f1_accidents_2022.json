@@ -1,0 +1,436 @@
+[
+  {
+    "annee": 2022,
+    "course": "Japanese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Japanese_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Ferrari",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "3"
+      },
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "0",
+        "raison": "Collision damage",
+        "depart": "16"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "United States Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_United_States_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "21",
+        "raison": "Collision",
+        "depart": "5"
+      },
+      {
+        "numero": "77",
+        "pilote": "Valtteri Bottas",
+        "ecurie": "Alfa Romeo - Ferrari",
+        "tours": "16",
+        "raison": "Spun off",
+        "depart": "7"
+      },
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Ferrari",
+        "tours": "1",
+        "raison": "Collision damage",
+        "depart": "1"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Bahrain Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Bahrain_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2022,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Italian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2022,
+    "course": "Austrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Austrian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "5",
+        "pilote": "Sebastian Vettel",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "21",
+        "raison": "Collision damage",
+        "depart": "20"
+      },
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - RBPT",
+        "tours": "24",
+        "raison": "Collision damage",
+        "depart": "5"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Belgian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "77",
+        "pilote": "Valtteri Bottas",
+        "ecurie": "Alfa Romeo - Ferrari",
+        "tours": "1",
+        "raison": "Accident",
+        "depart": "13"
+      },
+      {
+        "numero": "44",
+        "pilote": "Lewis Hamilton",
+        "ecurie": "Mercedes",
+        "tours": "0",
+        "raison": "Collision damage",
+        "depart": "4"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "French Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_French_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "6",
+        "pilote": "Nicholas Latifi",
+        "ecurie": "Williams - Mercedes",
+        "tours": "40",
+        "raison": "Collision damage",
+        "depart": "18"
+      },
+      {
+        "numero": "20",
+        "pilote": "Kevin Magnussen",
+        "ecurie": "Haas - Ferrari",
+        "tours": "37",
+        "raison": "Collision damage",
+        "depart": "20"
+      },
+      {
+        "numero": "16",
+        "pilote": "Charles Leclerc",
+        "ecurie": "Ferrari",
+        "tours": "17",
+        "raison": "Accident",
+        "depart": "1"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Australian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Australian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "5",
+        "pilote": "Sebastian Vettel",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "22",
+        "raison": "Accident",
+        "depart": "17"
+      },
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Ferrari",
+        "tours": "1",
+        "raison": "Spun off",
+        "depart": "9"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Saudi Arabian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Saudi_Arabian_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "47",
+        "raison": "Collision damage",
+        "depart": "16"
+      },
+      {
+        "numero": "6",
+        "pilote": "Nicholas Latifi",
+        "ecurie": "Williams - Mercedes",
+        "tours": "14",
+        "raison": "Accident",
+        "depart": "18"
+      },
+      {
+        "numero": "47",
+        "pilote": "Mick Schumacher",
+        "ecurie": "Haas - Ferrari",
+        "tours": "0",
+        "raison": "Qualifying accident",
+        "depart": "— d"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Emilia Romagna Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Emilia_Romagna_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "24",
+        "pilote": "Zhou Guanyu",
+        "ecurie": "Alfa Romeo - Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "14"
+      },
+      {
+        "numero": "14",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Alpine - Renault",
+        "tours": "6",
+        "raison": "Collision damage",
+        "depart": "9"
+      },
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "4"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Spanish_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2022,
+    "course": "Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Monaco_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "47",
+        "pilote": "Mick Schumacher",
+        "ecurie": "Haas - Ferrari",
+        "tours": "24",
+        "raison": "Accident",
+        "depart": "15"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Azerbaijan Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Azerbaijan_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2022,
+    "course": "Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Canadian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "22",
+        "pilote": "Yuki Tsunoda",
+        "ecurie": "AlphaTauri - RBPT",
+        "tours": "47",
+        "raison": "Accident",
+        "depart": "20"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_British_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "10",
+        "pilote": "Pierre Gasly",
+        "ecurie": "AlphaTauri - RBPT",
+        "tours": "26",
+        "raison": "Collision damage",
+        "depart": "11"
+      },
+      {
+        "numero": "63",
+        "pilote": "George Russell",
+        "ecurie": "Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "8"
+      },
+      {
+        "numero": "24",
+        "pilote": "Zhou Guanyu",
+        "ecurie": "Alfa Romeo - Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      },
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "16"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Hungarian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2022,
+    "course": "Dutch Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Dutch_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2022,
+    "course": "Singapore Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Singapore_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "22",
+        "pilote": "Yuki Tsunoda",
+        "ecurie": "AlphaTauri - RBPT",
+        "tours": "34",
+        "raison": "Accident",
+        "depart": "10"
+      },
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "25",
+        "raison": "Accident damage",
+        "depart": "18"
+      },
+      {
+        "numero": "6",
+        "pilote": "Nicholas Latifi",
+        "ecurie": "Williams - Mercedes",
+        "tours": "7",
+        "raison": "Collision damage",
+        "depart": "19"
+      },
+      {
+        "numero": "24",
+        "pilote": "Zhou Guanyu",
+        "ecurie": "Alfa Romeo - Ferrari",
+        "tours": "6",
+        "raison": "Collision",
+        "depart": "14"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Mexico City Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Mexico_City_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "22",
+        "pilote": "Yuki Tsunoda",
+        "ecurie": "AlphaTauri - RBPT",
+        "tours": "50",
+        "raison": "Collision damage",
+        "depart": "13"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "São Paulo Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_S%C3%A3o_Paulo_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "20",
+        "pilote": "Kevin Magnussen",
+        "ecurie": "Haas - Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "8"
+      },
+      {
+        "numero": "3",
+        "pilote": "Daniel Ricciardo",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "11"
+      }
+    ]
+  },
+  {
+    "annee": 2022,
+    "course": "Abu Dhabi Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2022_Abu_Dhabi_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "6",
+        "pilote": "Nicholas Latifi",
+        "ecurie": "Williams - Mercedes",
+        "tours": "55",
+        "raison": "Collision damage",
+        "depart": "20"
+      }
+    ]
+  }
+]

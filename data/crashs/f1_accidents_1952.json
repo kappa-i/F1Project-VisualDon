@@ -1,0 +1,102 @@
+[
+  {
+    "annee": 1952,
+    "course": "Dutch Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1952_Dutch_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1952,
+    "course": "1952 Swiss Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1952_Swiss_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "12",
+        "pilote": "Louis Rosier",
+        "ecurie": "Ferrari",
+        "tours": "2",
+        "raison": "Accident",
+        "depart": "20"
+      }
+    ]
+  },
+  {
+    "annee": 1952,
+    "course": "1952 Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1952_Belgian_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "6",
+        "pilote": "Piero Taruffi",
+        "ecurie": "Ferrari",
+        "tours": "13",
+        "raison": "Accident",
+        "depart": "3"
+      },
+      {
+        "numero": "16",
+        "pilote": "Jean Behra",
+        "ecurie": "Gordini",
+        "tours": "13",
+        "raison": "Accident",
+        "depart": "5"
+      },
+      {
+        "numero": "36",
+        "pilote": "Ken Wharton",
+        "ecurie": "Frazer-Nash - Bristol",
+        "tours": "10",
+        "raison": "Spun off",
+        "depart": "7"
+      }
+    ]
+  },
+  {
+    "annee": 1952,
+    "course": "1952 French Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1952_French_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1952,
+    "course": "1952 British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1952_British_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1952,
+    "course": "1952 German Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1952_German_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "107",
+        "pilote": "Robert Manzon",
+        "ecurie": "Gordini",
+        "tours": "8",
+        "raison": "Accident",
+        "depart": "4"
+      },
+      {
+        "numero": "109",
+        "pilote": "Maurice Trintignant",
+        "ecurie": "Gordini",
+        "tours": "1",
+        "raison": "Accident",
+        "depart": "3"
+      }
+    ]
+  },
+  {
+    "annee": 1952,
+    "course": "1952 Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1952_Italian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  }
+]

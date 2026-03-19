@@ -1,0 +1,55 @@
+[
+  {
+    "annee": 2002,
+    "course": "Malaysian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2002_Malaysian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2002,
+    "course": "German Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2002_German_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2002,
+    "course": "United States Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2002_United_States_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2002,
+    "course": "2002 Austrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2002_Austrian_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "7",
+        "pilote": "Nick Heidfeld",
+        "ecurie": "Sauber - Petronas",
+        "tours": "27",
+        "raison": "Collision",
+        "depart": "5"
+      },
+      {
+        "numero": "10",
+        "pilote": "Takuma Sato",
+        "ecurie": "Jordan - Honda",
+        "tours": "26",
+        "raison": "Collision",
+        "depart": "18"
+      },
+      {
+        "numero": "21",
+        "pilote": "Enrique Bernoldi",
+        "ecurie": "Arrows - Cosworth",
+        "tours": "2",
+        "raison": "Collision",
+        "depart": "12"
+      }
+    ]
+  }
+]

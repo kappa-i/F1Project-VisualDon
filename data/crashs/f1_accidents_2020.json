@@ -1,0 +1,341 @@
+[
+  {
+    "annee": 2020,
+    "course": "Austrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Austrian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2020,
+    "course": "Abu Dhabi Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Abu_Dhabi_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2020,
+    "course": "Emilia Romagna Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Emilia_Romagna_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "63",
+        "pilote": "George Russell",
+        "ecurie": "Williams - Mercedes",
+        "tours": "51",
+        "raison": "Accident",
+        "depart": "13"
+      },
+      {
+        "numero": "33",
+        "pilote": "Max Verstappen",
+        "ecurie": "Red Bull Racing - Honda",
+        "tours": "50",
+        "raison": "Puncture/Spun off",
+        "depart": "3"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Turkish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Turkish_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "8",
+        "pilote": "Romain Grosjean",
+        "ecurie": "Haas - Ferrari",
+        "tours": "49",
+        "raison": "Collision damage",
+        "depart": "17"
+      },
+      {
+        "numero": "6",
+        "pilote": "Nicholas Latifi",
+        "ecurie": "Williams - Mercedes",
+        "tours": "39",
+        "raison": "Collision damage",
+        "depart": "PL"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Portuguese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Portuguese_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Racing Point - BWT Mercedes",
+        "tours": "51",
+        "raison": "Collision damage",
+        "depart": "12"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Eifel Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Eifel_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "63",
+        "pilote": "George Russell",
+        "ecurie": "Williams - Mercedes",
+        "tours": "12",
+        "raison": "Collision",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Sakhir Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Sakhir_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "33",
+        "pilote": "Max Verstappen",
+        "ecurie": "Red Bull Racing - Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "3"
+      },
+      {
+        "numero": "16",
+        "pilote": "Charles Leclerc",
+        "ecurie": "Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "4"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_British_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "26",
+        "pilote": "Daniil Kvyat",
+        "ecurie": "AlphaTauri - Honda",
+        "tours": "11",
+        "raison": "Puncture/Accident",
+        "depart": "19"
+      },
+      {
+        "numero": "20",
+        "pilote": "Kevin Magnussen",
+        "ecurie": "Haas - Ferrari",
+        "tours": "1",
+        "raison": "Collision",
+        "depart": "14"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Spanish_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2020,
+    "course": "Bahrain Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Bahrain_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Racing Point - BWT Mercedes",
+        "tours": "2",
+        "raison": "Collision",
+        "depart": "13"
+      },
+      {
+        "numero": "8",
+        "pilote": "Romain Grosjean",
+        "ecurie": "Haas - Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "19"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Italian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "16",
+        "pilote": "Charles Leclerc",
+        "ecurie": "Ferrari",
+        "tours": "23",
+        "raison": "Accident",
+        "depart": "13"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Australian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Australian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2020,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Hungarian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2020,
+    "course": "Styrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Styrian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "16",
+        "pilote": "Charles Leclerc",
+        "ecurie": "Ferrari",
+        "tours": "4",
+        "raison": "Collision damage",
+        "depart": "14"
+      },
+      {
+        "numero": "5",
+        "pilote": "Sebastian Vettel",
+        "ecurie": "Ferrari",
+        "tours": "1",
+        "raison": "Collision damage",
+        "depart": "10"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Belgian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "99",
+        "pilote": "Antonio Giovinazzi",
+        "ecurie": "Alfa Romeo Racing - Ferrari",
+        "tours": "9",
+        "raison": "Accident",
+        "depart": "18"
+      },
+      {
+        "numero": "63",
+        "pilote": "George Russell",
+        "ecurie": "Williams - Mercedes",
+        "tours": "9",
+        "raison": "Debris/Collision",
+        "depart": "15"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Tuscan Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Tuscan_Grand_Prix",
+    "nb_incidents": 7,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Racing Point - BWT Mercedes",
+        "tours": "42",
+        "raison": "Tyre/Accident",
+        "depart": "6"
+      },
+      {
+        "numero": "6",
+        "pilote": "Nicholas Latifi",
+        "ecurie": "Williams - Mercedes",
+        "tours": "6",
+        "raison": "Collision damage",
+        "depart": "19"
+      },
+      {
+        "numero": "20",
+        "pilote": "Kevin Magnussen",
+        "ecurie": "Haas - Ferrari",
+        "tours": "5",
+        "raison": "Collision",
+        "depart": "20"
+      },
+      {
+        "numero": "99",
+        "pilote": "Antonio Giovinazzi",
+        "ecurie": "Alfa Romeo Racing - Ferrari",
+        "tours": "5",
+        "raison": "Collision",
+        "depart": "17"
+      },
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "McLaren - Renault",
+        "tours": "5",
+        "raison": "Collision",
+        "depart": "9"
+      },
+      {
+        "numero": "33",
+        "pilote": "Max Verstappen",
+        "ecurie": "Red Bull Racing - Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "3"
+      },
+      {
+        "numero": "10",
+        "pilote": "Pierre Gasly",
+        "ecurie": "AlphaTauri - Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "16"
+      }
+    ]
+  },
+  {
+    "annee": 2020,
+    "course": "Russian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2020_Russian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "McLaren - Renault",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "6"
+      },
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Racing Point - BWT Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "12"
+      }
+    ]
+  }
+]

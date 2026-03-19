@@ -1,0 +1,169 @@
+[
+  {
+    "annee": 1998,
+    "course": "Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1998_Canadian_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "2",
+        "pilote": "Heinz-Harald Frentzen",
+        "ecurie": "Williams - Mecachrome",
+        "tours": "20",
+        "raison": "Spun off",
+        "depart": "7"
+      },
+      {
+        "numero": "15",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Sauber - Petronas",
+        "tours": "18",
+        "raison": "Spun off",
+        "depart": "12"
+      },
+      {
+        "numero": "17",
+        "pilote": "Mika Salo",
+        "ecurie": "Arrows",
+        "tours": "18",
+        "raison": "Accident",
+        "depart": "17"
+      },
+      {
+        "numero": "14",
+        "pilote": "Jean Alesi",
+        "ecurie": "Sauber - Petronas",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      },
+      {
+        "numero": "12",
+        "pilote": "Jarno Trulli",
+        "ecurie": "Prost - Peugeot",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "14"
+      }
+    ]
+  },
+  {
+    "annee": 1998,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1998_Spanish_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "4",
+        "pilote": "Eddie Irvine",
+        "ecurie": "Ferrari",
+        "tours": "28",
+        "raison": "Collision",
+        "depart": "6"
+      },
+      {
+        "numero": "5",
+        "pilote": "Giancarlo Fisichella",
+        "ecurie": "Benetton - Playlife",
+        "tours": "28",
+        "raison": "Collision",
+        "depart": "4"
+      }
+    ]
+  },
+  {
+    "annee": 1998,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1998_British_Grand_Prix",
+    "nb_incidents": 10,
+    "incidents": [
+      {
+        "numero": "16",
+        "pilote": "Pedro Diniz",
+        "ecurie": "Arrows",
+        "tours": "45",
+        "raison": "Spun off",
+        "depart": "12"
+      },
+      {
+        "numero": "11",
+        "pilote": "Olivier Panis",
+        "ecurie": "Prost - Peugeot",
+        "tours": "40",
+        "raison": "Spun off",
+        "depart": "22"
+      },
+      {
+        "numero": "18",
+        "pilote": "Rubens Barrichello",
+        "ecurie": "Stewart - Ford",
+        "tours": "39",
+        "raison": "Accident",
+        "depart": "16"
+      },
+      {
+        "numero": "7",
+        "pilote": "David Coulthard",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "37",
+        "raison": "Spun off",
+        "depart": "4"
+      },
+      {
+        "numero": "12",
+        "pilote": "Jarno Trulli",
+        "ecurie": "Prost - Peugeot",
+        "tours": "37",
+        "raison": "Spun off",
+        "depart": "14"
+      },
+      {
+        "numero": "20",
+        "pilote": "Ricardo Rosset",
+        "ecurie": "Tyrrell - Ford",
+        "tours": "29",
+        "raison": "Spun off",
+        "depart": "20"
+      },
+      {
+        "numero": "23",
+        "pilote": "Esteban Tuero",
+        "ecurie": "Minardi - Ford",
+        "tours": "29",
+        "raison": "Spun off",
+        "depart": "18"
+      },
+      {
+        "numero": "15",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Sauber - Petronas",
+        "tours": "27",
+        "raison": "Spun off",
+        "depart": "9"
+      },
+      {
+        "numero": "2",
+        "pilote": "Heinz-Harald Frentzen",
+        "ecurie": "Williams - Mecachrome",
+        "tours": "15",
+        "raison": "Spun off",
+        "depart": "6"
+      },
+      {
+        "numero": "9",
+        "pilote": "Damon Hill",
+        "ecurie": "Jordan - Mugen-Honda",
+        "tours": "13",
+        "raison": "Spun off",
+        "depart": "7"
+      }
+    ]
+  },
+  {
+    "annee": 1998,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1998_Belgian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  }
+]
