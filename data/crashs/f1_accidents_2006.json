@@ -1,0 +1,302 @@
+[
+  {
+    "annee": 2006,
+    "course": "German Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_German_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2006,
+    "course": "San Marino Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_San_Marino_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "22",
+        "pilote": "Takuma Sato",
+        "ecurie": "Super Aguri - Honda",
+        "tours": "44",
+        "raison": "Accident",
+        "depart": "21"
+      },
+      {
+        "numero": "19",
+        "pilote": "Christijan Albers",
+        "ecurie": "MF1 - Toyota",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "20"
+      }
+    ]
+  },
+  {
+    "annee": 2006,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_British_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "21",
+        "pilote": "Scott Speed",
+        "ecurie": "Toro Rosso - Cosworth",
+        "tours": "1",
+        "raison": "Collision damage",
+        "depart": "15"
+      },
+      {
+        "numero": "7",
+        "pilote": "Ralf Schumacher",
+        "ecurie": "Toyota",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "9",
+        "pilote": "Mark Webber",
+        "ecurie": "Williams - Cosworth",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 2006,
+    "course": "United States Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_United_States_Grand_Prix",
+    "nb_incidents": 10,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Tiago Monteiro",
+        "ecurie": "MF1 - Toyota",
+        "tours": "9",
+        "raison": "Collision damage",
+        "depart": "15"
+      },
+      {
+        "numero": "22",
+        "pilote": "Takuma Sato",
+        "ecurie": "Super Aguri - Honda",
+        "tours": "6",
+        "raison": "Collision",
+        "depart": "18"
+      },
+      {
+        "numero": "12",
+        "pilote": "Jenson Button",
+        "ecurie": "Honda",
+        "tours": "3",
+        "raison": "Collision damage",
+        "depart": "7"
+      },
+      {
+        "numero": "3",
+        "pilote": "Kimi Räikkönen",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      },
+      {
+        "numero": "16",
+        "pilote": "Nick Heidfeld",
+        "ecurie": "BMW Sauber",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "10"
+      },
+      {
+        "numero": "4",
+        "pilote": "Juan Pablo Montoya",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "11"
+      },
+      {
+        "numero": "9",
+        "pilote": "Mark Webber",
+        "ecurie": "Williams - Cosworth",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "12"
+      },
+      {
+        "numero": "21",
+        "pilote": "Scott Speed",
+        "ecurie": "Toro Rosso - Cosworth",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "13"
+      },
+      {
+        "numero": "15",
+        "pilote": "Christian Klien",
+        "ecurie": "Red Bull - Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "16"
+      },
+      {
+        "numero": "23",
+        "pilote": "Franck Montagny",
+        "ecurie": "Super Aguri - Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "19"
+      }
+    ]
+  },
+  {
+    "annee": 2006,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_Hungarian_Grand_Prix",
+    "nb_incidents": 7,
+    "incidents": [
+      {
+        "numero": "5",
+        "pilote": "Michael Schumacher",
+        "ecurie": "Ferrari",
+        "tours": "67",
+        "raison": "Collision damage",
+        "depart": "11"
+      },
+      {
+        "numero": "3",
+        "pilote": "Kimi Räikkönen",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "25",
+        "raison": "Collision",
+        "depart": "1"
+      },
+      {
+        "numero": "20",
+        "pilote": "Vitantonio Liuzzi",
+        "ecurie": "Toro Rosso - Cosworth",
+        "tours": "25",
+        "raison": "Collision damage",
+        "depart": "17"
+      },
+      {
+        "numero": "10",
+        "pilote": "Nico Rosberg",
+        "ecurie": "Williams - Cosworth",
+        "tours": "19",
+        "raison": "Electrical/Accident",
+        "depart": "18"
+      },
+      {
+        "numero": "2",
+        "pilote": "Giancarlo Fisichella",
+        "ecurie": "Renault",
+        "tours": "18",
+        "raison": "Accident damage",
+        "depart": "7"
+      },
+      {
+        "numero": "15",
+        "pilote": "Christian Klien",
+        "ecurie": "Red Bull - Ferrari",
+        "tours": "6",
+        "raison": "Spun off",
+        "depart": "13"
+      },
+      {
+        "numero": "9",
+        "pilote": "Mark Webber",
+        "ecurie": "Williams - Cosworth",
+        "tours": "1",
+        "raison": "Spun off",
+        "depart": "5"
+      }
+    ]
+  },
+  {
+    "annee": 2006,
+    "course": "Turkish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_Turkish_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "19",
+        "pilote": "Christijan Albers",
+        "ecurie": "MF1 - Toyota",
+        "tours": "46",
+        "raison": "Spin",
+        "depart": "22"
+      },
+      {
+        "numero": "23",
+        "pilote": "Sakon Yamamoto",
+        "ecurie": "Super Aguri - Honda",
+        "tours": "23",
+        "raison": "Spin",
+        "depart": "20"
+      },
+      {
+        "numero": "20",
+        "pilote": "Vitantonio Liuzzi",
+        "ecurie": "Toro Rosso - Cosworth",
+        "tours": "12",
+        "raison": "Spin",
+        "depart": "18"
+      },
+      {
+        "numero": "3",
+        "pilote": "Kimi Räikkönen",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "1",
+        "raison": "Accident",
+        "depart": "7"
+      },
+      {
+        "numero": "18",
+        "pilote": "Tiago Monteiro",
+        "ecurie": "MF1 - Toyota",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "19"
+      }
+    ]
+  },
+  {
+    "annee": 2006,
+    "course": "2006 French Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_French_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Tiago Monteiro",
+        "ecurie": "MF1 - Toyota",
+        "tours": "11",
+        "raison": "Accident",
+        "depart": "18"
+      }
+    ]
+  },
+  {
+    "annee": 2006,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_Italian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2006,
+    "course": "Japanese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_Japanese_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2006,
+    "course": "Brazilian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2006_Brazilian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  }
+]

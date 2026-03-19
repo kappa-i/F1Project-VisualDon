@@ -1,0 +1,664 @@
+[
+  {
+    "annee": 1996,
+    "course": "Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Monaco_Grand_Prix",
+    "nb_incidents": 14,
+    "incidents": [
+      {
+        "numero": "19",
+        "pilote": "Mika Salo",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "70",
+        "raison": "Collision",
+        "depart": "11"
+      },
+      {
+        "numero": "7",
+        "pilote": "Mika Häkkinen",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "70",
+        "raison": "Collision",
+        "depart": "8"
+      },
+      {
+        "numero": "2",
+        "pilote": "Eddie Irvine",
+        "ecurie": "Ferrari",
+        "tours": "68",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "6",
+        "pilote": "Jacques Villeneuve",
+        "ecurie": "Williams - Renault",
+        "tours": "66",
+        "raison": "Collision",
+        "depart": "10"
+      },
+      {
+        "numero": "22",
+        "pilote": "Luca Badoer",
+        "ecurie": "Forti - Ford",
+        "tours": "60",
+        "raison": "Collision + Electrical",
+        "depart": "21"
+      },
+      {
+        "numero": "12",
+        "pilote": "Martin Brundle",
+        "ecurie": "Jordan - Peugeot",
+        "tours": "30",
+        "raison": "Accident",
+        "depart": "16"
+      },
+      {
+        "numero": "16",
+        "pilote": "Ricardo Rosset",
+        "ecurie": "Footwork - Hart",
+        "tours": "3",
+        "raison": "Accident",
+        "depart": "20"
+      },
+      {
+        "numero": "18",
+        "pilote": "Ukyo Katayama",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "2",
+        "raison": "Accident",
+        "depart": "15"
+      },
+      {
+        "numero": "1",
+        "pilote": "Michael Schumacher",
+        "ecurie": "Ferrari",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "1"
+      },
+      {
+        "numero": "11",
+        "pilote": "Rubens Barrichello",
+        "ecurie": "Jordan - Peugeot",
+        "tours": "0",
+        "raison": "Spun off",
+        "depart": "6"
+      },
+      {
+        "numero": "20",
+        "pilote": "Pedro Lamy",
+        "ecurie": "Minardi - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "19"
+      },
+      {
+        "numero": "21",
+        "pilote": "Giancarlo Fisichella",
+        "ecurie": "Minardi - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "18"
+      },
+      {
+        "numero": "17",
+        "pilote": "Jos Verstappen",
+        "ecurie": "Footwork - Hart",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "12"
+      },
+      {
+        "numero": "23",
+        "pilote": "Andrea Montermini",
+        "ecurie": "Forti - Ford",
+        "tours": "",
+        "raison": "Warm-up crash",
+        "depart": "22"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "German Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_German_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Ukyo Katayama",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "19",
+        "raison": "Spun off",
+        "depart": "16"
+      },
+      {
+        "numero": "17",
+        "pilote": "Jos Verstappen",
+        "ecurie": "Footwork - Hart",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_British_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1996,
+    "course": "Brazilian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Brazilian_Grand_Prix",
+    "nb_incidents": 7,
+    "incidents": [
+      {
+        "numero": "12",
+        "pilote": "Martin Brundle",
+        "ecurie": "Jordan - Peugeot",
+        "tours": "64",
+        "raison": "Spun Off",
+        "depart": "6"
+      },
+      {
+        "numero": "11",
+        "pilote": "Rubens Barrichello",
+        "ecurie": "Jordan - Peugeot",
+        "tours": "59",
+        "raison": "Spun Off",
+        "depart": "2"
+      },
+      {
+        "numero": "8",
+        "pilote": "David Coulthard",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "29",
+        "raison": "Spun Off",
+        "depart": "14"
+      },
+      {
+        "numero": "6",
+        "pilote": "Jacques Villeneuve",
+        "ecurie": "Williams - Renault",
+        "tours": "26",
+        "raison": "Spun Off",
+        "depart": "3"
+      },
+      {
+        "numero": "23",
+        "pilote": "Andrea Montermini",
+        "ecurie": "Forti - Ford",
+        "tours": "26",
+        "raison": "Spun Off",
+        "depart": "20"
+      },
+      {
+        "numero": "16",
+        "pilote": "Ricardo Rosset",
+        "ecurie": "Footwork - Hart",
+        "tours": "24",
+        "raison": "Spun Off",
+        "depart": "17"
+      },
+      {
+        "numero": "21",
+        "pilote": "Tarso Marques",
+        "ecurie": "Minardi - Ford",
+        "tours": "0",
+        "raison": "Spun Off",
+        "depart": "21"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "Argentine Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Argentine_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "12",
+        "pilote": "Martin Brundle",
+        "ecurie": "Jordan - Peugeot",
+        "tours": "34",
+        "raison": "Collision",
+        "depart": "15"
+      },
+      {
+        "numero": "21",
+        "pilote": "Tarso Marques",
+        "ecurie": "Minardi - Ford",
+        "tours": "33",
+        "raison": "Collision",
+        "depart": "14"
+      },
+      {
+        "numero": "15",
+        "pilote": "Heinz-Harald Frentzen",
+        "ecurie": "Sauber - Ford",
+        "tours": "32",
+        "raison": "Spun off",
+        "depart": "11"
+      },
+      {
+        "numero": "22",
+        "pilote": "Luca Badoer",
+        "ecurie": "Forti - Ford",
+        "tours": "24",
+        "raison": "Collision",
+        "depart": "21"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "European Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_European_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "9",
+        "pilote": "Olivier Panis",
+        "ecurie": "Ligier - Mugen-Honda",
+        "tours": "6",
+        "raison": "Collision",
+        "depart": "15"
+      },
+      {
+        "numero": "2",
+        "pilote": "Eddie Irvine",
+        "ecurie": "Ferrari",
+        "tours": "6",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "3",
+        "pilote": "Jean Alesi",
+        "ecurie": "Benetton - Renault",
+        "tours": "1",
+        "raison": "Collision",
+        "depart": "4"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "San Marino Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_San_Marino_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Ukyo Katayama",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "45",
+        "raison": "Spun Off",
+        "depart": "16"
+      },
+      {
+        "numero": "12",
+        "pilote": "Martin Brundle",
+        "ecurie": "Jordan - Peugeot",
+        "tours": "36",
+        "raison": "Spun Off",
+        "depart": "12"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Spanish_Grand_Prix",
+    "nb_incidents": 10,
+    "incidents": [
+      {
+        "numero": "17",
+        "pilote": "Jos Verstappen",
+        "ecurie": "Footwork - Hart",
+        "tours": "47",
+        "raison": "Spun off",
+        "depart": "13"
+      },
+      {
+        "numero": "4",
+        "pilote": "Gerhard Berger",
+        "ecurie": "Benetton - Renault",
+        "tours": "44",
+        "raison": "Spun off",
+        "depart": "5"
+      },
+      {
+        "numero": "14",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Sauber - Ford",
+        "tours": "20",
+        "raison": "Spun off",
+        "depart": "9"
+      },
+      {
+        "numero": "5",
+        "pilote": "Damon Hill",
+        "ecurie": "Williams - Renault",
+        "tours": "10",
+        "raison": "Spun off",
+        "depart": "1"
+      },
+      {
+        "numero": "2",
+        "pilote": "Eddie Irvine",
+        "ecurie": "Ferrari",
+        "tours": "1",
+        "raison": "Spun off",
+        "depart": "6"
+      },
+      {
+        "numero": "9",
+        "pilote": "Olivier Panis",
+        "ecurie": "Ligier - Mugen-Honda",
+        "tours": "1",
+        "raison": "Collision damage",
+        "depart": "8"
+      },
+      {
+        "numero": "21",
+        "pilote": "Giancarlo Fisichella",
+        "ecurie": "Minardi - Ford",
+        "tours": "1",
+        "raison": "Collision damage",
+        "depart": "19"
+      },
+      {
+        "numero": "8",
+        "pilote": "David Coulthard",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "14"
+      },
+      {
+        "numero": "20",
+        "pilote": "Pedro Lamy",
+        "ecurie": "Minardi - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "18"
+      },
+      {
+        "numero": "16",
+        "pilote": "Ricardo Rosset",
+        "ecurie": "Footwork - Hart",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "20"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Canadian_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "20",
+        "pilote": "Pedro Lamy",
+        "ecurie": "Minardi - Ford",
+        "tours": "44",
+        "raison": "Collision",
+        "depart": "19"
+      },
+      {
+        "numero": "4",
+        "pilote": "Gerhard Berger",
+        "ecurie": "Benetton - Renault",
+        "tours": "42",
+        "raison": "Spun Off",
+        "depart": "7"
+      },
+      {
+        "numero": "16",
+        "pilote": "Ricardo Rosset",
+        "ecurie": "Footwork - Hart",
+        "tours": "6",
+        "raison": "Collision Damage",
+        "depart": "21"
+      },
+      {
+        "numero": "18",
+        "pilote": "Ukyo Katayama",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "6",
+        "raison": "Collision",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "French Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_French_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1996,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Hungarian_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "21",
+        "pilote": "Giovanni Lavaggi",
+        "ecurie": "Minardi - Ford",
+        "tours": "69",
+        "raison": "Spun off",
+        "depart": "20"
+      },
+      {
+        "numero": "17",
+        "pilote": "Jos Verstappen",
+        "ecurie": "Footwork - Hart",
+        "tours": "10",
+        "raison": "Spun off",
+        "depart": "17"
+      },
+      {
+        "numero": "12",
+        "pilote": "Martin Brundle",
+        "ecurie": "Jordan - Peugeot",
+        "tours": "5",
+        "raison": "Spun off",
+        "depart": "12"
+      },
+      {
+        "numero": "10",
+        "pilote": "Pedro Diniz",
+        "ecurie": "Ligier - Mugen-Honda",
+        "tours": "1",
+        "raison": "Collision",
+        "depart": "15"
+      },
+      {
+        "numero": "19",
+        "pilote": "Mika Salo",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "16"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Belgian_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "8",
+        "pilote": "David Coulthard",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "37",
+        "raison": "Spun Off",
+        "depart": "4"
+      },
+      {
+        "numero": "17",
+        "pilote": "Jos Verstappen",
+        "ecurie": "Footwork - Hart",
+        "tours": "11",
+        "raison": "Accident",
+        "depart": "16"
+      },
+      {
+        "numero": "15",
+        "pilote": "Heinz-Harald Frentzen",
+        "ecurie": "Sauber - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "11"
+      },
+      {
+        "numero": "14",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Sauber - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "12"
+      },
+      {
+        "numero": "9",
+        "pilote": "Olivier Panis",
+        "ecurie": "Ligier - Mugen-Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "14"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Italian_Grand_Prix",
+    "nb_incidents": 6,
+    "incidents": [
+      {
+        "numero": "16",
+        "pilote": "Ricardo Rosset",
+        "ecurie": "Footwork - Hart",
+        "tours": "36",
+        "raison": "Spun Off",
+        "depart": "19"
+      },
+      {
+        "numero": "2",
+        "pilote": "Eddie Irvine",
+        "ecurie": "Ferrari",
+        "tours": "23",
+        "raison": "Spun Off",
+        "depart": "7"
+      },
+      {
+        "numero": "15",
+        "pilote": "Heinz-Harald Frentzen",
+        "ecurie": "Sauber - Ford",
+        "tours": "7",
+        "raison": "Spun Off",
+        "depart": "13"
+      },
+      {
+        "numero": "5",
+        "pilote": "Damon Hill",
+        "ecurie": "Williams - Renault",
+        "tours": "5",
+        "raison": "Spun Off",
+        "depart": "1"
+      },
+      {
+        "numero": "9",
+        "pilote": "Olivier Panis",
+        "ecurie": "Ligier - Mugen-Honda",
+        "tours": "2",
+        "raison": "Spun Off",
+        "depart": "11"
+      },
+      {
+        "numero": "8",
+        "pilote": "David Coulthard",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "1",
+        "raison": "Spun Off",
+        "depart": "5"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "Portuguese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Portuguese_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "7",
+        "pilote": "Mika Häkkinen",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "52",
+        "raison": "Collision damage",
+        "depart": "7"
+      },
+      {
+        "numero": "10",
+        "pilote": "Pedro Diniz",
+        "ecurie": "Ligier - Mugen-Honda",
+        "tours": "46",
+        "raison": "Collision",
+        "depart": "18"
+      },
+      {
+        "numero": "11",
+        "pilote": "Rubens Barrichello",
+        "ecurie": "Jordan - Peugeot",
+        "tours": "41",
+        "raison": "Spun Off",
+        "depart": "9"
+      }
+    ]
+  },
+  {
+    "annee": 1996,
+    "course": "Japanese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1996_Japanese_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "2",
+        "pilote": "Eddie Irvine",
+        "ecurie": "Ferrari",
+        "tours": "39",
+        "raison": "Collision/spun off",
+        "depart": "6"
+      },
+      {
+        "numero": "10",
+        "pilote": "Pedro Diniz",
+        "ecurie": "Ligier - Mugen-Honda",
+        "tours": "13",
+        "raison": "Spun off",
+        "depart": "16"
+      },
+      {
+        "numero": "3",
+        "pilote": "Jean Alesi",
+        "ecurie": "Benetton - Renault",
+        "tours": "0",
+        "raison": "Spun off",
+        "depart": "9"
+      }
+    ]
+  }
+]

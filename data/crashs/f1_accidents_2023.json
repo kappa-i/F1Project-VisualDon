@@ -1,0 +1,448 @@
+[
+  {
+    "annee": 2023,
+    "course": "Qatar Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Qatar_Grand_Prix",
+    "nb_incidents": 6,
+    "incidents": [
+      {
+        "numero": "27",
+        "pilote": "Nico Hülkenberg",
+        "ecurie": "Haas - Ferrari",
+        "tours": "11",
+        "raison": "Collision damage",
+        "depart": "7"
+      },
+      {
+        "numero": "31",
+        "pilote": "Esteban Ocon",
+        "ecurie": "Alpine - Renault",
+        "tours": "10",
+        "raison": "Collision",
+        "depart": "10"
+      },
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "10",
+        "raison": "Collision",
+        "depart": "8"
+      },
+      {
+        "numero": "2",
+        "pilote": "Logan Sargeant",
+        "ecurie": "Williams - Mercedes",
+        "tours": "2",
+        "raison": "Spun off",
+        "depart": "20"
+      },
+      {
+        "numero": "40",
+        "pilote": "Liam Lawson",
+        "ecurie": "AlphaTauri - Honda RBPT",
+        "tours": "0",
+        "raison": "Spun off",
+        "depart": "14"
+      },
+      {
+        "numero": "44",
+        "pilote": "Lewis Hamilton",
+        "ecurie": "Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "3"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Japanese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Japanese_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2023,
+    "course": "Singapore Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Singapore_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "63",
+        "pilote": "George Russell",
+        "ecurie": "Mercedes",
+        "tours": "61",
+        "raison": "Accident",
+        "depart": "2"
+      },
+      {
+        "numero": "22",
+        "pilote": "Yuki Tsunoda",
+        "ecurie": "AlphaTauri - Honda RBPT",
+        "tours": "0",
+        "raison": "Collision damage",
+        "depart": "15"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Bahrain Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Bahrain_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2023,
+    "course": "Dutch Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Dutch_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "24",
+        "pilote": "Zhou Guanyu",
+        "ecurie": "Alfa Romeo - Ferrari",
+        "tours": "62",
+        "raison": "Accident",
+        "depart": "15"
+      },
+      {
+        "numero": "2",
+        "pilote": "Logan Sargeant",
+        "ecurie": "Williams - Mercedes",
+        "tours": "14",
+        "raison": "Hydraulics/Accident Crash",
+        "depart": "10"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Hungarian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "31",
+        "pilote": "Esteban Ocon",
+        "ecurie": "Alpine - Renault",
+        "tours": "2",
+        "raison": "Collision",
+        "depart": "12"
+      },
+      {
+        "numero": "10",
+        "pilote": "Pierre Gasly",
+        "ecurie": "Alpine - Renault",
+        "tours": "1",
+        "raison": "Collision",
+        "depart": "15"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "United States Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_United_States_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "81",
+        "pilote": "Oscar Piastri",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "10",
+        "raison": "Collision damage [ 47 ]",
+        "depart": "10"
+      },
+      {
+        "numero": "31",
+        "pilote": "Esteban Ocon",
+        "ecurie": "Alpine - Renault",
+        "tours": "6",
+        "raison": "Collision damage [ 48 ] [ 49 ]",
+        "depart": "8"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Monaco_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "20",
+        "pilote": "Kevin Magnussen",
+        "ecurie": "Haas - Ferrari",
+        "tours": "70",
+        "raison": "Damage [ 29 ]",
+        "depart": "17"
+      },
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "53",
+        "raison": "Incident damage [ 29 ]",
+        "depart": "14"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Emilia Romagna Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Emilia_Romagna_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2023,
+    "course": "Austrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Austrian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2023,
+    "course": "Azerbaijan Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Azerbaijan_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "21",
+        "pilote": "Nyck de Vries",
+        "ecurie": "AlphaTauri - Honda RBPT",
+        "tours": "9",
+        "raison": "Accident",
+        "depart": "18"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Saudi Arabian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Saudi_Arabian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2023,
+    "course": "Australian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Australian_Grand_Prix",
+    "nb_incidents": 7,
+    "incidents": [
+      {
+        "numero": "10",
+        "pilote": "Pierre Gasly",
+        "ecurie": "Alpine - Renault",
+        "tours": "56",
+        "raison": "Collision",
+        "depart": "9"
+      },
+      {
+        "numero": "31",
+        "pilote": "Esteban Ocon",
+        "ecurie": "Alpine - Renault",
+        "tours": "56",
+        "raison": "Collision",
+        "depart": "11"
+      },
+      {
+        "numero": "21",
+        "pilote": "Nyck de Vries",
+        "ecurie": "AlphaTauri - Honda RBPT",
+        "tours": "56",
+        "raison": "Collision",
+        "depart": "15"
+      },
+      {
+        "numero": "2",
+        "pilote": "Logan Sargeant",
+        "ecurie": "Williams - Mercedes",
+        "tours": "56",
+        "raison": "Collision",
+        "depart": "18"
+      },
+      {
+        "numero": "20",
+        "pilote": "Kevin Magnussen",
+        "ecurie": "Haas - Ferrari",
+        "tours": "52",
+        "raison": "Accident",
+        "depart": "14"
+      },
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "6",
+        "raison": "Accident",
+        "depart": "8"
+      },
+      {
+        "numero": "16",
+        "pilote": "Charles Leclerc",
+        "ecurie": "Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "7"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Miami Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Miami_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2023,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Spanish_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2023,
+    "course": "Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Canadian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2023,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_British_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "10",
+        "pilote": "Pierre Gasly",
+        "ecurie": "Alpine - Renault",
+        "tours": "46",
+        "raison": "Collision",
+        "depart": "10"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Belgian_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "8",
+        "raison": "Collision damage",
+        "depart": "8"
+      },
+      {
+        "numero": "14",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "2",
+        "raison": "Accident",
+        "depart": "15"
+      },
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Ferrari",
+        "tours": "23",
+        "raison": "Collision damage",
+        "depart": "4"
+      },
+      {
+        "numero": "81",
+        "pilote": "Oscar Piastri",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "0",
+        "raison": "Collision damage",
+        "depart": "5"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Italian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2023,
+    "course": "Mexico City Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Mexico_City_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "66",
+        "raison": "Collision damage",
+        "depart": "PL"
+      },
+      {
+        "numero": "14",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "47",
+        "raison": "Collision damage",
+        "depart": "13"
+      },
+      {
+        "numero": "20",
+        "pilote": "Kevin Magnussen",
+        "ecurie": "Haas - Ferrari",
+        "tours": "31",
+        "raison": "Suspension/Accident",
+        "depart": "16"
+      },
+      {
+        "numero": "11",
+        "pilote": "Sergio Pérez",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "1",
+        "raison": "Collision damage",
+        "depart": "5"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "São Paulo Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_S%C3%A3o_Paulo_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "20",
+        "pilote": "Kevin Magnussen",
+        "ecurie": "Haas - Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "12"
+      },
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "13"
+      }
+    ]
+  },
+  {
+    "annee": 2023,
+    "course": "Abu Dhabi Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2023_Abu_Dhabi_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  }
+]

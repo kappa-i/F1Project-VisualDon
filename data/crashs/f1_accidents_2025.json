@@ -1,0 +1,538 @@
+[
+  {
+    "annee": 2025,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Hungarian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2025,
+    "course": "Abu Dhabi Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2025,
+    "course": "Singapore Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Singapore_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2025,
+    "course": "Japanese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Japanese_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2025,
+    "course": "Emilia Romagna Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Emilia_Romagna_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2025,
+    "course": "Chinese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Chinese_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2025,
+    "course": "Miami Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Miami_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "14",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "13",
+        "raison": "Collision",
+        "depart": "10"
+      },
+      {
+        "numero": "16",
+        "pilote": "Charles Leclerc",
+        "ecurie": "Ferrari",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "— 5"
+      },
+      {
+        "numero": "30",
+        "pilote": "Liam Lawson",
+        "ecurie": "Racing Bulls - Honda RBPT",
+        "tours": "36",
+        "raison": "Collision damage",
+        "depart": "15"
+      },
+      {
+        "numero": "7",
+        "pilote": "Jack Doohan",
+        "ecurie": "Alpine - Renault",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "14"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Austrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Austrian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "1",
+        "pilote": "Max Verstappen",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "12",
+        "pilote": "Kimi Antonelli",
+        "ecurie": "Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Spanish_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "27",
+        "raison": "Collision damage",
+        "depart": "11"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Australian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
+    "nb_incidents": 6,
+    "incidents": [
+      {
+        "numero": "30",
+        "pilote": "Liam Lawson",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "46",
+        "raison": "Accident",
+        "depart": "PL"
+      },
+      {
+        "numero": "5",
+        "pilote": "Gabriel Bortoleto",
+        "ecurie": "Kick Sauber - Ferrari",
+        "tours": "45",
+        "raison": "Accident",
+        "depart": "15"
+      },
+      {
+        "numero": "14",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "32",
+        "raison": "Accident",
+        "depart": "12"
+      },
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Williams - Mercedes",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "10"
+      },
+      {
+        "numero": "7",
+        "pilote": "Jack Doohan",
+        "ecurie": "Alpine - Renault",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "14"
+      },
+      {
+        "numero": "6",
+        "pilote": "Isack Hadjar",
+        "ecurie": "Racing Bulls - Honda RBPT",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "— 1"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Bahrain Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Bahrain_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Williams - Mercedes",
+        "tours": "45",
+        "raison": "Collision damage",
+        "depart": "8"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Saudi Arabian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Saudi_Arabian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "22",
+        "pilote": "Yuki Tsunoda",
+        "ecurie": "Red Bull Racing - Honda RBPT",
+        "tours": "1",
+        "raison": "Collision damage",
+        "depart": "8"
+      },
+      {
+        "numero": "10",
+        "pilote": "Pierre Gasly",
+        "ecurie": "Alpine - Renault",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Monaco_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "10",
+        "pilote": "Pierre Gasly",
+        "ecurie": "Alpine - Renault",
+        "tours": "7",
+        "raison": "Collision",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Canadian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "4",
+        "pilote": "Lando Norris",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "66",
+        "raison": "Collision 1",
+        "depart": "7"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_British_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "12",
+        "pilote": "Kimi Antonelli",
+        "ecurie": "Mercedes",
+        "tours": "23",
+        "raison": "Collision damage",
+        "depart": "10"
+      },
+      {
+        "numero": "6",
+        "pilote": "Isack Hadjar",
+        "ecurie": "Racing Bulls - Honda RBPT",
+        "tours": "17",
+        "raison": "Accident",
+        "depart": "12"
+      },
+      {
+        "numero": "5",
+        "pilote": "Gabriel Bortoleto",
+        "ecurie": "Kick Sauber - Ferrari",
+        "tours": "3",
+        "raison": "Accident",
+        "depart": "16"
+      },
+      {
+        "numero": "30",
+        "pilote": "Liam Lawson",
+        "ecurie": "Racing Bulls - Honda RBPT",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "15"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Belgian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2025,
+    "course": "Dutch Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Dutch_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "16",
+        "pilote": "Charles Leclerc",
+        "ecurie": "Ferrari",
+        "tours": "52",
+        "raison": "Collision",
+        "depart": "6"
+      },
+      {
+        "numero": "44",
+        "pilote": "Lewis Hamilton",
+        "ecurie": "Ferrari",
+        "tours": "22",
+        "raison": "Accident",
+        "depart": "7"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Italian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2025,
+    "course": "Mexico City Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Mexico_City_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Williams - Mercedes",
+        "tours": "67",
+        "raison": "Accident",
+        "depart": "12"
+      },
+      {
+        "numero": "30",
+        "pilote": "Liam Lawson",
+        "ecurie": "Racing Bulls - Honda RBPT",
+        "tours": "5",
+        "raison": "Collision damage",
+        "depart": "15"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Azerbaijan Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Azerbaijan_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "81",
+        "pilote": "Oscar Piastri",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "9"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "United States Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_United_States_Grand_Prix",
+    "nb_incidents": 6,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "15",
+        "raison": "Collision/Suspension Damage",
+        "depart": "19"
+      },
+      {
+        "numero": "31",
+        "pilote": "Esteban Ocon",
+        "ecurie": "Haas - Ferrari",
+        "tours": "15",
+        "raison": "Collision",
+        "depart": "14"
+      },
+      {
+        "numero": "81",
+        "pilote": "Oscar Piastri",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "0",
+        "raison": "Collision/Suspension Damage",
+        "depart": "2"
+      },
+      {
+        "numero": "14",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "3"
+      },
+      {
+        "numero": "4",
+        "pilote": "Lando Norris",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "0",
+        "raison": "Collision/Ripped Wheel",
+        "depart": "6"
+      },
+      {
+        "numero": "55",
+        "pilote": "Carlos Sainz Jr.",
+        "ecurie": "Williams - Mercedes",
+        "tours": "5",
+        "raison": "Collision damage",
+        "depart": "9"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "São Paulo Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_S%C3%A3o_Paulo_Grand_Prix",
+    "nb_incidents": 6,
+    "incidents": [
+      {
+        "numero": "5",
+        "pilote": "Gabriel Bortoleto",
+        "ecurie": "Kick Sauber - Ferrari",
+        "tours": "23",
+        "raison": "Accident",
+        "depart": "14"
+      },
+      {
+        "numero": "81",
+        "pilote": "Oscar Piastri",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "5",
+        "raison": "Accident",
+        "depart": "3"
+      },
+      {
+        "numero": "43",
+        "pilote": "Franco Colapinto",
+        "ecurie": "Alpine - Renault",
+        "tours": "5",
+        "raison": "Accident",
+        "depart": "16"
+      },
+      {
+        "numero": "44",
+        "pilote": "Lewis Hamilton",
+        "ecurie": "Ferrari",
+        "tours": "37",
+        "raison": "Collision damage",
+        "depart": "13"
+      },
+      {
+        "numero": "16",
+        "pilote": "Charles Leclerc",
+        "ecurie": "Ferrari",
+        "tours": "5",
+        "raison": "Collision",
+        "depart": "3"
+      },
+      {
+        "numero": "5",
+        "pilote": "Gabriel Bortoleto",
+        "ecurie": "Kick Sauber - Ferrari",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "18"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Las Vegas Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Las_Vegas_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "23",
+        "pilote": "Alexander Albon",
+        "ecurie": "Williams - Mercedes",
+        "tours": "35",
+        "raison": "Collision damage",
+        "depart": "16"
+      },
+      {
+        "numero": "5",
+        "pilote": "Gabriel Bortoleto",
+        "ecurie": "Kick Sauber - Ferrari",
+        "tours": "2",
+        "raison": "Collision",
+        "depart": "18"
+      },
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "12"
+      }
+    ]
+  },
+  {
+    "annee": 2025,
+    "course": "Qatar Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2025_Qatar_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "18",
+        "pilote": "Lance Stroll",
+        "ecurie": "Aston Martin Aramco - Mercedes",
+        "tours": "55",
+        "raison": "Collision damage [ failed verification ]",
+        "depart": "18"
+      },
+      {
+        "numero": "27",
+        "pilote": "Nico Hülkenberg",
+        "ecurie": "Kick Sauber - Ferrari",
+        "tours": "6",
+        "raison": "Collision",
+        "depart": "11"
+      }
+    ]
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "name": "f1project-visualdon",
+  "version": "1.0.0",
+  "description": "> Projet de visualisation de données — Cours VisualDon, HEIG-VD",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kappa-i/F1Project-VisualDon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kappa-i/F1Project-VisualDon/issues"
+  },
+  "homepage": "https://github.com/kappa-i/F1Project-VisualDon#readme",
+  "devDependencies": {
+    "vite": "^8.0.1"
+  },
+  "dependencies": {
+    "three": "^0.183.2"
+  }
+}

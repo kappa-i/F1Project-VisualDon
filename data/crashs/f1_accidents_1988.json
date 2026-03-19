@@ -1,0 +1,105 @@
+[
+  {
+    "annee": 1988,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1988_Italian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "12",
+        "pilote": "Ayrton Senna",
+        "ecurie": "McLaren - Honda",
+        "tours": "49",
+        "raison": "Collision",
+        "depart": "1"
+      }
+    ]
+  },
+  {
+    "annee": 1988,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1988_Belgian_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "15",
+        "pilote": "Maurício Gugelmin",
+        "ecurie": "March - Judd",
+        "tours": "29",
+        "raison": "Spun off",
+        "depart": "13"
+      },
+      {
+        "numero": "22",
+        "pilote": "Andrea de Cesaris",
+        "ecurie": "Rial - Ford",
+        "tours": "2",
+        "raison": "Collision",
+        "depart": "19"
+      },
+      {
+        "numero": "25",
+        "pilote": "René Arnoux",
+        "ecurie": "Ligier - Judd",
+        "tours": "2",
+        "raison": "Collision",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 1988,
+    "course": "1988 Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1988_Canadian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "4",
+        "pilote": "Julian Bailey",
+        "ecurie": "Tyrrell - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "23"
+      }
+    ]
+  },
+  {
+    "annee": 1988,
+    "course": "French Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1988_French_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "17",
+        "pilote": "Derek Warwick",
+        "ecurie": "Arrows - Megatron",
+        "tours": "11",
+        "raison": "Spun off",
+        "depart": "11"
+      }
+    ]
+  },
+  {
+    "annee": 1988,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1988_British_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1988,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1988_Spanish_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "2",
+        "pilote": "Satoru Nakajima",
+        "ecurie": "Lotus - Honda",
+        "tours": "14",
+        "raison": "Spun off",
+        "depart": "15"
+      }
+    ]
+  }
+]

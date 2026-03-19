@@ -1,0 +1,342 @@
+[
+  {
+    "annee": 2004,
+    "course": "Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Canadian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "12",
+        "pilote": "Felipe Massa",
+        "ecurie": "Sauber - Petronas",
+        "tours": "62",
+        "raison": "Accident",
+        "depart": "17"
+      }
+    ]
+  },
+  {
+    "annee": 2004,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Italian_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "8",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Renault",
+        "tours": "40",
+        "raison": "Spun off",
+        "depart": "4"
+      },
+      {
+        "numero": "19",
+        "pilote": "Giorgio Pantano",
+        "ecurie": "Jordan - Ford",
+        "tours": "33",
+        "raison": "Accident",
+        "depart": "17"
+      },
+      {
+        "numero": "17",
+        "pilote": "Olivier Panis",
+        "ecurie": "Toyota",
+        "tours": "0",
+        "raison": "Spun off",
+        "depart": "13"
+      }
+    ]
+  },
+  {
+    "annee": 2004,
+    "course": "United States Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_United_States_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "4",
+        "pilote": "Ralf Schumacher",
+        "ecurie": "Williams - BMW",
+        "tours": "9",
+        "raison": "Puncture/Accident",
+        "depart": "6"
+      },
+      {
+        "numero": "15",
+        "pilote": "Christian Klien",
+        "ecurie": "Jaguar - Cosworth",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "13"
+      },
+      {
+        "numero": "12",
+        "pilote": "Felipe Massa",
+        "ecurie": "Sauber - Petronas",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "15"
+      },
+      {
+        "numero": "19",
+        "pilote": "Giorgio Pantano",
+        "ecurie": "Jordan - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "17"
+      },
+      {
+        "numero": "20",
+        "pilote": "Gianmaria Bruni",
+        "ecurie": "Minardi - Cosworth",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "18"
+      }
+    ]
+  },
+  {
+    "annee": 2004,
+    "course": "German Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_German_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "6",
+        "pilote": "Kimi Räikkönen",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "13",
+        "raison": "Rear Wing/Accident",
+        "depart": "3"
+      }
+    ]
+  },
+  {
+    "annee": 2004,
+    "course": "Chinese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Chinese_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2004,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Hungarian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2004,
+    "course": "Japanese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Japanese_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2004,
+    "course": "Brazilian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Brazilian_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "14",
+        "pilote": "Mark Webber",
+        "ecurie": "Jaguar - Cosworth",
+        "tours": "23",
+        "raison": "Collision",
+        "depart": "11"
+      }
+    ]
+  },
+  {
+    "annee": 2004,
+    "course": "2004 Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Monaco_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "1",
+        "pilote": "Michael Schumacher",
+        "ecurie": "Ferrari",
+        "tours": "45",
+        "raison": "Collision damage",
+        "depart": "4"
+      },
+      {
+        "numero": "8",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Renault",
+        "tours": "41",
+        "raison": "Accident",
+        "depart": "3"
+      },
+      {
+        "numero": "5",
+        "pilote": "David Coulthard",
+        "ecurie": "McLaren - Mercedes",
+        "tours": "2",
+        "raison": "Collision damage",
+        "depart": "8"
+      },
+      {
+        "numero": "11",
+        "pilote": "Giancarlo Fisichella",
+        "ecurie": "Sauber - Petronas",
+        "tours": "2",
+        "raison": "Collision",
+        "depart": "10"
+      },
+      {
+        "numero": "15",
+        "pilote": "Christian Klien",
+        "ecurie": "Jaguar - Cosworth",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "14"
+      }
+    ]
+  },
+  {
+    "annee": 2004,
+    "course": "Bahrain Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Bahrain_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 2004,
+    "course": "San Marino Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_San_Marino_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "16",
+        "pilote": "Cristiano da Matta",
+        "ecurie": "Toyota",
+        "tours": "32",
+        "raison": "Accident",
+        "depart": "10"
+      },
+      {
+        "numero": "19",
+        "pilote": "Giorgio Pantano",
+        "ecurie": "Jordan - Ford",
+        "tours": "6",
+        "raison": "Hydraulics/Spun off",
+        "depart": "15"
+      }
+    ]
+  },
+  {
+    "annee": 2004,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Spanish_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "20",
+        "pilote": "Gianmaria Bruni",
+        "ecurie": "Minardi - Cosworth",
+        "tours": "31",
+        "raison": "Spin",
+        "depart": "18"
+      },
+      {
+        "numero": "21",
+        "pilote": "Zsolt Baumgartner",
+        "ecurie": "Minardi - Cosworth",
+        "tours": "17",
+        "raison": "Spin",
+        "depart": "20"
+      }
+    ]
+  },
+  {
+    "annee": 2004,
+    "course": "European Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_European_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "4",
+        "pilote": "Ralf Schumacher",
+        "ecurie": "Williams - BMW",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      },
+      {
+        "numero": "16",
+        "pilote": "Cristiano da Matta",
+        "ecurie": "Toyota",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "11"
+      }
+    ]
+  },
+  {
+    "annee": 2004,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/2004_Belgian_Grand_Prix",
+    "nb_incidents": 7,
+    "incidents": [
+      {
+        "numero": "9",
+        "pilote": "Jenson Button",
+        "ecurie": "BAR - Honda",
+        "tours": "29",
+        "raison": "Tyre/collision",
+        "depart": "12"
+      },
+      {
+        "numero": "21",
+        "pilote": "Zsolt Baumgartner",
+        "ecurie": "Minardi - Cosworth",
+        "tours": "28",
+        "raison": "Collision",
+        "depart": "18"
+      },
+      {
+        "numero": "8",
+        "pilote": "Fernando Alonso",
+        "ecurie": "Renault",
+        "tours": "11",
+        "raison": "Engine/spin",
+        "depart": "3"
+      },
+      {
+        "numero": "14",
+        "pilote": "Mark Webber",
+        "ecurie": "Jaguar - Cosworth",
+        "tours": "0",
+        "raison": "Collision damage",
+        "depart": "7"
+      },
+      {
+        "numero": "10",
+        "pilote": "Takuma Sato",
+        "ecurie": "BAR - Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "15"
+      },
+      {
+        "numero": "20",
+        "pilote": "Gianmaria Bruni",
+        "ecurie": "Minardi - Cosworth",
+        "tours": "0",
+        "raison": "Collision/fire",
+        "depart": "17"
+      },
+      {
+        "numero": "19",
+        "pilote": "Giorgio Pantano",
+        "ecurie": "Jordan - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "19"
+      }
+    ]
+  }
+]

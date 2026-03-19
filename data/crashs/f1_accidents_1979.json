@@ -1,0 +1,147 @@
+[
+  {
+    "annee": 1979,
+    "course": "Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Italian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Belgian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 Argentine Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Argentine_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 Brazilian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Brazilian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 South African Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_South_African_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 United States Grand Prix West",
+    "url": "https://en.wikipedia.org/wiki/1979_United_States_Grand_Prix_West",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "31",
+        "pilote": "Héctor Rebaque",
+        "ecurie": "Lotus - Ford",
+        "tours": "71",
+        "raison": "Accident",
+        "depart": "23"
+      },
+      {
+        "numero": "22",
+        "pilote": "Derek Daly",
+        "ecurie": "Ensign - Ford",
+        "tours": "69",
+        "raison": "Accident",
+        "depart": "24"
+      },
+      {
+        "numero": "5",
+        "pilote": "Niki Lauda",
+        "ecurie": "Brabham - Alfa Romeo",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "11"
+      },
+      {
+        "numero": "8",
+        "pilote": "Patrick Tambay",
+        "ecurie": "McLaren - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "19"
+      }
+    ]
+  },
+  {
+    "annee": 1979,
+    "course": "1979 Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Spanish_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Monaco_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 French Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_French_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_British_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 German Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_German_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 Austrian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Austrian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 Dutch Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Dutch_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "Dino Ferrari Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Dino_Ferrari_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_Canadian_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1979,
+    "course": "1979 United States Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1979_United_States_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  }
+]

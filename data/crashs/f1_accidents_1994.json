@@ -1,0 +1,409 @@
+[
+  {
+    "annee": 1994,
+    "course": "San Marino Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1994_San_Marino_Grand_Prix",
+    "nb_incidents": 8,
+    "incidents": [
+      {
+        "numero": "9",
+        "pilote": "Christian Fittipaldi",
+        "ecurie": "Footwork - Ford",
+        "tours": "54",
+        "raison": "Brakes/Spun off",
+        "depart": "16"
+      },
+      {
+        "numero": "15",
+        "pilote": "Andrea de Cesaris",
+        "ecurie": "Jordan - Hart",
+        "tours": "49",
+        "raison": "Spun off",
+        "depart": "21"
+      },
+      {
+        "numero": "23",
+        "pilote": "Pierluigi Martini",
+        "ecurie": "Minardi - Ford",
+        "tours": "37",
+        "raison": "Spun off",
+        "depart": "14"
+      },
+      {
+        "numero": "31",
+        "pilote": "David Brabham",
+        "ecurie": "Simtek - Ford",
+        "tours": "27",
+        "raison": "Spun off",
+        "depart": "24"
+      },
+      {
+        "numero": "2",
+        "pilote": "Ayrton Senna",
+        "ecurie": "Williams - Renault",
+        "tours": "5",
+        "raison": "Fatal accident",
+        "depart": "1"
+      },
+      {
+        "numero": "20",
+        "pilote": "Érik Comas",
+        "ecurie": "Larrousse - Ford",
+        "tours": "5",
+        "raison": "Withdrew due to Senna’s crash",
+        "depart": "18"
+      },
+      {
+        "numero": "6",
+        "pilote": "JJ Lehto",
+        "ecurie": "Benetton - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "5"
+      },
+      {
+        "numero": "11",
+        "pilote": "Pedro Lamy",
+        "ecurie": "Lotus - Mugen-Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "22"
+      }
+    ]
+  },
+  {
+    "annee": 1994,
+    "course": "British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1994_British_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1994,
+    "course": "Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1994_Belgian_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "8",
+        "pilote": "Martin Brundle",
+        "ecurie": "McLaren - Peugeot",
+        "tours": "24",
+        "raison": "Spun off",
+        "depart": "13"
+      },
+      {
+        "numero": "14",
+        "pilote": "Rubens Barrichello",
+        "ecurie": "Jordan - Hart",
+        "tours": "19",
+        "raison": "Spun off",
+        "depart": "1"
+      },
+      {
+        "numero": "11",
+        "pilote": "Philippe Adams",
+        "ecurie": "Lotus - Mugen-Honda",
+        "tours": "15",
+        "raison": "Spun off",
+        "depart": "26"
+      }
+    ]
+  },
+  {
+    "annee": 1994,
+    "course": "Australian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1994_Australian_Grand_Prix",
+    "nb_incidents": 6,
+    "incidents": [
+      {
+        "numero": "7",
+        "pilote": "Mika Häkkinen",
+        "ecurie": "McLaren - Peugeot",
+        "tours": "76",
+        "raison": "Brakes/Accident",
+        "depart": "4"
+      },
+      {
+        "numero": "4",
+        "pilote": "Mark Blundell",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "66",
+        "raison": "Collision",
+        "depart": "13"
+      },
+      {
+        "numero": "0",
+        "pilote": "Damon Hill",
+        "ecurie": "Williams - Renault",
+        "tours": "35",
+        "raison": "Collision damage",
+        "depart": "3"
+      },
+      {
+        "numero": "5",
+        "pilote": "Michael Schumacher",
+        "ecurie": "Benetton - Ford",
+        "tours": "35",
+        "raison": "Collision",
+        "depart": "2"
+      },
+      {
+        "numero": "3",
+        "pilote": "Ukyo Katayama",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "19",
+        "raison": "Spun off",
+        "depart": "15"
+      },
+      {
+        "numero": "15",
+        "pilote": "Eddie Irvine",
+        "ecurie": "Jordan - Hart",
+        "tours": "15",
+        "raison": "Spun off",
+        "depart": "6"
+      }
+    ]
+  },
+  {
+    "annee": 1994,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1994_Spanish_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "12",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Lotus - Mugen-Honda",
+        "tours": "41",
+        "raison": "Spun off",
+        "depart": "22"
+      },
+      {
+        "numero": "14",
+        "pilote": "Rubens Barrichello",
+        "ecurie": "Jordan - Hart",
+        "tours": "39",
+        "raison": "Spun off",
+        "depart": "5"
+      },
+      {
+        "numero": "33",
+        "pilote": "Paul Belmondo",
+        "ecurie": "Pacific - Ilmor",
+        "tours": "2",
+        "raison": "Spun off",
+        "depart": "26"
+      }
+    ]
+  },
+  {
+    "annee": 1994,
+    "course": "Pacific Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1994_Pacific_Grand_Prix",
+    "nb_incidents": 8,
+    "incidents": [
+      {
+        "numero": "10",
+        "pilote": "Gianni Morbidelli",
+        "ecurie": "Footwork - Ford",
+        "tours": "69",
+        "raison": "Engine/Spun off",
+        "depart": "13"
+      },
+      {
+        "numero": "29",
+        "pilote": "Karl Wendlinger",
+        "ecurie": "Sauber - Mercedes",
+        "tours": "69",
+        "raison": "Collision damage",
+        "depart": "19"
+      },
+      {
+        "numero": "24",
+        "pilote": "Michele Alboreto",
+        "ecurie": "Minardi - Ford",
+        "tours": "69",
+        "raison": "Collision",
+        "depart": "15"
+      },
+      {
+        "numero": "23",
+        "pilote": "Pierluigi Martini",
+        "ecurie": "Minardi - Ford",
+        "tours": "63",
+        "raison": "Spun off",
+        "depart": "17"
+      },
+      {
+        "numero": "6",
+        "pilote": "Jos Verstappen",
+        "ecurie": "Benetton - Ford",
+        "tours": "54",
+        "raison": "Spun off",
+        "depart": "10"
+      },
+      {
+        "numero": "2",
+        "pilote": "Ayrton Senna",
+        "ecurie": "Williams - Renault",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "1"
+      },
+      {
+        "numero": "27",
+        "pilote": "Nicola Larini",
+        "ecurie": "Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "4",
+        "pilote": "Mark Blundell",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "12"
+      }
+    ]
+  },
+  {
+    "annee": 1994,
+    "course": "Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1994_Monaco_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "25",
+        "pilote": "Éric Bernard",
+        "ecurie": "Ligier - Renault",
+        "tours": "34",
+        "raison": "Spun off",
+        "depart": "21"
+      },
+      {
+        "numero": "7",
+        "pilote": "Mika Häkkinen",
+        "ecurie": "McLaren - Peugeot",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "2"
+      },
+      {
+        "numero": "0",
+        "pilote": "Damon Hill",
+        "ecurie": "Williams - Renault",
+        "tours": "0",
+        "raison": "Collision damage",
+        "depart": "4"
+      },
+      {
+        "numero": "10",
+        "pilote": "Gianni Morbidelli",
+        "ecurie": "Footwork - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "23",
+        "pilote": "Pierluigi Martini",
+        "ecurie": "Minardi - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      }
+    ]
+  },
+  {
+    "annee": 1994,
+    "course": "German Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1994_German_Grand_Prix",
+    "nb_incidents": 10,
+    "incidents": [
+      {
+        "numero": "4",
+        "pilote": "Mark Blundell",
+        "ecurie": "Tyrrell - Yamaha",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "7",
+        "pilote": "Mika Häkkinen",
+        "ecurie": "McLaren - Peugeot",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "8"
+      },
+      {
+        "numero": "30",
+        "pilote": "Heinz-Harald Frentzen",
+        "ecurie": "Sauber - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "9"
+      },
+      {
+        "numero": "15",
+        "pilote": "Eddie Irvine",
+        "ecurie": "Jordan - Hart",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "10"
+      },
+      {
+        "numero": "14",
+        "pilote": "Rubens Barrichello",
+        "ecurie": "Jordan - Hart",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "11"
+      },
+      {
+        "numero": "12",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Lotus - Mugen-Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "15"
+      },
+      {
+        "numero": "29",
+        "pilote": "Andrea de Cesaris",
+        "ecurie": "Sauber - Mercedes",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "18"
+      },
+      {
+        "numero": "23",
+        "pilote": "Pierluigi Martini",
+        "ecurie": "Minardi - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "20"
+      },
+      {
+        "numero": "11",
+        "pilote": "Alessandro Zanardi",
+        "ecurie": "Lotus - Mugen-Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "21"
+      },
+      {
+        "numero": "24",
+        "pilote": "Michele Alboreto",
+        "ecurie": "Minardi - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "23"
+      }
+    ]
+  }
+]

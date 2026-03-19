@@ -1,0 +1,713 @@
+[
+  {
+    "annee": 1992,
+    "course": "Hungarian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Hungarian_Grand_Prix",
+    "nb_incidents": 11,
+    "incidents": [
+      {
+        "numero": "27",
+        "pilote": "Jean Alesi",
+        "ecurie": "Ferrari",
+        "tours": "14",
+        "raison": "Spun off",
+        "depart": "9"
+      },
+      {
+        "numero": "29",
+        "pilote": "Bertrand Gachot",
+        "ecurie": "Venturi - Lamborghini",
+        "tours": "13",
+        "raison": "Collision",
+        "depart": "15"
+      },
+      {
+        "numero": "10",
+        "pilote": "Aguri Suzuki",
+        "ecurie": "Footwork - Mugen-Honda",
+        "tours": "13",
+        "raison": "Collision",
+        "depart": "14"
+      },
+      {
+        "numero": "3",
+        "pilote": "Olivier Grouillard",
+        "ecurie": "Tyrrell - Ilmor",
+        "tours": "13",
+        "raison": "Collision",
+        "depart": "22"
+      },
+      {
+        "numero": "16",
+        "pilote": "Karl Wendlinger",
+        "ecurie": "March - Ilmor",
+        "tours": "13",
+        "raison": "Collision",
+        "depart": "23"
+      },
+      {
+        "numero": "32",
+        "pilote": "Stefano Modena",
+        "ecurie": "Jordan - Yamaha",
+        "tours": "13",
+        "raison": "Collision",
+        "depart": "24"
+      },
+      {
+        "numero": "14",
+        "pilote": "Eric van de Poele",
+        "ecurie": "Fondmetal - Ford",
+        "tours": "2",
+        "raison": "Spun off",
+        "depart": "18"
+      },
+      {
+        "numero": "25",
+        "pilote": "Thierry Boutsen",
+        "ecurie": "Ligier - Renault",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "8"
+      },
+      {
+        "numero": "26",
+        "pilote": "Érik Comas",
+        "ecurie": "Ligier - Renault",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "11"
+      },
+      {
+        "numero": "15",
+        "pilote": "Gabriele Tarquini",
+        "ecurie": "Fondmetal - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "12"
+      },
+      {
+        "numero": "12",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Lotus - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "13"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "French Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_French_Grand_Prix",
+    "nb_incidents": 8,
+    "incidents": [
+      {
+        "numero": "4",
+        "pilote": "Andrea de Cesaris",
+        "ecurie": "Tyrrell - Ilmor",
+        "tours": "51",
+        "raison": "Spun off",
+        "depart": "19"
+      },
+      {
+        "numero": "25",
+        "pilote": "Thierry Boutsen",
+        "ecurie": "Ligier - Renault",
+        "tours": "46",
+        "raison": "Spun off",
+        "depart": "9"
+      },
+      {
+        "numero": "10",
+        "pilote": "Aguri Suzuki",
+        "ecurie": "Footwork - Mugen-Honda",
+        "tours": "20",
+        "raison": "Spun off",
+        "depart": "15"
+      },
+      {
+        "numero": "19",
+        "pilote": "Michael Schumacher",
+        "ecurie": "Benetton - Ford",
+        "tours": "17",
+        "raison": "Collision",
+        "depart": "5"
+      },
+      {
+        "numero": "1",
+        "pilote": "Ayrton Senna",
+        "ecurie": "McLaren - Honda",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "3"
+      },
+      {
+        "numero": "29",
+        "pilote": "Bertrand Gachot",
+        "ecurie": "Venturi - Lamborghini",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "13"
+      },
+      {
+        "numero": "33",
+        "pilote": "Maurício Gugelmin",
+        "ecurie": "Jordan - Yamaha",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "24"
+      },
+      {
+        "numero": "14",
+        "pilote": "Andrea Chiesa",
+        "ecurie": "Fondmetal - Ford",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "26"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "Portuguese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Portuguese_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "30",
+        "pilote": "Ukyo Katayama",
+        "ecurie": "Venturi - Lamborghini",
+        "tours": "46",
+        "raison": "Spun off",
+        "depart": "25"
+      },
+      {
+        "numero": "6",
+        "pilote": "Riccardo Patrese",
+        "ecurie": "Williams - Renault",
+        "tours": "43",
+        "raison": "Collision",
+        "depart": "2"
+      },
+      {
+        "numero": "27",
+        "pilote": "Jean Alesi",
+        "ecurie": "Ferrari",
+        "tours": "12",
+        "raison": "Spun off",
+        "depart": "10"
+      },
+      {
+        "numero": "12",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Lotus - Ford",
+        "tours": "2",
+        "raison": "Accident",
+        "depart": "9"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "Mexican Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Mexican_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "14",
+        "pilote": "Andrea Chiesa",
+        "ecurie": "Fondmetal - Ford",
+        "tours": "37",
+        "raison": "Spun off",
+        "depart": "23"
+      },
+      {
+        "numero": "24",
+        "pilote": "Gianni Morbidelli",
+        "ecurie": "Minardi - Lamborghini",
+        "tours": "29",
+        "raison": "Spun off",
+        "depart": "21"
+      },
+      {
+        "numero": "23",
+        "pilote": "Christian Fittipaldi",
+        "ecurie": "Minardi - Lamborghini",
+        "tours": "2",
+        "raison": "Spun off",
+        "depart": "17"
+      },
+      {
+        "numero": "16",
+        "pilote": "Karl Wendlinger",
+        "ecurie": "March - Ilmor",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "19"
+      },
+      {
+        "numero": "28",
+        "pilote": "Ivan Capelli",
+        "ecurie": "Ferrari",
+        "tours": "0",
+        "raison": "Collision",
+        "depart": "20"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "Spanish Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Spanish_Grand_Prix",
+    "nb_incidents": 12,
+    "incidents": [
+      {
+        "numero": "1",
+        "pilote": "Ayrton Senna",
+        "ecurie": "McLaren - Honda",
+        "tours": "62",
+        "raison": "Spun off",
+        "depart": "3"
+      },
+      {
+        "numero": "28",
+        "pilote": "Ivan Capelli",
+        "ecurie": "Ferrari",
+        "tours": "62",
+        "raison": "Spun off",
+        "depart": "5"
+      },
+      {
+        "numero": "21",
+        "pilote": "JJ Lehto",
+        "ecurie": "Dallara - Ferrari",
+        "tours": "56",
+        "raison": "Spun off",
+        "depart": "12"
+      },
+      {
+        "numero": "15",
+        "pilote": "Gabriele Tarquini",
+        "ecurie": "Fondmetal - Ford",
+        "tours": "56",
+        "raison": "Spun off",
+        "depart": "18"
+      },
+      {
+        "numero": "11",
+        "pilote": "Mika Häkkinen",
+        "ecurie": "Lotus - Ford",
+        "tours": "56",
+        "raison": "Spun off",
+        "depart": "21"
+      },
+      {
+        "numero": "26",
+        "pilote": "Érik Comas",
+        "ecurie": "Ligier - Renault",
+        "tours": "55",
+        "raison": "Spun off",
+        "depart": "10"
+      },
+      {
+        "numero": "3",
+        "pilote": "Olivier Grouillard",
+        "ecurie": "Tyrrell - Ilmor",
+        "tours": "30",
+        "raison": "Spun off",
+        "depart": "15"
+      },
+      {
+        "numero": "33",
+        "pilote": "Maurício Gugelmin",
+        "ecurie": "Jordan - Yamaha",
+        "tours": "24",
+        "raison": "Spun off",
+        "depart": "17"
+      },
+      {
+        "numero": "14",
+        "pilote": "Andrea Chiesa",
+        "ecurie": "Fondmetal - Ford",
+        "tours": "22",
+        "raison": "Spun off",
+        "depart": "20"
+      },
+      {
+        "numero": "6",
+        "pilote": "Riccardo Patrese",
+        "ecurie": "Williams - Renault",
+        "tours": "19",
+        "raison": "Spun off",
+        "depart": "4"
+      },
+      {
+        "numero": "12",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Lotus - Ford",
+        "tours": "13",
+        "raison": "Spun off",
+        "depart": "26"
+      },
+      {
+        "numero": "20",
+        "pilote": "Martin Brundle",
+        "ecurie": "Benetton - Ford",
+        "tours": "4",
+        "raison": "Spun off/Clutch",
+        "depart": "6"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 South African Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_South_African_Grand_Prix",
+    "nb_incidents": 0,
+    "incidents": []
+  },
+  {
+    "annee": 1992,
+    "course": "1992 Brazilian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Brazilian_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "12",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Lotus - Ford",
+        "tours": "36",
+        "raison": "Collision",
+        "depart": "26"
+      },
+      {
+        "numero": "25",
+        "pilote": "Thierry Boutsen",
+        "ecurie": "Ligier - Renault",
+        "tours": "36",
+        "raison": "Collision",
+        "depart": "10"
+      },
+      {
+        "numero": "20",
+        "pilote": "Martin Brundle",
+        "ecurie": "Benetton - Ford",
+        "tours": "30",
+        "raison": "Collision",
+        "depart": "7"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 San Marino Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_San_Marino_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "30",
+        "pilote": "Ukyo Katayama",
+        "ecurie": "Venturi - Lamborghini",
+        "tours": "40",
+        "raison": "Spun off",
+        "depart": "17"
+      },
+      {
+        "numero": "27",
+        "pilote": "Jean Alesi",
+        "ecurie": "Ferrari",
+        "tours": "39",
+        "raison": "Collision",
+        "depart": "7"
+      },
+      {
+        "numero": "2",
+        "pilote": "Gerhard Berger",
+        "ecurie": "McLaren - Honda",
+        "tours": "39",
+        "raison": "Collision",
+        "depart": "4"
+      },
+      {
+        "numero": "29",
+        "pilote": "Bertrand Gachot",
+        "ecurie": "Venturi - Lamborghini",
+        "tours": "32",
+        "raison": "Spun off",
+        "depart": "19"
+      },
+      {
+        "numero": "28",
+        "pilote": "Ivan Capelli",
+        "ecurie": "Ferrari",
+        "tours": "11",
+        "raison": "Spun off",
+        "depart": "8"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 Monaco Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Monaco_Grand_Prix",
+    "nb_incidents": 4,
+    "incidents": [
+      {
+        "numero": "28",
+        "pilote": "Ivan Capelli",
+        "ecurie": "Ferrari",
+        "tours": "60",
+        "raison": "Spun off",
+        "depart": "8"
+      },
+      {
+        "numero": "12",
+        "pilote": "Johnny Herbert",
+        "ecurie": "Lotus - Ford",
+        "tours": "17",
+        "raison": "Spun off",
+        "depart": "9"
+      },
+      {
+        "numero": "32",
+        "pilote": "Stefano Modena",
+        "ecurie": "Jordan - Yamaha",
+        "tours": "6",
+        "raison": "Spun off",
+        "depart": "21"
+      },
+      {
+        "numero": "22",
+        "pilote": "Pierluigi Martini",
+        "ecurie": "Dallara - Ferrari",
+        "tours": "0",
+        "raison": "Spun off",
+        "depart": "18"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 Canadian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Canadian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "28",
+        "pilote": "Ivan Capelli",
+        "ecurie": "Ferrari",
+        "tours": "18",
+        "raison": "Accident",
+        "depart": "9"
+      },
+      {
+        "numero": "5",
+        "pilote": "Nigel Mansell",
+        "ecurie": "Williams - Renault",
+        "tours": "14",
+        "raison": "Spun off",
+        "depart": "3"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 British Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_British_Grand_Prix",
+    "nb_incidents": 1,
+    "incidents": [
+      {
+        "numero": "4",
+        "pilote": "Andrea de Cesaris",
+        "ecurie": "Tyrrell - Ilmor",
+        "tours": "46",
+        "raison": "Spun off",
+        "depart": "18"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 German Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_German_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "6",
+        "pilote": "Riccardo Patrese",
+        "ecurie": "Williams - Renault",
+        "tours": "44",
+        "raison": "Spun off",
+        "depart": "2"
+      },
+      {
+        "numero": "30",
+        "pilote": "Ukyo Katayama",
+        "ecurie": "Venturi - Lamborghini",
+        "tours": "8",
+        "raison": "Spun off",
+        "depart": "16"
+      },
+      {
+        "numero": "10",
+        "pilote": "Aguri Suzuki",
+        "ecurie": "Footwork - Mugen-Honda",
+        "tours": "1",
+        "raison": "Spun off",
+        "depart": "15"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 Belgian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Belgian_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "29",
+        "pilote": "Bertrand Gachot",
+        "ecurie": "Venturi - Lamborghini",
+        "tours": "40",
+        "raison": "Spun off",
+        "depart": "20"
+      },
+      {
+        "numero": "25",
+        "pilote": "Thierry Boutsen",
+        "ecurie": "Ligier - Renault",
+        "tours": "27",
+        "raison": "Spun off",
+        "depart": "7"
+      },
+      {
+        "numero": "3",
+        "pilote": "Olivier Grouillard",
+        "ecurie": "Tyrrell - Ilmor",
+        "tours": "1",
+        "raison": "Accident",
+        "depart": "22"
+      },
+      {
+        "numero": "22",
+        "pilote": "Pierluigi Martini",
+        "ecurie": "Dallara - Ferrari",
+        "tours": "0",
+        "raison": "Spun off",
+        "depart": "19"
+      },
+      {
+        "numero": "26",
+        "pilote": "Érik Comas",
+        "ecurie": "Ligier - Renault",
+        "tours": "",
+        "raison": "Qualifying accident",
+        "depart": ""
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 Italian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Italian_Grand_Prix",
+    "nb_incidents": 2,
+    "incidents": [
+      {
+        "numero": "26",
+        "pilote": "Érik Comas",
+        "ecurie": "Ligier - Renault",
+        "tours": "35",
+        "raison": "Spun off",
+        "depart": "15"
+      },
+      {
+        "numero": "28",
+        "pilote": "Ivan Capelli",
+        "ecurie": "Ferrari",
+        "tours": "12",
+        "raison": "Electrical/Spun off",
+        "depart": "7"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 Japanese Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Japanese_Grand_Prix",
+    "nb_incidents": 3,
+    "incidents": [
+      {
+        "numero": "29",
+        "pilote": "Bertrand Gachot",
+        "ecurie": "Venturi - Lamborghini",
+        "tours": "39",
+        "raison": "Collision/Spun off",
+        "depart": "18"
+      },
+      {
+        "numero": "33",
+        "pilote": "Maurício Gugelmin",
+        "ecurie": "Jordan - Yamaha",
+        "tours": "22",
+        "raison": "Spun off",
+        "depart": "25"
+      },
+      {
+        "numero": "3",
+        "pilote": "Olivier Grouillard",
+        "ecurie": "Tyrrell - Ilmor",
+        "tours": "6",
+        "raison": "Spun off",
+        "depart": "21"
+      }
+    ]
+  },
+  {
+    "annee": 1992,
+    "course": "1992 Australian Grand Prix",
+    "url": "https://en.wikipedia.org/wiki/1992_Australian_Grand_Prix",
+    "nb_incidents": 5,
+    "incidents": [
+      {
+        "numero": "5",
+        "pilote": "Nigel Mansell",
+        "ecurie": "Williams - Renault",
+        "tours": "18",
+        "raison": "Collision",
+        "depart": "1"
+      },
+      {
+        "numero": "1",
+        "pilote": "Ayrton Senna",
+        "ecurie": "McLaren - Honda",
+        "tours": "18",
+        "raison": "Collision",
+        "depart": "2"
+      },
+      {
+        "numero": "33",
+        "pilote": "Maurício Gugelmin",
+        "ecurie": "Jordan - Yamaha",
+        "tours": "7",
+        "raison": "Spun off",
+        "depart": "20"
+      },
+      {
+        "numero": "22",
+        "pilote": "Pierluigi Martini",
+        "ecurie": "Dallara - Ferrari",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "14"
+      },
+      {
+        "numero": "3",
+        "pilote": "Olivier Grouillard",
+        "ecurie": "Tyrrell - Ilmor",
+        "tours": "0",
+        "raison": "Accident",
+        "depart": "13"
+      }
+    ]
+  }
+]
