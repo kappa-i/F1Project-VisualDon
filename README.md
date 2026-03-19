@@ -1,6 +1,6 @@
 # F1 — Sécurité & Performance : Une Histoire en Parallèle
 
-> Projet de visualisation de données — Cours VisualDon, HEIG-VD
+> Projet de visualisation de données — Cours VisualDon, 2026, COMEM, HEIG-VD
 
 ---
 
@@ -140,7 +140,7 @@ Ces librairies **React, GSAP et autres outils d’interface et d’animation** p
 
 Afin de structurer notre narration et de définir l'expérience utilisateur, nous avons conçu un wireframe complet sur **Figma**. Ce document sert de plan pour la hiérarchie visuelle, l'emplacement des graphiques et les mécaniques d'interaction.
 
-🔗 **[Consulter le Wireframe interactif sur Figma](https://www.figma.com/design/NScnLEtFSYWRrBWTcuhv4b/F1Project?node-id=0-1&t=meHIixZrsysDpq6a-1)**
+🔗 **[Consulter le Wireframe sur Figma](https://www.figma.com/design/NScnLEtFSYWRrBWTcuhv4b/F1Project?node-id=0-1&t=meHIixZrsysDpq6a-1)**
 
 ### 1. Éléments de l'interface
 Le wireframe détaille l'intégration de chaque composant de notre site final :
