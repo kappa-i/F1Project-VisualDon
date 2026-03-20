@@ -3,5 +3,7 @@ dist/
 .DS_Store
 
 # Modèles 3D lourds (> 100 MB, limite GitHub)
+src/models/*.glb
+src/models/*.gltf
 models/*.glb
 models/*.gltf
