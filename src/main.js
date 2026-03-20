@@ -7,8 +7,8 @@ import { createRoot } from 'react-dom/client';
 import ShaderReveal from './components/ShaderReveal.tsx';
 import shaderFrontUrl from './assets/shader-front.webp';
 import shaderBackUrl from './assets/shader-back.jpg';
-import studioGlbUrl from '../models/studio.glb';
-import ferrariGlbUrl from '../models/Ferrari_SF26_2026.glb';
+import studioGlbUrl from './models/studio.glb';
+import ferrariGlbUrl from './models/Ferrari_SF26_2026.glb';
 
 const shaderRevealMount = document.getElementById('shader-reveal-root');
 
