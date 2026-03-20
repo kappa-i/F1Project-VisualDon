@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const SECTION_COUNT = 7;
+const SECTION_COUNT = 8;
 
 function clampProgress(value: number) {
   return Math.max(0, Math.min(SECTION_COUNT - 1, value));
@@ -53,7 +53,16 @@ export default function BottomSectionNav() {
                 className={`bottom-section-nav__link${isActive ? ' is-active' : ''}`}
                 onClick={() => goToSection(index)}
                 aria-current={isActive ? 'page' : undefined}
-                aria-label={index === 0 ? 'Home' : `Section-${index + 1}`}
+                aria-label={
+                  index === 0 ? 'Home'
+                  : index === 1 ? 'Ère dangereuse'
+                  : index === 2 ? 'Tournants'
+                  : index === 3 ? 'Crash'
+                  : index === 4 ? 'SF-26'
+                  : index === 5 ? 'Spa'
+                  : index === 6 ? 'Données'
+                  : 'Conclusion'
+                }
               >
                 <span className={`bottom-section-nav__dot${index === 0 ? ' is-home' : ''}`} aria-hidden="true">
                   {index === 0 ? (
@@ -62,7 +71,16 @@ export default function BottomSectionNav() {
                     </svg>
                   ) : null}
                 </span>
-                <span className="bottom-section-nav__label">{index === 0 ? 'Home' : `Section-${index + 1}`}</span>
+                <span className="bottom-section-nav__label">
+                  {index === 0 ? 'Home'
+                   : index === 1 ? 'Ère'
+                   : index === 2 ? 'Tournants'
+                   : index === 3 ? 'Crash'
+                   : index === 4 ? 'SF-26'
+                   : index === 5 ? 'Spa'
+                   : index === 6 ? 'Données'
+                   : 'Fin'}
+                </span>
               </button>
             );
           })}

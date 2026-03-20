@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client';
 import ShaderReveal from './components/ShaderReveal.tsx';
 import CrashTitles from './components/CrashTitles.tsx';
 import BottomSectionNav from './components/BottomSectionNav.tsx';
+import SpaSafety from './components/SpaSafety.tsx';
 import shaderFrontUrl from './assets/shader-front.webp';
 import shaderBackUrl from './assets/shader-back.jpg';
 import studioGlbUrl from './models/studio.glb';
@@ -52,6 +53,20 @@ if (bottomNavMount) {
   const bottomNavRoot = createRoot(bottomNavMount);
   bottomNavRoot.render(React.createElement(BottomSectionNav));
 }
+
+const spaMount = document.getElementById('spa-root');
+
+if (spaMount) {
+  const spaRoot = createRoot(spaMount);
+  spaRoot.render(React.createElement(SpaSafety));
+}
+
+window.addEventListener('spa-nav-click', e => {
+  const dir = e.detail?.direction;
+  if (typeof dir !== 'number') return;
+  if (!isSpaPage(currentPage)) return;
+  goToPage(currentPage + dir);
+});
 
 // ── rpm deco ──────────────────────────────────────────────────────────────
 const rpmEl = document.getElementById('rpm-deco');
@@ -135,19 +150,23 @@ scene.environmentIntensity = 0.2;
 //   0 → hero     (translateY 0vh)
 //   1 → era      (translateY -100vh)
 //   2 → turning  (translateY -200vh)
-//   3 → 14 crash scrub  (translateY -300vh, vidéo pinnée)
-//   15 → viewer cam0  (translateY -400vh)
-//   16 → viewer cam1  (translateY -400vh, caméra change)
-//   17 → viewer cam2  (translateY -400vh, caméra change)
-//   18 → data     (translateY -500vh)
-//   19 → conclusion   (translateY -600vh)
+//   3–50 → crash scrub 48 pas (translateY -300vh, vidéo pinnée)
+//   51 → viewer cam0  (translateY -400vh)
+//   52 → viewer cam1  (translateY -400vh, caméra change)
+//   53 → viewer cam2  (translateY -400vh, caméra change)
+//   54–58 → spa 5 POI (translateY -500vh)
+//   59 → data     (translateY -600vh)
+//   60 → conclusion   (translateY -700vh)
 
 const CRASH_PAGE_START = 3;
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
 const VIEWER_PAGE_END = VIEWER_PAGE_START + 2;
-const DATA_PAGE = VIEWER_PAGE_END + 1;
+const SPA_PAGE_START = VIEWER_PAGE_END + 1;
+const SPA_PAGE_COUNT = 4;
+const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
+const DATA_PAGE = SPA_PAGE_END + 1;
 const CONCLUSION_PAGE = DATA_PAGE + 1;
 const PAGE_COUNT = CONCLUSION_PAGE + 1;
 const CRASH_SCROLL_DISTANCE = 7000;
@@ -248,8 +267,9 @@ function pageToY(idx) {
   if (idx <= 3) return -idx * 100;
   if (idx <= CRASH_PAGE_END) return -300;
   if (idx <= VIEWER_PAGE_END) return -400;
-  if (idx === DATA_PAGE) return -500;
-  return -600;
+  if (idx <= SPA_PAGE_END) return -500;
+  if (idx === DATA_PAGE) return -600;
+  return -700;
 }
 
 function pageToCamera(idx) {
@@ -273,14 +293,24 @@ const pageEl = document.getElementById('page');
 let lastSectionNavProgress = -1;
 let lastSectionNavIndex = -1;
 
+function isSpaPage(idx) {
+  return idx >= SPA_PAGE_START && idx <= SPA_PAGE_END;
+}
+
+function dispatchSpaPoiChange(pageIdx) {
+  const index = isSpaPage(pageIdx) ? pageIdx - SPA_PAGE_START : -1;
+  window.dispatchEvent(new CustomEvent('spa-poi-change', { detail: { index } }));
+}
+
 function pageToSectionIndex(pageIdx) {
   if (pageIdx <= 0) return 0;
   if (pageIdx === 1) return 1;
   if (pageIdx === 2) return 2;
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 3;
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 4;
-  if (pageIdx === DATA_PAGE) return 5;
-  return 6;
+  if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 5;
+  if (pageIdx === DATA_PAGE) return 6;
+  return 7;
 }
 
 function pageToSectionProgress(pageIdx) {
@@ -292,8 +322,12 @@ function pageToSectionProgress(pageIdx) {
     const viewerProgress = (pageIdx - VIEWER_PAGE_START) / Math.max(1, VIEWER_PAGE_END - VIEWER_PAGE_START);
     return 4 + viewerProgress * 0.92;
   }
-  if (pageIdx === DATA_PAGE) return 5;
-  return 6;
+  if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) {
+    const spaProgress = (pageIdx - SPA_PAGE_START) / Math.max(1, SPA_PAGE_END - SPA_PAGE_START);
+    return 5 + spaProgress * 0.92;
+  }
+  if (pageIdx === DATA_PAGE) return 6;
+  return 7;
 }
 
 function updateSectionNav(pageIdx = currentPage) {
@@ -319,7 +353,8 @@ function sectionToPage(sectionIdx) {
   if (sectionIdx === 2) return 2;
   if (sectionIdx === 3) return CRASH_PAGE_START;
   if (sectionIdx === 4) return VIEWER_PAGE_START;
-  if (sectionIdx === 5) return DATA_PAGE;
+  if (sectionIdx === 5) return SPA_PAGE_START;
+  if (sectionIdx === 6) return DATA_PAGE;
   return CONCLUSION_PAGE;
 }
 
@@ -401,8 +436,21 @@ function snapCamera(camIdx, onDone) {
 }
 
 // ── aller à une page ──────────────────────────────────────────────────────
-function goToPage(idx) {
+function goToPage(idx, { skipSpaComplete = false } = {}) {
   if (isTransitioning || idx < 0 || idx >= PAGE_COUNT) return;
+
+  // Compléter le tracé du circuit AVANT de quitter la section Spa
+  if (currentPage === SPA_PAGE_END && idx === DATA_PAGE && !skipSpaComplete) {
+    isTransitioning = true;
+    resetWheelGesture();
+    window.dispatchEvent(new CustomEvent('spa-poi-change', { detail: { index: SPA_PAGE_COUNT } }));
+    setTimeout(() => {
+      isTransitioning = false;
+      goToPage(DATA_PAGE, { skipSpaComplete: true });
+    }, 1200);
+    return;
+  }
+
   isTransitioning = true;
   resetWheelGesture();
 
@@ -434,6 +482,13 @@ function goToPage(idx) {
     return;
   }
 
+  if (targetY === currentY && isSpaPage(idx)) {
+    updateSectionNav(idx);
+    dispatchSpaPoiChange(idx);
+    isTransitioning = false;
+    return;
+  }
+
   // Sinon : on translate #page
   gsap.to(pageEl, {
     y: `${targetY}vh`,
@@ -448,6 +503,10 @@ function goToPage(idx) {
         updateDots();
         updateSectionNav(idx);
         snapCamera(camIdx);
+        isTransitioning = false;
+      } else if (isSpaPage(idx)) {
+        updateSectionNav(idx);
+        dispatchSpaPoiChange(idx);
         isTransitioning = false;
       } else {
         updateSectionNav(idx);
