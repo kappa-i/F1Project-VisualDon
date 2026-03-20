@@ -6,6 +6,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ShaderReveal from './components/ShaderReveal.tsx';
 import CrashTitles from './components/CrashTitles.tsx';
+import BottomSectionNav from './components/BottomSectionNav.tsx';
 import shaderFrontUrl from './assets/shader-front.webp';
 import shaderBackUrl from './assets/shader-back.jpg';
 import studioGlbUrl from './models/studio.glb';
@@ -43,6 +44,13 @@ const crashTitlesMount = document.getElementById('crash-titles-root');
 if (crashTitlesMount) {
   const crashTitlesRoot = createRoot(crashTitlesMount);
   crashTitlesRoot.render(React.createElement(CrashTitles));
+}
+
+const bottomNavMount = document.getElementById('bottom-nav-root');
+
+if (bottomNavMount) {
+  const bottomNavRoot = createRoot(bottomNavMount);
+  bottomNavRoot.render(React.createElement(BottomSectionNav));
 }
 
 // ── rpm deco ──────────────────────────────────────────────────────────────
@@ -262,6 +270,64 @@ let wheelLastEventAt = 0;
 let wheelUnlockAt = 0;
 
 const pageEl = document.getElementById('page');
+let lastSectionNavProgress = -1;
+let lastSectionNavIndex = -1;
+
+function pageToSectionIndex(pageIdx) {
+  if (pageIdx <= 0) return 0;
+  if (pageIdx === 1) return 1;
+  if (pageIdx === 2) return 2;
+  if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 3;
+  if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 4;
+  if (pageIdx === DATA_PAGE) return 5;
+  return 6;
+}
+
+function pageToSectionProgress(pageIdx) {
+  if (pageIdx <= 2) return pageIdx;
+  if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) {
+    return 3 + crashFrameToProgress(crashRenderedFrame) * 0.92;
+  }
+  if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) {
+    const viewerProgress = (pageIdx - VIEWER_PAGE_START) / Math.max(1, VIEWER_PAGE_END - VIEWER_PAGE_START);
+    return 4 + viewerProgress * 0.92;
+  }
+  if (pageIdx === DATA_PAGE) return 5;
+  return 6;
+}
+
+function updateSectionNav(pageIdx = currentPage) {
+  const progress = pageToSectionProgress(pageIdx);
+  const activeSectionIndex = pageToSectionIndex(pageIdx);
+  if (
+    Math.abs(progress - lastSectionNavProgress) < 0.001 &&
+    activeSectionIndex === lastSectionNavIndex
+  ) {
+    return;
+  }
+
+  lastSectionNavProgress = progress;
+  lastSectionNavIndex = activeSectionIndex;
+  window.dispatchEvent(new CustomEvent('section-nav-progress', {
+    detail: { progress, activeSectionIndex },
+  }));
+}
+
+function sectionToPage(sectionIdx) {
+  if (sectionIdx <= 0) return 0;
+  if (sectionIdx === 1) return 1;
+  if (sectionIdx === 2) return 2;
+  if (sectionIdx === 3) return CRASH_PAGE_START;
+  if (sectionIdx === 4) return VIEWER_PAGE_START;
+  if (sectionIdx === 5) return DATA_PAGE;
+  return CONCLUSION_PAGE;
+}
+
+window.addEventListener('section-nav-jump', event => {
+  const sectionIdx = event.detail?.sectionIndex;
+  if (typeof sectionIdx !== 'number') return;
+  goToPage(sectionToPage(sectionIdx));
+});
 
 function resetWheelGesture() {
   wheelGestureAccum = 0;
@@ -349,6 +415,7 @@ function goToPage(idx) {
   }
   currentPage = idx;
   updateHUD(idx);
+  updateSectionNav(idx);
 
   const targetY  = pageToY(idx);
   const currentY = pageToY(prevPage);
@@ -375,11 +442,14 @@ function goToPage(idx) {
     onComplete: () => {
       if (isCrashPage(idx)) {
         setCrashProgress(crashPageToProgress(idx), true);
+        updateSectionNav(idx);
         isTransitioning = false;
       } else if (camIdx >= 0) {
         updateDots();
+        updateSectionNav(idx);
         snapCamera(camIdx, () => { isTransitioning = false; });
       } else {
+        updateSectionNav(idx);
         isTransitioning = false;
       }
     },
@@ -572,6 +642,8 @@ window.addEventListener('resize', () => {
       CRASH_PAGE_END,
     );
   }
+
+  updateSectionNav(currentPage);
 
   if (!shouldRenderScene()) return;
   camera.position.set(cam.px, cam.py, cam.pz);
