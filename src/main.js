@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ShaderReveal from './components/ShaderReveal.tsx';
+import CrashTitles from './components/CrashTitles.tsx';
 import shaderFrontUrl from './assets/shader-front.webp';
 import shaderBackUrl from './assets/shader-back.jpg';
 import studioGlbUrl from './models/studio.glb';
@@ -35,6 +36,13 @@ if (shaderRevealMount) {
       BFECC: true,
     }),
   );
+}
+
+const crashTitlesMount = document.getElementById('crash-titles-root');
+
+if (crashTitlesMount) {
+  const crashTitlesRoot = createRoot(crashTitlesMount);
+  crashTitlesRoot.render(React.createElement(CrashTitles));
 }
 
 // ── rpm deco ──────────────────────────────────────────────────────────────
@@ -146,7 +154,6 @@ const INFOBOXES  = {
 };
 
 const crashFrameEl = document.getElementById('crash-frame');
-const crashTitleEls = Array.from(document.querySelectorAll('[data-crash-title]'));
 const crashFrameUrls = Array.from({ length: CRASH_FRAME_COUNT }, (_, index) =>
   `/crash-frames/frame_${String(index + 1).padStart(3, '0')}.jpg`
 );
@@ -177,18 +184,18 @@ function updateCrashTitles(frameIndex) {
 
   if (frameIndex >= introFrames) {
     const normalizedFrame = frameIndex - introFrames;
-    const titleWindow = Math.max(1, Math.floor(sequenceFrames / crashTitleEls.length));
+    const titleWindow = Math.max(1, Math.floor(sequenceFrames / 3));
     nextTitleIndex = Math.min(
-      crashTitleEls.length - 1,
+      2,
       Math.floor(normalizedFrame / titleWindow),
     );
   }
 
   if (nextTitleIndex === activeCrashTitleIndex) return;
   activeCrashTitleIndex = nextTitleIndex;
-  crashTitleEls.forEach((titleEl, index) => {
-    titleEl.classList.toggle('is-active', index === nextTitleIndex);
-  });
+  window.dispatchEvent(new CustomEvent('crash-title-change', {
+    detail: { index: nextTitleIndex },
+  }));
 }
 
 function setCrashProgress(nextProgress, immediate = false) {

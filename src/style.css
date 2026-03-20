@@ -343,6 +343,12 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   text-align: center;
 }
 
+.crash-title-stack {
+  position: relative;
+  width: 100%;
+  min-height: 180px;
+}
+
 .crash-title {
   position: absolute;
   inset: 0;
@@ -365,6 +371,11 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .crash-title.is-active {
   opacity: 1;
   transform: translateY(0);
+}
+
+.split-char {
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
 /* ── Chart placeholders ─────────────────────────────────────────────────── */
