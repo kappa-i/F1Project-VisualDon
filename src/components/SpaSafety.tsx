@@ -85,8 +85,10 @@ const SPA_POIS: Poi[] = [
 
 export default function SpaSafety() {
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [visibleActiveIndex, setVisibleActiveIndex] = useState(-1);
   const pathRef  = useRef<SVGPathElement>(null);
   const traceRef = useRef<SVGPathElement>(null);
+  const traceTweenRef = useRef<gsap.core.Tween | null>(null);
   const [pathLength, setPathLength] = useState(0);
   const [poiPoints, setPoiPoints]   = useState<{ x: number; y: number }[]>([]);
 
@@ -103,6 +105,9 @@ export default function SpaSafety() {
   useEffect(() => {
     if (!pathLength || !traceRef.current) return;
     gsap.set(traceRef.current, { strokeDashoffset: -pathLength });
+    return () => {
+      traceTweenRef.current?.kill();
+    };
   }, [pathLength]);
 
   useEffect(() => {
@@ -118,6 +123,7 @@ export default function SpaSafety() {
     // Le path SVG va dans le sens inverse du circuit réel.
     // On anime en sens inverse (dashoffset négatif) : -f*L révèle la fin du path,
     // ce qui correspond au sens La Source → Eau Rouge → Pouhon → Stavelot → Bus Stop.
+    traceTweenRef.current?.kill();
     const isComplete = activeIndex === SPA_POIS.length;
     let targetOffset: number;
     if (isComplete) {
@@ -127,10 +133,14 @@ export default function SpaSafety() {
     } else {
       targetOffset = -SPA_POIS[activeIndex].fraction * pathLength;
     }
-    gsap.to(traceRef.current, {
+    setVisibleActiveIndex(-1);
+    traceTweenRef.current = gsap.to(traceRef.current, {
       strokeDashoffset: targetOffset,
       duration: isComplete ? 1.0 : 1.4,
       ease: 'power2.inOut',
+      onComplete: () => {
+        setVisibleActiveIndex(isComplete ? -1 : activeIndex);
+      },
     });
   }, [activeIndex, pathLength]);
 
@@ -157,7 +167,7 @@ export default function SpaSafety() {
                 strokeDashoffset={-pathLength} className="spa-trace" />
             )}
             {poiPoints.map((pt, i) => {
-              const current = activeIndex === i;
+              const current = visibleActiveIndex === i;
               const future  = activeIndex < i;
               return (
                 <g key={i}>
