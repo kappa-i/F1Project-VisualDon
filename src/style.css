@@ -1,5 +1,21 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+@font-face {
+  font-family: 'Formula1';
+  src: url('./fonts/Formula1-Regular-1.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Formula1';
+  src: url('./fonts/Formula1-Bold-4.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   --red:     #e8002d;
   --red-dim: #8a001a;
@@ -9,8 +25,8 @@
   --line:    rgba(255,255,255,0.06);
   --text:    #e0ddd8;
   --muted:   #ffffff;
-  --mono:    'IBM Plex Mono', monospace;
-  --display: 'Bebas Neue', sans-serif;
+  --font-regular: 'Formula1', sans-serif;
+  --font-bold:    'Formula1', sans-serif;
 }
 
 html, body {
@@ -18,7 +34,13 @@ html, body {
   overflow: hidden;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--mono);
+  font-family: var(--font-regular);
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bold);
+  font-weight: 700;
 }
 
 /* ── HUD layer : caché par défaut, visible dans la section 3D ───────────── */
@@ -95,11 +117,12 @@ body::after {
   padding: 28px 64px 0; z-index: 30; pointer-events: none;
 }
 .brand-team {
-  font-size: 9px; font-weight: 500; letter-spacing: 0.25em;
+  font-size: 9px; font-weight: 400; letter-spacing: 0.25em;
   color: var(--red); text-transform: uppercase;
 }
 .brand-car {
-  font-family: var(--display);
+  font-family: var(--font-bold);
+  font-weight: 700;
   font-size: 52px; line-height: 0.9; letter-spacing: 0.04em; color: #fff;
 }
 .brand-car span { color: var(--red); }
@@ -112,7 +135,7 @@ body::after {
 }
 .stat-block { display: flex; flex-direction: column; gap: 4px; }
 .stat-label { font-size: 8px; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; }
-.stat-value { font-size: 11px; font-weight: 500; color: var(--text); letter-spacing: 0.08em; }
+.stat-value { font-size: 11px; font-weight: 400; color: var(--text); letter-spacing: 0.08em; }
 .stat-value.hi { color: var(--red); }
 .sep { width: 1px; height: 32px; background: var(--line); }
 
@@ -124,7 +147,7 @@ body::after {
 }
 #loader.hidden { opacity: 0; visibility: hidden; }
 .loader-title {
-  font-family: var(--display); font-size: 80px;
+  font-family: var(--font-bold); font-weight: 700; font-size: 80px;
   letter-spacing: 0.05em; color: #fff; line-height: 1;
 }
 .loader-title span { color: var(--red); }
@@ -189,7 +212,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 .ib-tag::before { content: ''; display: block; width: 20px; height: 1px; background: var(--red); }
 .ib-title {
-  font-family: var(--display); font-size: 38px; line-height: 1;
+  font-family: var(--font-bold); font-weight: 700; font-size: 38px; line-height: 1;
   color: #fff; letter-spacing: 0.04em; margin-bottom: 16px;
 }
 .ib-divider { width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 16px; }
@@ -197,9 +220,9 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .ib-spec { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .spec-label { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: #fff; white-space: nowrap; }
 .spec-dots  { flex: 1; border-bottom: 1px dotted rgba(255,255,255,0.15); margin-bottom: 3px; }
-.spec-value { font-size: 10px; font-weight: 500; color: #fff; white-space: nowrap; }
+.spec-value { font-size: 10px; font-weight: 400; color: #fff; white-space: nowrap; }
 .spec-value.accent { color: var(--red); }
-.ib-desc { font-size: 10px; line-height: 1.7; color: #fff; font-weight: 300; }
+.ib-desc { font-size: 10px; line-height: 1.7; color: #fff; font-weight: 400; }
 
 /* ── PAGE & SECTIONS ────────────────────────────────────────────────────── */
 
@@ -245,7 +268,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 
 .section__title {
-  font-family: var(--display);
+  font-family: var(--font-bold);
+  font-weight: 700;
   font-size: clamp(56px, 8vw, 110px);
   line-height: 0.92;
   letter-spacing: 0.03em;
@@ -257,7 +281,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   font-size: 13px;
   line-height: 1.9;
   color: rgba(255,255,255,0.5);
-  font-weight: 300;
+  font-weight: 400;
   max-width: 520px;
 }
 
