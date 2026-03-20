@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ShaderReveal from './components/ShaderReveal.tsx';
+import CrashTitles from './components/CrashTitles.tsx';
 import shaderFrontUrl from './assets/shader-front.webp';
 import shaderBackUrl from './assets/shader-back.jpg';
 import studioGlbUrl from './models/studio.glb';
@@ -35,6 +36,13 @@ if (shaderRevealMount) {
       BFECC: true,
     }),
   );
+}
+
+const crashTitlesMount = document.getElementById('crash-titles-root');
+
+if (crashTitlesMount) {
+  const crashTitlesRoot = createRoot(crashTitlesMount);
+  crashTitlesRoot.render(React.createElement(CrashTitles));
 }
 
 // ── rpm deco ──────────────────────────────────────────────────────────────
@@ -119,26 +127,128 @@ scene.environmentIntensity = 0.2;
 //   0 → hero     (translateY 0vh)
 //   1 → era      (translateY -100vh)
 //   2 → turning  (translateY -200vh)
-//   3 → viewer cam0  (translateY -300vh)
-//   4 → viewer cam1  (translateY -300vh, caméra change)
-//   5 → viewer cam2  (translateY -300vh, caméra change)
-//   6 → data     (translateY -400vh)
-//   7 → conclusion   (translateY -500vh)
+//   3 → 14 crash scrub  (translateY -300vh, vidéo pinnée)
+//   15 → viewer cam0  (translateY -400vh)
+//   16 → viewer cam1  (translateY -400vh, caméra change)
+//   17 → viewer cam2  (translateY -400vh, caméra change)
+//   18 → data     (translateY -500vh)
+//   19 → conclusion   (translateY -600vh)
 
-const PAGE_COUNT = 8;
-const INFOBOXES  = { 4: 'ib-2', 5: 'ib-3' };
+const CRASH_PAGE_START = 3;
+const CRASH_PAGE_STEPS = 48;
+const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
+const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
+const VIEWER_PAGE_END = VIEWER_PAGE_START + 2;
+const DATA_PAGE = VIEWER_PAGE_END + 1;
+const CONCLUSION_PAGE = DATA_PAGE + 1;
+const PAGE_COUNT = CONCLUSION_PAGE + 1;
+const CRASH_SCROLL_DISTANCE = 7000;
+const CRASH_EXIT_DISTANCE = 220;
+const CRASH_FRAME_COUNT = 301;
+const CRASH_VELOCITY_GAIN = 1.1;
+const CRASH_VELOCITY_FRICTION = 0.9;
+const CRASH_VELOCITY_EPSILON = 0.01;
+const WHEEL_GESTURE_GAP = 140;
+const WHEEL_NAV_THRESHOLD = 42;
+const WHEEL_NAV_LOCK_MS = 1150;
+const INFOBOXES  = {
+  [VIEWER_PAGE_START + 1]: 'ib-2',
+  [VIEWER_PAGE_START + 2]: 'ib-3',
+};
+
+const crashFrameEl = document.getElementById('crash-frame');
+const crashFrameUrls = Array.from({ length: CRASH_FRAME_COUNT }, (_, index) =>
+  `/crash-frames/frame_${String(index + 1).padStart(3, '0')}.jpg`
+);
+const crashFrameImages = crashFrameUrls.map(src => {
+  const img = new Image();
+  img.src = src;
+  return img;
+});
+let crashTargetFrame = 0;
+let crashRenderedFrame = 0;
+let crashFrameSrcIndex = 0;
+let crashExitDistance = 0;
+let crashExitDirection = 0;
+let crashFrameVelocity = 0;
+let activeCrashTitleIndex = -1;
+
+function renderCrashFrame(frameIndex) {
+  const clamped = THREE.MathUtils.clamp(frameIndex, 0, CRASH_FRAME_COUNT - 1);
+  if (!crashFrameEl || crashFrameSrcIndex === clamped) return;
+  crashFrameEl.src = crashFrameUrls[clamped];
+  crashFrameSrcIndex = clamped;
+}
+
+function updateCrashTitles(frameIndex) {
+  const introFrames = Math.floor(CRASH_FRAME_COUNT * 0.12);
+  const sequenceFrames = CRASH_FRAME_COUNT - introFrames;
+  let nextTitleIndex = -1;
+
+  if (frameIndex >= introFrames) {
+    const normalizedFrame = frameIndex - introFrames;
+    const titleWindow = Math.max(1, Math.floor(sequenceFrames / 3));
+    nextTitleIndex = Math.min(
+      2,
+      Math.floor(normalizedFrame / titleWindow),
+    );
+  }
+
+  if (nextTitleIndex === activeCrashTitleIndex) return;
+  activeCrashTitleIndex = nextTitleIndex;
+  window.dispatchEvent(new CustomEvent('crash-title-change', {
+    detail: { index: nextTitleIndex },
+  }));
+}
+
+function setCrashProgress(nextProgress, immediate = false) {
+  const clamped = THREE.MathUtils.clamp(nextProgress, 0, 1);
+  crashTargetFrame = clamped * (CRASH_FRAME_COUNT - 1);
+  if (immediate) {
+    crashRenderedFrame = Math.round(crashTargetFrame);
+    renderCrashFrame(crashRenderedFrame);
+  }
+  if (clamped > 0.005 && clamped < 0.995) {
+    crashExitDistance = 0;
+    crashExitDirection = 0;
+  }
+}
+
+function isCrashPage(idx) {
+  return idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END;
+}
+
+function crashPageToProgress(idx) {
+  return (idx - CRASH_PAGE_START) / (CRASH_PAGE_STEPS - 1);
+}
+
+function crashFrameToProgress(frameIndex) {
+  return frameIndex / (CRASH_FRAME_COUNT - 1);
+}
+
+function normalizeWheelDelta(event) {
+  let delta = event.deltaY;
+  if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) delta *= 16;
+  if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) delta *= window.innerHeight;
+  return delta;
+}
+
+renderCrashFrame(0);
+updateCrashTitles(0);
 
 function pageToY(idx) {
-  if (idx <= 2) return -idx * 100;
-  if (idx <= 5) return -300;
-  return -(idx - 2) * 100;
+  if (idx <= 3) return -idx * 100;
+  if (idx <= CRASH_PAGE_END) return -300;
+  if (idx <= VIEWER_PAGE_END) return -400;
+  if (idx === DATA_PAGE) return -500;
+  return -600;
 }
 
 function pageToCamera(idx) {
   // Retourne l'index camKF correspondant, ou -1 si pas une page caméra
-  if (idx === 3) return 0;
-  if (idx === 4) return 1;
-  if (idx === 5) return 2;
+  if (idx === VIEWER_PAGE_START) return 0;
+  if (idx === VIEWER_PAGE_START + 1) return 1;
+  if (idx === VIEWER_PAGE_START + 2) return 2;
   return -1;
 }
 
@@ -146,8 +256,18 @@ let currentPage  = 0;
 let isTransitioning = false;
 let modelLoaded  = false;
 let camKF        = [];
+let wheelGestureAccum = 0;
+let wheelGestureDirection = 0;
+let wheelLastEventAt = 0;
+let wheelUnlockAt = 0;
 
 const pageEl = document.getElementById('page');
+
+function resetWheelGesture() {
+  wheelGestureAccum = 0;
+  wheelGestureDirection = 0;
+  wheelLastEventAt = 0;
+}
 
 // ── dots ──────────────────────────────────────────────────────────────────
 const dotsEl = document.createElement('div');
@@ -161,8 +281,8 @@ document.body.appendChild(dotsEl);
 
 function rebuildDots() {
   dotsEl.innerHTML = '';
-  // 3 dots pour les 3 vues caméra (pages 3,4,5)
-  [3, 4, 5].forEach(pageIdx => {
+  // 3 dots pour les 3 vues caméra
+  [VIEWER_PAGE_START, VIEWER_PAGE_START + 1, VIEWER_PAGE_START + 2].forEach(pageIdx => {
     const d = document.createElement('div');
     d.style.cssText = `
       width:6px; height:6px; border-radius:50%;
@@ -175,7 +295,7 @@ function rebuildDots() {
 
 function updateDots() {
   dotsEl.querySelectorAll('div').forEach((d, i) => {
-    const pageIdx = i + 3;
+    const pageIdx = VIEWER_PAGE_START + i;
     d.style.background = currentPage === pageIdx ? '#e8002d' : 'rgba(255,255,255,0.2)';
     d.style.transform  = currentPage === pageIdx ? 'scale(1.5)' : 'scale(1)';
   });
@@ -183,7 +303,7 @@ function updateDots() {
 
 // ── HUD ───────────────────────────────────────────────────────────────────
 function updateHUD(pageIdx) {
-  const isViewer = pageIdx >= 3 && pageIdx <= 5;
+  const isViewer = pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END;
   document.body.classList.toggle('hud-active', isViewer);
   dotsEl.style.opacity = isViewer ? '1' : '0';
   if (!isViewer) {
@@ -207,7 +327,7 @@ function snapCamera(camIdx, onDone) {
     duration: 1.2,
     ease: 'power2.inOut',
     onComplete: () => {
-      const ibId = INFOBOXES[3 + camIdx];
+      const ibId = INFOBOXES[VIEWER_PAGE_START + camIdx];
       if (ibId) document.getElementById(ibId)?.classList.add('visible');
       onDone?.();
     },
@@ -218,8 +338,15 @@ function snapCamera(camIdx, onDone) {
 function goToPage(idx) {
   if (isTransitioning || idx < 0 || idx >= PAGE_COUNT) return;
   isTransitioning = true;
+  resetWheelGesture();
 
   const prevPage = currentPage;
+  if (isCrashPage(idx) && prevPage < CRASH_PAGE_START) {
+    setCrashProgress(0, true);
+  }
+  if (isCrashPage(idx) && prevPage > CRASH_PAGE_END) {
+    setCrashProgress(1, true);
+  }
   currentPage = idx;
   updateHUD(idx);
 
@@ -228,6 +355,12 @@ function goToPage(idx) {
   const camIdx   = pageToCamera(idx);
 
   // Si on reste sur la même section (viewer) → seulement la caméra change
+  if (targetY === currentY && isCrashPage(idx)) {
+    setCrashProgress(crashPageToProgress(idx));
+    isTransitioning = false;
+    return;
+  }
+
   if (targetY === currentY && camIdx >= 0) {
     updateDots();
     snapCamera(camIdx, () => { isTransitioning = false; });
@@ -237,10 +370,13 @@ function goToPage(idx) {
   // Sinon : on translate #page
   gsap.to(pageEl, {
     y: `${targetY}vh`,
-    duration: 0.9,
-    ease: 'power2.inOut',
+    duration: 1.0,
+    ease: 'power3.inOut',
     onComplete: () => {
-      if (camIdx >= 0) {
+      if (isCrashPage(idx)) {
+        setCrashProgress(crashPageToProgress(idx), true);
+        isTransitioning = false;
+      } else if (camIdx >= 0) {
         updateDots();
         snapCamera(camIdx, () => { isTransitioning = false; });
       } else {
@@ -254,7 +390,66 @@ function goToPage(idx) {
 window.addEventListener('wheel', e => {
   e.preventDefault();
   if (!modelLoaded || isTransitioning) return;
-  goToPage(currentPage + (e.deltaY > 0 ? 1 : -1));
+
+  const delta = normalizeWheelDelta(e);
+  if (Math.abs(delta) < 1) return;
+
+  if (isCrashPage(currentPage)) {
+    const direction = delta > 0 ? 1 : -1;
+    const distance = Math.abs(delta);
+
+    if (direction > 0) {
+      if (crashTargetFrame < CRASH_FRAME_COUNT - 1) {
+        crashFrameVelocity += delta / CRASH_SCROLL_DISTANCE * (CRASH_FRAME_COUNT - 1) * CRASH_VELOCITY_GAIN;
+        crashExitDistance = 0;
+        crashExitDirection = 0;
+        return;
+      }
+
+      if (crashExitDirection !== direction) {
+        crashExitDirection = direction;
+        crashExitDistance = 0;
+      }
+      crashExitDistance += distance;
+      if (crashExitDistance >= CRASH_EXIT_DISTANCE) goToPage(VIEWER_PAGE_START);
+      return;
+    }
+
+    if (crashTargetFrame > 0) {
+      crashFrameVelocity += delta / CRASH_SCROLL_DISTANCE * (CRASH_FRAME_COUNT - 1) * CRASH_VELOCITY_GAIN;
+      crashExitDistance = 0;
+      crashExitDirection = 0;
+      return;
+    }
+
+    if (crashExitDirection !== direction) {
+      crashExitDirection = direction;
+      crashExitDistance = 0;
+    }
+    crashExitDistance += distance;
+    if (crashExitDistance >= CRASH_EXIT_DISTANCE) goToPage(2);
+    return;
+  }
+
+  const now = performance.now();
+  if (now < wheelUnlockAt) return;
+
+  const direction = delta > 0 ? 1 : -1;
+  const isNewGesture = now - wheelLastEventAt > WHEEL_GESTURE_GAP || direction !== wheelGestureDirection;
+
+  if (isNewGesture) {
+    wheelGestureAccum = delta;
+    wheelGestureDirection = direction;
+  } else {
+    wheelGestureAccum += delta;
+  }
+
+  wheelLastEventAt = now;
+
+  if (Math.abs(wheelGestureAccum) < WHEEL_NAV_THRESHOLD) return;
+
+  wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
+  goToPage(currentPage + direction);
 }, { passive: false });
 
 // ── load glb ──────────────────────────────────────────────────────────────
@@ -332,6 +527,52 @@ window.addEventListener('resize', () => {
 // ── render loop ───────────────────────────────────────────────────────────
 (function animate() {
   requestAnimationFrame(animate);
+  if (Math.abs(crashFrameVelocity) > CRASH_VELOCITY_EPSILON) {
+    const nextTargetFrame = THREE.MathUtils.clamp(
+      crashTargetFrame + crashFrameVelocity,
+      0,
+      CRASH_FRAME_COUNT - 1,
+    );
+    crashTargetFrame = nextTargetFrame;
+    currentPage = isCrashPage(currentPage)
+      ? THREE.MathUtils.clamp(
+          Math.round(CRASH_PAGE_START + crashFrameToProgress(crashTargetFrame) * (CRASH_PAGE_STEPS - 1)),
+          CRASH_PAGE_START,
+          CRASH_PAGE_END,
+        )
+      : currentPage;
+
+    if (nextTargetFrame <= 0 || nextTargetFrame >= CRASH_FRAME_COUNT - 1) {
+      crashFrameVelocity *= 0.5;
+    } else {
+      crashFrameVelocity *= CRASH_VELOCITY_FRICTION;
+    }
+  } else {
+    crashFrameVelocity = 0;
+  }
+
+  const targetFrameIndex = Math.round(crashTargetFrame);
+  if (crashRenderedFrame < targetFrameIndex) {
+    crashRenderedFrame += 1;
+    renderCrashFrame(crashRenderedFrame);
+    updateCrashTitles(crashRenderedFrame);
+  } else if (crashRenderedFrame > targetFrameIndex) {
+    crashRenderedFrame -= 1;
+    renderCrashFrame(crashRenderedFrame);
+    updateCrashTitles(crashRenderedFrame);
+  } else {
+    renderCrashFrame(crashRenderedFrame);
+    updateCrashTitles(crashRenderedFrame);
+  }
+
+  if (isCrashPage(currentPage)) {
+    currentPage = THREE.MathUtils.clamp(
+      Math.round(CRASH_PAGE_START + crashFrameToProgress(crashRenderedFrame) * (CRASH_PAGE_STEPS - 1)),
+      CRASH_PAGE_START,
+      CRASH_PAGE_END,
+    );
+  }
+
   if (!shouldRenderScene()) return;
   camera.position.set(cam.px, cam.py, cam.pz);
   camera.lookAt(cam.tx, cam.ty, cam.tz);
