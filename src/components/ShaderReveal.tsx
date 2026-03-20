@@ -62,6 +62,10 @@ interface ShaderRevealWebGL {
       options: SimOptions;
       resize: () => void;
     };
+    uniforms: {
+      revealStrength: { value: number };
+      revealSoftness: { value: number };
+    };
     resize: () => void;
     update: () => void;
   };
@@ -71,6 +75,9 @@ interface ShaderRevealWebGL {
     resumeDelay: number;
     forceStop: () => void;
   };
+  updateSimOptions?: (opts: Partial<SimOptions>) => void;
+  updateAutoDriver?: (opts: { enabled?: boolean; speed?: number; resumeDelay?: number }) => void;
+  updateReveal?: (strength: number, softness: number) => void;
 }
 
 const ShaderReveal: React.FC<ShaderRevealProps> = ({
@@ -352,11 +359,10 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
 
       active = true;
       current = new THREE.Vector2();
-      target = new THREE.Vector2();
       lastTime = performance.now();
       activationTime = performance.now();
-      margin = 0.2;
-      private _tmpDir = new THREE.Vector2();
+      margin = 0.15;
+      private _t = 0;
 
       constructor(
         mouse: MouseClass,
@@ -375,32 +381,12 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this.resumeDelay = opts.resumeDelay || 3000;
         this.rampDurationMs = (opts.rampDuration || 0) * 1000;
 
-        const r = Math.random;
-        this.current.set(
-          (r() * 2 - 1) * (1 - this.margin),
-          (r() * 2 - 1) * (1 - this.margin),
-        );
-        this.pickNewTarget();
-
-        const initialDir = this._tmpDir
-          .subVectors(this.target, this.current)
-          .normalize();
-        const initialOffset = 0.05;
-
-        this.mouse.coords_old.set(
-          this.current.x - initialDir.x * initialOffset,
-          this.current.y - initialDir.y * initialOffset,
-        );
-        this.mouse.setNormalized(this.current.x, this.current.y);
+        const x = Math.sin(0) * (1 - this.margin);
+        const y = Math.sin(0.9) * (1 - this.margin);
+        this.current.set(x, y);
+        this.mouse.coords_old.set(x, y);
+        this.mouse.setNormalized(x, y);
         this.mouse.isAutoActive = true;
-      }
-
-      pickNewTarget() {
-        const r = Math.random;
-        this.target.set(
-          (r() * 2 - 1) * (1 - this.margin),
-          (r() * 2 - 1) * (1 - this.margin),
-        );
       }
 
       forceStop() {
@@ -422,10 +408,8 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         }
         if (!this.active) {
           this.active = true;
-          this.current.copy(this.mouse.coords);
           this.lastTime = now;
           this.activationTime = now;
-          this.pickNewTarget();
         }
 
         this.mouse.isAutoActive = true;
@@ -434,27 +418,20 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this.lastTime = now;
         if (dtSec > 0.2) dtSec = 0.016;
 
-        const dir = this._tmpDir.subVectors(this.target, this.current);
-        const dist = dir.length();
-        if (dist < 0.01) {
-          this.pickNewTarget();
-          return;
-        }
-        dir.normalize();
-
         let ramp = 1;
         if (this.rampDurationMs > 0) {
-          const t = Math.min(
-            1,
-            (now - this.activationTime) / this.rampDurationMs,
-          );
+          const t = Math.min(1, (now - this.activationTime) / this.rampDurationMs);
           ramp = t * t * (3 - 2 * t);
         }
 
-        const step = this.speed * dtSec;
-        const move = Math.min(step * ramp, dist);
-        this.current.addScaledVector(dir, move);
-        this.mouse.setNormalized(this.current.x, this.current.y);
+        this._t += dtSec * this.speed * ramp;
+
+        // Courbe de Lissajous : tracé fluide et continu
+        const x = Math.sin(this._t * 1.3) * (1 - this.margin);
+        const y = Math.sin(this._t * 0.7 + 0.9) * (1 - this.margin);
+
+        this.current.set(x, y);
+        this.mouse.setNormalized(x, y);
       }
     }
 
@@ -1138,7 +1115,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       dyeAdvection!: DyeAdvection;
       dyeSplat!: DyeSplat;
 
-      dyeDissipation = 0.985;
+      dyeDissipation = 0.987;
 
       constructor(options?: Partial<SimOptions>) {
         this.options = {
@@ -1325,9 +1302,11 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         const baseRadius = 0.08;
         const baseStrength = 0.3;
 
-        const radius = baseRadius * (cursorSize / 120);
+        const autoScale = Mouse.isAutoActive ? 3.0 : 1.0;
+        const moveFactor = THREE.MathUtils.clamp(speed * 30, 0.0, 1.0);
+        const radius = baseRadius * (this.options.cursor_size / 120) * moveFactor * autoScale;
         const strength =
-          baseStrength * THREE.MathUtils.clamp(speed * 1.8, 0.4, 3.0);
+          baseStrength * THREE.MathUtils.clamp(speed * 1.8, 0.0, 3.0);
 
         this.dyeSplat.update({
           src: this.fbos.dye_1!,
@@ -1491,6 +1470,22 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this.output.resize();
       }
 
+      updateSimOptions(opts: Partial<SimOptions>) {
+        Object.assign(this.output.simulation.options, opts);
+      }
+
+      updateAutoDriver(opts: { enabled?: boolean; speed?: number; resumeDelay?: number }) {
+        if (!this.autoDriver) return;
+        if (opts.enabled !== undefined) this.autoDriver.enabled = opts.enabled;
+        if (opts.speed !== undefined) this.autoDriver.speed = opts.speed;
+        if (opts.resumeDelay !== undefined) this.autoDriver.resumeDelay = opts.resumeDelay;
+      }
+
+      updateReveal(strength: number, softness: number) {
+        this.output.uniforms.revealStrength.value = strength;
+        this.output.uniforms.revealSoftness.value = softness;
+      }
+
       render() {
         if (this.autoDriver) this.autoDriver.update();
         Mouse.update();
@@ -1652,28 +1647,27 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         backTexRef.current = null;
       }
     };
-  }, [
-    frontImage,
-    backImage,
-    mouseForce,
-    cursorSize,
-    resolution,
-    isViscous,
-    viscous,
-    iterationsViscous,
-    iterationsPoisson,
-    dt,
-    BFECC,
-    isBounce,
-    autoDemo,
-    autoSpeed,
-    autoIntensity,
-    takeoverDuration,
-    autoResumeDelay,
-    autoRampDuration,
-    revealStrength,
-    revealSoftness,
-  ]);
+  }, [frontImage, backImage, resolution, isViscous, isBounce, autoIntensity, takeoverDuration, autoRampDuration]);
+
+  useEffect(() => {
+    webglRef.current?.updateSimOptions?.({
+      mouse_force: mouseForce,
+      cursor_size: cursorSize,
+      viscous,
+      dt,
+      BFECC,
+      iterations_viscous: iterationsViscous,
+      iterations_poisson: iterationsPoisson,
+    });
+  }, [mouseForce, cursorSize, viscous, dt, BFECC, iterationsViscous, iterationsPoisson]);
+
+  useEffect(() => {
+    webglRef.current?.updateAutoDriver?.({ enabled: autoDemo, speed: autoSpeed, resumeDelay: autoResumeDelay });
+  }, [autoDemo, autoSpeed, autoResumeDelay]);
+
+  useEffect(() => {
+    webglRef.current?.updateReveal?.(revealStrength, revealSoftness);
+  }, [revealStrength, revealSoftness]);
 
   return (
     <div

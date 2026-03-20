@@ -272,7 +272,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .section__title {
   font-family: var(--font-bold);
   font-weight: 700;
-  font-size: clamp(56px, 8vw, 110px);
+  font-size: clamp(36px, 5vw, 72px);
   line-height: 0.92;
   letter-spacing: 0.03em;
   color: #fff;
@@ -297,8 +297,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .section--hero {
   background: var(--bg);
   z-index: 1;
-}
-.section--hero::before {
+}.section--hero::before {
   content: '';
   position: absolute;
   inset: 0;
