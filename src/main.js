@@ -148,6 +148,9 @@ const CRASH_FRAME_COUNT = 301;
 const CRASH_VELOCITY_GAIN = 1.1;
 const CRASH_VELOCITY_FRICTION = 0.9;
 const CRASH_VELOCITY_EPSILON = 0.01;
+const WHEEL_GESTURE_GAP = 140;
+const WHEEL_NAV_THRESHOLD = 42;
+const WHEEL_NAV_LOCK_MS = 1150;
 const INFOBOXES  = {
   [VIEWER_PAGE_START + 1]: 'ib-2',
   [VIEWER_PAGE_START + 2]: 'ib-3',
@@ -253,8 +256,18 @@ let currentPage  = 0;
 let isTransitioning = false;
 let modelLoaded  = false;
 let camKF        = [];
+let wheelGestureAccum = 0;
+let wheelGestureDirection = 0;
+let wheelLastEventAt = 0;
+let wheelUnlockAt = 0;
 
 const pageEl = document.getElementById('page');
+
+function resetWheelGesture() {
+  wheelGestureAccum = 0;
+  wheelGestureDirection = 0;
+  wheelLastEventAt = 0;
+}
 
 // ── dots ──────────────────────────────────────────────────────────────────
 const dotsEl = document.createElement('div');
@@ -325,6 +338,7 @@ function snapCamera(camIdx, onDone) {
 function goToPage(idx) {
   if (isTransitioning || idx < 0 || idx >= PAGE_COUNT) return;
   isTransitioning = true;
+  resetWheelGesture();
 
   const prevPage = currentPage;
   if (isCrashPage(idx) && prevPage < CRASH_PAGE_START) {
@@ -356,8 +370,8 @@ function goToPage(idx) {
   // Sinon : on translate #page
   gsap.to(pageEl, {
     y: `${targetY}vh`,
-    duration: 0.9,
-    ease: 'power2.inOut',
+    duration: 1.0,
+    ease: 'power3.inOut',
     onComplete: () => {
       if (isCrashPage(idx)) {
         setCrashProgress(crashPageToProgress(idx), true);
@@ -377,8 +391,10 @@ window.addEventListener('wheel', e => {
   e.preventDefault();
   if (!modelLoaded || isTransitioning) return;
 
+  const delta = normalizeWheelDelta(e);
+  if (Math.abs(delta) < 1) return;
+
   if (isCrashPage(currentPage)) {
-    const delta = normalizeWheelDelta(e);
     const direction = delta > 0 ? 1 : -1;
     const distance = Math.abs(delta);
 
@@ -415,7 +431,25 @@ window.addEventListener('wheel', e => {
     return;
   }
 
-  goToPage(currentPage + (e.deltaY > 0 ? 1 : -1));
+  const now = performance.now();
+  if (now < wheelUnlockAt) return;
+
+  const direction = delta > 0 ? 1 : -1;
+  const isNewGesture = now - wheelLastEventAt > WHEEL_GESTURE_GAP || direction !== wheelGestureDirection;
+
+  if (isNewGesture) {
+    wheelGestureAccum = delta;
+    wheelGestureDirection = direction;
+  } else {
+    wheelGestureAccum += delta;
+  }
+
+  wheelLastEventAt = now;
+
+  if (Math.abs(wheelGestureAccum) < WHEEL_NAV_THRESHOLD) return;
+
+  wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
+  goToPage(currentPage + direction);
 }, { passive: false });
 
 // ── load glb ──────────────────────────────────────────────────────────────
