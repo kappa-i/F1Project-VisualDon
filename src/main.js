@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { GLTFLoader }      from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import gsap from 'gsap';
+import studioGlbUrl from '../models/studio.glb';
+import ferrariGlbUrl from '../models/Ferrari_SF26_2026.glb';
 
 // ── rpm deco ──────────────────────────────────────────────────────────────
 const rpmEl = document.getElementById('rpm-deco');
@@ -224,14 +226,14 @@ const fillEl   = document.getElementById('fill');
 const pctEl    = document.getElementById('pct');
 const loaderEl = document.getElementById('loader');
 
-new GLTFLoader().load('/models/studio.glb', gltf => {
+new GLTFLoader().load(studioGlbUrl, gltf => {
   const studio = gltf.scene;
   studio.traverse(node => { if (node.isMesh) node.receiveShadow = true; });
   scene.add(studio);
 }, undefined, err => console.warn('Studio non chargé:', err));
 
 new GLTFLoader().load(
-  '/models/Ferrari_SF26_2026.glb',
+  ferrariGlbUrl,
   gltf => {
     const model = gltf.scene;
 
