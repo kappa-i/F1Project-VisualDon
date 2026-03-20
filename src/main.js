@@ -447,7 +447,8 @@ function goToPage(idx) {
       } else if (camIdx >= 0) {
         updateDots();
         updateSectionNav(idx);
-        snapCamera(camIdx, () => { isTransitioning = false; });
+        snapCamera(camIdx);
+        isTransitioning = false;
       } else {
         updateSectionNav(idx);
         isTransitioning = false;
@@ -521,6 +522,34 @@ window.addEventListener('wheel', e => {
   wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
   goToPage(currentPage + direction);
 }, { passive: false });
+
+// ── keyboard navigation ───────────────────────────────────────────────────
+window.addEventListener('keydown', e => {
+  if (!modelLoaded || isTransitioning) return;
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+
+  const direction = e.key === 'ArrowDown' ? 1 : -1;
+
+  if (isCrashPage(currentPage)) {
+    const step = (CRASH_FRAME_COUNT - 1) / CRASH_PAGE_STEPS;
+    crashFrameVelocity += direction * step * CRASH_VELOCITY_GAIN;
+
+    const now = performance.now();
+    if (now < wheelUnlockAt) return;
+
+    const atEnd   = direction > 0 && crashTargetFrame >= CRASH_FRAME_COUNT - 1;
+    const atStart = direction < 0 && crashTargetFrame <= 0;
+
+    if (atEnd)   { wheelUnlockAt = now + WHEEL_NAV_LOCK_MS; goToPage(VIEWER_PAGE_START); }
+    if (atStart) { wheelUnlockAt = now + WHEEL_NAV_LOCK_MS; goToPage(CRASH_PAGE_START - 1); }
+    return;
+  }
+
+  const now = performance.now();
+  if (now < wheelUnlockAt) return;
+  wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
+  goToPage(currentPage + direction);
+});
 
 // ── load glb ──────────────────────────────────────────────────────────────
 const fillEl   = document.getElementById('fill');
