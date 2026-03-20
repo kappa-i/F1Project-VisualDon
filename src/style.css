@@ -246,6 +246,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 
 .section__inner {
   max-width: 680px;
+  position: relative;
+  z-index: 2;
 }
 
 .section__eyebrow {
@@ -277,6 +279,12 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   margin-bottom: 32px;
 }
 
+.hero-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
 .section__lead {
   font-size: 13px;
   line-height: 1.9;
@@ -286,7 +294,21 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 
 /* section backgrounds + z-index croissant pour l'effet de clip/stack */
-.section--hero       { background: var(--bg); background-image: linear-gradient(105deg, rgba(232,0,45,0.04) 0%, transparent 60%); z-index: 1; }
+.section--hero {
+  background: var(--bg);
+  z-index: 1;
+}
+.section--hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 72% 48%, rgba(232, 0, 45, 0.08), transparent 28%),
+    linear-gradient(105deg, rgba(232, 0, 45, 0.06) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(8, 8, 8, 0.12) 0%, rgba(8, 8, 8, 0.56) 100%);
+}
 .section--era        { background: var(--bg);     border-top: 1px solid var(--line); z-index: 2; }
 .section--turning    { background: var(--surface); border-top: 1px solid var(--line); z-index: 3; }
 .section--viewer     { background: transparent; height: 100vh; min-height: unset; padding: 0; z-index: 4; }

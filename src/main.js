@@ -2,8 +2,34 @@ import * as THREE from 'three';
 import { GLTFLoader }      from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import gsap from 'gsap';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import ShaderReveal from './components/ShaderReveal.tsx';
+import shaderFrontUrl from './assets/shader-front.webp';
+import shaderBackUrl from './assets/shader-back.jpg';
 import studioGlbUrl from '../models/studio.glb';
 import ferrariGlbUrl from '../models/Ferrari_SF26_2026.glb';
+
+const shaderRevealMount = document.getElementById('shader-reveal-root');
+
+if (shaderRevealMount) {
+  const revealRoot = createRoot(shaderRevealMount);
+  revealRoot.render(
+    React.createElement(ShaderReveal, {
+      frontImage: shaderFrontUrl,
+      backImage: shaderBackUrl,
+      style: { width: '100%', height: '100%' },
+      mouseForce: 22,
+      cursorSize: 110,
+      resolution: 0.42,
+      iterationsViscous: 14,
+      iterationsPoisson: 18,
+      revealStrength: 3.6,
+      revealSoftness: 0.7,
+      autoDemo: false,
+    }),
+  );
+}
 
 // ── rpm deco ──────────────────────────────────────────────────────────────
 const rpmEl = document.getElementById('rpm-deco');
@@ -159,6 +185,10 @@ function updateHUD(pageIdx) {
   }
 }
 
+function shouldRenderScene() {
+  return document.body.classList.contains('hud-active') || isTransitioning;
+}
+
 // ── snap caméra ───────────────────────────────────────────────────────────
 function snapCamera(camIdx, onDone) {
   if (!camKF[camIdx]) { onDone?.(); return; }
@@ -296,6 +326,7 @@ window.addEventListener('resize', () => {
 // ── render loop ───────────────────────────────────────────────────────────
 (function animate() {
   requestAnimationFrame(animate);
+  if (!shouldRenderScene()) return;
   camera.position.set(cam.px, cam.py, cam.pz);
   camera.lookAt(cam.tx, cam.ty, cam.tz);
   renderer.render(scene, camera);
