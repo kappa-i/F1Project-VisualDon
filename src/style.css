@@ -561,6 +561,25 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   fill: currentColor;
 }
 
+.bottom-section-nav__dot.is-finish::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  right: -2px;
+  bottom: 1px;
+  left: -4px;
+  border-radius: 999px;
+  background: #000;
+  z-index: -1;
+}
+
+.bottom-section-nav__finish-flag {
+  filter:
+    drop-shadow(0 0 1px #000)
+    drop-shadow(0 0 2px #000)
+    drop-shadow(0 0 3px #000);
+}
+
 .bottom-section-nav__link:hover .bottom-section-nav__dot {
   background: var(--red);
   box-shadow: 0 0 18px rgba(232,0,45,0.35);
