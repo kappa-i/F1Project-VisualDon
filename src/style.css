@@ -524,6 +524,10 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   color: #fff;
 }
 
+.bottom-section-nav__link.is-passed {
+  color: rgba(232,0,45,0.9);
+}
+
 .bottom-section-nav__dot {
   position: absolute;
   left: 50%;
@@ -538,7 +542,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   transition: transform 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
 }
 
-.bottom-section-nav__dot.is-home {
+.bottom-section-nav__dot.is-start,
+.bottom-section-nav__dot.is-finish {
   top: calc(var(--timeline-y) - 10px);
   width: 24px;
   height: 24px;
@@ -547,7 +552,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   color: #8d8d93;
 }
 
-.bottom-section-nav__dot.is-home svg {
+.bottom-section-nav__dot.is-start svg,
+.bottom-section-nav__dot.is-finish svg {
   width: 24px;
   height: 24px;
   display: block;
@@ -559,7 +565,20 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   box-shadow: 0 0 18px rgba(232,0,45,0.35);
 }
 
-.bottom-section-nav__link:hover .bottom-section-nav__dot.is-home {
+.bottom-section-nav__link.is-passed .bottom-section-nav__dot {
+  background: var(--red);
+  box-shadow: 0 0 14px rgba(232,0,45,0.28);
+}
+
+.bottom-section-nav__link.is-passed .bottom-section-nav__dot.is-start,
+.bottom-section-nav__link.is-passed .bottom-section-nav__dot.is-finish {
+  background: transparent;
+  box-shadow: none;
+  color: var(--red);
+}
+
+.bottom-section-nav__link:hover .bottom-section-nav__dot.is-start,
+.bottom-section-nav__link:hover .bottom-section-nav__dot.is-finish {
   background: transparent;
   box-shadow: none;
   color: var(--red);
@@ -568,10 +587,11 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .bottom-section-nav__link.is-active .bottom-section-nav__dot {
   background: var(--red);
   box-shadow: 0 0 22px rgba(232,0,45,0.5);
-  transform: translateX(-50%) scale(1.45);
+  transform: translateX(-50%) scale(1.6);
 }
 
-.bottom-section-nav__link.is-active .bottom-section-nav__dot.is-home {
+.bottom-section-nav__link.is-active .bottom-section-nav__dot.is-start,
+.bottom-section-nav__link.is-active .bottom-section-nav__dot.is-finish {
   background: transparent;
   box-shadow: none;
   color: var(--red);
