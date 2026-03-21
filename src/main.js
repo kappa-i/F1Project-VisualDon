@@ -9,7 +9,7 @@ import CrashTitles from './components/CrashTitles.tsx';
 import BottomSectionNav from './components/BottomSectionNav.tsx';
 import SpaSafety from './components/SpaSafety.tsx';
 import shaderFrontUrl from './assets/f1-merco.avif';
-import shaderBackUrl from './assets/shader-back.jpg';
+import shaderBackUrl from './assets/verso-srl.avif';
 import studioGlbUrl from './models/studio.glb';
 import ferrariGlbUrl from './models/Ferrari_SF26_2026.glb';
 
@@ -23,7 +23,7 @@ if (shaderRevealMount) {
       backImage: shaderBackUrl,
       style: { width: '100%', height: '100%' },
       mouseForce: 65,
-      cursorSize: 200,
+      cursorSize: 260,
       resolution: 0.5,
       iterationsViscous: 22,
       iterationsPoisson: 26,
