@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import ComparisonSlider from './ComparisonSlider';
 
 const CIRCUIT_PATH =
   'm4.447 290.28c0.13184 1.3988 0.74128 2.2328 1.7024 3.099 3.1469 2.8362 3.8732 2.3848 55.153-34.244' +
@@ -217,16 +218,30 @@ export default function SpaSafety() {
             <p className="ib-desc">{activePoi.description}</p>
 
             <div className="spa-photos">
-              <div className="spa-photo"
-                style={activePoi.photoBefore ? { backgroundImage: `url(${activePoi.photoBefore})`, backgroundPosition: activePoi.photoBeforePosition ?? 'center' } : undefined}>
-                <div className="spa-photo__placeholder" />
-                <span className="spa-photo__label">{activePoi.yearBefore}</span>
-              </div>
-              <div className="spa-photo"
-                style={activePoi.photoAfter ? { backgroundImage: `url(${activePoi.photoAfter})`, backgroundPosition: activePoi.photoAfterPosition ?? 'center' } : undefined}>
-                <div className="spa-photo__placeholder" />
-                <span className="spa-photo__label">{activePoi.yearAfter}</span>
-              </div>
+              {activePoi.photoBefore && activePoi.photoAfter ? (
+                <ComparisonSlider
+                  beforeImage={activePoi.photoBefore}
+                  afterImage={activePoi.photoAfter}
+                  beforeAlt={`${activePoi.label} avant`}
+                  afterAlt={`${activePoi.label} apres`}
+                  beforeLabel={activePoi.yearBefore}
+                  afterLabel={activePoi.yearAfter}
+                  beforePosition={activePoi.photoBeforePosition}
+                  afterPosition={activePoi.photoAfterPosition}
+                  initialPosition={48}
+                  dividerWidth={4}
+                  dividerColor="rgba(255, 255, 255, 0.92)"
+                  handleColor="#ffffff"
+                  handleSize={52}
+                  showLabels={true}
+                  ariaLabel={`Comparaison ${activePoi.label} avant apres`}
+                  className="spa-comparison"
+                />
+              ) : (
+                <div className="spa-photo">
+                  <div className="spa-photo__placeholder" />
+                </div>
+              )}
             </div>
           </div>
         ) : (
