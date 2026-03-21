@@ -207,7 +207,14 @@ const INFOBOXES  = {
   [VIEWER_PAGE_START + 2]: 'ib-3',
   [VIEWER_PAGE_START + 3]: 'ib-4',
 };
-const HAAS_INFOBOXES = {};
+const HAAS_INFOBOXES = {
+  [HAAS_PAGE_START + 1]: 'ib-haas-2',
+  [HAAS_PAGE_START + 2]: 'ib-haas-3',
+  [HAAS_PAGE_START + 3]: 'ib-haas-4',
+  [HAAS_PAGE_START + 4]: 'ib-haas-5',
+  [HAAS_PAGE_START + 5]: 'ib-haas-6',
+  [HAAS_PAGE_START + 7]: 'ib-haas-7',
+};
 
 const crashFrameEl = document.getElementById('crash-frame');
 const crashFrameUrls = Array.from({ length: CRASH_FRAME_COUNT }, (_, index) =>
@@ -469,10 +476,13 @@ function updateDots() {
 }
 
 // ── HUD ───────────────────────────────────────────────────────────────────
+let _lastViewerKind = '';
 function updateHUD(pageIdx) {
   const isFerrari = pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END;
   const isHaas = isHaasPage(pageIdx);
   const isAnyViewer = isFerrari || isHaas;
+  const kind = isHaas ? 'haas' : isFerrari ? 'ferrari' : '';
+  if (kind !== _lastViewerKind) { _lastViewerKind = kind; rebuildDots(); }
   document.body.classList.toggle('hud-active', isAnyViewer);
   dotsEl.style.opacity = isAnyViewer ? '1' : '0';
   if (!isAnyViewer) {
