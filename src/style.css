@@ -846,6 +846,23 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   border-top: 8px solid currentColor;
 }
 
+.bottom-section-nav__link.is-active .bottom-section-nav__label.is-false-start {
+  color: #ff9a3d;
+  border-color: rgba(255,154,61,0.78);
+  box-shadow: 0 12px 28px rgba(120,56,4,0.35);
+}
+
+.bottom-section-nav__link.is-active .bottom-section-nav__label.is-false-start::before {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  opacity: 1;
+  background:
+    linear-gradient(45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%),
+    linear-gradient(-45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%);
+}
+
 @media (max-width: 980px) {
   .bottom-section-nav {
     bottom: 16px;

@@ -3,9 +3,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 const SECTION_COUNT = 8;
 const LIGHTS_OUT_MIN_DELAY = 500;
 const LIGHTS_OUT_MAX_DELAY = 3000;
-const NEXT_SEQUENCE_DELAY = 6000;
+const NEXT_SEQUENCE_DELAY = 5000;
 
-type ReactionTone = 'idle' | 'first' | 'best' | 'improved' | 'worse';
+type ReactionTone = 'idle' | 'first' | 'best' | 'improved' | 'worse' | 'false-start';
 
 type ReactionResult = {
   timeMs: number;
@@ -35,6 +35,7 @@ export default function BottomSectionNav() {
   const [lightsOutAt, setLightsOutAt] = useState<number | null>(null);
   const [lastReactionTime, setLastReactionTime] = useState<number | null>(null);
   const [bestReactionTime, setBestReactionTime] = useState<number | null>(null);
+  const [falseStartLocked, setFalseStartLocked] = useState(false);
   const [reactionResult, setReactionResult] = useState<ReactionResult>({
     timeMs: 0,
     tone: 'idle',
@@ -60,6 +61,7 @@ export default function BottomSectionNav() {
     if (activeSection !== 0) {
       setStartLightsOn(0);
       setLightsOutAt(null);
+      setFalseStartLocked(false);
       return;
     }
 
@@ -75,6 +77,7 @@ export default function BottomSectionNav() {
     const runSequence = () => {
       setStartLightsOn(0);
       setLightsOutAt(null);
+      setFalseStartLocked(false);
 
       queue(600, () => {
         setStartLightsOn(1);
@@ -111,7 +114,7 @@ export default function BottomSectionNav() {
   }, [activeSection, lightsOutAt, startLightsOn]);
 
   const recordReaction = () => {
-    if (activeSection !== 0 || lightsOutAt === null) return;
+    if (activeSection !== 0 || lightsOutAt === null || falseStartLocked) return;
 
     const now = performance.now();
     const timeMs = Math.max(0, Math.round(now - lightsOutAt));
@@ -136,6 +139,18 @@ export default function BottomSectionNav() {
     setLightsOutAt(null);
   };
 
+  const registerFalseStart = () => {
+    if (activeSection !== 0 || falseStartLocked || startLightsOn <= 0 || lightsOutAt !== null) return;
+
+    setFalseStartLocked(true);
+    setLightsOutAt(null);
+    setReactionResult({
+      timeMs: 0,
+      tone: 'false-start',
+      text: 'Faux depart',
+    });
+  };
+
   const goToSection = (sectionIndex: number) => {
     window.dispatchEvent(new CustomEvent('section-nav-jump', {
       detail: { sectionIndex, source: 'nav' },
@@ -144,7 +159,12 @@ export default function BottomSectionNav() {
 
   const handleSectionClick = (sectionIndex: number) => {
     if (sectionIndex === 0 && activeSection === 0) {
-      recordReaction();
+      if (lightsOutAt !== null) {
+        recordReaction();
+        return;
+      }
+
+      registerFalseStart();
       return;
     }
 
