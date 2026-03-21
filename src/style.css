@@ -278,6 +278,10 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   color: #fff;
   margin-bottom: 32px;
 }
+.section__title--hero {
+  font-size: clamp(32px, 4.45vw, 62px);
+  line-height: 0.98;
+}
 
 .hero-reveal {
   position: absolute;
@@ -292,6 +296,12 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   color: rgba(255,255,255,0.5);
   font-weight: 400;
   max-width: 520px;
+}
+.section__lead--hero {
+  font-size: clamp(13px, 1vw, 17px);
+  line-height: 1.78;
+  color: rgba(255,255,255,0.62);
+  max-width: 620px;
 }
 
 /* section backgrounds + z-index croissant pour l'effet de clip/stack */
@@ -413,26 +423,58 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 
 /* ── Scroll hint (hero) ─────────────────────────────────────────────────── */
 
-.section__scroll-hint {
-  margin-top: 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  font-size: 9px;
-  letter-spacing: 0.25em;
+.hero-scroll-btn {
+  margin-top: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.78);
+  text-decoration: none;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
+  font-size: 9px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.28s ease, border-color 0.28s ease, color 0.28s ease, background 0.28s ease, box-shadow 0.28s ease;
 }
-.scroll-arrow {
-  width: 1px;
-  height: 48px;
-  background: linear-gradient(to bottom, var(--red), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
+
+.hero-scroll-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(232, 0, 45, 0.8);
+  background: rgba(232, 0, 45, 0.08);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(232, 0, 45, 0.16);
 }
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; transform: scaleY(0.7); transform-origin: top; }
-  50%       { opacity: 1;   transform: scaleY(1);   transform-origin: top; }
+
+.hero-scroll-btn__label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-scroll-btn__label::before {
+  content: "\2193";
+  color: var(--red);
+  font-size: 12px;
+  line-height: 1;
+  display: inline-block;
+  animation: heroArrowDrop 1.3s ease-in-out infinite;
+}
+
+@keyframes heroArrowDrop {
+  0%, 100% {
+    transform: translateY(-2px);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(4px);
+    opacity: 1;
+  }
 }
 
 /* ── Bottom section nav ─────────────────────────────────────────────────── */

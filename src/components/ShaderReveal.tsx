@@ -371,6 +371,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       activationTime = performance.now();
       margin = 0.15;
       private _t = 0;
+      private hasStoppedForever = false;
 
       private resetToStartCorner() {
         const x = -(1 - this.margin);
@@ -405,8 +406,14 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this.mouse.isAutoActive = false;
       }
 
+      stopForever() {
+        this.hasStoppedForever = true;
+        this.enabled = false;
+        this.forceStop();
+      }
+
       update() {
-        if (!this.enabled) return;
+        if (!this.enabled || this.hasStoppedForever) return;
         const now = performance.now();
         const idle = now - this.manager.lastUserInteraction;
         if (idle < this.resumeDelay) {
@@ -1441,7 +1448,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         Mouse.takeoverDuration = takeoverDuration;
         Mouse.onInteract = () => {
           this.lastUserInteraction = performance.now();
-          if (this.autoDriver) this.autoDriver.forceStop();
+          if (this.autoDriver) this.autoDriver.stopForever();
         };
 
         this.init();

@@ -516,6 +516,15 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
   });
 }
 
+const heroScrollBtn = document.getElementById('hero-scroll-btn');
+if (heroScrollBtn) {
+  heroScrollBtn.addEventListener('click', e => {
+    e.preventDefault();
+    if (!modelLoaded || isTransitioning) return;
+    goToPage(1);
+  });
+}
+
 // ── wheel : 1 tick = 1 page ───────────────────────────────────────────────
 window.addEventListener('wheel', e => {
   e.preventDefault();
