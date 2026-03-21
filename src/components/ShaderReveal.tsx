@@ -81,6 +81,7 @@ interface ShaderRevealWebGL {
   updateSimOptions?: (opts: Partial<SimOptions>) => void;
   updateAutoDriver?: (opts: { enabled?: boolean; speed?: number; resumeDelay?: number }) => void;
   updateReveal?: (strength: number, softness: number) => void;
+  updateRevealOpacity?: (value: number) => void;
   updateBackBrightness?: (value: number) => void;
 }
 
@@ -120,6 +121,8 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
   const rafRef = useRef<number | null>(null);
   const resizeRafRef = useRef<number | null>(null);
+  const introFadeTimeoutRef = useRef<number | null>(null);
+  const introRevealRafRef = useRef<number | null>(null);
   const isVisibleRef = useRef<boolean>(true);
   const frontTexRef = useRef<THREE.Texture | null>(null);
   const backTexRef = useRef<THREE.Texture | null>(null);
@@ -289,7 +292,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         if (!this.updateHoverState(event.clientX, event.clientY)) return;
         if (this.onInteract) this.onInteract();
 
-        if (this.isAutoActive && !this.hasUserControl && !this.takeoverActive) {
+        if (this.isAutoActive && !this.takeoverActive) {
           if (!this.container) return;
           const rect = this.container.getBoundingClientRect();
           const nx = (event.clientX - rect.left) / rect.width;
@@ -369,6 +372,14 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       margin = 0.15;
       private _t = 0;
 
+      private resetToStartCorner() {
+        const x = -(1 - this.margin);
+        const y = 1 - this.margin;
+        this.current.set(x, y);
+        this.mouse.coords_old.set(x, y);
+        this.mouse.setNormalized(x, y);
+      }
+
       constructor(
         mouse: MouseClass,
         manager: WebGLManager,
@@ -385,12 +396,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this.speed = opts.speed;
         this.resumeDelay = opts.resumeDelay || 3000;
         this.rampDurationMs = (opts.rampDuration || 0) * 1000;
-
-        const x = Math.sin(0) * (1 - this.margin);
-        const y = Math.sin(0.9) * (1 - this.margin);
-        this.current.set(x, y);
-        this.mouse.coords_old.set(x, y);
-        this.mouse.setNormalized(x, y);
+        this.resetToStartCorner();
         this.mouse.isAutoActive = true;
       }
 
@@ -407,14 +413,11 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
           if (this.active) this.forceStop();
           return;
         }
-        if (this.mouse.isHoverInside) {
-          if (this.active) this.forceStop();
-          return;
-        }
         if (!this.active) {
           this.active = true;
           this.lastTime = now;
           this.activationTime = now;
+          this.resetToStartCorner();
         }
 
         this.mouse.isAutoActive = true;
@@ -627,7 +630,8 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
 
         float dist = length(vUv - center);
         float r = radius;
-        float falloff = exp(- (dist * dist) / (r * r + 1e-6));
+        float brush = clamp(1.0 - dist / (r + 1e-6), 0.0, 1.0);
+        float falloff = brush * brush;
 
         float added = strength * falloff;
         float v = clamp(base.r + added, 0.0, 1.0);
@@ -646,6 +650,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
 
       uniform float revealStrength;
       uniform float revealSoftness;
+      uniform float revealOpacity;
       uniform float backBrightness;
 
       uniform vec2 frontTexResolution;
@@ -671,6 +676,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
 
         float m = dye * revealStrength;
         float mask = smoothstep(0.0, revealSoftness, m);
+        mask *= revealOpacity;
         mask = clamp(mask, 0.0, 1.0);
 
         vec2 frontUv = getCoverUv(vUv, frontTexResolution, canvasResolution);
@@ -1122,7 +1128,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       dyeAdvection!: DyeAdvection;
       dyeSplat!: DyeSplat;
 
-      dyeDissipation = 0.987;
+      dyeDissipation = 0.976;
 
       constructor(options?: Partial<SimOptions>) {
         this.options = {
@@ -1336,6 +1342,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         boundarySpace: { value: THREE.Vector2 };
         revealStrength: { value: number };
         revealSoftness: { value: number };
+        revealOpacity: { value: number };
         backBrightness: { value: number };
         frontTexResolution: { value: THREE.Vector2 };
         backTexResolution: { value: THREE.Vector2 };
@@ -1354,6 +1361,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
           boundarySpace: { value: new THREE.Vector2() },
           revealStrength: { value: revealStrength },
           revealSoftness: { value: revealSoftness },
+          revealOpacity: { value: 0 },
           backBrightness: { value: initialBackBrightness },
           frontTexResolution: {
             value: new THREE.Vector2(
@@ -1498,6 +1506,10 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this.output.uniforms.revealSoftness.value = softness;
       }
 
+      updateRevealOpacity(value: number) {
+        this.output.uniforms.revealOpacity.value = value;
+      }
+
       updateBackBrightness(value: number) {
         this.output.uniforms.backBrightness.value = value;
       }
@@ -1607,6 +1619,23 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         webgl.start();
         webglRef.current = webgl;
 
+        introFadeTimeoutRef.current = window.setTimeout(() => {
+          const fadeStart = performance.now();
+          const fadeDuration = 1200;
+          const runFade = () => {
+            const elapsed = performance.now() - fadeStart;
+            const t = Math.min(elapsed / fadeDuration, 1);
+            const eased = t * t * (3 - 2 * t);
+            webglRef.current?.updateRevealOpacity?.(eased);
+            if (t < 1) {
+              introRevealRafRef.current = requestAnimationFrame(runFade);
+            } else {
+              introRevealRafRef.current = null;
+            }
+          };
+          runFade();
+        }, 3000);
+
         const io = new IntersectionObserver(
           (entries) => {
             const entry = entries[0];
@@ -1642,6 +1671,14 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
 
     return () => {
       disposed = true;
+      if (introFadeTimeoutRef.current != null) {
+        window.clearTimeout(introFadeTimeoutRef.current);
+        introFadeTimeoutRef.current = null;
+      }
+      if (introRevealRafRef.current != null) {
+        cancelAnimationFrame(introRevealRafRef.current);
+        introRevealRafRef.current = null;
+      }
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
       if (resizeObserverRef.current) {
         try {
