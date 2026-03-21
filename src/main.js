@@ -341,7 +341,7 @@ const haasCamKF = [
   { pos: new THREE.Vector3(-1.24, 0.62,  0.60), target: new THREE.Vector3(-0.78,  0.54,  0.18) }, // blinkers
   { pos: new THREE.Vector3(-0.93, 1.11,  0.09), target: new THREE.Vector3(-0.79,  0.96, -0.13) },
   { pos: new THREE.Vector3(-1.51, 0.35, -3.24), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
-  { pos: new THREE.Vector3(-0.70, 0.42, -2.18), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
+  { pos: new THREE.Vector3(-0.70, 0.33, -2.18), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
 ];
 let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
