@@ -80,13 +80,13 @@ const rpmEl = document.getElementById('rpm-deco');
 
 // ── renderer ──────────────────────────────────────────────────────────────
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.4;
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.shadowMap.type = THREE.BasicShadowMap;
 document.getElementById('canvas-wrap').appendChild(renderer.domElement);
 
 // ── scene ─────────────────────────────────────────────────────────────────
@@ -106,7 +106,7 @@ scene.add(new THREE.AmbientLight(0xffe0b0, 0.5));
 const key = new THREE.DirectionalLight(0xffcc80, 1.6);
 key.position.set(2.96, 3.59, 2.83);
 key.castShadow = true;
-key.shadow.mapSize.set(2048, 2048);
+key.shadow.mapSize.set(1024, 1024);
 key.shadow.camera.left = key.shadow.camera.bottom = -6;
 key.shadow.camera.right = key.shadow.camera.top = 6;
 key.shadow.bias = -0.001;
@@ -827,14 +827,14 @@ new GLTFLoader().load(
 );
 
 new GLTFLoader().load(
-  '/haas/2026_HAASF1_CGT.glb',
+  '/haas/2026_HAASF1_CGT-V3.glb',
   gltf => {
     haasModel = gltf.scene;
 
     haasModel.traverse(node => {
       if (!node.isMesh) return;
-      node.castShadow = true;
-      node.receiveShadow = true;
+      node.castShadow = false;
+      node.receiveShadow = false;
       if (node.material) {
         const mats = Array.isArray(node.material) ? node.material : [node.material];
         mats.forEach(m => {
