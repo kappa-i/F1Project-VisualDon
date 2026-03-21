@@ -479,10 +479,10 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .bottom-section-nav__track {
   position: absolute;
   left: 22px;
-  right: 22px;
+  right: 42px;
   top: var(--timeline-y);
   height: 4px;
-  border-radius: 999px;
+  border-radius: 1000px;
   background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.18), rgba(255,255,255,0.04));
   overflow: hidden;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
@@ -559,6 +559,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   height: 24px;
   display: block;
   fill: currentColor;
+  filter: none;
+  transition: transform 0.3s ease;
 }
 
 .bottom-section-nav__dot.is-start {
@@ -605,25 +607,6 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   border-color: var(--red);
   background: var(--red);
   box-shadow: 0 0 6px rgba(232,0,45,0.5);
-}
-
-.bottom-section-nav__dot.is-finish::before {
-  content: "";
-  position: absolute;
-  top: 1px;
-  right: -2px;
-  bottom: 1px;
-  left: -4px;
-  border-radius: 999px;
-  background: #000;
-  z-index: -1;
-}
-
-.bottom-section-nav__finish-flag {
-  filter:
-    drop-shadow(0 0 1px #000)
-    drop-shadow(0 0 2px #000)
-    drop-shadow(0 0 3px #000);
 }
 
 .bottom-section-nav__link:hover .bottom-section-nav__dot {
@@ -689,6 +672,10 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   box-shadow: none;
   color: var(--red);
   transform: translateX(-50%);
+}
+
+.bottom-section-nav__link.is-active .bottom-section-nav__dot.is-finish .bottom-section-nav__finish-flag {
+  transform: scale(1.2);
 }
 
 .bottom-section-nav__link.is-active .bottom-section-nav__dot.is-start {
@@ -760,7 +747,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 
   .bottom-section-nav__track {
     left: 17px;
-    right: 17px;
+    right: 37px;
   }
 
   .bottom-section-nav__link {
