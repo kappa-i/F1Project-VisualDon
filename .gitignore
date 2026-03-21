@@ -7,3 +7,4 @@ src/models/*.glb
 src/models/*.gltf
 models/*.glb
 models/*.gltf
+src/public/haas/

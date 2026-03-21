@@ -169,7 +169,9 @@ const SPA_PAGE_COUNT = 4;
 const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
 const DATA_PAGE = SPA_PAGE_END + 1;
 const CONCLUSION_PAGE = DATA_PAGE + 1;
-const PAGE_COUNT = CONCLUSION_PAGE + 1;
+const HAAS_PAGE_START = CONCLUSION_PAGE + 1;
+const HAAS_PAGE_END = HAAS_PAGE_START + 3;
+const PAGE_COUNT = HAAS_PAGE_END + 1;
 const CRASH_SCROLL_DISTANCE = 7000;
 const CRASH_EXIT_DISTANCE = 220;
 const CRASH_FRAME_COUNT = 301;
@@ -183,6 +185,11 @@ const INFOBOXES  = {
   [VIEWER_PAGE_START + 1]: 'ib-2',
   [VIEWER_PAGE_START + 2]: 'ib-3',
   [VIEWER_PAGE_START + 3]: 'ib-4',
+};
+const HAAS_INFOBOXES = {
+  [HAAS_PAGE_START + 1]: 'ib-haas-2',
+  [HAAS_PAGE_START + 2]: 'ib-haas-3',
+  [HAAS_PAGE_START + 3]: 'ib-haas-4',
 };
 
 const crashFrameEl = document.getElementById('crash-frame');
@@ -271,7 +278,8 @@ function pageToY(idx) {
   if (idx <= VIEWER_PAGE_END) return -400;
   if (idx <= SPA_PAGE_END) return -500;
   if (idx === DATA_PAGE) return -600;
-  return -700;
+  if (idx === CONCLUSION_PAGE) return -700;
+  return -800;
 }
 
 function pageToCamera(idx) {
@@ -280,6 +288,10 @@ function pageToCamera(idx) {
   if (idx === VIEWER_PAGE_START + 1) return 1;
   if (idx === VIEWER_PAGE_START + 2) return 2;
   if (idx === VIEWER_PAGE_START + 3) return 3;
+  if (idx === HAAS_PAGE_START) return 0;
+  if (idx === HAAS_PAGE_START + 1) return 1;
+  if (idx === HAAS_PAGE_START + 2) return 2;
+  if (idx === HAAS_PAGE_START + 3) return 3;
   return -1;
 }
 
@@ -287,6 +299,16 @@ let currentPage  = 0;
 let isTransitioning = false;
 let modelLoaded  = false;
 let camKF        = [];
+let ferrariModel = null;
+let haasModel    = null;
+let haasIndicatorMaterials = [];
+let haasBlinkerAnim = null;
+const haasCamKF = [
+  { pos: new THREE.Vector3(1.00,  1.16,  3.69), target: new THREE.Vector3(-0.70, 0.09, 0.41) },
+  { pos: new THREE.Vector3(0.02,  1.00,  1.07), target: new THREE.Vector3(-0.51, 0.49, 0.29) },
+  { pos: new THREE.Vector3(-0.89, 1.02, -0.43), target: new THREE.Vector3(-0.63, 0.44, 0.34) },
+  { pos: new THREE.Vector3(-0.58, 1.08, -4.55), target: new THREE.Vector3(-0.58, 0.70, -1.95) },
+];
 let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
 let wheelLastEventAt = 0;
@@ -298,6 +320,10 @@ let lastSectionNavIndex = -1;
 
 function isSpaPage(idx) {
   return idx >= SPA_PAGE_START && idx <= SPA_PAGE_END;
+}
+
+function isHaasPage(idx) {
+  return idx >= HAAS_PAGE_START && idx <= HAAS_PAGE_END;
 }
 
 function dispatchSpaPoiChange(pageIdx) {
@@ -313,7 +339,8 @@ function pageToSectionIndex(pageIdx) {
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 4;
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 5;
   if (pageIdx === DATA_PAGE) return 6;
-  return 7;
+  if (pageIdx === CONCLUSION_PAGE) return 7;
+  return 8;
 }
 
 function pageToSectionProgress(pageIdx) {
@@ -330,7 +357,9 @@ function pageToSectionProgress(pageIdx) {
     return 5 + spaProgress * 0.92;
   }
   if (pageIdx === DATA_PAGE) return 6;
-  return 7;
+  if (pageIdx === CONCLUSION_PAGE) return 7;
+  const haasProgress = (pageIdx - HAAS_PAGE_START) / Math.max(1, HAAS_PAGE_END - HAAS_PAGE_START);
+  return 8 + haasProgress * 0.92;
 }
 
 function updateSectionNav(pageIdx = currentPage) {
@@ -358,7 +387,8 @@ function sectionToPage(sectionIdx) {
   if (sectionIdx === 4) return VIEWER_PAGE_START;
   if (sectionIdx === 5) return SPA_PAGE_START;
   if (sectionIdx === 6) return DATA_PAGE;
-  return CONCLUSION_PAGE;
+  if (sectionIdx === 7) return CONCLUSION_PAGE;
+  return HAAS_PAGE_START;
 }
 
 window.addEventListener('section-nav-jump', event => {
@@ -385,8 +415,9 @@ document.body.appendChild(dotsEl);
 
 function rebuildDots() {
   dotsEl.innerHTML = '';
-  // 4 dots pour les 4 vues caméra
-  [VIEWER_PAGE_START, VIEWER_PAGE_START + 1, VIEWER_PAGE_START + 2, VIEWER_PAGE_START + 3].forEach(pageIdx => {
+  const startPage = isHaasPage(currentPage) ? HAAS_PAGE_START : VIEWER_PAGE_START;
+  [0, 1, 2, 3].forEach(i => {
+    const pageIdx = startPage + i;
     const d = document.createElement('div');
     d.style.cssText = `
       width:6px; height:6px; border-radius:50%;
@@ -398,8 +429,9 @@ function rebuildDots() {
 }
 
 function updateDots() {
+  const startPage = isHaasPage(currentPage) ? HAAS_PAGE_START : VIEWER_PAGE_START;
   dotsEl.querySelectorAll('div').forEach((d, i) => {
-    const pageIdx = VIEWER_PAGE_START + i;
+    const pageIdx = startPage + i;
     d.style.background = currentPage === pageIdx ? '#e8002d' : 'rgba(255,255,255,0.2)';
     d.style.transform  = currentPage === pageIdx ? 'scale(1.5)' : 'scale(1)';
   });
@@ -407,11 +439,27 @@ function updateDots() {
 
 // ── HUD ───────────────────────────────────────────────────────────────────
 function updateHUD(pageIdx) {
-  const isViewer = pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END;
-  document.body.classList.toggle('hud-active', isViewer);
-  dotsEl.style.opacity = isViewer ? '1' : '0';
-  if (!isViewer) {
+  const isFerrari = pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END;
+  const isHaas = isHaasPage(pageIdx);
+  const isAnyViewer = isFerrari || isHaas;
+  document.body.classList.toggle('hud-active', isAnyViewer);
+  dotsEl.style.opacity = isAnyViewer ? '1' : '0';
+  if (!isAnyViewer) {
     document.querySelectorAll('.infobox').forEach(el => el.classList.remove('visible'));
+  }
+  if (ferrariModel) ferrariModel.visible = isFerrari;
+  if (haasModel) haasModel.visible = isHaas;
+  if (!isHaas) stopHaasBlinker();
+  const topbarEl = document.getElementById('topbar');
+  const statusbarEl = document.getElementById('statusbar');
+  if (topbarEl && statusbarEl) {
+    if (isHaas) {
+      topbarEl.innerHTML = '<div><div class="brand-team">MoneyGram Haas F1</div><div class="brand-car"><span>VF</span>-26</div></div><div class="season">Formule 1 · Saison 2026</div>';
+      statusbarEl.innerHTML = '<div class="stat-block"><div class="stat-label">Châssis</div><div class="stat-value">VF-26/C1</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Groupe motopropulseur</div><div class="stat-value">Ferrari 066/11</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Pilotes</div><div class="stat-value hi">Bearman · Ocon</div></div><div class="sep"></div><div class="stat-block" style="text-align:right"><div class="stat-label">Contrôles</div><div class="stat-value">Drag · Scroll · Clic droit</div></div>';
+    } else if (isFerrari) {
+      topbarEl.innerHTML = '<div><div class="brand-team">Scuderia Ferrari HP</div><div class="brand-car"><span>SF</span>-26</div></div><div class="season">Formule 1 · Saison 2026</div>';
+      statusbarEl.innerHTML = '<div class="stat-block"><div class="stat-label">Châssis</div><div class="stat-value">SF-26/C1</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Groupe motopropulseur</div><div class="stat-value">Ferrari 066/11</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Pilotes</div><div class="stat-value hi">Leclerc · Hamilton</div></div><div class="sep"></div><div class="stat-block" style="text-align:right"><div class="stat-label">Contrôles</div><div class="stat-value">Drag · Scroll · Clic droit</div></div>';
+    }
   }
 }
 
@@ -420,19 +468,42 @@ function shouldRenderScene() {
 }
 
 // ── snap caméra ───────────────────────────────────────────────────────────
+function startHaasBlinker() {
+  if (haasBlinkerAnim || haasIndicatorMaterials.length === 0) return;
+  haasIndicatorMaterials.forEach(m => { m.emissiveIntensity = 0; });
+  haasBlinkerAnim = gsap.to(haasIndicatorMaterials, {
+    emissiveIntensity: 4,
+    duration: 0.18,
+    repeat: -1,
+    yoyo: true,
+    ease: 'power1.inOut',
+  });
+}
+
+function stopHaasBlinker() {
+  if (haasBlinkerAnim) { haasBlinkerAnim.kill(); haasBlinkerAnim = null; }
+  haasIndicatorMaterials.forEach(m => { m.emissiveIntensity = 0; });
+}
+
 function snapCamera(camIdx, onDone) {
-  if (!camKF[camIdx]) { onDone?.(); return; }
+  const usingHaas = isHaasPage(currentPage);
+  const kf = usingHaas ? haasCamKF : camKF;
+  if (!kf[camIdx]) { onDone?.(); return; }
 
   document.querySelectorAll('.infobox').forEach(el => el.classList.remove('visible'));
 
   gsap.to(cam, {
-    px: camKF[camIdx].pos.x,    py: camKF[camIdx].pos.y,    pz: camKF[camIdx].pos.z,
-    tx: camKF[camIdx].target.x, ty: camKF[camIdx].target.y, tz: camKF[camIdx].target.z,
+    px: kf[camIdx].pos.x,    py: kf[camIdx].pos.y,    pz: kf[camIdx].pos.z,
+    tx: kf[camIdx].target.x, ty: kf[camIdx].target.y, tz: kf[camIdx].target.z,
     duration: 1.2,
     ease: 'power2.inOut',
     onComplete: () => {
-      const ibId = INFOBOXES[VIEWER_PAGE_START + camIdx];
+      const ibId = usingHaas
+        ? HAAS_INFOBOXES[HAAS_PAGE_START + camIdx]
+        : INFOBOXES[VIEWER_PAGE_START + camIdx];
       if (ibId) document.getElementById(ibId)?.classList.add('visible');
+      if (usingHaas && camIdx === 1) startHaasBlinker();
+      else stopHaasBlinker();
       onDone?.();
     },
   });
@@ -636,7 +707,8 @@ new GLTFLoader().load(studioGlbUrl, gltf => {
 new GLTFLoader().load(
   ferrariGlbUrl,
   gltf => {
-    const model = gltf.scene;
+    ferrariModel = gltf.scene;
+    const model = ferrariModel;
 
     model.traverse(node => {
       if (!node.isMesh) return;
@@ -686,6 +758,51 @@ new GLTFLoader().load(
     }
   },
   err => { console.error(err); pctEl.textContent = 'Erreur'; }
+);
+
+new GLTFLoader().load(
+  '/haas/2026_HAASF1_CGT.glb',
+  gltf => {
+    haasModel = gltf.scene;
+
+    haasModel.traverse(node => {
+      if (!node.isMesh) return;
+      node.castShadow = true;
+      node.receiveShadow = true;
+      if (node.material) {
+        const mats = Array.isArray(node.material) ? node.material : [node.material];
+        mats.forEach(m => {
+          m.envMapIntensity = 1.8;
+          if (m.map) { m.map.anisotropy = renderer.capabilities.getMaxAnisotropy(); m.map.needsUpdate = true; }
+          // Détection des matériaux indicateurs (clignotants rétroviseurs)
+          const isIndicator = /indicator/i.test(m.name)
+            || /indicator/i.test(node.name)
+            || (m.emissiveMap && /indicator/i.test(m.emissiveMap.image?.src || m.emissiveMap.image?.currentSrc || m.emissiveMap.name || ''));
+          if (isIndicator) {
+            m.emissiveIntensity = 0;
+            if (!haasIndicatorMaterials.includes(m)) haasIndicatorMaterials.push(m);
+          }
+          m.needsUpdate = true;
+        });
+      }
+    });
+
+    const box0   = new THREE.Box3().setFromObject(haasModel);
+    const size0  = box0.getSize(new THREE.Vector3());
+    haasModel.scale.setScalar(4 / Math.max(size0.x, size0.y, size0.z));
+
+    const box    = new THREE.Box3().setFromObject(haasModel);
+    const center = box.getCenter(new THREE.Vector3());
+    const size   = box.getSize(new THREE.Vector3());
+    haasModel.position.sub(center);
+    haasModel.position.y += size.y / 2;
+    haasModel.position.x -= 0.6;
+
+    haasModel.visible = false;
+    scene.add(haasModel);
+  },
+  undefined,
+  err => console.warn('Haas model non chargé:', err)
 );
 
 // ── resize ────────────────────────────────────────────────────────────────

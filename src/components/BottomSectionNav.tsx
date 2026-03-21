@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-const SECTION_COUNT = 8;
+const SECTION_COUNT = 9;
 const LIGHTS_OUT_MIN_DELAY = 500;
 const LIGHTS_OUT_MAX_DELAY = 3000;
 const NEXT_SEQUENCE_DELAY = 5000;
@@ -25,7 +25,8 @@ function getSectionLabel(index: number) {
     : index === 4 ? 'SF-26'
     : index === 5 ? 'Spa'
     : index === 6 ? 'Données'
-    : 'Conclusion';
+    : index === 7 ? 'Conclusion'
+    : 'Haas';
 }
 
 function ReactionLabelIcon({ tone }: { tone: ReactionTone }) {
@@ -246,7 +247,8 @@ export default function BottomSectionNav() {
                     : index === 4 ? 'SF-26'
                     : index === 5 ? 'Spa'
                     : index === 6 ? 'Données'
-                    : 'Fin'}
+                    : index === 7 ? 'Fin'
+                    : 'Haas'}
                 </span>
               </button>
             );
