@@ -140,13 +140,13 @@ Ces librairies **React, GSAP et autres outils d’interface et d’animation** p
 
 Afin de structurer notre narration et de définir l'expérience utilisateur, nous avons conçu un wireframe complet sur **Figma**. Ce document sert de plan pour la hiérarchie visuelle, l'emplacement des graphiques et les mécaniques d'interaction.
 
-🔗 **[Consulter le Wireframe sur Figma](https://www.figma.com/design/NScnLEtFSYWRrBWTcuhv4b/F1Project?node-id=0-1&t=meHIixZrsysDpq6a-1)**
+🔗 **[Consulter les Wireframes sur Figma](https://www.figma.com/design/NScnLEtFSYWRrBWTcuhv4b/F1Project?node-id=0-1&t=meHIixZrsysDpq6a-1)**
 
 ### 1. Éléments de l'interface
-Le wireframe détaille l'intégration de chaque composant de notre site final :
+Les wireframes détaillent l'intégration de chaque composant de notre site final, bien évidement que lors de la conception du site final que certaines parties peuvent être adaptés et non respectés pour diverses raisons de réalisation ou complexité :
 
-* **Graphiques & Data :** Zones dédiées aux courbes de performance D3.js et aux indicateurs de mortalité.
-* **Boutons & Contrôles :** Éléments interactifs permettant de sélectionner des zones de la voiture ou de naviguer dans les décennies.
+* **Graphiques & Data :** Zones dédiées aux courbes de performance, et aux indicateurs de mortalité.
+* **Scroll informatif :** Éléments interactifs permettant de sélectionner des zones de la voiture ou de naviguer dans les décennies.
 * **Textes & Typographie :** Organisation des blocs narratifs selon une hiérarchie claire (titres d'impact vs textes explicatifs).
 * **Couleurs :** Utilisation d'un thème sombre avec des accents contrastés pour évoquer l'univers racing et la vitesse de la Formule 1.
 
