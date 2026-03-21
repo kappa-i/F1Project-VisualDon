@@ -1,15 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 const SECTION_COUNT = 8;
+const LIGHTS_OUT_MIN_DELAY = 500;
+const LIGHTS_OUT_MAX_DELAY = 3000;
+const NEXT_SEQUENCE_DELAY = 5000;
+
+type ReactionTone = 'idle' | 'first' | 'best' | 'improved' | 'worse' | 'false-start';
+
+type ReactionResult = {
+  timeMs: number;
+  tone: ReactionTone;
+  text: string;
+};
 
 function clampProgress(value: number) {
   return Math.max(0, Math.min(SECTION_COUNT - 1, value));
+}
+
+function getSectionLabel(index: number) {
+  return index === 0 ? 'Home'
+    : index === 1 ? 'Ère dangereuse'
+    : index === 2 ? 'Tournants'
+    : index === 3 ? 'Crash'
+    : index === 4 ? 'SF-26'
+    : index === 5 ? 'Spa'
+    : index === 6 ? 'Données'
+    : 'Conclusion';
+}
+
+function ReactionLabelIcon({ tone }: { tone: ReactionTone }) {
+  if (tone === 'best') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="10" x2="14" y1="2" y2="2" />
+        <line x1="12" x2="15" y1="14" y2="11" />
+        <circle cx="12" cy="14" r="8" />
+      </svg>
+    );
+  }
+
+  if (tone === 'improved') return <span aria-hidden="true" />;
+  if (tone === 'worse') return <span aria-hidden="true" />;
+  if (tone === 'false-start') return <span aria-hidden="true" />;
+  return null;
 }
 
 export default function BottomSectionNav() {
   const [activeSection, setActiveSection] = useState(0);
   const [progress, setProgress] = useState(0);
   const [startLightsOn, setStartLightsOn] = useState(0);
+  const [lightsOutAt, setLightsOutAt] = useState<number | null>(null);
+  const [lastReactionTime, setLastReactionTime] = useState<number | null>(null);
+  const [bestReactionTime, setBestReactionTime] = useState<number | null>(null);
+  const [falseStartLocked, setFalseStartLocked] = useState(false);
+  const [reactionResult, setReactionResult] = useState<ReactionResult>({
+    timeMs: 0,
+    tone: 'idle',
+    text: 'Home',
+  });
 
   useEffect(() => {
     const handleProgress = (event: Event) => {
@@ -29,6 +77,8 @@ export default function BottomSectionNav() {
   useEffect(() => {
     if (activeSection !== 0) {
       setStartLightsOn(0);
+      setLightsOutAt(null);
+      setFalseStartLocked(false);
       return;
     }
 
@@ -43,6 +93,8 @@ export default function BottomSectionNav() {
 
     const runSequence = () => {
       setStartLightsOn(0);
+      setLightsOutAt(null);
+      setFalseStartLocked(false);
 
       queue(600, () => {
         setStartLightsOn(1);
@@ -50,10 +102,11 @@ export default function BottomSectionNav() {
           setStartLightsOn(2);
           queue(900, () => {
             setStartLightsOn(3);
-            const randomLightsOutDelay = 500 + Math.random() * 2500;
+            const randomLightsOutDelay = LIGHTS_OUT_MIN_DELAY + Math.random() * (LIGHTS_OUT_MAX_DELAY - LIGHTS_OUT_MIN_DELAY);
             queue(randomLightsOutDelay, () => {
               setStartLightsOn(0);
-              queue(6000, runSequence);
+              setLightsOutAt(performance.now());
+              queue(NEXT_SEQUENCE_DELAY, runSequence);
             });
           });
         });
@@ -70,10 +123,69 @@ export default function BottomSectionNav() {
 
   const progressPercent = `${(progress / (SECTION_COUNT - 1)) * 100}%`;
 
+  const startDisplayMode = useMemo(() => {
+    if (activeSection !== 0) return 'static-red';
+    if (startLightsOn > 0) return 'sequence';
+    if (lightsOutAt !== null) return 'lights-out';
+    return 'sequence';
+  }, [activeSection, lightsOutAt, startLightsOn]);
+
+  const recordReaction = () => {
+    if (activeSection !== 0 || lightsOutAt === null || falseStartLocked) return;
+
+    const now = performance.now();
+    const timeMs = Math.max(0, Math.round(now - lightsOutAt));
+    const nextBest = bestReactionTime === null ? timeMs : Math.min(bestReactionTime, timeMs);
+    const isNewBest = bestReactionTime === null || timeMs < bestReactionTime;
+    const isFirstAttempt = lastReactionTime === null;
+
+    let tone: ReactionTone = 'first';
+    if (!isFirstAttempt) {
+      if (isNewBest) tone = 'best';
+      else if (timeMs < lastReactionTime) tone = 'improved';
+      else tone = 'worse';
+    }
+
+    setLastReactionTime(timeMs);
+    setBestReactionTime(nextBest);
+    setReactionResult({
+      timeMs,
+      tone,
+      text: `${timeMs} ms`,
+    });
+    setLightsOutAt(null);
+  };
+
+  const registerFalseStart = () => {
+    if (activeSection !== 0 || falseStartLocked || startLightsOn <= 0 || lightsOutAt !== null) return;
+
+    setFalseStartLocked(true);
+    setLightsOutAt(null);
+    setReactionResult({
+      timeMs: 0,
+      tone: 'false-start',
+      text: 'Faux depart',
+    });
+  };
+
   const goToSection = (sectionIndex: number) => {
     window.dispatchEvent(new CustomEvent('section-nav-jump', {
       detail: { sectionIndex, source: 'nav' },
     }));
+  };
+
+  const handleSectionClick = (sectionIndex: number) => {
+    if (sectionIndex === 0 && activeSection === 0) {
+      if (lightsOutAt !== null) {
+        recordReaction();
+        return;
+      }
+
+      registerFalseStart();
+      return;
+    }
+
+    goToSection(sectionIndex);
   };
 
   return (
@@ -97,19 +209,9 @@ export default function BottomSectionNav() {
                 key={index}
                 type="button"
                 className={`bottom-section-nav__link${isActive ? ' is-active' : ''}${isPassed ? ' is-passed' : ''}`}
-                onClick={() => goToSection(index)}
+                onClick={() => handleSectionClick(index)}
                 aria-current={isActive ? 'page' : undefined}
-                aria-label={
-                  index === 0 ? 'Home'
-                  : index === 1 ? 'Ère dangereuse'
-                  : index === 2 ? 'Tournants'
-                  : index === 3 ? 'Crash'
-                  : index === 4 ? 'SF-26'
-                  : index === 5 ? 'Spa'
-                  : index === 6 ? 'Données'
-                  : 'Conclusion'
-                }
-                aria-label={isStart ? 'Home' : isFinish ? 'Finish' : `Section-${index + 1}`}
+                aria-label={isStart ? 'F1 reaction start' : isFinish ? 'Finish' : getSectionLabel(index)}
               >
                 <span
                   className={`bottom-section-nav__dot${isStart ? ' is-start' : ''}${isFinish ? ' is-finish' : ''}`}
@@ -117,8 +219,8 @@ export default function BottomSectionNav() {
                 >
                   {isStart ? (
                     <span
-                      className={`bottom-section-nav__start-lights${isActive ? ' is-armed' : ''}`}
-                      data-lights-on={isActive ? startLightsOn : 0}
+                      className={`bottom-section-nav__start-lights bottom-section-nav__start-lights--${startDisplayMode}${isActive ? ' is-armed' : ''}`}
+                      data-lights-on={activeSection === 0 ? startLightsOn : 3}
                     >
                       <span className="bottom-section-nav__start-light" />
                       <span className="bottom-section-nav__start-light" />
@@ -130,15 +232,21 @@ export default function BottomSectionNav() {
                     </svg>
                   ) : null}
                 </span>
-                <span className="bottom-section-nav__label">
-                  {index === 0 ? 'Home'
-                   : index === 1 ? 'Ère'
-                   : index === 2 ? 'Tournants'
-                   : index === 3 ? 'Crash'
-                   : index === 4 ? 'SF-26'
-                   : index === 5 ? 'Spa'
-                   : index === 6 ? 'Données'
-                   : 'Fin'}
+                <span className={`bottom-section-nav__label${index === 0 && isActive ? ` is-${reactionResult.tone}` : ''}`}>
+                  {index === 0 && isActive && reactionResult.tone !== 'idle' ? (
+                    <span className={`bottom-section-nav__label-icon is-${reactionResult.tone}`}>
+                      <ReactionLabelIcon tone={reactionResult.tone} />
+                    </span>
+                  ) : null}
+                  {index === 0 && isActive ? reactionResult.text
+                    : index === 0 ? 'Home'
+                    : index === 1 ? 'Ère'
+                    : index === 2 ? 'Tournants'
+                    : index === 3 ? 'Crash'
+                    : index === 4 ? 'SF-26'
+                    : index === 5 ? 'Spa'
+                    : index === 6 ? 'Données'
+                    : 'Fin'}
                 </span>
               </button>
             );

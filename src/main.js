@@ -23,7 +23,7 @@ if (shaderRevealMount) {
       backImage: shaderBackUrl,
       style: { width: '100%', height: '100%' },
       mouseForce: 65,
-      cursorSize: 260,
+      cursorSize: 520,
       resolution: 0.5,
       iterationsViscous: 22,
       iterationsPoisson: 26,
@@ -154,7 +154,8 @@ scene.environmentIntensity = 0.2;
 //   51 → viewer cam0  (translateY -400vh)
 //   52 → viewer cam1  (translateY -400vh, caméra change)
 //   53 → viewer cam2  (translateY -400vh, caméra change)
-//   54–58 → spa 5 POI (translateY -500vh)
+//   54 → viewer cam3  (translateY -400vh, caméra arrière)
+//   55–58 → spa 4 POI (translateY -500vh)
 //   59 → data     (translateY -600vh)
 //   60 → conclusion   (translateY -700vh)
 
@@ -162,7 +163,7 @@ const CRASH_PAGE_START = 3;
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
-const VIEWER_PAGE_END = VIEWER_PAGE_START + 2;
+const VIEWER_PAGE_END = VIEWER_PAGE_START + 3;
 const SPA_PAGE_START = VIEWER_PAGE_END + 1;
 const SPA_PAGE_COUNT = 4;
 const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
@@ -181,6 +182,7 @@ const WHEEL_NAV_LOCK_MS = 1150;
 const INFOBOXES  = {
   [VIEWER_PAGE_START + 1]: 'ib-2',
   [VIEWER_PAGE_START + 2]: 'ib-3',
+  [VIEWER_PAGE_START + 3]: 'ib-4',
 };
 
 const crashFrameEl = document.getElementById('crash-frame');
@@ -277,6 +279,7 @@ function pageToCamera(idx) {
   if (idx === VIEWER_PAGE_START) return 0;
   if (idx === VIEWER_PAGE_START + 1) return 1;
   if (idx === VIEWER_PAGE_START + 2) return 2;
+  if (idx === VIEWER_PAGE_START + 3) return 3;
   return -1;
 }
 
@@ -382,8 +385,8 @@ document.body.appendChild(dotsEl);
 
 function rebuildDots() {
   dotsEl.innerHTML = '';
-  // 3 dots pour les 3 vues caméra
-  [VIEWER_PAGE_START, VIEWER_PAGE_START + 1, VIEWER_PAGE_START + 2].forEach(pageIdx => {
+  // 4 dots pour les 4 vues caméra
+  [VIEWER_PAGE_START, VIEWER_PAGE_START + 1, VIEWER_PAGE_START + 2, VIEWER_PAGE_START + 3].forEach(pageIdx => {
     const d = document.createElement('div');
     d.style.cssText = `
       width:6px; height:6px; border-radius:50%;
@@ -513,6 +516,15 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
         isTransitioning = false;
       }
     },
+  });
+}
+
+const heroScrollBtn = document.getElementById('hero-scroll-btn');
+if (heroScrollBtn) {
+  heroScrollBtn.addEventListener('click', e => {
+    e.preventDefault();
+    if (!modelLoaded || isTransitioning) return;
+    goToPage(1);
   });
 }
 
@@ -653,6 +665,7 @@ new GLTFLoader().load(
       { pos: new THREE.Vector3(1.00,  1.16,  3.69), target: new THREE.Vector3(-0.70, 0.09, 0.41) },
       { pos: new THREE.Vector3(0.02,  1.00,  1.07), target: new THREE.Vector3(-0.51, 0.49, 0.29) },
       { pos: new THREE.Vector3(-0.89, 1.02, -0.43), target: new THREE.Vector3(-0.63, 0.44, 0.34) },
+      { pos: new THREE.Vector3(-0.58, 1.08, -4.55), target: new THREE.Vector3(-0.58, 0.70, -1.95) },
     ];
 
     cam.px = camKF[0].pos.x;    cam.py = camKF[0].pos.y;    cam.pz = camKF[0].pos.z;
