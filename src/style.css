@@ -773,14 +773,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 
 .bottom-section-nav__label::before {
-  content: "";
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-right: 0;
-  opacity: 0;
-  vertical-align: middle;
-  transition: opacity 0.2s ease, margin-right 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  content: none;
 }
 
 .bottom-section-nav__link.is-active .bottom-section-nav__label {
@@ -800,22 +793,28 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   color: rgba(255,255,255,0.92);
 }
 
+.bottom-section-nav__label-icon {
+  display: inline-flex;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.bottom-section-nav__label-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .bottom-section-nav__link.is-active .bottom-section-nav__label.is-best {
   color: #b67cff;
   border-color: rgba(182,124,255,0.7);
   box-shadow: 0 12px 28px rgba(64,12,114,0.35);
-}
-
-.bottom-section-nav__link.is-active .bottom-section-nav__label.is-best::before {
-  width: 9px;
-  height: 9px;
-  margin-right: 6px;
-  opacity: 1;
-  border: 1.5px solid currentColor;
-  border-radius: 999px;
-  background:
-    linear-gradient(currentColor, currentColor) center / 1.5px 4px no-repeat,
-    linear-gradient(currentColor, currentColor) center 2px / 4px 1.5px no-repeat;
 }
 
 .bottom-section-nav__link.is-active .bottom-section-nav__label.is-improved {
@@ -824,9 +823,9 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   box-shadow: 0 12px 28px rgba(7,63,21,0.3);
 }
 
-.bottom-section-nav__link.is-active .bottom-section-nav__label.is-improved::before {
-  margin-right: 6px;
-  opacity: 1;
+.bottom-section-nav__label-icon.is-improved span {
+  width: 0;
+  height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 8px solid currentColor;
@@ -838,9 +837,9 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   box-shadow: 0 12px 28px rgba(95,8,25,0.35);
 }
 
-.bottom-section-nav__link.is-active .bottom-section-nav__label.is-worse::before {
-  margin-right: 6px;
-  opacity: 1;
+.bottom-section-nav__label-icon.is-worse span {
+  width: 0;
+  height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 8px solid currentColor;
@@ -852,12 +851,10 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   box-shadow: 0 12px 28px rgba(120,56,4,0.35);
 }
 
-.bottom-section-nav__link.is-active .bottom-section-nav__label.is-false-start::before {
+.bottom-section-nav__label-icon.is-false-start span {
   position: relative;
   width: 10px;
   height: 10px;
-  margin-right: 6px;
-  opacity: 1;
   background:
     linear-gradient(45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%),
     linear-gradient(-45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%);

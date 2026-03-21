@@ -28,6 +28,23 @@ function getSectionLabel(index: number) {
     : 'Conclusion';
 }
 
+function ReactionLabelIcon({ tone }: { tone: ReactionTone }) {
+  if (tone === 'best') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="10" x2="14" y1="2" y2="2" />
+        <line x1="12" x2="15" y1="14" y2="11" />
+        <circle cx="12" cy="14" r="8" />
+      </svg>
+    );
+  }
+
+  if (tone === 'improved') return <span aria-hidden="true" />;
+  if (tone === 'worse') return <span aria-hidden="true" />;
+  if (tone === 'false-start') return <span aria-hidden="true" />;
+  return null;
+}
+
 export default function BottomSectionNav() {
   const [activeSection, setActiveSection] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -216,6 +233,11 @@ export default function BottomSectionNav() {
                   ) : null}
                 </span>
                 <span className={`bottom-section-nav__label${index === 0 && isActive ? ` is-${reactionResult.tone}` : ''}`}>
+                  {index === 0 && isActive && reactionResult.tone !== 'idle' ? (
+                    <span className={`bottom-section-nav__label-icon is-${reactionResult.tone}`}>
+                      <ReactionLabelIcon tone={reactionResult.tone} />
+                    </span>
+                  ) : null}
                   {index === 0 && isActive ? reactionResult.text
                     : index === 0 ? 'Home'
                     : index === 1 ? 'Ère'
