@@ -23,7 +23,7 @@ if (shaderRevealMount) {
       backImage: shaderBackUrl,
       style: { width: '100%', height: '100%' },
       mouseForce: 65,
-      cursorSize: 200,
+      cursorSize: 220,
       resolution: 0.5,
       iterationsViscous: 22,
       iterationsPoisson: 26,
