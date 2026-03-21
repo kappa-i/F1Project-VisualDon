@@ -656,15 +656,23 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 
 .bottom-section-nav__link:hover .bottom-section-nav__start-lights,
-.bottom-section-nav__link.is-passed .bottom-section-nav__start-lights,
 .bottom-section-nav__link.is-active .bottom-section-nav__start-lights {
   border-color: rgba(79, 79, 84, 0.45);
 }
 
 .bottom-section-nav__link:hover .bottom-section-nav__start-light,
-.bottom-section-nav__link.is-passed .bottom-section-nav__start-light,
 .bottom-section-nav__link.is-active .bottom-section-nav__start-light {
   border-color: #4f4f54;
+  background: transparent;
+  box-shadow: none;
+}
+
+.bottom-section-nav__link.is-passed .bottom-section-nav__start-lights {
+  border-color: var(--red);
+}
+
+.bottom-section-nav__link.is-passed .bottom-section-nav__start-light {
+  border-color: var(--red);
   background: transparent;
   box-shadow: none;
 }
