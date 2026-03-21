@@ -824,11 +824,13 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   align-items: center;
   justify-content: center;
   width: 100%;
+  min-height: 0;
 }
 
 .spa-svg {
-  width: 100%;
-  max-width: 460px;
+  width: min(88%, 820px);
+  max-width: none;
+  max-height: 72vh;
   height: auto;
   overflow: visible;
 }
