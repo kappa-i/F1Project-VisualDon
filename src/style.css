@@ -573,19 +573,23 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   align-items: center;
   justify-content: center;
   gap: 2px;
-  width: 16px;
-  height: 24px;
-  padding: 3px 0;
-  border: 1.5px solid #6e6e73;
+  width: 18px;
+  height: 30px;
+  padding: 3px 2px;
+  border: 1.5px solid rgba(79, 79, 84, 0.45);
   border-radius: 999px;
-  background: transparent;
+  background: #000;
   box-sizing: border-box;
 }
 
 .bottom-section-nav__start-light {
+  display: block;
+  flex: 0 0 auto;
   width: 6px;
   height: 6px;
-  border: 1.5px solid #6e6e73;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  border: 1.5px solid #4f4f54;
   border-radius: 999px;
   background: transparent;
   transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
@@ -653,13 +657,13 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .bottom-section-nav__link:hover .bottom-section-nav__start-lights,
 .bottom-section-nav__link.is-passed .bottom-section-nav__start-lights,
 .bottom-section-nav__link.is-active .bottom-section-nav__start-lights {
-  border-color: #6e6e73;
+  border-color: rgba(79, 79, 84, 0.45);
 }
 
 .bottom-section-nav__link:hover .bottom-section-nav__start-light,
 .bottom-section-nav__link.is-passed .bottom-section-nav__start-light,
 .bottom-section-nav__link.is-active .bottom-section-nav__start-light {
-  border-color: #6e6e73;
+  border-color: #4f4f54;
   background: transparent;
   box-shadow: none;
 }
