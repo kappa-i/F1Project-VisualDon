@@ -124,6 +124,27 @@ const underLight = new THREE.PointLight(0xe8002d, 0.2, 2);
 underLight.position.set(0, 0.4, 0);
 scene.add(underLight);
 
+// ── glow lights pour les lights Haas (intensity 0 par défaut) ─────────────
+const indicatorGlowL = new THREE.PointLight(0xffaa00, 0, 0.55, 2);
+indicatorGlowL.position.set(-0.15, 0.90, 0.45);
+scene.add(indicatorGlowL);
+
+const indicatorGlowR = new THREE.PointLight(0xffaa00, 0, 0.55, 2);
+indicatorGlowR.position.set(-1.05, 0.90, 0.45);
+scene.add(indicatorGlowR);
+
+const backlightGlowC = new THREE.PointLight(0xff1100, 0, 0.60, 2);
+backlightGlowC.position.set(-0.60, 0.45, -1.55);
+scene.add(backlightGlowC);
+
+const backlightGlowL = new THREE.PointLight(0xff1100, 0, 0.55, 2);
+backlightGlowL.position.set(-0.10, 0.85, -1.45);
+scene.add(backlightGlowL);
+
+const backlightGlowR = new THREE.PointLight(0xff1100, 0, 0.55, 2);
+backlightGlowR.position.set(-1.10, 0.85, -1.45);
+scene.add(backlightGlowR);
+
 // ── ground ────────────────────────────────────────────────────────────────
 const ground = new THREE.Mesh(
   new THREE.PlaneGeometry(40, 40),
@@ -170,7 +191,7 @@ const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
 const DATA_PAGE = SPA_PAGE_END + 1;
 const CONCLUSION_PAGE = DATA_PAGE + 1;
 const HAAS_PAGE_START = CONCLUSION_PAGE + 1;
-const HAAS_PAGE_END = HAAS_PAGE_START + 3;
+const HAAS_PAGE_END = HAAS_PAGE_START + 5;
 const PAGE_COUNT = HAAS_PAGE_END + 1;
 const CRASH_SCROLL_DISTANCE = 7000;
 const CRASH_EXIT_DISTANCE = 220;
@@ -186,11 +207,7 @@ const INFOBOXES  = {
   [VIEWER_PAGE_START + 2]: 'ib-3',
   [VIEWER_PAGE_START + 3]: 'ib-4',
 };
-const HAAS_INFOBOXES = {
-  [HAAS_PAGE_START + 1]: 'ib-haas-2',
-  [HAAS_PAGE_START + 2]: 'ib-haas-3',
-  [HAAS_PAGE_START + 3]: 'ib-haas-4',
-};
+const HAAS_INFOBOXES = {};
 
 const crashFrameEl = document.getElementById('crash-frame');
 const crashFrameUrls = Array.from({ length: CRASH_FRAME_COUNT }, (_, index) =>
@@ -292,6 +309,8 @@ function pageToCamera(idx) {
   if (idx === HAAS_PAGE_START + 1) return 1;
   if (idx === HAAS_PAGE_START + 2) return 2;
   if (idx === HAAS_PAGE_START + 3) return 3;
+  if (idx === HAAS_PAGE_START + 4) return 4;
+  if (idx === HAAS_PAGE_START + 5) return 5;
   return -1;
 }
 
@@ -303,11 +322,15 @@ let ferrariModel = null;
 let haasModel    = null;
 let haasIndicatorMaterials = [];
 let haasBlinkerAnim = null;
+let haasBacklightMaterials = [];
+let haasBacklightAnim = null;
 const haasCamKF = [
-  { pos: new THREE.Vector3(1.00,  1.16,  3.69), target: new THREE.Vector3(-0.70, 0.09, 0.41) },
-  { pos: new THREE.Vector3(0.02,  1.00,  1.07), target: new THREE.Vector3(-0.51, 0.49, 0.29) },
-  { pos: new THREE.Vector3(-0.89, 1.02, -0.43), target: new THREE.Vector3(-0.63, 0.44, 0.34) },
-  { pos: new THREE.Vector3(-0.58, 1.08, -4.55), target: new THREE.Vector3(-0.58, 0.70, -1.95) },
+  { pos: new THREE.Vector3(1.00,  1.16,  3.69), target: new THREE.Vector3(-0.70, 0.09,  0.41) },
+  { pos: new THREE.Vector3(0.02,  1.00,  1.07), target: new THREE.Vector3(-0.51, 0.49,  0.29) },
+  { pos: new THREE.Vector3(-0.89, 1.02, -0.43), target: new THREE.Vector3(-0.63, 0.44,  0.34) },
+  { pos: new THREE.Vector3(-0.58, 0.65, -3.00), target: new THREE.Vector3(-0.58, 0.48, -1.65) },
+  { pos: new THREE.Vector3(-0.60, 0.72,  2.60), target: new THREE.Vector3(-0.60, 0.40,  0.00) },
+  { pos: new THREE.Vector3(-0.60, 5.20,  0.80), target: new THREE.Vector3(-0.60, 0.40, -0.40) },
 ];
 let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
@@ -352,6 +375,7 @@ function pageToSectionProgress(pageIdx) {
     const viewerProgress = (pageIdx - VIEWER_PAGE_START) / Math.max(1, VIEWER_PAGE_END - VIEWER_PAGE_START);
     return 4 + viewerProgress * 0.92;
   }
+
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) {
     const spaProgress = (pageIdx - SPA_PAGE_START) / Math.max(1, SPA_PAGE_END - SPA_PAGE_START);
     return 5 + spaProgress * 0.92;
@@ -415,8 +439,10 @@ document.body.appendChild(dotsEl);
 
 function rebuildDots() {
   dotsEl.innerHTML = '';
-  const startPage = isHaasPage(currentPage) ? HAAS_PAGE_START : VIEWER_PAGE_START;
-  [0, 1, 2, 3].forEach(i => {
+  const isHaas = isHaasPage(currentPage);
+  const startPage = isHaas ? HAAS_PAGE_START : VIEWER_PAGE_START;
+  const endPage   = isHaas ? HAAS_PAGE_END   : VIEWER_PAGE_END;
+  for (let i = 0; i <= endPage - startPage; i++) {
     const pageIdx = startPage + i;
     const d = document.createElement('div');
     d.style.cssText = `
@@ -425,11 +451,12 @@ function rebuildDots() {
       transition:background .4s, transform .4s;
     `;
     dotsEl.appendChild(d);
-  });
+  }
 }
 
 function updateDots() {
-  const startPage = isHaasPage(currentPage) ? HAAS_PAGE_START : VIEWER_PAGE_START;
+  const isHaas    = isHaasPage(currentPage);
+  const startPage = isHaas ? HAAS_PAGE_START : VIEWER_PAGE_START;
   dotsEl.querySelectorAll('div').forEach((d, i) => {
     const pageIdx = startPage + i;
     d.style.background = currentPage === pageIdx ? '#e8002d' : 'rgba(255,255,255,0.2)';
@@ -449,7 +476,7 @@ function updateHUD(pageIdx) {
   }
   if (ferrariModel) ferrariModel.visible = isFerrari;
   if (haasModel) haasModel.visible = isHaas;
-  if (!isHaas) stopHaasBlinker();
+  if (!isHaas) { stopHaasBlinker(); stopHaasBacklight(); }
   const topbarEl = document.getElementById('topbar');
   const statusbarEl = document.getElementById('statusbar');
   if (topbarEl && statusbarEl) {
@@ -468,21 +495,60 @@ function shouldRenderScene() {
 }
 
 // ── snap caméra ───────────────────────────────────────────────────────────
-function startHaasBlinker() {
-  if (haasBlinkerAnim || haasIndicatorMaterials.length === 0) return;
-  haasIndicatorMaterials.forEach(m => { m.emissiveIntensity = 0; });
-  haasBlinkerAnim = gsap.to(haasIndicatorMaterials, {
-    emissiveIntensity: 4,
-    duration: 0.18,
+function startHaasBacklight() {
+  if (haasBacklightAnim) return;
+  const proxy = { v: 0 };
+  haasBacklightAnim = gsap.to(proxy, {
+    v: 1,
+    duration: 0.28,
     repeat: -1,
     yoyo: true,
-    ease: 'power1.inOut',
+    ease: 'power2.inOut',
+    onUpdate() {
+      const i = proxy.v;
+      haasBacklightMaterials.forEach(m => {
+        m.emissive.setRGB(i, 0, 0);
+        m.emissiveIntensity = i * 3.5;
+      });
+      backlightGlowC.intensity = i * 1.1;
+      backlightGlowL.intensity = i * 0.9;
+      backlightGlowR.intensity = i * 0.9;
+    },
+    onComplete() {},
+  });
+}
+
+function stopHaasBacklight() {
+  if (haasBacklightAnim) { haasBacklightAnim.kill(); haasBacklightAnim = null; }
+  haasBacklightMaterials.forEach(m => { m.emissive.setRGB(0, 0, 0); m.emissiveIntensity = 0; });
+  backlightGlowC.intensity = 0;
+  backlightGlowL.intensity = 0;
+  backlightGlowR.intensity = 0;
+}
+
+function startHaasBlinker() {
+  if (haasBlinkerAnim) return;
+  const proxy = { v: 0 };
+  haasBlinkerAnim = gsap.to(proxy, {
+    v: 1,
+    duration: 0.38,
+    repeat: -1,
+    yoyo: true,
+    ease: 'power2.inOut',
+    onUpdate() {
+      const i = proxy.v;
+      haasIndicatorMaterials.forEach(m => { m.emissiveIntensity = i * 3; });
+      indicatorGlowL.intensity = i * 0.9;
+      indicatorGlowR.intensity = i * 0.9;
+    },
   });
 }
 
 function stopHaasBlinker() {
   if (haasBlinkerAnim) { haasBlinkerAnim.kill(); haasBlinkerAnim = null; }
   haasIndicatorMaterials.forEach(m => { m.emissiveIntensity = 0; });
+  indicatorGlowL.intensity = 0;
+  indicatorGlowR.intensity = 0;
 }
 
 function snapCamera(camIdx, onDone) {
@@ -502,8 +568,8 @@ function snapCamera(camIdx, onDone) {
         ? HAAS_INFOBOXES[HAAS_PAGE_START + camIdx]
         : INFOBOXES[VIEWER_PAGE_START + camIdx];
       if (ibId) document.getElementById(ibId)?.classList.add('visible');
-      if (usingHaas && camIdx === 1) startHaasBlinker();
-      else stopHaasBlinker();
+      if (usingHaas && (camIdx === 1 || camIdx === 4)) startHaasBlinker(); else stopHaasBlinker();
+      if (usingHaas && camIdx === 3) startHaasBacklight(); else stopHaasBacklight();
       onDone?.();
     },
   });
@@ -775,12 +841,18 @@ new GLTFLoader().load(
           m.envMapIntensity = 1.8;
           if (m.map) { m.map.anisotropy = renderer.capabilities.getMaxAnisotropy(); m.map.needsUpdate = true; }
           // Détection des matériaux indicateurs (clignotants rétroviseurs)
-          const isIndicator = /indicator/i.test(m.name)
-            || /indicator/i.test(node.name)
-            || (m.emissiveMap && /indicator/i.test(m.emissiveMap.image?.src || m.emissiveMap.image?.currentSrc || m.emissiveMap.name || ''));
+          const emissiveSrc = m.emissiveMap?.image?.src || m.emissiveMap?.image?.currentSrc || m.emissiveMap?.name || '';
+          const isIndicator = /indicator/i.test(m.name) || /indicator/i.test(node.name) || /indicator/i.test(emissiveSrc);
           if (isIndicator) {
             m.emissiveIntensity = 0;
             if (!haasIndicatorMaterials.includes(m)) haasIndicatorMaterials.push(m);
+          }
+          // Détection des feux arrière (feu pluie central + endplates aileron)
+          const isBacklight = /backlight/i.test(m.name) || /backlight/i.test(node.name) || /backlight/i.test(emissiveSrc);
+          if (isBacklight) {
+            m.emissive = new THREE.Color(1, 0, 0);
+            m.emissiveIntensity = 0;
+            if (!haasBacklightMaterials.includes(m)) haasBacklightMaterials.push(m);
           }
           m.needsUpdate = true;
         });
