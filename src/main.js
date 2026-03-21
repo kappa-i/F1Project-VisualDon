@@ -191,7 +191,7 @@ const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
 const DATA_PAGE = SPA_PAGE_END + 1;
 const CONCLUSION_PAGE = DATA_PAGE + 1;
 const HAAS_PAGE_START = CONCLUSION_PAGE + 1;
-const HAAS_PAGE_END = HAAS_PAGE_START + 5;
+const HAAS_PAGE_END = HAAS_PAGE_START + 7;
 const PAGE_COUNT = HAAS_PAGE_END + 1;
 const CRASH_SCROLL_DISTANCE = 7000;
 const CRASH_EXIT_DISTANCE = 220;
@@ -311,6 +311,8 @@ function pageToCamera(idx) {
   if (idx === HAAS_PAGE_START + 3) return 3;
   if (idx === HAAS_PAGE_START + 4) return 4;
   if (idx === HAAS_PAGE_START + 5) return 5;
+  if (idx === HAAS_PAGE_START + 6) return 6;
+  if (idx === HAAS_PAGE_START + 7) return 7;
   return -1;
 }
 
@@ -325,12 +327,14 @@ let haasBlinkerAnim = null;
 let haasBacklightMaterials = [];
 let haasBacklightAnim = null;
 const haasCamKF = [
-  { pos: new THREE.Vector3(1.00,  1.16,  3.69), target: new THREE.Vector3(-0.70, 0.09,  0.41) },
-  { pos: new THREE.Vector3(0.02,  1.00,  1.07), target: new THREE.Vector3(-0.51, 0.49,  0.29) },
-  { pos: new THREE.Vector3(-0.89, 1.02, -0.43), target: new THREE.Vector3(-0.63, 0.44,  0.34) },
-  { pos: new THREE.Vector3(-0.58, 0.65, -3.00), target: new THREE.Vector3(-0.58, 0.48, -1.65) },
-  { pos: new THREE.Vector3(-0.60, 0.72,  2.60), target: new THREE.Vector3(-0.60, 0.40,  0.00) },
-  { pos: new THREE.Vector3(-0.60, 5.20,  0.80), target: new THREE.Vector3(-0.60, 0.40, -0.40) },
+  { pos: new THREE.Vector3(-0.59, 0.42,  3.09), target: new THREE.Vector3(-0.48,  0.00, -0.05) },
+  { pos: new THREE.Vector3( 0.99, 0.55,  1.71), target: new THREE.Vector3(-0.79, -0.00,  0.32) },
+  { pos: new THREE.Vector3( 0.29, 0.38,  1.11), target: new THREE.Vector3(-0.93,  0.06,  0.87) },
+  { pos: new THREE.Vector3(-0.57, 1.26,  1.35), target: new THREE.Vector3(-0.63,  0.54,  0.37) },
+  { pos: new THREE.Vector3(-1.24, 0.62,  0.60), target: new THREE.Vector3(-0.78,  0.54,  0.18) }, // blinkers
+  { pos: new THREE.Vector3(-0.93, 1.11,  0.09), target: new THREE.Vector3(-0.79,  0.96, -0.13) },
+  { pos: new THREE.Vector3(-1.51, 0.35, -3.24), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
+  { pos: new THREE.Vector3(-0.70, 0.42, -2.18), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
 ];
 let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
@@ -568,8 +572,8 @@ function snapCamera(camIdx, onDone) {
         ? HAAS_INFOBOXES[HAAS_PAGE_START + camIdx]
         : INFOBOXES[VIEWER_PAGE_START + camIdx];
       if (ibId) document.getElementById(ibId)?.classList.add('visible');
-      if (usingHaas && (camIdx === 1 || camIdx === 4)) startHaasBlinker(); else stopHaasBlinker();
-      if (usingHaas && camIdx === 3) startHaasBacklight(); else stopHaasBacklight();
+      if (usingHaas && camIdx === 4) startHaasBlinker(); else stopHaasBlinker();
+      if (usingHaas && (camIdx === 6 || camIdx === 7)) startHaasBacklight(); else stopHaasBacklight();
       onDone?.();
     },
   });
