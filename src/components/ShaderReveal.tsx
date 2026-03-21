@@ -5,6 +5,8 @@ import * as THREE from "three";
 export interface ShaderRevealProps {
   frontImage: string;
   backImage: string;
+  /** Brightness multiplier for the back image (1.25 = 125%) */
+  backBrightness?: number;
 
   /** Fluid impulse strength from mouse */
   mouseForce?: number;
@@ -65,6 +67,7 @@ interface ShaderRevealWebGL {
     uniforms: {
       revealStrength: { value: number };
       revealSoftness: { value: number };
+      backBrightness: { value: number };
     };
     resize: () => void;
     update: () => void;
@@ -78,11 +81,13 @@ interface ShaderRevealWebGL {
   updateSimOptions?: (opts: Partial<SimOptions>) => void;
   updateAutoDriver?: (opts: { enabled?: boolean; speed?: number; resumeDelay?: number }) => void;
   updateReveal?: (strength: number, softness: number) => void;
+  updateBackBrightness?: (value: number) => void;
 }
 
 const ShaderReveal: React.FC<ShaderRevealProps> = ({
   frontImage,
   backImage,
+  backBrightness = 1.25,
 
   mouseForce = 50,
   cursorSize = 250,
@@ -641,6 +646,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
 
       uniform float revealStrength;
       uniform float revealSoftness;
+      uniform float backBrightness;
 
       uniform vec2 frontTexResolution;
       uniform vec2 backTexResolution;
@@ -672,6 +678,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
 
         vec4 front = texture2D(frontTex, frontUv);
         vec4 back = texture2D(backTex, backUv);
+        back.rgb = clamp(back.rgb * backBrightness, 0.0, 1.0);
 
         vec4 color = mix(front, back, mask);
         float alpha = max(color.a, max(front.a, back.a));
@@ -1329,12 +1336,13 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         boundarySpace: { value: THREE.Vector2 };
         revealStrength: { value: number };
         revealSoftness: { value: number };
+        backBrightness: { value: number };
         frontTexResolution: { value: THREE.Vector2 };
         backTexResolution: { value: THREE.Vector2 };
         canvasResolution: { value: THREE.Vector2 };
       };
 
-      constructor(frontTex: THREE.Texture, backTex: THREE.Texture) {
+      constructor(frontTex: THREE.Texture, backTex: THREE.Texture, initialBackBrightness: number) {
         this.simulation = new Simulation();
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
@@ -1346,6 +1354,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
           boundarySpace: { value: new THREE.Vector2() },
           revealStrength: { value: revealStrength },
           revealSoftness: { value: revealSoftness },
+          backBrightness: { value: initialBackBrightness },
           frontTexResolution: {
             value: new THREE.Vector2(
               (frontTex.image as { width?: number })?.width ||
@@ -1414,6 +1423,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         $wrapper: HTMLElement;
         frontTex: THREE.Texture;
         backTex: THREE.Texture;
+        getBackBrightness: () => number;
       }) {
         this.props = props;
 
@@ -1445,6 +1455,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this.output = new Output(
           this.props.frontTex as THREE.Texture,
           this.props.backTex as THREE.Texture,
+          (this.props.getBackBrightness as () => number)(),
         );
 
         this.autoDriver = new AutoDriver(Mouse, this, {
@@ -1468,6 +1479,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       resize() {
         Common.resize();
         this.output.resize();
+        this.updateBackBrightness((this.props.getBackBrightness as () => number)());
       }
 
       updateSimOptions(opts: Partial<SimOptions>) {
@@ -1484,6 +1496,10 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       updateReveal(strength: number, softness: number) {
         this.output.uniforms.revealStrength.value = strength;
         this.output.uniforms.revealSoftness.value = softness;
+      }
+
+      updateBackBrightness(value: number) {
+        this.output.uniforms.backBrightness.value = value;
       }
 
       render() {
@@ -1539,6 +1555,13 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
 
     container.style.position = container.style.position || "relative";
     container.style.overflow = container.style.overflow || "hidden";
+    const getBackBrightnessFromCss = () => {
+      const cssValue = getComputedStyle(container)
+        .getPropertyValue("--shader-back-brightness")
+        .trim();
+      const parsed = Number(cssValue);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : backBrightness;
+    };
 
     const loader = new THREE.TextureLoader();
     loader.crossOrigin = "anonymous";
@@ -1579,6 +1602,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
           $wrapper: container,
           frontTex,
           backTex,
+          getBackBrightness: getBackBrightnessFromCss,
         });
         webgl.start();
         webglRef.current = webgl;
@@ -1647,7 +1671,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         backTexRef.current = null;
       }
     };
-  }, [frontImage, backImage, resolution, isViscous, isBounce, autoIntensity, takeoverDuration, autoRampDuration]);
+  }, [frontImage, backImage, backBrightness, resolution, isViscous, isBounce, autoIntensity, takeoverDuration, autoRampDuration]);
 
   useEffect(() => {
     webglRef.current?.updateSimOptions?.({
@@ -1668,6 +1692,10 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
   useEffect(() => {
     webglRef.current?.updateReveal?.(revealStrength, revealSoftness);
   }, [revealStrength, revealSoftness]);
+
+  useEffect(() => {
+    webglRef.current?.updateBackBrightness?.(backBrightness);
+  }, [backBrightness]);
 
   return (
     <div
