@@ -80,13 +80,77 @@ D'autres projets, dans la presse de données ou la recherche académique, ont ut
 
 ## Structure du projet
 
-**À compléter au fil du développement.**
-
 ```
 F1Project-VisualDon/
-├── data/           # Données brutes et traitées
-├── src/            # Code source (HTML, CSS, JS)
-└── README.md
+├── .gitattributes
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── vite.config.js
+├── README.md
+├── assests/                              # Images d'inspiration utilisées dans le README
+│   ├── AstonMartinImg1.png
+│   ├── AstonMartinImg2.png
+│   ├── BidwellsImg1.png
+│   ├── BidwellsImg2.png
+│   ├── FerrariCarAddictImg1.png
+│   ├── FerrariCarAddictImg2.png
+│   ├── VitaImg1.png
+│   ├── VitaImg2.png
+│   ├── VogueImg1.png
+│   └── VogueImg2.png
+├── data/
+│   └── crashs/                           # Données d'accidents compilées par saison
+│       ├── f1_accidents.py               # Script Python de génération des données
+│       ├── f1_accidents_1950_2025.json   # Dataset consolidé complet (1950–2025)
+│       └── f1_accidents_YYYY.json        # Un fichier par saison (1950 → 2025)
+└── src/
+    ├── index.html
+    ├── main.js
+    ├── style.css
+    ├── assets/                           # Médias statiques (images)
+    │   ├── f1-merco.avif
+    │   ├── shader-back.jpg
+    │   ├── shader-front.webp
+    │   └── verso-srl.avif
+    ├── components/                       # Composants React/TSX
+    │   ├── BottomSectionNav.tsx
+    │   ├── ComparisonSlider.tsx
+    │   ├── CrashTitles.tsx
+    │   ├── ShaderReveal.tsx
+    │   ├── SpaSafety.tsx
+    │   └── SplitText.tsx
+    ├── fonts/                            # Polices Formula 1 officielles
+    │   ├── Formula1-Bold-4.ttf
+    │   ├── Formula1-Italic.ttf
+    │   └── Formula1-Regular-1.ttf
+    ├── models/                           # Modèles 3D (GLB)
+    │   ├── Ferrari_SF26_2026.glb
+    │   └── studio.glb
+    ├── public/
+    │   ├── crash-frames/                 # Séquence d'images exportée frame par frame (301 frames)
+    │   │   ├── frame_001.jpg
+    │   │   └── … frame_301.jpg
+    │   ├── haas/                         # Modèle 3D Haas F1 2026 + textures PBR
+    │   │   ├── 2026_HAASF1_CGT-V3.glb
+    │   │   └── 26_HAASF1_Textures/
+    │   │       ├── 26_HAASF1_Basecolor.png
+    │   │       ├── 26_HAASF1_Metallic.png
+    │   │       ├── 26_HAASF1_Normal.png
+    │   │       ├── 26_HAASF1_Roughness.png
+    │   │       ├── 26_HAASF1_Texture.png
+    │   │       └── … (autres maps PBR : carbone, pneus, échappement…)
+    │   └── spa/                          # Comparaisons avant/après des virages de Spa-Francorchamps
+    │       ├── bus-stop-avant.webp
+    │       ├── bus-stop-apres.png
+    │       ├── eau-rouge-avant.jpg
+    │       ├── eau-rouge-apres.webp
+    │       ├── la-source-avant.jpg
+    │       ├── la-source-apres.jpg
+    │       ├── pouhon-avant.jpg
+    │       └── pouhon-apres.jpg
+    └── video/
+        └── onboard_crash.mp4
 ```
 
 ---
