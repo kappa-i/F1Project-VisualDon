@@ -757,7 +757,7 @@ new GLTFLoader().load(studioGlbUrl, gltf => {
 }, undefined, err => console.warn('Studio non chargé:', err));
 
 new GLTFLoader().load(
-  '/haas/2026_HAASF1_CGT-V3.glb',
+  '/haas/2026_HAASF1_CGT-V4.glb',
   gltf => {
     haasModel = gltf.scene;
 
