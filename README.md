@@ -278,4 +278,4 @@ Notre wireframe inclut des annotations précises sur le comportement dynamique d
 
 ## Sources 
 
-- Modèle voiture Ferrari (Scuderia Ferrrari HP SF-26) - 
+- Modèle voiture Haas 2026 : https://www.turbosquid.com/FullPreview/2534860 -
