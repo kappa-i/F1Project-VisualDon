@@ -75,6 +75,17 @@ export default function BottomSectionNav() {
   }, []);
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code !== 'Space' || e.repeat) return;
+      e.preventDefault();
+      handleSectionClick(0);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeSection, lightsOutAt, falseStartLocked, startLightsOn]);
+
+  useEffect(() => {
     if (activeSection !== 0) {
       setStartLightsOn(0);
       setLightsOutAt(null);

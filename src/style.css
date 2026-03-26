@@ -550,6 +550,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   position: relative;
   z-index: 1;
   border: 0;
+  outline: none;
   background: transparent;
   color: rgba(255,255,255,0.44);
   cursor: pointer;
