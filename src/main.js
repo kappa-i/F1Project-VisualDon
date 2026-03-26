@@ -474,7 +474,7 @@ function updateHUD(pageIdx) {
   if (topbarEl && statusbarEl) {
     if (isHaas) {
       topbarEl.innerHTML = '<div><div class="brand-team">MoneyGram Haas F1</div><div class="brand-car"><span>VF</span>-26</div></div><div class="season">Formule 1 · Saison 2026</div>';
-      statusbarEl.innerHTML = '<div class="stat-block"><div class="stat-label">Châssis</div><div class="stat-value">VF-26/C1</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Groupe motopropulseur</div><div class="stat-value">Ferrari 066/11</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Pilotes</div><div class="stat-value hi">Bearman · Ocon</div></div><div class="sep"></div><div class="stat-block" style="text-align:right"><div class="stat-label">Contrôles</div><div class="stat-value">Drag · Scroll · Clic droit</div></div>';
+      statusbarEl.innerHTML = '<div class="stat-block"><div class="stat-label">Châssis</div><div class="stat-value">VF-26/C1</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Groupe motopropulseur</div><div class="stat-value">Ferrari 066/11</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Pilotes</div><div class="stat-value hi">Bearman · Ocon</div></div><div class="sep"></div><div class="stat-block" style="text-align:right"><div class="stat-label">3D model source</div><div class="stat-value">Selva Marcello</div></div>';
     }
   }
 }
