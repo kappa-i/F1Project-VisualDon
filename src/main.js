@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader }      from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { OrbitControls }  from 'three/examples/jsm/controls/OrbitControls.js';
 import gsap from 'gsap';
 import React from 'react';
@@ -11,7 +11,7 @@ import BottomSectionNav from './components/BottomSectionNav.tsx';
 import SpaSafety from './components/SpaSafety.tsx';
 import shaderFrontUrl from './assets/f1-merco.avif';
 import shaderBackUrl from './assets/verso-srl.avif';
-import studioGlbUrl from './models/studio.glb';
+import studioGlbUrl from './models/tunel.glb';
 
 
 const shaderRevealMount = document.getElementById('shader-reveal-root');
@@ -197,24 +197,7 @@ if (DEV_MODE) {
 }
 
 // ── lighting ──────────────────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0xffe0b0, 0.5));
-
-const key = new THREE.DirectionalLight(0xffcc80, 1.6);
-key.position.set(2.96, 3.59, 2.83);
-key.castShadow = true;
-key.shadow.mapSize.set(1024, 1024);
-key.shadow.camera.left = key.shadow.camera.bottom = -6;
-key.shadow.camera.right = key.shadow.camera.top = 6;
-key.shadow.bias = -0.001;
-scene.add(key);
-
-const fillLight = new THREE.DirectionalLight(0xff9060, 0.4);
-fillLight.position.set(-5, 2, 3);
-scene.add(fillLight);
-
-const rimLight = new THREE.DirectionalLight(0xffaa50, 0.8);
-rimLight.position.set(-1, 4, -8);
-scene.add(rimLight);
+scene.add(new THREE.AmbientLight(0xffffff, 0.3));
 
 const underLight = new THREE.PointLight(0xe8002d, 0.2, 2);
 underLight.position.set(0, 0.4, 0);
@@ -241,25 +224,25 @@ const backlightGlowR = new THREE.PointLight(0xff1100, 0, 0.55, 2);
 backlightGlowR.position.set(-1.10, 0.85, -1.45);
 scene.add(backlightGlowR);
 
-// ── ground ────────────────────────────────────────────────────────────────
-const ground = new THREE.Mesh(
-  new THREE.PlaneGeometry(40, 40),
-  new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9, metalness: 0.0 })
-);
-ground.rotation.x = -Math.PI / 2;
-ground.receiveShadow = true;
-scene.add(ground);
 
-const grid = new THREE.GridHelper(40, 40, 0x3a000a, 0x0e0e0e);
-grid.material.opacity = 0.3;
-grid.material.transparent = true;
-scene.add(grid);
 
 // ── environment ───────────────────────────────────────────────────────────
 const pmrem = new THREE.PMREMGenerator(renderer);
 pmrem.compileEquirectangularShader();
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-scene.environmentIntensity = 0.2;
+new RGBELoader().load(
+  '/citrus_orchard_puresky_1k.hdr',
+  texture => {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    const envMap = pmrem.fromEquirectangular(texture).texture;
+    scene.environment = envMap;
+    scene.background = envMap;
+    scene.environmentIntensity = 0.5;
+    texture.dispose();
+    pmrem.dispose();
+  },
+  undefined,
+  err => console.error('HDR non chargé:', err)
+);
 
 // ── navigation par pages ──────────────────────────────────────────────────
 //
@@ -854,6 +837,8 @@ const loaderEl = document.getElementById('loader');
 new GLTFLoader().load(studioGlbUrl, gltf => {
   const studio = gltf.scene;
   studio.traverse(node => { if (node.isMesh) node.receiveShadow = true; });
+  studio.position.z = 70;
+  studio.position.x = -0.5;
   scene.add(studio);
 }, undefined, err => console.warn('Studio non chargé:', err));
 
