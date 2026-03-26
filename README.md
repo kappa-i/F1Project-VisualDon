@@ -211,3 +211,7 @@ Notre wireframe inclut des annotations précises sur le comportement dynamique d
 - Gabriel Cappai
 - Nuno Guilherme Amaro Faria
 
+
+## Sources 
+
+- Modèle voiture Ferrari (Scuderia Ferrrari HP SF-26) - 
