@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader }      from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { OrbitControls }  from 'three/examples/jsm/controls/OrbitControls.js';
 import gsap from 'gsap';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -100,6 +101,101 @@ const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerH
 // Proxy caméra animé par GSAP
 const cam = { px: 4, py: 1.8, pz: 6, tx: 0, ty: 0, tz: 0 };
 
+// ── dev mode cam ──────────────────────────────────────────────────────────
+// Activé via ?dev dans l'URL  →  navigation libre + panel de coordonnées copiables
+const DEV_MODE = new URLSearchParams(location.search).has('dev');
+let devControls = null;
+let _devPosEl = null, _devTargetEl = null;
+
+function _devUpdatePanel() {
+  if (!_devPosEl) return;
+  const p = camera.position;
+  const t = devControls.target;
+  const f = v => v.toFixed(2);
+  _devPosEl.textContent    = `pos    ${f(p.x)}, ${f(p.y)}, ${f(p.z)}`;
+  _devTargetEl.textContent = `target ${f(t.x)}, ${f(t.y)}, ${f(t.z)}`;
+}
+
+function _devTeleport(raw) {
+  const groups = [...raw.matchAll(/Vector3\(\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*\)/g)];
+  if (groups.length < 2) return false;
+  const [px, py, pz] = groups[0].slice(1).map(Number);
+  const [tx, ty, tz] = groups[1].slice(1).map(Number);
+  camera.position.set(px, py, pz);
+  devControls.target.set(tx, ty, tz);
+  devControls.update();
+  return true;
+}
+
+function _devCopy() {
+  const p = camera.position;
+  const t = devControls.target;
+  const f = v => v.toFixed(2);
+  const str = `{ pos: new THREE.Vector3(${f(p.x)}, ${f(p.y)}, ${f(p.z)}), target: new THREE.Vector3(${f(t.x)}, ${f(t.y)}, ${f(t.z)}) },`;
+  navigator.clipboard.writeText(str).then(() => {
+    const btn = document.getElementById('_dev-copy-btn');
+    btn.textContent = 'Copié !';
+    btn.style.background = '#22c55e';
+    setTimeout(() => { btn.textContent = 'Copier keyframe'; btn.style.background = '#ff1800'; }, 1500);
+  });
+}
+
+if (DEV_MODE) {
+  document.body.classList.add('hud-active');
+  document.getElementById('canvas-wrap').style.pointerEvents = 'auto';
+  renderer.domElement.style.pointerEvents = 'auto';
+
+  const devStyle = document.createElement('style');
+  devStyle.textContent = 'body > *:not(#canvas-wrap):not(#_dev-panel) { display: none !important; }';
+  document.head.appendChild(devStyle);
+
+  devControls = new OrbitControls(camera, renderer.domElement);
+  devControls.enableDamping = true;
+  devControls.dampingFactor = 0.06;
+  devControls.target.set(cam.tx, cam.ty, cam.tz);
+  devControls.update();
+
+  const panel = document.createElement('div');
+  panel.id = '_dev-panel';
+  panel.style.cssText = [
+    'position:fixed', 'bottom:24px', 'left:50%', 'transform:translateX(-50%)',
+    'background:rgba(8,8,8,0.92)', 'border:1px solid #ff1800', 'border-radius:8px',
+    'padding:16px 20px', 'font-family:monospace', 'font-size:13px', 'color:#fff',
+    'z-index:99999', 'min-width:460px', 'user-select:none',
+    'box-shadow:0 0 30px rgba(255,24,0,0.25)',
+  ].join(';');
+  panel.innerHTML = `
+    <div style="color:#ff1800;font-weight:bold;letter-spacing:2px;margin-bottom:10px;font-size:11px;">DEV CAM — haasCamKF</div>
+    <div id="_dev-pos"    style="color:#e5e5e5;margin-bottom:4px;"></div>
+    <div id="_dev-target" style="color:#e5e5e5;margin-bottom:14px;"></div>
+    <button id="_dev-copy-btn" style="background:#ff1800;color:#fff;border:none;border-radius:4px;padding:7px 18px;cursor:pointer;font-family:monospace;font-size:12px;letter-spacing:0.5px;">Copier keyframe</button>
+    <span style="margin-left:14px;font-size:11px;color:#555;">clic+drag · scroll · clic-droit pan</span>
+    <div style="margin-top:12px;border-top:1px solid #2a2a2a;padding-top:12px;display:flex;gap:8px;align-items:center;">
+      <input id="_dev-goto" placeholder="coller un keyframe ici…" style="flex:1;background:#111;border:1px solid #333;border-radius:4px;padding:6px 10px;color:#fff;font-family:monospace;font-size:12px;outline:none;" />
+      <button id="_dev-goto-btn" style="background:#333;color:#fff;border:none;border-radius:4px;padding:6px 14px;cursor:pointer;font-family:monospace;font-size:12px;white-space:nowrap;">Aller →</button>
+    </div>
+  `;
+  document.body.appendChild(panel);
+  _devPosEl    = document.getElementById('_dev-pos');
+  _devTargetEl = document.getElementById('_dev-target');
+  document.getElementById('_dev-copy-btn').addEventListener('click', _devCopy);
+
+  const gotoInput = document.getElementById('_dev-goto');
+  const gotoBtn   = document.getElementById('_dev-goto-btn');
+
+  function _doGoto() {
+    const ok = _devTeleport(gotoInput.value);
+    gotoBtn.textContent = ok ? 'OK ✓' : 'Erreur';
+    gotoBtn.style.background = ok ? '#22c55e' : '#dc2626';
+    setTimeout(() => { gotoBtn.textContent = 'Aller →'; gotoBtn.style.background = '#333'; }, 1200);
+    if (ok) gotoInput.value = '';
+  }
+
+  gotoBtn.addEventListener('click', _doGoto);
+  gotoInput.addEventListener('keydown', e => { if (e.key === 'Enter') _doGoto(); });
+  gotoInput.addEventListener('paste', () => setTimeout(_doGoto, 0));
+}
+
 // ── lighting ──────────────────────────────────────────────────────────────
 scene.add(new THREE.AmbientLight(0xffe0b0, 0.5));
 
@@ -184,7 +280,7 @@ const CRASH_PAGE_START = 3;
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
-const VIEWER_PAGE_END = VIEWER_PAGE_START + 7;
+const VIEWER_PAGE_END = VIEWER_PAGE_START + 8;
 const SPA_PAGE_START = VIEWER_PAGE_END + 1;
 const SPA_PAGE_COUNT = 4;
 const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
@@ -205,8 +301,9 @@ const INFOBOXES  = {
   [VIEWER_PAGE_START + 2]: 'ib-haas-3',
   [VIEWER_PAGE_START + 3]: 'ib-haas-4',
   [VIEWER_PAGE_START + 4]: 'ib-haas-5',
-  [VIEWER_PAGE_START + 5]: 'ib-haas-6',
-  [VIEWER_PAGE_START + 7]: 'ib-haas-7',
+  [VIEWER_PAGE_START + 5]: 'ib-haas-8',
+  [VIEWER_PAGE_START + 6]: 'ib-haas-6',
+  [VIEWER_PAGE_START + 8]: 'ib-haas-7',
 };
 
 const crashFrameEl = document.getElementById('crash-frame');
@@ -309,6 +406,7 @@ function pageToCamera(idx) {
   if (idx === VIEWER_PAGE_START + 5) return 5;
   if (idx === VIEWER_PAGE_START + 6) return 6;
   if (idx === VIEWER_PAGE_START + 7) return 7;
+  if (idx === VIEWER_PAGE_START + 8) return 8;
   return -1;
 }
 
@@ -321,11 +419,12 @@ let haasBlinkerAnim = null;
 let haasBacklightMaterials = [];
 let haasBacklightAnim = null;
 const haasCamKF = [
-  { pos: new THREE.Vector3(-0.59, 0.42,  3.09), target: new THREE.Vector3(-0.48,  0.00, -0.05) },
+  { pos: new THREE.Vector3(0.72, 0.72, 2.83), target: new THREE.Vector3(-0.86, -0.04, 0.19) },
   { pos: new THREE.Vector3( 0.99, 0.55,  1.71), target: new THREE.Vector3(-0.79, -0.00,  0.32) },
   { pos: new THREE.Vector3( 0.29, 0.38,  1.11), target: new THREE.Vector3(-0.93,  0.06,  0.87) },
   { pos: new THREE.Vector3(-0.57, 1.26,  1.35), target: new THREE.Vector3(-0.63,  0.54,  0.37) },
   { pos: new THREE.Vector3(-1.24, 0.62,  0.60), target: new THREE.Vector3(-0.78,  0.54,  0.18) }, // blinkers
+  { pos: new THREE.Vector3(-0.60, 0.57, 0.05), target: new THREE.Vector3(-0.64, 0.19, 2.56) },, // volant
   { pos: new THREE.Vector3(-0.93, 1.11,  0.09), target: new THREE.Vector3(-0.79,  0.96, -0.13) },
   { pos: new THREE.Vector3(-1.51, 0.35, -3.24), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
   { pos: new THREE.Vector3(-0.70, 0.33, -2.18), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
@@ -555,7 +654,7 @@ function snapCamera(camIdx, onDone) {
       const ibId = INFOBOXES[VIEWER_PAGE_START + camIdx];
       if (ibId) document.getElementById(ibId)?.classList.add('visible');
       if (camIdx === 4) startHaasBlinker(); else stopHaasBlinker();
-      if (camIdx === 6 || camIdx === 7) startHaasBacklight(); else stopHaasBacklight();
+      if (camIdx === 7 || camIdx === 8) startHaasBacklight(); else stopHaasBacklight();
       onDone?.();
     },
   });
@@ -653,6 +752,7 @@ if (heroScrollBtn) {
 
 // ── wheel : 1 tick = 1 page ───────────────────────────────────────────────
 window.addEventListener('wheel', e => {
+  if (DEV_MODE) return;
   e.preventDefault();
   if (!modelLoaded || isTransitioning) return;
 
@@ -719,6 +819,7 @@ window.addEventListener('wheel', e => {
 
 // ── keyboard navigation ───────────────────────────────────────────────────
 window.addEventListener('keydown', e => {
+  if (DEV_MODE) return;
   if (!modelLoaded || isTransitioning) return;
   if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
 
@@ -803,7 +904,13 @@ new GLTFLoader().load(
     cam.px = haasCamKF[0].pos.x;    cam.py = haasCamKF[0].pos.y;    cam.pz = haasCamKF[0].pos.z;
     cam.tx = haasCamKF[0].target.x; cam.ty = haasCamKF[0].target.y; cam.tz = haasCamKF[0].target.z;
 
-    haasModel.visible = false;
+    if (DEV_MODE && devControls) {
+      camera.position.set(cam.px, cam.py, cam.pz);
+      devControls.target.set(cam.tx, cam.ty, cam.tz);
+      devControls.update();
+    }
+
+    haasModel.visible = DEV_MODE ? true : false;
     scene.add(haasModel);
 
     modelLoaded = true;
@@ -881,6 +988,12 @@ window.addEventListener('resize', () => {
 
   updateSectionNav(currentPage);
 
+  if (DEV_MODE) {
+    devControls.update();
+    renderer.render(scene, camera);
+    _devUpdatePanel();
+    return;
+  }
   if (!shouldRenderScene()) return;
   camera.position.set(cam.px, cam.py, cam.pz);
   camera.lookAt(cam.tx, cam.ty, cam.tz);
