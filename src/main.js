@@ -11,7 +11,7 @@ import SpaSafety from './components/SpaSafety.tsx';
 import shaderFrontUrl from './assets/f1-merco.avif';
 import shaderBackUrl from './assets/verso-srl.avif';
 import studioGlbUrl from './models/studio.glb';
-import ferrariGlbUrl from './models/Ferrari_SF26_2026.glb';
+
 
 const shaderRevealMount = document.getElementById('shader-reveal-root');
 
@@ -184,15 +184,13 @@ const CRASH_PAGE_START = 3;
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
-const VIEWER_PAGE_END = VIEWER_PAGE_START + 3;
+const VIEWER_PAGE_END = VIEWER_PAGE_START + 7;
 const SPA_PAGE_START = VIEWER_PAGE_END + 1;
 const SPA_PAGE_COUNT = 4;
 const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
 const DATA_PAGE = SPA_PAGE_END + 1;
 const CONCLUSION_PAGE = DATA_PAGE + 1;
-const HAAS_PAGE_START = CONCLUSION_PAGE + 1;
-const HAAS_PAGE_END = HAAS_PAGE_START + 7;
-const PAGE_COUNT = HAAS_PAGE_END + 1;
+const PAGE_COUNT = CONCLUSION_PAGE + 1;
 const CRASH_SCROLL_DISTANCE = 7000;
 const CRASH_EXIT_DISTANCE = 220;
 const CRASH_FRAME_COUNT = 301;
@@ -203,17 +201,12 @@ const WHEEL_GESTURE_GAP = 140;
 const WHEEL_NAV_THRESHOLD = 42;
 const WHEEL_NAV_LOCK_MS = 1150;
 const INFOBOXES  = {
-  [VIEWER_PAGE_START + 1]: 'ib-2',
-  [VIEWER_PAGE_START + 2]: 'ib-3',
-  [VIEWER_PAGE_START + 3]: 'ib-4',
-};
-const HAAS_INFOBOXES = {
-  [HAAS_PAGE_START + 1]: 'ib-haas-2',
-  [HAAS_PAGE_START + 2]: 'ib-haas-3',
-  [HAAS_PAGE_START + 3]: 'ib-haas-4',
-  [HAAS_PAGE_START + 4]: 'ib-haas-5',
-  [HAAS_PAGE_START + 5]: 'ib-haas-6',
-  [HAAS_PAGE_START + 7]: 'ib-haas-7',
+  [VIEWER_PAGE_START + 1]: 'ib-haas-2',
+  [VIEWER_PAGE_START + 2]: 'ib-haas-3',
+  [VIEWER_PAGE_START + 3]: 'ib-haas-4',
+  [VIEWER_PAGE_START + 4]: 'ib-haas-5',
+  [VIEWER_PAGE_START + 5]: 'ib-haas-6',
+  [VIEWER_PAGE_START + 7]: 'ib-haas-7',
 };
 
 const crashFrameEl = document.getElementById('crash-frame');
@@ -312,22 +305,16 @@ function pageToCamera(idx) {
   if (idx === VIEWER_PAGE_START + 1) return 1;
   if (idx === VIEWER_PAGE_START + 2) return 2;
   if (idx === VIEWER_PAGE_START + 3) return 3;
-  if (idx === HAAS_PAGE_START) return 0;
-  if (idx === HAAS_PAGE_START + 1) return 1;
-  if (idx === HAAS_PAGE_START + 2) return 2;
-  if (idx === HAAS_PAGE_START + 3) return 3;
-  if (idx === HAAS_PAGE_START + 4) return 4;
-  if (idx === HAAS_PAGE_START + 5) return 5;
-  if (idx === HAAS_PAGE_START + 6) return 6;
-  if (idx === HAAS_PAGE_START + 7) return 7;
+  if (idx === VIEWER_PAGE_START + 4) return 4;
+  if (idx === VIEWER_PAGE_START + 5) return 5;
+  if (idx === VIEWER_PAGE_START + 6) return 6;
+  if (idx === VIEWER_PAGE_START + 7) return 7;
   return -1;
 }
 
 let currentPage  = 0;
 let isTransitioning = false;
 let modelLoaded  = false;
-let camKF        = [];
-let ferrariModel = null;
 let haasModel    = null;
 let haasIndicatorMaterials = [];
 let haasBlinkerAnim = null;
@@ -356,9 +343,6 @@ function isSpaPage(idx) {
   return idx >= SPA_PAGE_START && idx <= SPA_PAGE_END;
 }
 
-function isHaasPage(idx) {
-  return idx >= HAAS_PAGE_START && idx <= HAAS_PAGE_END;
-}
 
 function dispatchSpaPoiChange(pageIdx) {
   const index = isSpaPage(pageIdx) ? pageIdx - SPA_PAGE_START : -1;
@@ -374,7 +358,7 @@ function pageToSectionIndex(pageIdx) {
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 5;
   if (pageIdx === DATA_PAGE) return 6;
   if (pageIdx === CONCLUSION_PAGE) return 7;
-  return 8;
+  return 7;
 }
 
 function pageToSectionProgress(pageIdx) {
@@ -393,8 +377,7 @@ function pageToSectionProgress(pageIdx) {
   }
   if (pageIdx === DATA_PAGE) return 6;
   if (pageIdx === CONCLUSION_PAGE) return 7;
-  const haasProgress = (pageIdx - HAAS_PAGE_START) / Math.max(1, HAAS_PAGE_END - HAAS_PAGE_START);
-  return 8 + haasProgress * 0.92;
+  return 7;
 }
 
 function updateSectionNav(pageIdx = currentPage) {
@@ -423,7 +406,7 @@ function sectionToPage(sectionIdx) {
   if (sectionIdx === 5) return SPA_PAGE_START;
   if (sectionIdx === 6) return DATA_PAGE;
   if (sectionIdx === 7) return CONCLUSION_PAGE;
-  return HAAS_PAGE_START;
+  return CONCLUSION_PAGE;
 }
 
 window.addEventListener('section-nav-jump', event => {
@@ -450,9 +433,8 @@ document.body.appendChild(dotsEl);
 
 function rebuildDots() {
   dotsEl.innerHTML = '';
-  const isHaas = isHaasPage(currentPage);
-  const startPage = isHaas ? HAAS_PAGE_START : VIEWER_PAGE_START;
-  const endPage   = isHaas ? HAAS_PAGE_END   : VIEWER_PAGE_END;
+  const startPage = VIEWER_PAGE_START;
+  const endPage   = VIEWER_PAGE_END;
   for (let i = 0; i <= endPage - startPage; i++) {
     const pageIdx = startPage + i;
     const d = document.createElement('div');
@@ -466,8 +448,7 @@ function rebuildDots() {
 }
 
 function updateDots() {
-  const isHaas    = isHaasPage(currentPage);
-  const startPage = isHaas ? HAAS_PAGE_START : VIEWER_PAGE_START;
+  const startPage = VIEWER_PAGE_START;
   dotsEl.querySelectorAll('div').forEach((d, i) => {
     const pageIdx = startPage + i;
     d.style.background = currentPage === pageIdx ? '#e8002d' : 'rgba(255,255,255,0.2)';
@@ -478,17 +459,14 @@ function updateDots() {
 // ── HUD ───────────────────────────────────────────────────────────────────
 let _lastViewerKind = '';
 function updateHUD(pageIdx) {
-  const isFerrari = pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END;
-  const isHaas = isHaasPage(pageIdx);
-  const isAnyViewer = isFerrari || isHaas;
-  const kind = isHaas ? 'haas' : isFerrari ? 'ferrari' : '';
+  const isHaas = pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END;
+  const kind = isHaas ? 'haas' : '';
   if (kind !== _lastViewerKind) { _lastViewerKind = kind; rebuildDots(); }
-  document.body.classList.toggle('hud-active', isAnyViewer);
-  dotsEl.style.opacity = isAnyViewer ? '1' : '0';
-  if (!isAnyViewer) {
+  document.body.classList.toggle('hud-active', isHaas);
+  dotsEl.style.opacity = isHaas ? '1' : '0';
+  if (!isHaas) {
     document.querySelectorAll('.infobox').forEach(el => el.classList.remove('visible'));
   }
-  if (ferrariModel) ferrariModel.visible = isFerrari;
   if (haasModel) haasModel.visible = isHaas;
   if (!isHaas) { stopHaasBlinker(); stopHaasBacklight(); }
   const topbarEl = document.getElementById('topbar');
@@ -497,9 +475,6 @@ function updateHUD(pageIdx) {
     if (isHaas) {
       topbarEl.innerHTML = '<div><div class="brand-team">MoneyGram Haas F1</div><div class="brand-car"><span>VF</span>-26</div></div><div class="season">Formule 1 · Saison 2026</div>';
       statusbarEl.innerHTML = '<div class="stat-block"><div class="stat-label">Châssis</div><div class="stat-value">VF-26/C1</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Groupe motopropulseur</div><div class="stat-value">Ferrari 066/11</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Pilotes</div><div class="stat-value hi">Bearman · Ocon</div></div><div class="sep"></div><div class="stat-block" style="text-align:right"><div class="stat-label">Contrôles</div><div class="stat-value">Drag · Scroll · Clic droit</div></div>';
-    } else if (isFerrari) {
-      topbarEl.innerHTML = '<div><div class="brand-team">Scuderia Ferrari HP</div><div class="brand-car"><span>SF</span>-26</div></div><div class="season">Formule 1 · Saison 2026</div>';
-      statusbarEl.innerHTML = '<div class="stat-block"><div class="stat-label">Châssis</div><div class="stat-value">SF-26/C1</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Groupe motopropulseur</div><div class="stat-value">Ferrari 066/11</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Pilotes</div><div class="stat-value hi">Leclerc · Hamilton</div></div><div class="sep"></div><div class="stat-block" style="text-align:right"><div class="stat-label">Contrôles</div><div class="stat-value">Drag · Scroll · Clic droit</div></div>';
     }
   }
 }
@@ -566,8 +541,7 @@ function stopHaasBlinker() {
 }
 
 function snapCamera(camIdx, onDone) {
-  const usingHaas = isHaasPage(currentPage);
-  const kf = usingHaas ? haasCamKF : camKF;
+  const kf = haasCamKF;
   if (!kf[camIdx]) { onDone?.(); return; }
 
   document.querySelectorAll('.infobox').forEach(el => el.classList.remove('visible'));
@@ -578,12 +552,10 @@ function snapCamera(camIdx, onDone) {
     duration: 1.2,
     ease: 'power2.inOut',
     onComplete: () => {
-      const ibId = usingHaas
-        ? HAAS_INFOBOXES[HAAS_PAGE_START + camIdx]
-        : INFOBOXES[VIEWER_PAGE_START + camIdx];
+      const ibId = INFOBOXES[VIEWER_PAGE_START + camIdx];
       if (ibId) document.getElementById(ibId)?.classList.add('visible');
-      if (usingHaas && camIdx === 4) startHaasBlinker(); else stopHaasBlinker();
-      if (usingHaas && (camIdx === 6 || camIdx === 7)) startHaasBacklight(); else stopHaasBacklight();
+      if (camIdx === 4) startHaasBlinker(); else stopHaasBlinker();
+      if (camIdx === 6 || camIdx === 7) startHaasBacklight(); else stopHaasBacklight();
       onDone?.();
     },
   });
@@ -785,62 +757,6 @@ new GLTFLoader().load(studioGlbUrl, gltf => {
 }, undefined, err => console.warn('Studio non chargé:', err));
 
 new GLTFLoader().load(
-  ferrariGlbUrl,
-  gltf => {
-    ferrariModel = gltf.scene;
-    const model = ferrariModel;
-
-    model.traverse(node => {
-      if (!node.isMesh) return;
-      const n = node.name || '', pn = node.parent?.name || '';
-      if (/inter|wet/i.test(n) || /inter|wet/i.test(pn)) { node.visible = false; return; }
-      node.castShadow = true;
-      node.receiveShadow = true;
-    });
-
-    const box0      = new THREE.Box3().setFromObject(model);
-    const size0     = box0.getSize(new THREE.Vector3());
-    model.scale.setScalar(5 / Math.max(size0.x, size0.y, size0.z));
-
-    const box    = new THREE.Box3().setFromObject(model);
-    const center = box.getCenter(new THREE.Vector3());
-    const size   = box.getSize(new THREE.Vector3());
-    model.position.sub(center);
-    model.position.y += size.y / 2;
-    model.position.x -= 0.6;
-
-    ground.position.y = 0;
-    grid.position.y   = 0.01;
-    scene.add(model);
-
-    camKF = [
-      { pos: new THREE.Vector3(1.00,  1.16,  3.69), target: new THREE.Vector3(-0.70, 0.09, 0.41) },
-      { pos: new THREE.Vector3(0.02,  1.00,  1.07), target: new THREE.Vector3(-0.51, 0.49, 0.29) },
-      { pos: new THREE.Vector3(-0.89, 1.02, -0.43), target: new THREE.Vector3(-0.63, 0.44, 0.34) },
-      { pos: new THREE.Vector3(-0.58, 1.08, -4.55), target: new THREE.Vector3(-0.58, 0.70, -1.95) },
-    ];
-
-    cam.px = camKF[0].pos.x;    cam.py = camKF[0].pos.y;    cam.pz = camKF[0].pos.z;
-    cam.tx = camKF[0].target.x; cam.ty = camKF[0].target.y; cam.tz = camKF[0].target.z;
-
-    modelLoaded = true;
-    rebuildDots();
-
-    fillEl.style.width = '100%';
-    pctEl.textContent  = '100%';
-    setTimeout(() => loaderEl.classList.add('hidden'), 400);
-  },
-  xhr => {
-    if (xhr.lengthComputable) {
-      const p = Math.round(xhr.loaded / xhr.total * 100);
-      fillEl.style.width = p + '%';
-      pctEl.textContent  = p + '%';
-    }
-  },
-  err => { console.error(err); pctEl.textContent = 'Erreur'; }
-);
-
-new GLTFLoader().load(
   '/haas/2026_HAASF1_CGT-V3.glb',
   gltf => {
     haasModel = gltf.scene;
@@ -884,11 +800,27 @@ new GLTFLoader().load(
     haasModel.position.y += size.y / 2;
     haasModel.position.x -= 0.6;
 
+    cam.px = haasCamKF[0].pos.x;    cam.py = haasCamKF[0].pos.y;    cam.pz = haasCamKF[0].pos.z;
+    cam.tx = haasCamKF[0].target.x; cam.ty = haasCamKF[0].target.y; cam.tz = haasCamKF[0].target.z;
+
     haasModel.visible = false;
     scene.add(haasModel);
+
+    modelLoaded = true;
+    rebuildDots();
+
+    fillEl.style.width = '100%';
+    pctEl.textContent  = '100%';
+    setTimeout(() => loaderEl.classList.add('hidden'), 400);
   },
-  undefined,
-  err => console.warn('Haas model non chargé:', err)
+  xhr => {
+    if (xhr.lengthComputable) {
+      const p = Math.round(xhr.loaded / xhr.total * 100);
+      fillEl.style.width = p + '%';
+      pctEl.textContent  = p + '%';
+    }
+  },
+  err => { console.error(err); pctEl.textContent = 'Erreur'; }
 );
 
 // ── resize ────────────────────────────────────────────────────────────────
