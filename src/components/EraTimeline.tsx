@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CometCard } from './CometCard';
+import SafetyChart from './SafetyChart';
 
 interface EraStep {
   period: string;
@@ -10,6 +11,7 @@ interface EraStep {
   side: 'left' | 'right';
   accent: string;
   statLabel: string;
+  isChart?: boolean;
 }
 
 const ERA_STEPS: EraStep[] = [
@@ -54,14 +56,15 @@ const ERA_STEPS: EraStep[] = [
     statLabel: 'Jalon historique',
   },
   {
-    period: '1994 — 2026',
-    title: 'La révolution de la survie',
-    desc: "Cellule de survie en carbone, HANS device, barrières SAFER, et le Halo en 2018. Grosjean survit à 220 km/h en feu (2020). Zhou se retourne à Silverstone sans une égratignure (2022). La SF-26 est statistiquement 20× plus sûre que la F1 de 1950.",
-    stat: '0 décès en course',
+    period: '1950 — 2026',
+    title: 'Le Bilan de la Sécurité',
+    desc: '',
+    stat: '−100% depuis 1994',
     tag: '05',
     side: 'left',
-    accent: '#c8a96e',
-    statLabel: 'Bilan depuis Imola',
+    accent: '#e8002d',
+    statLabel: 'Réduction de la mortalité',
+    isChart: true,
   },
 ];
 
@@ -259,7 +262,7 @@ export default function EraTimeline() {
       </div>
 
       {/* Carte active */}
-      {step && (
+      {step && !step.isChart && (
         <div style={{
           position: 'absolute',
           left: fromLeft ? '4%' : 'auto',
@@ -415,6 +418,27 @@ export default function EraTimeline() {
                   {step.tag}
                 </div>
               </div>
+            </CometCard>
+          </div>
+        </div>
+      )}
+
+      {/* Carte graphique — étape 05 */}
+      {step && step.isChart && (
+        <div style={{
+          position: 'absolute',
+          left: '4%',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          pointerEvents: 'auto',
+          width: 'clamp(480px, 52vw, 720px)',
+        }}>
+          <div
+            key={activeStep}
+            className="era-card-enter-left"
+          >
+            <CometCard rotateDepth={6} translateDepth={10}>
+              <SafetyChart />
             </CometCard>
           </div>
         </div>
