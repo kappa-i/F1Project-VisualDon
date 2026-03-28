@@ -327,7 +327,26 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
     linear-gradient(105deg, rgba(232, 0, 45, 0.06) 0%, transparent 60%),
     linear-gradient(180deg, rgba(8, 8, 8, 0.12) 0%, rgba(8, 8, 8, 0.56) 100%);
 }
-.section--era        { background: var(--bg);     border-top: 1px solid var(--line); z-index: 2; }
+.section--era        { background: #000; border-top: 1px solid var(--line); z-index: 2; padding: 0; position: relative; }
+
+/* ── Era Timeline Cards ─────────────────────────────────────────────────── */
+@keyframes era-slide-from-left {
+  from { opacity: 0; transform: translateX(-110%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes era-slide-from-right {
+  from { opacity: 0; transform: translateX(110%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.era-card-enter-left {
+  animation: era-slide-from-left 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.era-card-enter-right {
+  animation: era-slide-from-right 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
 .section--turning    { background: var(--surface); border-top: 1px solid var(--line); z-index: 3; }
 .section--crash      { background: #03070f; border-top: 1px solid var(--line); z-index: 4; padding: 0; }
 .section--viewer     { background: transparent; height: 100vh; min-height: unset; padding: 0; z-index: 5; }

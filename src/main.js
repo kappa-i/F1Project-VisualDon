@@ -9,6 +9,28 @@ import ShaderReveal from './components/ShaderReveal.tsx';
 import CrashTitles from './components/CrashTitles.tsx';
 import BottomSectionNav from './components/BottomSectionNav.tsx';
 import SpaSafety from './components/SpaSafety.tsx';
+import InfiniteGallery from './components/InfiniteGallery.tsx';
+import EraTimeline from './components/EraTimeline.tsx';
+
+const ERA_IMAGES = [
+  { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
+  { url: '/ere-imgs/1134655565_ys3qj0_1_hikmyd.avif', width: 3840, height: 1920 },
+  { url: '/ere-imgs/1703049993791-59636.avif', width: 880, height: 474 },
+  { url: '/ere-imgs/180827122834-senna-crash-1994.avif', width: 957, height: 613 },
+  { url: '/ere-imgs/46A6A77C00000578-5113835-image-a-29_1511521966064.avif', width: 962, height: 664 },
+  { url: '/ere-imgs/6gc5n99h8hdy.avif', width: 720, height: 518 },
+  { url: '/ere-imgs/b3df09885df528c497f0e9eebcfda10a.avif', width: 563, height: 366 },
+  { url: '/ere-imgs/f1_crash.avif', width: 1280, height: 961 },
+  { url: '/ere-imgs/F1-crashes-robert-kubica-1024x683.avif', width: 1024, height: 683 },
+  { url: '/ere-imgs/ferrari-driver-cliff-allison-adopts-an-unusual-seating-v0-YO_3qgeX8xxs3KrNkSkHStoQgQ6aG5eDQZPCseFAfnI.avif', width: 565, height: 425 },
+  { url: '/ere-imgs/GettyImages-864209058.avif', width: 1920, height: 1080 },
+  { url: '/ere-imgs/image.avif', width: 864, height: 486 },
+  { url: '/ere-imgs/images-1.avif', width: 301, height: 168 },
+  { url: '/ere-imgs/images.avif', width: 300, height: 168 },
+  { url: '/ere-imgs/maxresdefault.avif', width: 1280, height: 720 },
+  { url: '/ere-imgs/peterson2.avif', width: 330, height: 241 },
+  { url: '/ere-imgs/sddefault.avif', width: 640, height: 480 },
+];
 import shaderFrontUrl from './assets/f1-merco.avif';
 import shaderBackUrl from './assets/verso-srl.avif';
 import studioGlbUrl from './models/tunel.glb';
@@ -60,6 +82,38 @@ const spaMount = document.getElementById('spa-root');
 if (spaMount) {
   const spaRoot = createRoot(spaMount);
   spaRoot.render(React.createElement(SpaSafety));
+}
+
+const eraTimelineMount = document.getElementById('era-timeline-root');
+if (eraTimelineMount) {
+  const eraTimelineRoot = createRoot(eraTimelineMount);
+  eraTimelineRoot.render(React.createElement(EraTimeline));
+}
+
+const eraGalleryMount = document.getElementById('era-gallery-root');
+
+if (eraGalleryMount) {
+  const eraRoot = createRoot(eraGalleryMount);
+  eraRoot.render(React.createElement(InfiniteGallery, {
+    width: '100%',
+    height: '100%',
+    images: ERA_IMAGES,
+    density: 2,
+    imageSize: 32,
+    cellSize: 150,
+    viewRange: 2,
+    fogNear: 130,
+    fogFar: 340,
+    dragSpeed: 0.6,
+    driftAmount: 6,
+    friction: 0.97,
+    autoZoom: false,
+    imageRadius: 0.06,
+    allowImageFocusOnClick: true,
+    backgroundColor: '#000000',
+    fogColor: '#000000',
+    wheelSpeed: 0.0025,
+  }));
 }
 
 window.addEventListener('spa-nav-click', e => {
@@ -203,6 +257,53 @@ const underLight = new THREE.PointLight(0xe8002d, 0.2, 2);
 underLight.position.set(0, 0.4, 0);
 scene.add(underLight);
 
+// ── lumière blanche diffuse de studio (plafond → dessus F1) ──────────────
+const studioTopLight = new THREE.SpotLight(0xffffff, 8.0, 12, Math.PI / 3.5, 0.45, 1.5);
+studioTopLight.position.set(-0.86, 4.40, 0.19);
+studioTopLight.target.position.set(-0.86, -0.04, 0.19);
+scene.add(studioTopLight);
+scene.add(studioTopLight.target);
+
+const studioSideR = new THREE.SpotLight(0xffffff, 6.0, 14, Math.PI / 4, 0.5, 1.5);
+studioSideR.position.set(3.29, 0.68, 0.31);
+studioSideR.target.position.set(-0.86, -0.04, 0.19);
+scene.add(studioSideR);
+scene.add(studioSideR.target);
+
+const studioSideL = new THREE.SpotLight(0xffffff, 6.0, 14, Math.PI / 4, 0.5, 1.5);
+studioSideL.position.set(-4.06, 0.28, 0.51);
+studioSideL.target.position.set(-0.86, -0.04, 0.19);
+scene.add(studioSideL);
+scene.add(studioSideL.target);
+
+const studioFront = new THREE.SpotLight(0xffffff, 6.0, 8, Math.PI / 4, 0.5, 1.5);
+studioFront.position.set(-0.59, 0.23, -0.10);
+studioFront.target.position.set(-0.59, 0.34, 0.27);
+scene.add(studioFront);
+scene.add(studioFront.target);
+
+const studioRear = new THREE.SpotLight(0xffffff, 5.0, 14, Math.PI / 4, 0.5, 1.5);
+studioRear.position.set(-0.60, 0.13, -4.38);
+studioRear.target.position.set(-0.17, 0.24, 0.10);
+scene.add(studioRear);
+scene.add(studioRear.target);
+
+const plongeLight = new THREE.SpotLight(0xff6633, 4.0, 12, Math.PI / 3.5, 0.5, 1.5);
+plongeLight.position.set(-0.64, 4.44, 0.63);
+plongeLight.target.position.set(-0.62, 0.67, -0.36);
+scene.add(plongeLight);
+scene.add(plongeLight.target);
+
+// ── cache noir cockpit (bouche le trou visible depuis la vue intérieure) ──
+const cockpitPatch = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.28, 0.18),
+  new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide })
+);
+// Orienté pour faire face à la caméra depuis (-0.67, 0.41, 0.79)
+cockpitPatch.position.set(-0.65, 0.37, 0.60);
+cockpitPatch.lookAt(-0.67, 0.41, 0.79);
+scene.add(cockpitPatch);
+
 // ── glow lights pour les lights Haas (intensity 0 par défaut) ─────────────
 const indicatorGlowL = new THREE.PointLight(0xffaa00, 0, 0.55, 2);
 indicatorGlowL.position.set(-0.15, 0.90, 0.45);
@@ -230,13 +331,13 @@ scene.add(backlightGlowR);
 const pmrem = new THREE.PMREMGenerator(renderer);
 pmrem.compileEquirectangularShader();
 new RGBELoader().load(
-  '/citrus_orchard_puresky_1k.hdr',
+  '/rise-3.hdr',
   texture => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     const envMap = pmrem.fromEquirectangular(texture).texture;
     scene.environment = envMap;
     scene.background = envMap;
-    scene.environmentIntensity = 0.5;
+    scene.environmentIntensity = 0.4;
     texture.dispose();
     pmrem.dispose();
   },
@@ -247,23 +348,24 @@ new RGBELoader().load(
 // ── navigation par pages ──────────────────────────────────────────────────
 //
 // Pages virtuelles :
-//   0 → hero     (translateY 0vh)
-//   1 → era      (translateY -100vh)
-//   2 → turning  (translateY -200vh)
-//   3–50 → crash scrub 48 pas (translateY -300vh, vidéo pinnée)
-//   51 → viewer cam0  (translateY -400vh)
-//   52 → viewer cam1  (translateY -400vh, caméra change)
-//   53 → viewer cam2  (translateY -400vh, caméra change)
-//   54 → viewer cam3  (translateY -400vh, caméra arrière)
-//   55–58 → spa 4 POI (translateY -500vh)
-//   59 → data     (translateY -600vh)
-//   60 → conclusion   (translateY -700vh)
+//   0       → hero        (translateY 0vh)
+//   1–6     → era         (translateY -100vh, 1=intro, 2-6=étapes timeline)
+//   7       → turning     (translateY -200vh)
+//   8–55    → crash       (translateY -300vh, 48 pas, vidéo pinnée)
+//   56–64   → viewer      (translateY -400vh, 9 keyframes caméra)
+//   65–68   → spa         (translateY -500vh, 4 POI)
+//   69      → data        (translateY -600vh)
+//   70      → conclusion  (translateY -700vh)
 
-const CRASH_PAGE_START = 3;
+const ERA_PAGE_START  = 1;
+const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline
+const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS; // 6
+const TURNING_PAGE    = ERA_PAGE_END + 1;            // 7
+const CRASH_PAGE_START = TURNING_PAGE + 1;           // 8
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
-const VIEWER_PAGE_END = VIEWER_PAGE_START + 8;
+const VIEWER_PAGE_END = VIEWER_PAGE_START + 7;
 const SPA_PAGE_START = VIEWER_PAGE_END + 1;
 const SPA_PAGE_COUNT = 4;
 const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
@@ -280,13 +382,14 @@ const WHEEL_GESTURE_GAP = 140;
 const WHEEL_NAV_THRESHOLD = 42;
 const WHEEL_NAV_LOCK_MS = 1150;
 const INFOBOXES  = {
-  [VIEWER_PAGE_START + 1]: 'ib-haas-2',
-  [VIEWER_PAGE_START + 2]: 'ib-haas-3',
-  [VIEWER_PAGE_START + 3]: 'ib-haas-4',
-  [VIEWER_PAGE_START + 4]: 'ib-haas-5',
-  [VIEWER_PAGE_START + 5]: 'ib-haas-8',
-  [VIEWER_PAGE_START + 6]: 'ib-haas-6',
-  [VIEWER_PAGE_START + 8]: 'ib-haas-7',
+  // KF0: vue d'ensemble → pas d'infobox
+  [VIEWER_PAGE_START + 1]: 'ib-haas-3', // freins carbone
+  [VIEWER_PAGE_START + 2]: 'ib-haas-4', // halo
+  [VIEWER_PAGE_START + 3]: 'ib-haas-5', // warnings rétroviseurs
+  [VIEWER_PAGE_START + 4]: 'ib-haas-6', // cheminée
+  [VIEWER_PAGE_START + 5]: 'ib-haas-8', // volant anti-retour
+  [VIEWER_PAGE_START + 6]: 'ib-haas-7', // feux arrières
+  // KF7: fin → pas d'infobox
 };
 
 const crashFrameEl = document.getElementById('crash-frame');
@@ -369,11 +472,23 @@ function normalizeWheelDelta(event) {
 renderCrashFrame(0);
 updateCrashTitles(0);
 
+function isEraPage(idx) {
+  return idx >= ERA_PAGE_START && idx <= ERA_PAGE_END;
+}
+
+function dispatchEraStepChange(pageIdx) {
+  // page ERA_PAGE_START = intro (step -1), ERA_PAGE_START+1 = step 0, …
+  const step = isEraPage(pageIdx) ? pageIdx - ERA_PAGE_START - 1 : -1;
+  window.dispatchEvent(new CustomEvent('era-step-change', { detail: { step } }));
+}
+
 function pageToY(idx) {
-  if (idx <= 3) return -idx * 100;
-  if (idx <= CRASH_PAGE_END) return -300;
-  if (idx <= VIEWER_PAGE_END) return -400;
-  if (idx <= SPA_PAGE_END) return -500;
+  if (idx === 0) return 0;
+  if (isEraPage(idx)) return -100;
+  if (idx === TURNING_PAGE) return -200;
+  if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -300;
+  if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -400;
+  if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -500;
   if (idx === DATA_PAGE) return -600;
   if (idx === CONCLUSION_PAGE) return -700;
   return -800;
@@ -402,15 +517,14 @@ let haasBlinkerAnim = null;
 let haasBacklightMaterials = [];
 let haasBacklightAnim = null;
 const haasCamKF = [
-  { pos: new THREE.Vector3(0.72, 0.72, 2.83), target: new THREE.Vector3(-0.86, -0.04, 0.19) },
-  { pos: new THREE.Vector3( 0.99, 0.55,  1.71), target: new THREE.Vector3(-0.79, -0.00,  0.32) },
-  { pos: new THREE.Vector3( 0.29, 0.38,  1.11), target: new THREE.Vector3(-0.93,  0.06,  0.87) },
-  { pos: new THREE.Vector3(-0.57, 1.26,  1.35), target: new THREE.Vector3(-0.63,  0.54,  0.37) },
-  { pos: new THREE.Vector3(-1.24, 0.62,  0.60), target: new THREE.Vector3(-0.78,  0.54,  0.18) }, // blinkers
-  { pos: new THREE.Vector3(-0.60, 0.57, 0.05), target: new THREE.Vector3(-0.64, 0.19, 2.56) },, // volant
-  { pos: new THREE.Vector3(-0.93, 1.11,  0.09), target: new THREE.Vector3(-0.79,  0.96, -0.13) },
-  { pos: new THREE.Vector3(-1.51, 0.35, -3.24), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
-  { pos: new THREE.Vector3(-0.70, 0.33, -2.18), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
+  { pos: new THREE.Vector3( 0.86,  0.96,  3.31), target: new THREE.Vector3(-0.49,  0.26,  0.89) }, // 0: vue d'ensemble
+  { pos: new THREE.Vector3( 0.99,  0.43,  1.57), target: new THREE.Vector3(-0.49,  0.26,  0.89) }, // 1: freins carbone céramique
+  { pos: new THREE.Vector3( 0.15,  0.98,  0.82), target: new THREE.Vector3(-0.34,  0.64,  0.23) }, // 2: halo
+  { pos: new THREE.Vector3(-1.29, 0.69, 0.59), target: new THREE.Vector3(-0.70, 0.44, 0.17) }, // 3: rétroviseurs warning (blinker)
+  { pos: new THREE.Vector3(-1.04,  0.81,  0.19), target: new THREE.Vector3(-0.69,  0.70, -0.11) }, // 4: cheminée
+  { pos: new THREE.Vector3(-0.66, 0.60, 0.22), target: new THREE.Vector3(-0.38, 0.27, 0.85) }, // 5: volant anti-retour
+  { pos: new THREE.Vector3(-1.39, 0.36, -3.04), target: new THREE.Vector3(0.08, 0.49, 0.73) }, // 6: feux arrières (backlight)
+  { pos: new THREE.Vector3(-0.72,  0.33, -2.22), target: new THREE.Vector3( 0.04,  0.58, -0.10) }, // 7: fin (backlight)
 ];
 let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
@@ -433,8 +547,8 @@ function dispatchSpaPoiChange(pageIdx) {
 
 function pageToSectionIndex(pageIdx) {
   if (pageIdx <= 0) return 0;
-  if (pageIdx === 1) return 1;
-  if (pageIdx === 2) return 2;
+  if (isEraPage(pageIdx)) return 1;
+  if (pageIdx === TURNING_PAGE) return 2;
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 3;
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 4;
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 5;
@@ -444,7 +558,12 @@ function pageToSectionIndex(pageIdx) {
 }
 
 function pageToSectionProgress(pageIdx) {
-  if (pageIdx <= 2) return pageIdx;
+  if (pageIdx === 0) return 0;
+  if (isEraPage(pageIdx)) {
+    const eraProgress = (pageIdx - ERA_PAGE_START) / ERA_PAGE_STEPS;
+    return 1 + eraProgress * 0.92;
+  }
+  if (pageIdx === TURNING_PAGE) return 2;
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) {
     return 3 + crashFrameToProgress(crashRenderedFrame) * 0.92;
   }
@@ -452,7 +571,6 @@ function pageToSectionProgress(pageIdx) {
     const viewerProgress = (pageIdx - VIEWER_PAGE_START) / Math.max(1, VIEWER_PAGE_END - VIEWER_PAGE_START);
     return 4 + viewerProgress * 0.92;
   }
-
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) {
     const spaProgress = (pageIdx - SPA_PAGE_START) / Math.max(1, SPA_PAGE_END - SPA_PAGE_START);
     return 5 + spaProgress * 0.92;
@@ -481,8 +599,8 @@ function updateSectionNav(pageIdx = currentPage) {
 
 function sectionToPage(sectionIdx) {
   if (sectionIdx <= 0) return 0;
-  if (sectionIdx === 1) return 1;
-  if (sectionIdx === 2) return 2;
+  if (sectionIdx === 1) return ERA_PAGE_START;
+  if (sectionIdx === 2) return TURNING_PAGE;
   if (sectionIdx === 3) return CRASH_PAGE_START;
   if (sectionIdx === 4) return VIEWER_PAGE_START;
   if (sectionIdx === 5) return SPA_PAGE_START;
@@ -524,7 +642,12 @@ function rebuildDots() {
       width:6px; height:6px; border-radius:50%;
       background:${currentPage === pageIdx ? '#e8002d' : 'rgba(255,255,255,0.2)'};
       transition:background .4s, transform .4s;
+      cursor:pointer;
     `;
+    d.addEventListener('click', () => {
+      if (!modelLoaded || isTransitioning) return;
+      goToPage(pageIdx);
+    });
     dotsEl.appendChild(d);
   }
 }
@@ -546,6 +669,7 @@ function updateHUD(pageIdx) {
   if (kind !== _lastViewerKind) { _lastViewerKind = kind; rebuildDots(); }
   document.body.classList.toggle('hud-active', isHaas);
   dotsEl.style.opacity = isHaas ? '1' : '0';
+  dotsEl.style.pointerEvents = isHaas ? 'auto' : 'none';
   if (!isHaas) {
     document.querySelectorAll('.infobox').forEach(el => el.classList.remove('visible'));
   }
@@ -636,8 +760,8 @@ function snapCamera(camIdx, onDone) {
     onComplete: () => {
       const ibId = INFOBOXES[VIEWER_PAGE_START + camIdx];
       if (ibId) document.getElementById(ibId)?.classList.add('visible');
-      if (camIdx === 4) startHaasBlinker(); else stopHaasBlinker();
-      if (camIdx === 7 || camIdx === 8) startHaasBacklight(); else stopHaasBacklight();
+      if (camIdx === 3) startHaasBlinker(); else stopHaasBlinker();
+      if (camIdx === 6 || camIdx === 7) startHaasBacklight(); else stopHaasBacklight();
       onDone?.();
     },
   });
@@ -677,7 +801,15 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
   const currentY = pageToY(prevPage);
   const camIdx   = pageToCamera(idx);
 
-  // Si on reste sur la même section (viewer) → seulement la caméra change
+  // Era sub-pages : la section reste à -100vh, on dispatche juste l'étape
+  if (targetY === currentY && isEraPage(idx)) {
+    dispatchEraStepChange(idx);
+    updateSectionNav(idx);
+    isTransitioning = false;
+    return;
+  }
+
+  // Si on reste sur la même section (crash) → seulement la frame change
   if (targetY === currentY && isCrashPage(idx)) {
     setCrashProgress(crashPageToProgress(idx));
     isTransitioning = false;
@@ -703,7 +835,11 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
     duration: 1.0,
     ease: 'power3.inOut',
     onComplete: () => {
-      if (isCrashPage(idx)) {
+      if (isEraPage(idx)) {
+        dispatchEraStepChange(idx);
+        updateSectionNav(idx);
+        isTransitioning = false;
+      } else if (isCrashPage(idx)) {
         setCrashProgress(crashPageToProgress(idx), true);
         updateSectionNav(idx);
         isTransitioning = false;
@@ -742,6 +878,24 @@ window.addEventListener('wheel', e => {
   const delta = normalizeWheelDelta(e);
   if (Math.abs(delta) < 1) return;
 
+  if (isEraPage(currentPage)) {
+    const now = performance.now();
+    if (now < wheelUnlockAt) return;
+    const direction = delta > 0 ? 1 : -1;
+    const isNewGesture = now - wheelLastEventAt > WHEEL_GESTURE_GAP || direction !== wheelGestureDirection;
+    if (isNewGesture) {
+      wheelGestureAccum = delta;
+      wheelGestureDirection = direction;
+    } else {
+      wheelGestureAccum += delta;
+    }
+    wheelLastEventAt = now;
+    if (Math.abs(wheelGestureAccum) < WHEEL_NAV_THRESHOLD) return;
+    wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
+    goToPage(currentPage + direction);
+    return;
+  }
+
   if (isCrashPage(currentPage)) {
     const direction = delta > 0 ? 1 : -1;
     const distance = Math.abs(delta);
@@ -775,7 +929,7 @@ window.addEventListener('wheel', e => {
       crashExitDistance = 0;
     }
     crashExitDistance += distance;
-    if (crashExitDistance >= CRASH_EXIT_DISTANCE) goToPage(2);
+    if (crashExitDistance >= CRASH_EXIT_DISTANCE) goToPage(TURNING_PAGE);
     return;
   }
 
