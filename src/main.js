@@ -271,12 +271,12 @@ scene.add(backlightGlowR);
 const pmrem = new THREE.PMREMGenerator(renderer);
 pmrem.compileEquirectangularShader();
 new RGBELoader().load(
-  '/night.hdr',
+  '/rise-3.hdr',
   texture => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     const envMap = pmrem.fromEquirectangular(texture).texture;
     scene.environment = envMap;
-    scene.background = null;
+    scene.background = envMap;
     scene.environmentIntensity = 0.4;
     texture.dispose();
     pmrem.dispose();
@@ -304,7 +304,7 @@ const CRASH_PAGE_START = 3;
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
-const VIEWER_PAGE_END = VIEWER_PAGE_START + 8;
+const VIEWER_PAGE_END = VIEWER_PAGE_START + 7;
 const SPA_PAGE_START = VIEWER_PAGE_END + 1;
 const SPA_PAGE_COUNT = 4;
 const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
@@ -327,9 +327,8 @@ const INFOBOXES  = {
   [VIEWER_PAGE_START + 3]: 'ib-haas-5', // warnings rétroviseurs
   [VIEWER_PAGE_START + 4]: 'ib-haas-6', // cheminée
   [VIEWER_PAGE_START + 5]: 'ib-haas-8', // volant anti-retour
-  // KF6: sidepods → pas d'infobox
-  [VIEWER_PAGE_START + 7]: 'ib-haas-7', // feux arrières
-  // KF8: feu pluie → pas d'infobox (zoom cinématique)
+  [VIEWER_PAGE_START + 6]: 'ib-haas-7', // feux arrières
+  // KF7: fin → pas d'infobox
 };
 
 const crashFrameEl = document.getElementById('crash-frame');
@@ -445,15 +444,14 @@ let haasBlinkerAnim = null;
 let haasBacklightMaterials = [];
 let haasBacklightAnim = null;
 const haasCamKF = [
-  { pos: new THREE.Vector3( 0.17,  0.82,  3.24), target: new THREE.Vector3(-0.74,  0.10,  0.69) }, // 0: vue d'ensemble
-  { pos: new THREE.Vector3( 1.11,  0.49,  1.23), target: new THREE.Vector3(-0.74,  0.10,  0.69) }, // 1: freins carbone
-  { pos: new THREE.Vector3(-0.16,  1.64,  0.86), target: new THREE.Vector3(-0.68,  0.47,  0.09) }, // 2: halo
-  { pos: new THREE.Vector3(-1.27,  0.65,  0.52), target: new THREE.Vector3(-0.69,  0.44,  0.10) }, // 3: warnings rétroviseurs (blinker)
-  { pos: new THREE.Vector3(-1.01,  1.02,  0.29), target: new THREE.Vector3(-0.49,  0.63, -0.43) }, // 4: cheminée
-  { pos: new THREE.Vector3(-0.61,  0.59,  0.05), target: new THREE.Vector3(-0.58,  0.49,  0.50) }, // 5: volant anti-retour
-  { pos: new THREE.Vector3( 0.53,  0.56, -1.14), target: new THREE.Vector3(-0.58,  0.49,  0.50) }, // 6: sidepods
-  { pos: new THREE.Vector3( 0.20,  0.48, -3.13), target: new THREE.Vector3(-1.27,  0.25,  0.27) }, // 7: feux arrières (backlight)
-  { pos: new THREE.Vector3(-0.71,  0.38, -2.24), target: new THREE.Vector3(-0.17,  0.24,  0.10) }, // 8: feu pluie (backlight)
+  { pos: new THREE.Vector3( 0.86,  0.96,  3.31), target: new THREE.Vector3(-0.49,  0.26,  0.89) }, // 0: vue d'ensemble
+  { pos: new THREE.Vector3( 0.99,  0.43,  1.57), target: new THREE.Vector3(-0.49,  0.26,  0.89) }, // 1: freins carbone céramique
+  { pos: new THREE.Vector3( 0.15,  0.98,  0.82), target: new THREE.Vector3(-0.34,  0.64,  0.23) }, // 2: halo
+  { pos: new THREE.Vector3(-1.27,  0.62,  0.61), target: new THREE.Vector3(-1.03,  0.59,  0.43) }, // 3: rétroviseurs warning (blinker)
+  { pos: new THREE.Vector3(-1.04,  0.81,  0.19), target: new THREE.Vector3(-0.69,  0.70, -0.11) }, // 4: cheminée
+  { pos: new THREE.Vector3(-0.61,  0.61,  0.15), target: new THREE.Vector3(-0.60,  0.61,  0.16) }, // 5: volant anti-retour
+  { pos: new THREE.Vector3(-1.85,  0.27, -3.21), target: new THREE.Vector3(-0.12,  0.53, -0.02) }, // 6: feux arrières (backlight)
+  { pos: new THREE.Vector3(-0.72,  0.33, -2.22), target: new THREE.Vector3( 0.04,  0.58, -0.10) }, // 7: fin (backlight)
 ];
 let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
@@ -686,7 +684,7 @@ function snapCamera(camIdx, onDone) {
       const ibId = INFOBOXES[VIEWER_PAGE_START + camIdx];
       if (ibId) document.getElementById(ibId)?.classList.add('visible');
       if (camIdx === 3) startHaasBlinker(); else stopHaasBlinker();
-      if (camIdx === 7 || camIdx === 8) startHaasBacklight(); else stopHaasBacklight();
+      if (camIdx === 6 || camIdx === 7) startHaasBacklight(); else stopHaasBacklight();
       onDone?.();
     },
   });
