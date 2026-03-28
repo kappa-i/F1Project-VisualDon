@@ -288,6 +288,12 @@ studioRear.target.position.set(-0.17, 0.24, 0.10);
 scene.add(studioRear);
 scene.add(studioRear.target);
 
+const plongeLight = new THREE.SpotLight(0xff6633, 4.0, 12, Math.PI / 3.5, 0.5, 1.5);
+plongeLight.position.set(-0.64, 4.44, 0.63);
+plongeLight.target.position.set(-0.62, 0.67, -0.36);
+scene.add(plongeLight);
+scene.add(plongeLight.target);
+
 // ── cache noir cockpit (bouche le trou visible depuis la vue intérieure) ──
 const cockpitPatch = new THREE.Mesh(
   new THREE.PlaneGeometry(0.28, 0.18),
@@ -514,10 +520,10 @@ const haasCamKF = [
   { pos: new THREE.Vector3( 0.86,  0.96,  3.31), target: new THREE.Vector3(-0.49,  0.26,  0.89) }, // 0: vue d'ensemble
   { pos: new THREE.Vector3( 0.99,  0.43,  1.57), target: new THREE.Vector3(-0.49,  0.26,  0.89) }, // 1: freins carbone céramique
   { pos: new THREE.Vector3( 0.15,  0.98,  0.82), target: new THREE.Vector3(-0.34,  0.64,  0.23) }, // 2: halo
-  { pos: new THREE.Vector3(-1.27,  0.62,  0.61), target: new THREE.Vector3(-1.03,  0.59,  0.43) }, // 3: rétroviseurs warning (blinker)
+  { pos: new THREE.Vector3(-1.29, 0.69, 0.59), target: new THREE.Vector3(-0.70, 0.44, 0.17) }, // 3: rétroviseurs warning (blinker)
   { pos: new THREE.Vector3(-1.04,  0.81,  0.19), target: new THREE.Vector3(-0.69,  0.70, -0.11) }, // 4: cheminée
-  { pos: new THREE.Vector3(-0.61,  0.61,  0.15), target: new THREE.Vector3(-0.60,  0.61,  0.16) }, // 5: volant anti-retour
-  { pos: new THREE.Vector3(-1.85,  0.27, -3.21), target: new THREE.Vector3(-0.12,  0.53, -0.02) }, // 6: feux arrières (backlight)
+  { pos: new THREE.Vector3(-0.66, 0.60, 0.22), target: new THREE.Vector3(-0.38, 0.27, 0.85) }, // 5: volant anti-retour
+  { pos: new THREE.Vector3(-1.39, 0.36, -3.04), target: new THREE.Vector3(0.08, 0.49, 0.73) }, // 6: feux arrières (backlight)
   { pos: new THREE.Vector3(-0.72,  0.33, -2.22), target: new THREE.Vector3( 0.04,  0.58, -0.10) }, // 7: fin (backlight)
 ];
 let wheelGestureAccum = 0;
