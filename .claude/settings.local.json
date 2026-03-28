@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls /Users/tanguyvaucher/Desktop/*.png)"
+      "Bash(ls /Users/tanguyvaucher/Desktop/*.png)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

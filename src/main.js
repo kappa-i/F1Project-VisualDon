@@ -9,6 +9,27 @@ import ShaderReveal from './components/ShaderReveal.tsx';
 import CrashTitles from './components/CrashTitles.tsx';
 import BottomSectionNav from './components/BottomSectionNav.tsx';
 import SpaSafety from './components/SpaSafety.tsx';
+import InfiniteGallery from './components/InfiniteGallery.tsx';
+
+const ERA_IMAGES = [
+  { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
+  { url: '/ere-imgs/1134655565_ys3qj0_1_hikmyd.avif', width: 3840, height: 1920 },
+  { url: '/ere-imgs/1703049993791-59636.avif', width: 880, height: 474 },
+  { url: '/ere-imgs/180827122834-senna-crash-1994.avif', width: 957, height: 613 },
+  { url: '/ere-imgs/46A6A77C00000578-5113835-image-a-29_1511521966064.avif', width: 962, height: 664 },
+  { url: '/ere-imgs/6gc5n99h8hdy.avif', width: 720, height: 518 },
+  { url: '/ere-imgs/b3df09885df528c497f0e9eebcfda10a.avif', width: 563, height: 366 },
+  { url: '/ere-imgs/f1_crash.avif', width: 1280, height: 961 },
+  { url: '/ere-imgs/F1-crashes-robert-kubica-1024x683.avif', width: 1024, height: 683 },
+  { url: '/ere-imgs/ferrari-driver-cliff-allison-adopts-an-unusual-seating-v0-YO_3qgeX8xxs3KrNkSkHStoQgQ6aG5eDQZPCseFAfnI.avif', width: 565, height: 425 },
+  { url: '/ere-imgs/GettyImages-864209058.avif', width: 1920, height: 1080 },
+  { url: '/ere-imgs/image.avif', width: 864, height: 486 },
+  { url: '/ere-imgs/images-1.avif', width: 301, height: 168 },
+  { url: '/ere-imgs/images.avif', width: 300, height: 168 },
+  { url: '/ere-imgs/maxresdefault.avif', width: 1280, height: 720 },
+  { url: '/ere-imgs/peterson2.avif', width: 330, height: 241 },
+  { url: '/ere-imgs/sddefault.avif', width: 640, height: 480 },
+];
 import shaderFrontUrl from './assets/f1-merco.avif';
 import shaderBackUrl from './assets/verso-srl.avif';
 import studioGlbUrl from './models/tunel.glb';
@@ -60,6 +81,32 @@ const spaMount = document.getElementById('spa-root');
 if (spaMount) {
   const spaRoot = createRoot(spaMount);
   spaRoot.render(React.createElement(SpaSafety));
+}
+
+const eraGalleryMount = document.getElementById('era-gallery-root');
+
+if (eraGalleryMount) {
+  const eraRoot = createRoot(eraGalleryMount);
+  eraRoot.render(React.createElement(InfiniteGallery, {
+    width: '100%',
+    height: '100%',
+    images: ERA_IMAGES,
+    density: 2,
+    imageSize: 32,
+    cellSize: 150,
+    viewRange: 2,
+    fogNear: 130,
+    fogFar: 340,
+    dragSpeed: 0.6,
+    driftAmount: 6,
+    friction: 0.97,
+    autoZoom: false,
+    imageRadius: 0.06,
+    allowImageFocusOnClick: true,
+    backgroundColor: '#000000',
+    fogColor: '#000000',
+    wheelSpeed: 0.0025,
+  }));
 }
 
 window.addEventListener('spa-nav-click', e => {
@@ -320,6 +367,8 @@ const CRASH_VELOCITY_EPSILON = 0.01;
 const WHEEL_GESTURE_GAP = 140;
 const WHEEL_NAV_THRESHOLD = 42;
 const WHEEL_NAV_LOCK_MS = 1150;
+const ERA_PAGE = 1;
+const ERA_EXIT_DISTANCE = 4000;
 const INFOBOXES  = {
   // KF0: vue d'ensemble → pas d'infobox
   [VIEWER_PAGE_START + 1]: 'ib-haas-3', // freins carbone
@@ -457,6 +506,8 @@ let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
 let wheelLastEventAt = 0;
 let wheelUnlockAt = 0;
+let eraExitDistance = 0;
+let eraExitDirection = 0;
 
 const pageEl = document.getElementById('page');
 let lastSectionNavProgress = -1;
@@ -542,6 +593,8 @@ function resetWheelGesture() {
   wheelGestureAccum = 0;
   wheelGestureDirection = 0;
   wheelLastEventAt = 0;
+  eraExitDistance = 0;
+  eraExitDirection = 0;
 }
 
 // ── dots ──────────────────────────────────────────────────────────────────
@@ -788,6 +841,22 @@ window.addEventListener('wheel', e => {
 
   const delta = normalizeWheelDelta(e);
   if (Math.abs(delta) < 1) return;
+
+  if (currentPage === ERA_PAGE) {
+    const direction = delta > 0 ? 1 : -1;
+    const distance = Math.abs(delta);
+    if (eraExitDirection !== direction) {
+      eraExitDirection = direction;
+      eraExitDistance = 0;
+    }
+    eraExitDistance += distance;
+    if (eraExitDistance >= ERA_EXIT_DISTANCE) {
+      eraExitDistance = 0;
+      wheelUnlockAt = performance.now() + WHEEL_NAV_LOCK_MS;
+      goToPage(currentPage + direction);
+    }
+    return;
+  }
 
   if (isCrashPage(currentPage)) {
     const direction = delta > 0 ? 1 : -1;

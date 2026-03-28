@@ -327,7 +327,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
     linear-gradient(105deg, rgba(232, 0, 45, 0.06) 0%, transparent 60%),
     linear-gradient(180deg, rgba(8, 8, 8, 0.12) 0%, rgba(8, 8, 8, 0.56) 100%);
 }
-.section--era        { background: var(--bg);     border-top: 1px solid var(--line); z-index: 2; }
+.section--era        { background: #000; border-top: 1px solid var(--line); z-index: 2; padding: 0; }
 .section--turning    { background: var(--surface); border-top: 1px solid var(--line); z-index: 3; }
 .section--crash      { background: #03070f; border-top: 1px solid var(--line); z-index: 4; padding: 0; }
 .section--viewer     { background: transparent; height: 100vh; min-height: unset; padding: 0; z-index: 5; }
