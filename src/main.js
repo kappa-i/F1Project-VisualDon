@@ -203,6 +203,41 @@ const underLight = new THREE.PointLight(0xe8002d, 0.2, 2);
 underLight.position.set(0, 0.4, 0);
 scene.add(underLight);
 
+// ── lumière blanche diffuse de studio (plafond → dessus F1) ──────────────
+const studioTopLight = new THREE.SpotLight(0xffffff, 8.0, 12, Math.PI / 3.5, 0.45, 1.5);
+studioTopLight.position.set(-0.86, 4.40, 0.19);
+studioTopLight.target.position.set(-0.86, -0.04, 0.19);
+scene.add(studioTopLight);
+scene.add(studioTopLight.target);
+
+const studioSideR = new THREE.SpotLight(0xffffff, 6.0, 14, Math.PI / 4, 0.5, 1.5);
+studioSideR.position.set(3.29, 0.68, 0.31);
+studioSideR.target.position.set(-0.86, -0.04, 0.19);
+scene.add(studioSideR);
+scene.add(studioSideR.target);
+
+const studioSideL = new THREE.SpotLight(0xffffff, 6.0, 14, Math.PI / 4, 0.5, 1.5);
+studioSideL.position.set(-4.06, 0.28, 0.51);
+studioSideL.target.position.set(-0.86, -0.04, 0.19);
+scene.add(studioSideL);
+scene.add(studioSideL.target);
+
+const studioFront = new THREE.SpotLight(0xffffff, 6.0, 8, Math.PI / 4, 0.5, 1.5);
+studioFront.position.set(-0.59, 0.23, -0.10);
+studioFront.target.position.set(-0.59, 0.34, 0.27);
+scene.add(studioFront);
+scene.add(studioFront.target);
+
+// ── cache noir cockpit (bouche le trou visible depuis la vue intérieure) ──
+const cockpitPatch = new THREE.Mesh(
+  new THREE.PlaneGeometry(0.28, 0.18),
+  new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide })
+);
+// Orienté pour faire face à la caméra depuis (-0.67, 0.41, 0.79)
+cockpitPatch.position.set(-0.65, 0.37, 0.60);
+cockpitPatch.lookAt(-0.67, 0.41, 0.79);
+scene.add(cockpitPatch);
+
 // ── glow lights pour les lights Haas (intensity 0 par défaut) ─────────────
 const indicatorGlowL = new THREE.PointLight(0xffaa00, 0, 0.55, 2);
 indicatorGlowL.position.set(-0.15, 0.90, 0.45);
@@ -230,13 +265,13 @@ scene.add(backlightGlowR);
 const pmrem = new THREE.PMREMGenerator(renderer);
 pmrem.compileEquirectangularShader();
 new RGBELoader().load(
-  '/citrus_orchard_puresky_1k.hdr',
+  '/night.hdr',
   texture => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     const envMap = pmrem.fromEquirectangular(texture).texture;
     scene.environment = envMap;
-    scene.background = envMap;
-    scene.environmentIntensity = 0.5;
+    scene.background = null;
+    scene.environmentIntensity = 0.4;
     texture.dispose();
     pmrem.dispose();
   },
