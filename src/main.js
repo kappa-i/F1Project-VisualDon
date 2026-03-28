@@ -342,19 +342,20 @@ new RGBELoader().load(
 // ── navigation par pages ──────────────────────────────────────────────────
 //
 // Pages virtuelles :
-//   0 → hero     (translateY 0vh)
-//   1 → era      (translateY -100vh)
-//   2 → turning  (translateY -200vh)
-//   3–50 → crash scrub 48 pas (translateY -300vh, vidéo pinnée)
-//   51 → viewer cam0  (translateY -400vh)
-//   52 → viewer cam1  (translateY -400vh, caméra change)
-//   53 → viewer cam2  (translateY -400vh, caméra change)
-//   54 → viewer cam3  (translateY -400vh, caméra arrière)
-//   55–58 → spa 4 POI (translateY -500vh)
-//   59 → data     (translateY -600vh)
-//   60 → conclusion   (translateY -700vh)
+//   0       → hero        (translateY 0vh)
+//   1–6     → era         (translateY -100vh, 1=intro, 2-6=étapes timeline)
+//   7       → turning     (translateY -200vh)
+//   8–55    → crash       (translateY -300vh, 48 pas, vidéo pinnée)
+//   56–64   → viewer      (translateY -400vh, 9 keyframes caméra)
+//   65–68   → spa         (translateY -500vh, 4 POI)
+//   69      → data        (translateY -600vh)
+//   70      → conclusion  (translateY -700vh)
 
-const CRASH_PAGE_START = 3;
+const ERA_PAGE_START  = 1;
+const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline
+const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS; // 6
+const TURNING_PAGE    = ERA_PAGE_END + 1;            // 7
+const CRASH_PAGE_START = TURNING_PAGE + 1;           // 8
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
@@ -374,8 +375,6 @@ const CRASH_VELOCITY_EPSILON = 0.01;
 const WHEEL_GESTURE_GAP = 140;
 const WHEEL_NAV_THRESHOLD = 42;
 const WHEEL_NAV_LOCK_MS = 1150;
-const ERA_PAGE = 1;
-const ERA_EXIT_DISTANCE = 4000;
 const INFOBOXES  = {
   // KF0: vue d'ensemble → pas d'infobox
   [VIEWER_PAGE_START + 1]: 'ib-haas-3', // freins carbone
@@ -467,11 +466,23 @@ function normalizeWheelDelta(event) {
 renderCrashFrame(0);
 updateCrashTitles(0);
 
+function isEraPage(idx) {
+  return idx >= ERA_PAGE_START && idx <= ERA_PAGE_END;
+}
+
+function dispatchEraStepChange(pageIdx) {
+  // page ERA_PAGE_START = intro (step -1), ERA_PAGE_START+1 = step 0, …
+  const step = isEraPage(pageIdx) ? pageIdx - ERA_PAGE_START - 1 : -1;
+  window.dispatchEvent(new CustomEvent('era-step-change', { detail: { step } }));
+}
+
 function pageToY(idx) {
-  if (idx <= 3) return -idx * 100;
-  if (idx <= CRASH_PAGE_END) return -300;
-  if (idx <= VIEWER_PAGE_END) return -400;
-  if (idx <= SPA_PAGE_END) return -500;
+  if (idx === 0) return 0;
+  if (isEraPage(idx)) return -100;
+  if (idx === TURNING_PAGE) return -200;
+  if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -300;
+  if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -400;
+  if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -500;
   if (idx === DATA_PAGE) return -600;
   if (idx === CONCLUSION_PAGE) return -700;
   return -800;
@@ -513,9 +524,6 @@ let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
 let wheelLastEventAt = 0;
 let wheelUnlockAt = 0;
-let eraExitDistance = 0;
-let eraExitDirection = 0;
-let eraScrollTotal = 0; // 0 = start of era, ERA_EXIT_DISTANCE = ready to exit forward
 
 const pageEl = document.getElementById('page');
 let lastSectionNavProgress = -1;
@@ -533,8 +541,8 @@ function dispatchSpaPoiChange(pageIdx) {
 
 function pageToSectionIndex(pageIdx) {
   if (pageIdx <= 0) return 0;
-  if (pageIdx === 1) return 1;
-  if (pageIdx === 2) return 2;
+  if (isEraPage(pageIdx)) return 1;
+  if (pageIdx === TURNING_PAGE) return 2;
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 3;
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 4;
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 5;
@@ -544,7 +552,12 @@ function pageToSectionIndex(pageIdx) {
 }
 
 function pageToSectionProgress(pageIdx) {
-  if (pageIdx <= 2) return pageIdx;
+  if (pageIdx === 0) return 0;
+  if (isEraPage(pageIdx)) {
+    const eraProgress = (pageIdx - ERA_PAGE_START) / ERA_PAGE_STEPS;
+    return 1 + eraProgress * 0.92;
+  }
+  if (pageIdx === TURNING_PAGE) return 2;
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) {
     return 3 + crashFrameToProgress(crashRenderedFrame) * 0.92;
   }
@@ -552,7 +565,6 @@ function pageToSectionProgress(pageIdx) {
     const viewerProgress = (pageIdx - VIEWER_PAGE_START) / Math.max(1, VIEWER_PAGE_END - VIEWER_PAGE_START);
     return 4 + viewerProgress * 0.92;
   }
-
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) {
     const spaProgress = (pageIdx - SPA_PAGE_START) / Math.max(1, SPA_PAGE_END - SPA_PAGE_START);
     return 5 + spaProgress * 0.92;
@@ -581,8 +593,8 @@ function updateSectionNav(pageIdx = currentPage) {
 
 function sectionToPage(sectionIdx) {
   if (sectionIdx <= 0) return 0;
-  if (sectionIdx === 1) return 1;
-  if (sectionIdx === 2) return 2;
+  if (sectionIdx === 1) return ERA_PAGE_START;
+  if (sectionIdx === 2) return TURNING_PAGE;
   if (sectionIdx === 3) return CRASH_PAGE_START;
   if (sectionIdx === 4) return VIEWER_PAGE_START;
   if (sectionIdx === 5) return SPA_PAGE_START;
@@ -601,10 +613,6 @@ function resetWheelGesture() {
   wheelGestureAccum = 0;
   wheelGestureDirection = 0;
   wheelLastEventAt = 0;
-  eraExitDistance = 0;
-  eraExitDirection = 0;
-  eraScrollTotal = 0;
-  window.dispatchEvent(new CustomEvent('era-reset'));
 }
 
 // ── dots ──────────────────────────────────────────────────────────────────
@@ -787,7 +795,15 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
   const currentY = pageToY(prevPage);
   const camIdx   = pageToCamera(idx);
 
-  // Si on reste sur la même section (viewer) → seulement la caméra change
+  // Era sub-pages : la section reste à -100vh, on dispatche juste l'étape
+  if (targetY === currentY && isEraPage(idx)) {
+    dispatchEraStepChange(idx);
+    updateSectionNav(idx);
+    isTransitioning = false;
+    return;
+  }
+
+  // Si on reste sur la même section (crash) → seulement la frame change
   if (targetY === currentY && isCrashPage(idx)) {
     setCrashProgress(crashPageToProgress(idx));
     isTransitioning = false;
@@ -813,7 +829,11 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
     duration: 1.0,
     ease: 'power3.inOut',
     onComplete: () => {
-      if (isCrashPage(idx)) {
+      if (isEraPage(idx)) {
+        dispatchEraStepChange(idx);
+        updateSectionNav(idx);
+        isTransitioning = false;
+      } else if (isCrashPage(idx)) {
         setCrashProgress(crashPageToProgress(idx), true);
         updateSectionNav(idx);
         isTransitioning = false;
@@ -852,25 +872,21 @@ window.addEventListener('wheel', e => {
   const delta = normalizeWheelDelta(e);
   if (Math.abs(delta) < 1) return;
 
-  if (currentPage === ERA_PAGE) {
+  if (isEraPage(currentPage)) {
+    const now = performance.now();
+    if (now < wheelUnlockAt) return;
     const direction = delta > 0 ? 1 : -1;
-    const distance = Math.abs(delta);
-    if (eraExitDirection !== direction) {
-      eraExitDirection = direction;
-      eraExitDistance = 0;
+    const isNewGesture = now - wheelLastEventAt > WHEEL_GESTURE_GAP || direction !== wheelGestureDirection;
+    if (isNewGesture) {
+      wheelGestureAccum = delta;
+      wheelGestureDirection = direction;
+    } else {
+      wheelGestureAccum += delta;
     }
-    eraExitDistance += distance;
-    // Track cumulative scroll for card progress (clamped 0–ERA_EXIT_DISTANCE)
-    eraScrollTotal = Math.min(ERA_EXIT_DISTANCE, Math.max(0, eraScrollTotal + delta));
-    const eraProgress = Math.min(1, Math.max(0, eraScrollTotal / ERA_EXIT_DISTANCE));
-    window.dispatchEvent(new CustomEvent('era-scroll-progress', {
-      detail: { progress: eraProgress, direction },
-    }));
-    if (eraExitDistance >= ERA_EXIT_DISTANCE) {
-      eraExitDistance = 0;
-      wheelUnlockAt = performance.now() + WHEEL_NAV_LOCK_MS;
-      goToPage(currentPage + direction);
-    }
+    wheelLastEventAt = now;
+    if (Math.abs(wheelGestureAccum) < WHEEL_NAV_THRESHOLD) return;
+    wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
+    goToPage(currentPage + direction);
     return;
   }
 
@@ -907,7 +923,7 @@ window.addEventListener('wheel', e => {
       crashExitDistance = 0;
     }
     crashExitDistance += distance;
-    if (crashExitDistance >= CRASH_EXIT_DISTANCE) goToPage(2);
+    if (crashExitDistance >= CRASH_EXIT_DISTANCE) goToPage(TURNING_PAGE);
     return;
   }
 

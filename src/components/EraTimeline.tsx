@@ -16,7 +16,7 @@ const ERA_STEPS: EraStep[] = [
   {
     period: '1950 — 1960',
     title: "L'ère des pionniers",
-    desc: "Les pilotes s'élancent sans ceinture de sécurité, sans arceau, sans combinaison ignifugée. La mort fait partie du spectacle — acceptée, banalisée par tous.",
+    desc: "Les pilotes s'élancent sans ceinture de sécurité, sans arceau, sans combinaison ignifugée. La mort fait partie du spectacle — acceptée, banalisée par tous. On court sur des circuits publics avec des voitures à réservoir ouvert.",
     stat: '≈ 2 décès / saison',
     tag: '01',
     side: 'left',
@@ -26,7 +26,7 @@ const ERA_STEPS: EraStep[] = [
   {
     period: '1960 — 1970',
     title: 'La décennie noire',
-    desc: "Nürburgring, Spa-Francorchamps, Rouen — des pistes de 22 km sans glissières ni zones de dégagement. Jim Clark, Lorenzo Bandini, Jochen Rindt. Les podiums côtoient les nécrologies.",
+    desc: "Nürburgring, Spa-Francorchamps, Rouen — des pistes de 22 km sans glissières ni zones de dégagement. Jim Clark, Lorenzo Bandini, Jochen Rindt. Les podiums côtoient les nécrologies. La F1 est en guerre contre elle-même.",
     stat: '≈ 3 décès / saison',
     tag: '02',
     side: 'right',
@@ -36,7 +36,7 @@ const ERA_STEPS: EraStep[] = [
   {
     period: '1970 — 1994',
     title: 'Les premières règles',
-    desc: "Jackie Stewart contraint la FIA à légiférer. Combinaisons ignifugées, glissières Armco, médecins permanents sur les circuits. La mort recule — lentement, sans disparaître.",
+    desc: "Jackie Stewart, triple champion du monde, contraint la FIA à légiférer. Combinaisons ignifugées, glissières Armco, médecins permanents. La mort recule — lentement, sans disparaître. Une première victoire sur l'inacceptable.",
     stat: 'Réglementation FIA active',
     tag: '03',
     side: 'left',
@@ -46,7 +46,7 @@ const ERA_STEPS: EraStep[] = [
   {
     period: 'Imola · 1994',
     title: 'Le week-end qui a tout changé',
-    desc: "Roland Ratzenberger le samedi. Ayrton Senna le dimanche. Deux décès en 24 heures. La F1 se réveille brutalement et accélère sa mutation sécuritaire sans précédent.",
+    desc: "Roland Ratzenberger le samedi. Ayrton Senna le dimanche. Deux décès en 24 heures sur le même circuit. La F1 se réveille brutalement. Un choc collectif qui déclenche une révolution sécuritaire sans précédent dans le sport automobile.",
     stat: 'Dernier décès en course',
     tag: '04',
     side: 'right',
@@ -56,7 +56,7 @@ const ERA_STEPS: EraStep[] = [
   {
     period: '1994 — 2026',
     title: 'La révolution de la survie',
-    desc: "Cellule de survie carbone, HANS device, barrières SAFER, et le Halo en 2018. Grosjean survit à 220 km/h en feu (2020). Zhou se retourne à Silverstone (2022). La SF-26 est 20× plus sûre.",
+    desc: "Cellule de survie en carbone, HANS device, barrières SAFER, et le Halo en 2018. Grosjean survit à 220 km/h en feu (2020). Zhou se retourne à Silverstone sans une égratignure (2022). La SF-26 est statistiquement 20× plus sûre que la F1 de 1950.",
     stat: '0 décès en course',
     tag: '05',
     side: 'left',
@@ -65,46 +65,31 @@ const ERA_STEPS: EraStep[] = [
   },
 ];
 
-// Progress thresholds at which each step appears (0–1)
-const STEP_THRESHOLDS = [0.08, 0.26, 0.44, 0.62, 0.80];
+// Total era pages = 6 (1 intro + 5 steps). Step index: -1 = intro, 0–4 = cards
+const ERA_TOTAL_STEPS = ERA_STEPS.length;
 
 export default function EraTimeline() {
   const [activeStep, setActiveStep] = useState(-1);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const activeStepRef = useRef(-1);
 
   useEffect(() => {
-    const handleProgress = (e: Event) => {
-      const { progress } = (e as CustomEvent<{ progress: number }>).detail;
-      setScrollProgress(progress);
-
-      let newStep = -1;
-      for (let i = STEP_THRESHOLDS.length - 1; i >= 0; i--) {
-        if (progress >= STEP_THRESHOLDS[i]) { newStep = i; break; }
-      }
-
-      if (newStep !== activeStepRef.current) {
-        activeStepRef.current = newStep;
-        setActiveStep(newStep);
+    const handleStepChange = (e: Event) => {
+      const { step } = (e as CustomEvent<{ step: number }>).detail;
+      if (step !== activeStepRef.current) {
+        activeStepRef.current = step;
+        setActiveStep(step);
       }
     };
 
-    const handleReset = () => {
-      activeStepRef.current = -1;
-      setActiveStep(-1);
-      setScrollProgress(0);
-    };
-
-    window.addEventListener('era-scroll-progress', handleProgress);
-    window.addEventListener('era-reset', handleReset);
-    return () => {
-      window.removeEventListener('era-scroll-progress', handleProgress);
-      window.removeEventListener('era-reset', handleReset);
-    };
+    window.addEventListener('era-step-change', handleStepChange);
+    return () => window.removeEventListener('era-step-change', handleStepChange);
   }, []);
 
-  const step = activeStep >= 0 ? ERA_STEPS[activeStep] : null;
+  const step = activeStep >= 0 && activeStep < ERA_STEPS.length ? ERA_STEPS[activeStep] : null;
   const fromLeft = step?.side === 'left';
+
+  // Progress: -1 = 0%, step 0 = 20%, …, step 4 = 100%
+  const progressPct = activeStep < 0 ? 0 : (activeStep + 1) / ERA_TOTAL_STEPS;
 
   return (
     <div style={{
@@ -114,21 +99,23 @@ export default function EraTimeline() {
       zIndex: 10,
       overflow: 'hidden',
     }}>
-      {/* Top label */}
+
+      {/* Intro hint — visible avant la première carte */}
       <div style={{
         position: 'absolute',
-        top: '36px',
+        top: '38px',
         left: '50%',
         transform: 'translateX(-50%)',
         textAlign: 'center',
         pointerEvents: 'none',
-        opacity: scrollProgress < 0.06 ? 1 : 0,
+        opacity: activeStep < 0 ? 1 : 0,
         transition: 'opacity 0.5s ease',
+        whiteSpace: 'nowrap',
       }}>
         <div style={{
           fontSize: '9px',
           letterSpacing: '4px',
-          color: 'rgba(255,255,255,0.35)',
+          color: 'rgba(255,255,255,0.3)',
           fontFamily: "'Formula1', sans-serif",
           textTransform: 'uppercase',
           marginBottom: '8px',
@@ -138,75 +125,140 @@ export default function EraTimeline() {
         <div style={{
           fontSize: '9px',
           letterSpacing: '2px',
-          color: 'rgba(232, 0, 45, 0.6)',
+          color: 'rgba(232, 0, 45, 0.55)',
           fontFamily: "'Formula1', sans-serif",
         }}>
           ↓ Scrollez pour explorer l'histoire
         </div>
       </div>
 
-      {/* Step indicator dots (right side) */}
+      {/* Indicateur d'étape — côté droit */}
       <div style={{
         position: 'absolute',
-        right: '28px',
+        right: '32px',
         top: '50%',
         transform: 'translateY(-50%)',
         display: 'flex',
         flexDirection: 'column',
-        gap: '14px',
+        gap: '10px',
         pointerEvents: 'none',
-        opacity: scrollProgress > 0.04 ? 1 : 0,
-        transition: 'opacity 0.4s ease',
+        opacity: activeStep >= 0 ? 1 : 0,
+        transition: 'opacity 0.5s ease',
       }}>
         {ERA_STEPS.map((s, i) => (
-          <div key={i} style={{
-            width: i === activeStep ? '20px' : '5px',
-            height: '5px',
-            borderRadius: '3px',
-            background: i === activeStep
-              ? s.accent
-              : i < activeStep
-                ? 'rgba(255,255,255,0.35)'
-                : 'rgba(255,255,255,0.12)',
-            transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
-          }} />
+          <div
+            key={i}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              flexDirection: 'row-reverse',
+            }}
+          >
+            {/* Label période — toujours réservé pour éviter le saut de layout */}
+            <div style={{
+              width: '130px',
+              textAlign: 'right',
+              overflow: 'hidden',
+            }}>
+              <span style={{
+                display: 'block',
+                fontSize: i === activeStep ? '11px' : '9px',
+                letterSpacing: '1.5px',
+                color: i === activeStep ? s.accent : i < activeStep ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.15)',
+                fontFamily: "'Formula1', sans-serif",
+                whiteSpace: 'nowrap',
+                transition: 'all 0.5s ease',
+              }}>
+                {s.period}
+              </span>
+              {i === activeStep && (
+                <span style={{
+                  display: 'block',
+                  fontSize: '9px',
+                  letterSpacing: '3px',
+                  color: 'rgba(255,255,255,0.35)',
+                  fontFamily: "'Formula1', sans-serif",
+                  marginTop: '2px',
+                  textTransform: 'uppercase',
+                }}>
+                  {s.tag} / {ERA_STEPS.length.toString().padStart(2,'0')}
+                </span>
+              )}
+            </div>
+
+            {/* Trait */}
+            <div style={{
+              width: i === activeStep ? '36px' : '10px',
+              height: i === activeStep ? '3px' : '2px',
+              borderRadius: '2px',
+              background: i === activeStep
+                ? s.accent
+                : i < activeStep
+                  ? 'rgba(255,255,255,0.3)'
+                  : 'rgba(255,255,255,0.08)',
+              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              flexShrink: 0,
+            }} />
+          </div>
         ))}
       </div>
 
-      {/* Progress bar (bottom) */}
+      {/* Barre de progression bas */}
       <div style={{
         position: 'absolute',
-        bottom: '32px',
+        bottom: '28px',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: '160px',
-        opacity: scrollProgress > 0.04 ? 0.7 : 0,
-        transition: 'opacity 0.4s ease',
+        width: '200px',
+        opacity: activeStep >= 0 ? 0.85 : 0,
+        transition: 'opacity 0.5s ease',
         pointerEvents: 'none',
+        textAlign: 'center',
       }}>
         <div style={{
-          fontSize: '8px',
-          letterSpacing: '3px',
-          color: 'rgba(255,255,255,0.3)',
-          fontFamily: "'Formula1', sans-serif",
-          textAlign: 'center',
-          marginBottom: '6px',
-          textTransform: 'uppercase',
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '7px',
         }}>
-          {step ? `${step.period}` : 'Explorez'}
+          <span style={{
+            fontSize: '8px',
+            letterSpacing: '3px',
+            color: 'rgba(255,255,255,0.3)',
+            fontFamily: "'Formula1', sans-serif",
+            textTransform: 'uppercase',
+          }}>
+            {step ? step.period : ''}
+          </span>
+          <span style={{
+            fontSize: '8px',
+            letterSpacing: '2px',
+            color: 'rgba(255,255,255,0.25)',
+            fontFamily: "'Formula1', sans-serif",
+          }}>
+            {activeStep + 1} / {ERA_TOTAL_STEPS}
+          </span>
         </div>
-        <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          height: '1px',
+          background: 'rgba(255,255,255,0.08)',
+          position: 'relative',
+          overflow: 'hidden',
+          borderRadius: '1px',
+        }}>
           <div style={{
             position: 'absolute',
             left: 0, top: 0, bottom: 0,
-            width: `${scrollProgress * 100}%`,
-            background: 'linear-gradient(to right, #8a001a, #e8002d)',
-            transition: 'width 0.1s linear',
+            width: `${progressPct * 100}%`,
+            background: step
+              ? `linear-gradient(to right, ${step.accent}80, ${step.accent})`
+              : 'linear-gradient(to right, #8a001a, #e8002d)',
+            transition: 'width 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
           }} />
         </div>
       </div>
 
-      {/* Active card */}
+      {/* Carte active */}
       {step && (
         <div style={{
           position: 'absolute',
@@ -215,66 +267,66 @@ export default function EraTimeline() {
           top: '50%',
           transform: 'translateY(-50%)',
           pointerEvents: 'auto',
-          width: 'clamp(280px, 36vw, 420px)',
+          width: 'clamp(400px, 46vw, 620px)',
         }}>
           <div
             key={activeStep}
             className={fromLeft ? 'era-card-enter-left' : 'era-card-enter-right'}
           >
-            <CometCard rotateDepth={12} translateDepth={16}>
+            <CometCard rotateDepth={10} translateDepth={14}>
               <div style={{
-                background: 'rgba(6, 6, 6, 0.92)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255,255,255,0.07)',
+                background: 'rgba(5, 5, 5, 0.94)',
+                backdropFilter: 'blur(28px)',
+                WebkitBackdropFilter: 'blur(28px)',
+                border: '1px solid rgba(255,255,255,0.06)',
                 ...(fromLeft
                   ? { borderLeft: `3px solid ${step.accent}` }
                   : { borderRight: `3px solid ${step.accent}` }
                 ),
                 borderRadius: '3px',
-                padding: '26px 24px 22px',
+                padding: '40px 36px 32px',
                 fontFamily: "'Formula1', sans-serif",
                 color: '#e0ddd8',
                 position: 'relative',
                 overflow: 'hidden',
               }}>
 
-                {/* Corner bracket */}
+                {/* Coin accentué */}
                 <div style={{
                   position: 'absolute',
                   top: 0,
                   ...(fromLeft ? { left: 0 } : { right: 0 }),
-                  width: '32px',
-                  height: '32px',
+                  width: '40px',
+                  height: '40px',
                   borderTop: `1px solid ${step.accent}`,
                   ...(fromLeft
                     ? { borderLeft: `1px solid ${step.accent}` }
                     : { borderRight: `1px solid ${step.accent}` }
                   ),
-                  opacity: 0.5,
+                  opacity: 0.55,
                 }} />
 
-                {/* Subtle background glow */}
+                {/* Lueur d'ambiance */}
                 <div style={{
                   position: 'absolute',
-                  ...(fromLeft ? { left: '-60px' } : { right: '-60px' }),
-                  top: '-60px',
-                  width: '180px',
-                  height: '180px',
-                  background: `radial-gradient(circle, ${step.accent}18 0%, transparent 70%)`,
+                  ...(fromLeft ? { left: '-80px' } : { right: '-80px' }),
+                  top: '-80px',
+                  width: '240px',
+                  height: '240px',
+                  background: `radial-gradient(circle, ${step.accent}14 0%, transparent 68%)`,
                   pointerEvents: 'none',
                 }} />
 
-                {/* Header row */}
+                {/* En-tête */}
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginBottom: '14px',
+                  marginBottom: '22px',
                 }}>
                   <span style={{
-                    fontSize: '9px',
-                    letterSpacing: '3px',
+                    fontSize: '11px',
+                    letterSpacing: '4px',
                     color: step.accent,
                     textTransform: 'uppercase',
                     fontWeight: 700,
@@ -282,70 +334,85 @@ export default function EraTimeline() {
                     Ère {step.tag}
                   </span>
                   <span style={{
-                    fontSize: '9px',
-                    letterSpacing: '1.5px',
-                    color: 'rgba(255,255,255,0.3)',
+                    fontSize: '11px',
+                    letterSpacing: '2px',
+                    color: 'rgba(255,255,255,0.28)',
                   }}>
                     {step.period}
                   </span>
                 </div>
 
-                {/* Title */}
+                {/* Titre */}
                 <h3 style={{
-                  fontSize: '20px',
+                  fontSize: '32px',
                   fontWeight: 700,
-                  lineHeight: 1.2,
-                  marginBottom: '12px',
-                  letterSpacing: '-0.3px',
+                  lineHeight: 1.15,
+                  marginBottom: '20px',
+                  letterSpacing: '-0.8px',
                   color: '#ffffff',
                 }}>
                   {step.title}
                 </h3>
 
-                {/* Divider */}
+                {/* Séparateur */}
                 <div style={{
                   height: '1px',
-                  background: `linear-gradient(to ${fromLeft ? 'right' : 'left'}, ${step.accent}70, transparent)`,
-                  marginBottom: '14px',
+                  background: `linear-gradient(to ${fromLeft ? 'right' : 'left'}, ${step.accent}80, transparent)`,
+                  marginBottom: '16px',
                 }} />
 
                 {/* Description */}
                 <p style={{
-                  fontSize: '11.5px',
-                  lineHeight: 1.75,
-                  color: 'rgba(224, 221, 216, 0.7)',
-                  marginBottom: '20px',
-                  letterSpacing: '0.2px',
+                  fontSize: '14.5px',
+                  lineHeight: 1.85,
+                  color: 'rgba(224, 221, 216, 0.72)',
+                  marginBottom: '28px',
+                  letterSpacing: '0.1px',
                 }}>
                   {step.desc}
                 </p>
 
-                {/* Stat badge */}
+                {/* Badge stat */}
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '9px 12px',
-                  background: `${step.accent}12`,
-                  border: `1px solid ${step.accent}30`,
+                  padding: '14px 20px',
+                  background: `${step.accent}10`,
+                  border: `1px solid ${step.accent}28`,
                   borderRadius: '2px',
                 }}>
                   <span style={{
                     fontSize: '8px',
-                    letterSpacing: '2px',
-                    color: 'rgba(255,255,255,0.35)',
+                    letterSpacing: '2.5px',
+                    color: 'rgba(255,255,255,0.3)',
                     textTransform: 'uppercase',
                   }}>
                     {step.statLabel}
                   </span>
                   <span style={{
-                    fontSize: '12px',
+                    fontSize: '17px',
                     fontWeight: 700,
                     color: step.accent,
                     letterSpacing: '0.5px',
                   }}>
                     {step.stat}
                   </span>
+                </div>
+
+                {/* Numéro d'étape en filigrane */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '20px',
+                  ...(fromLeft ? { right: '24px' } : { left: '24px' }),
+                  fontSize: '72px',
+                  fontWeight: 700,
+                  color: `${step.accent}08`,
+                  lineHeight: 1,
+                  fontVariantNumeric: 'tabular-nums',
+                  userSelect: 'none',
+                }}>
+                  {step.tag}
                 </div>
               </div>
             </CometCard>

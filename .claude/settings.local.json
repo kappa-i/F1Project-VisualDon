@@ -3,7 +3,8 @@
     "allow": [
       "Bash(ls /Users/tanguyvaucher/Desktop/*.png)",
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(npx vite:*)"
     ]
   }
 }
