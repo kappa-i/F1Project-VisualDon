@@ -10,6 +10,7 @@ import CrashTitles from './components/CrashTitles.tsx';
 import BottomSectionNav from './components/BottomSectionNav.tsx';
 import SpaSafety from './components/SpaSafety.tsx';
 import InfiniteGallery from './components/InfiniteGallery.tsx';
+import EraTimeline from './components/EraTimeline.tsx';
 
 const ERA_IMAGES = [
   { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
@@ -81,6 +82,12 @@ const spaMount = document.getElementById('spa-root');
 if (spaMount) {
   const spaRoot = createRoot(spaMount);
   spaRoot.render(React.createElement(SpaSafety));
+}
+
+const eraTimelineMount = document.getElementById('era-timeline-root');
+if (eraTimelineMount) {
+  const eraTimelineRoot = createRoot(eraTimelineMount);
+  eraTimelineRoot.render(React.createElement(EraTimeline));
 }
 
 const eraGalleryMount = document.getElementById('era-gallery-root');
@@ -508,6 +515,7 @@ let wheelLastEventAt = 0;
 let wheelUnlockAt = 0;
 let eraExitDistance = 0;
 let eraExitDirection = 0;
+let eraScrollTotal = 0; // 0 = start of era, ERA_EXIT_DISTANCE = ready to exit forward
 
 const pageEl = document.getElementById('page');
 let lastSectionNavProgress = -1;
@@ -595,6 +603,8 @@ function resetWheelGesture() {
   wheelLastEventAt = 0;
   eraExitDistance = 0;
   eraExitDirection = 0;
+  eraScrollTotal = 0;
+  window.dispatchEvent(new CustomEvent('era-reset'));
 }
 
 // ── dots ──────────────────────────────────────────────────────────────────
@@ -850,6 +860,12 @@ window.addEventListener('wheel', e => {
       eraExitDistance = 0;
     }
     eraExitDistance += distance;
+    // Track cumulative scroll for card progress (clamped 0–ERA_EXIT_DISTANCE)
+    eraScrollTotal = Math.min(ERA_EXIT_DISTANCE, Math.max(0, eraScrollTotal + delta));
+    const eraProgress = Math.min(1, Math.max(0, eraScrollTotal / ERA_EXIT_DISTANCE));
+    window.dispatchEvent(new CustomEvent('era-scroll-progress', {
+      detail: { progress: eraProgress, direction },
+    }));
     if (eraExitDistance >= ERA_EXIT_DISTANCE) {
       eraExitDistance = 0;
       wheelUnlockAt = performance.now() + WHEEL_NAV_LOCK_MS;
