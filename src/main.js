@@ -228,6 +228,12 @@ studioFront.target.position.set(-0.59, 0.34, 0.27);
 scene.add(studioFront);
 scene.add(studioFront.target);
 
+const studioRear = new THREE.SpotLight(0xffffff, 5.0, 14, Math.PI / 4, 0.5, 1.5);
+studioRear.position.set(-0.60, 0.13, -4.38);
+studioRear.target.position.set(-0.17, 0.24, 0.10);
+scene.add(studioRear);
+scene.add(studioRear.target);
+
 // ── cache noir cockpit (bouche le trou visible depuis la vue intérieure) ──
 const cockpitPatch = new THREE.Mesh(
   new THREE.PlaneGeometry(0.28, 0.18),
@@ -315,13 +321,15 @@ const WHEEL_GESTURE_GAP = 140;
 const WHEEL_NAV_THRESHOLD = 42;
 const WHEEL_NAV_LOCK_MS = 1150;
 const INFOBOXES  = {
-  [VIEWER_PAGE_START + 1]: 'ib-haas-2',
-  [VIEWER_PAGE_START + 2]: 'ib-haas-3',
-  [VIEWER_PAGE_START + 3]: 'ib-haas-4',
-  [VIEWER_PAGE_START + 4]: 'ib-haas-5',
-  [VIEWER_PAGE_START + 5]: 'ib-haas-8',
-  [VIEWER_PAGE_START + 6]: 'ib-haas-6',
-  [VIEWER_PAGE_START + 8]: 'ib-haas-7',
+  // KF0: vue d'ensemble → pas d'infobox
+  [VIEWER_PAGE_START + 1]: 'ib-haas-3', // freins carbone
+  [VIEWER_PAGE_START + 2]: 'ib-haas-4', // halo
+  [VIEWER_PAGE_START + 3]: 'ib-haas-5', // warnings rétroviseurs
+  [VIEWER_PAGE_START + 4]: 'ib-haas-6', // cheminée
+  [VIEWER_PAGE_START + 5]: 'ib-haas-8', // volant anti-retour
+  // KF6: sidepods → pas d'infobox
+  [VIEWER_PAGE_START + 7]: 'ib-haas-7', // feux arrières
+  // KF8: feu pluie → pas d'infobox (zoom cinématique)
 };
 
 const crashFrameEl = document.getElementById('crash-frame');
@@ -437,15 +445,15 @@ let haasBlinkerAnim = null;
 let haasBacklightMaterials = [];
 let haasBacklightAnim = null;
 const haasCamKF = [
-  { pos: new THREE.Vector3(0.72, 0.72, 2.83), target: new THREE.Vector3(-0.86, -0.04, 0.19) },
-  { pos: new THREE.Vector3( 0.99, 0.55,  1.71), target: new THREE.Vector3(-0.79, -0.00,  0.32) },
-  { pos: new THREE.Vector3( 0.29, 0.38,  1.11), target: new THREE.Vector3(-0.93,  0.06,  0.87) },
-  { pos: new THREE.Vector3(-0.57, 1.26,  1.35), target: new THREE.Vector3(-0.63,  0.54,  0.37) },
-  { pos: new THREE.Vector3(-1.24, 0.62,  0.60), target: new THREE.Vector3(-0.78,  0.54,  0.18) }, // blinkers
-  { pos: new THREE.Vector3(-0.60, 0.57, 0.05), target: new THREE.Vector3(-0.64, 0.19, 2.56) },, // volant
-  { pos: new THREE.Vector3(-0.93, 1.11,  0.09), target: new THREE.Vector3(-0.79,  0.96, -0.13) },
-  { pos: new THREE.Vector3(-1.51, 0.35, -3.24), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
-  { pos: new THREE.Vector3(-0.70, 0.33, -2.18), target: new THREE.Vector3(-0.03,  0.49, -0.73) }, // backlights
+  { pos: new THREE.Vector3( 0.17,  0.82,  3.24), target: new THREE.Vector3(-0.74,  0.10,  0.69) }, // 0: vue d'ensemble
+  { pos: new THREE.Vector3( 1.11,  0.49,  1.23), target: new THREE.Vector3(-0.74,  0.10,  0.69) }, // 1: freins carbone
+  { pos: new THREE.Vector3(-0.16,  1.64,  0.86), target: new THREE.Vector3(-0.68,  0.47,  0.09) }, // 2: halo
+  { pos: new THREE.Vector3(-1.27,  0.65,  0.52), target: new THREE.Vector3(-0.69,  0.44,  0.10) }, // 3: warnings rétroviseurs (blinker)
+  { pos: new THREE.Vector3(-1.01,  1.02,  0.29), target: new THREE.Vector3(-0.49,  0.63, -0.43) }, // 4: cheminée
+  { pos: new THREE.Vector3(-0.61,  0.59,  0.05), target: new THREE.Vector3(-0.58,  0.49,  0.50) }, // 5: volant anti-retour
+  { pos: new THREE.Vector3( 0.53,  0.56, -1.14), target: new THREE.Vector3(-0.58,  0.49,  0.50) }, // 6: sidepods
+  { pos: new THREE.Vector3( 0.20,  0.48, -3.13), target: new THREE.Vector3(-1.27,  0.25,  0.27) }, // 7: feux arrières (backlight)
+  { pos: new THREE.Vector3(-0.71,  0.38, -2.24), target: new THREE.Vector3(-0.17,  0.24,  0.10) }, // 8: feu pluie (backlight)
 ];
 let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
@@ -559,7 +567,12 @@ function rebuildDots() {
       width:6px; height:6px; border-radius:50%;
       background:${currentPage === pageIdx ? '#e8002d' : 'rgba(255,255,255,0.2)'};
       transition:background .4s, transform .4s;
+      cursor:pointer;
     `;
+    d.addEventListener('click', () => {
+      if (!modelLoaded || isTransitioning) return;
+      goToPage(pageIdx);
+    });
     dotsEl.appendChild(d);
   }
 }
@@ -581,6 +594,7 @@ function updateHUD(pageIdx) {
   if (kind !== _lastViewerKind) { _lastViewerKind = kind; rebuildDots(); }
   document.body.classList.toggle('hud-active', isHaas);
   dotsEl.style.opacity = isHaas ? '1' : '0';
+  dotsEl.style.pointerEvents = isHaas ? 'auto' : 'none';
   if (!isHaas) {
     document.querySelectorAll('.infobox').forEach(el => el.classList.remove('visible'));
   }
@@ -671,7 +685,7 @@ function snapCamera(camIdx, onDone) {
     onComplete: () => {
       const ibId = INFOBOXES[VIEWER_PAGE_START + camIdx];
       if (ibId) document.getElementById(ibId)?.classList.add('visible');
-      if (camIdx === 4) startHaasBlinker(); else stopHaasBlinker();
+      if (camIdx === 3) startHaasBlinker(); else stopHaasBlinker();
       if (camIdx === 7 || camIdx === 8) startHaasBacklight(); else stopHaasBacklight();
       onDone?.();
     },
