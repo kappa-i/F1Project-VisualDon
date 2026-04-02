@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-const SECTION_COUNT = 8;
+const SECTION_COUNT = 7;
 const LIGHTS_OUT_MIN_DELAY = 500;
 const LIGHTS_OUT_MAX_DELAY = 3000;
 const NEXT_SEQUENCE_DELAY = 5000;
@@ -20,11 +20,10 @@ function clampProgress(value: number) {
 function getSectionLabel(index: number) {
   return index === 0 ? 'Home'
     : index === 1 ? 'Ère dangereuse'
-    : index === 2 ? 'Tournants'
-    : index === 3 ? 'Crash'
-    : index === 4 ? 'Haas'
-    : index === 5 ? 'Spa'
-    : index === 6 ? 'Données'
+    : index === 2 ? 'Crash'
+    : index === 3 ? 'Haas'
+    : index === 4 ? 'Spa'
+    : index === 5 ? 'Données'
     : 'Conclusion';
 }
 
@@ -252,11 +251,10 @@ export default function BottomSectionNav() {
                   {index === 0 && isActive ? reactionResult.text
                     : index === 0 ? 'Home'
                     : index === 1 ? 'Ère'
-                    : index === 2 ? 'Tournants'
-                    : index === 3 ? 'Crash'
-                    : index === 4 ? 'Haas'
-                    : index === 5 ? 'Spa'
-                    : index === 6 ? 'Données'
+                    : index === 2 ? 'Crash'
+                    : index === 3 ? 'Haas'
+                    : index === 4 ? 'Spa'
+                    : index === 5 ? 'Données'
                     : 'Fin'}
                 </span>
               </button>

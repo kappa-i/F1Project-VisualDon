@@ -366,18 +366,16 @@ new RGBELoader().load(
 // Pages virtuelles :
 //   0       → hero        (translateY 0vh)
 //   1–6     → era         (translateY -100vh, 1=intro, 2-6=étapes timeline)
-//   7       → turning     (translateY -200vh)
-//   8–55    → crash       (translateY -300vh, 48 pas, vidéo pinnée)
-//   56–64   → viewer      (translateY -400vh, 9 keyframes caméra)
-//   65–68   → spa         (translateY -500vh, 4 POI)
-//   69      → data        (translateY -600vh)
-//   70      → conclusion  (translateY -700vh)
+//   7–54    → crash       (translateY -200vh, 48 pas, vidéo pinnée)
+//   55–63   → viewer      (translateY -300vh, 9 keyframes caméra)
+//   64–67   → spa         (translateY -400vh, 4 POI)
+//   68      → data        (translateY -500vh)
+//   69      → conclusion  (translateY -600vh)
 
 const ERA_PAGE_START  = 1;
 const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline
 const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS; // 6
-const TURNING_PAGE    = ERA_PAGE_END + 1;            // 7
-const CRASH_PAGE_START = TURNING_PAGE + 1;           // 8
+const CRASH_PAGE_START = ERA_PAGE_END + 1;           // 7
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
@@ -531,13 +529,12 @@ function dispatchEraStepChange(pageIdx) {
 function pageToY(idx) {
   if (idx === 0) return 0;
   if (isEraPage(idx)) return -100;
-  if (idx === TURNING_PAGE) return -200;
-  if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -300;
-  if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -400;
-  if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -500;
-  if (idx === DATA_PAGE) return -600;
-  if (idx === CONCLUSION_PAGE) return -700;
-  return -800;
+  if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -200;
+  if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -300;
+  if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -400;
+  if (idx === DATA_PAGE) return -500;
+  if (idx === CONCLUSION_PAGE) return -600;
+  return -700;
 }
 
 function pageToCamera(idx) {
@@ -603,13 +600,12 @@ function dispatchSpaPoiChange(pageIdx) {
 function pageToSectionIndex(pageIdx) {
   if (pageIdx <= 0) return 0;
   if (isEraPage(pageIdx)) return 1;
-  if (pageIdx === TURNING_PAGE) return 2;
-  if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 3;
-  if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 4;
-  if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 5;
-  if (pageIdx === DATA_PAGE) return 6;
-  if (pageIdx === CONCLUSION_PAGE) return 7;
-  return 7;
+  if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 2;
+  if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 3;
+  if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 4;
+  if (pageIdx === DATA_PAGE) return 5;
+  if (pageIdx === CONCLUSION_PAGE) return 6;
+  return 6;
 }
 
 function pageToSectionProgress(pageIdx) {
@@ -618,21 +614,20 @@ function pageToSectionProgress(pageIdx) {
     const eraProgress = (pageIdx - ERA_PAGE_START) / ERA_PAGE_STEPS;
     return 1 + eraProgress * 0.92;
   }
-  if (pageIdx === TURNING_PAGE) return 2;
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) {
-    return 3 + crashFrameToProgress(crashRenderedFrame) * 0.92;
+    return 2 + crashFrameToProgress(crashRenderedFrame) * 0.92;
   }
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) {
     const viewerProgress = (pageIdx - VIEWER_PAGE_START) / Math.max(1, VIEWER_PAGE_END - VIEWER_PAGE_START);
-    return 4 + viewerProgress * 0.92;
+    return 3 + viewerProgress * 0.92;
   }
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) {
     const spaProgress = (pageIdx - SPA_PAGE_START) / Math.max(1, SPA_PAGE_END - SPA_PAGE_START);
-    return 5 + spaProgress * 0.92;
+    return 4 + spaProgress * 0.92;
   }
-  if (pageIdx === DATA_PAGE) return 6;
-  if (pageIdx === CONCLUSION_PAGE) return 7;
-  return 7;
+  if (pageIdx === DATA_PAGE) return 5;
+  if (pageIdx === CONCLUSION_PAGE) return 6;
+  return 6;
 }
 
 function updateSectionNav(pageIdx = currentPage) {
@@ -655,12 +650,11 @@ function updateSectionNav(pageIdx = currentPage) {
 function sectionToPage(sectionIdx) {
   if (sectionIdx <= 0) return 0;
   if (sectionIdx === 1) return ERA_PAGE_START;
-  if (sectionIdx === 2) return TURNING_PAGE;
-  if (sectionIdx === 3) return CRASH_PAGE_START;
-  if (sectionIdx === 4) return VIEWER_PAGE_START;
-  if (sectionIdx === 5) return SPA_PAGE_START;
-  if (sectionIdx === 6) return DATA_PAGE;
-  if (sectionIdx === 7) return CONCLUSION_PAGE;
+  if (sectionIdx === 2) return CRASH_PAGE_START;
+  if (sectionIdx === 3) return VIEWER_PAGE_START;
+  if (sectionIdx === 4) return SPA_PAGE_START;
+  if (sectionIdx === 5) return DATA_PAGE;
+  if (sectionIdx === 6) return CONCLUSION_PAGE;
   return CONCLUSION_PAGE;
 }
 
@@ -991,7 +985,7 @@ window.addEventListener('wheel', e => {
       crashExitDistance = 0;
     }
     crashExitDistance += distance;
-    if (crashExitDistance >= CRASH_EXIT_DISTANCE) goToPage(TURNING_PAGE);
+    if (crashExitDistance >= CRASH_EXIT_DISTANCE) goToPage(ERA_PAGE_END);
     return;
   }
 

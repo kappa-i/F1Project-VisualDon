@@ -347,7 +347,6 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .era-card-enter-right {
   animation: era-slide-from-right 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.section--turning    { background: var(--surface); border-top: 1px solid var(--line); z-index: 3; }
 .section--crash      { background: #03070f; border-top: 1px solid var(--line); z-index: 4; padding: 0; }
 .section--viewer     { background: transparent; height: 100vh; min-height: unset; padding: 0; z-index: 5; }
 .section--spa        { background: var(--bg); border-top: 1px solid var(--line); z-index: 6; padding: 0; }
