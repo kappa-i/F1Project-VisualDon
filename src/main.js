@@ -13,6 +13,7 @@ import SpaSafety from './components/SpaSafety.tsx';
 import InfiniteGallery from './components/InfiniteGallery.tsx';
 import EraTimeline from './components/EraTimeline.tsx';
 import RaceTrack   from './components/RaceTrack.tsx';
+import Footer from './components/Footer.tsx';
 
 const ERA_IMAGES = [
   { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
@@ -83,6 +84,13 @@ const bottomNavMount = document.getElementById('bottom-nav-root');
 if (bottomNavMount) {
   const bottomNavRoot = createRoot(bottomNavMount);
   bottomNavRoot.render(React.createElement(BottomSectionNav));
+}
+
+const footerMount = document.getElementById('footer-root');
+
+if (footerMount) {
+  const footerRoot = createRoot(footerMount);
+  footerRoot.render(React.createElement(Footer));
 }
 
 const spaMount = document.getElementById('spa-root');
