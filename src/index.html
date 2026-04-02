@@ -55,8 +55,57 @@
   </div>
   <div class="sep"></div>
   <div class="stat-block" style="text-align:right">
-    <div class="stat-label">Source</div>
-    <div class="stat-value">3D Model by Selva Marcello</div>
+    <div class="stat-label">
+      <button class="source-link source-link--label js-source-trigger" type="button" data-source-id="selva-marcello-3d">Source</button>
+    </div>
+    <div class="stat-value">
+      <button class="source-link source-link--value js-source-trigger" type="button" data-source-id="selva-marcello-3d">3D Model by Selva Marcello</button>
+    </div>
+  </div>
+</div>
+
+<div class="source-modal" id="source-modal" aria-hidden="true">
+  <div class="source-modal__backdrop" data-source-close></div>
+  <div class="source-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="source-modal-title">
+    <div class="source-modal__header">
+      <h2 class="source-modal__title" id="source-modal-title">
+        <span class="source-modal__title-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path>
+            <path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"></path>
+            <path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"></path>
+            <circle cx="12" cy="12" r="10"></circle>
+          </svg>
+        </span>
+        <span>Source</span>
+      </h2>
+    </div>
+    <div class="source-modal__body">
+      <div class="source-modal__meta">
+        <div class="source-modal__meta-label">URL</div>
+        <a
+          class="source-modal__url"
+          id="source-modal-url"
+          href="https://example.com"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          https://example.com
+        </a>
+      </div>
+    </div>
+    <div class="source-modal__footer">
+      <button class="source-modal__btn source-modal__btn--ghost" type="button" data-source-close>Retour</button>
+      <a
+        class="source-modal__btn source-modal__btn--primary"
+        id="source-modal-action"
+        href="https://example.com"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        Accéder
+      </a>
+    </div>
   </div>
 </div>
 

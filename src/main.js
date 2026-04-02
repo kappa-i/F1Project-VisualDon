@@ -130,6 +130,66 @@ if (eraGalleryMount) {
   }));
 }
 
+const SOURCE_ENTRIES = {
+  'selva-marcello-3d': {
+    title: 'Source',
+    url: 'https://example.com',
+  },
+};
+
+function renderSourceTrigger(text, sourceId, variant = 'value') {
+  return `<button class="source-link source-link--${variant} js-source-trigger" type="button" data-source-id="${sourceId}">${text}</button>`;
+}
+
+function renderStatusbar({ chassis, powerUnit, drivers, sourceLabel, sourceValue, sourceId }) {
+  return `<div class="stat-block"><div class="stat-label">Châssis</div><div class="stat-value">${chassis}</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Groupe motopropulseur</div><div class="stat-value">${powerUnit}</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Pilotes</div><div class="stat-value hi">${drivers}</div></div><div class="sep"></div><div class="stat-block" style="text-align:right"><div class="stat-label">${renderSourceTrigger(sourceLabel, sourceId, 'label')}</div><div class="stat-value">${renderSourceTrigger(sourceValue, sourceId, 'value')}</div></div>`;
+}
+
+const sourceModalEl = document.getElementById('source-modal');
+const sourceModalTitleEl = document.getElementById('source-modal-title');
+const sourceModalUrlEl = document.getElementById('source-modal-url');
+const sourceModalActionEl = document.getElementById('source-modal-action');
+let sourceModalLastTrigger = null;
+
+function openSourceModal(sourceId, triggerEl = null) {
+  const entry = SOURCE_ENTRIES[sourceId];
+  if (!entry || !sourceModalEl || !sourceModalTitleEl || !sourceModalUrlEl || !sourceModalActionEl) return;
+  sourceModalLastTrigger = triggerEl;
+  const titleTextEl = sourceModalTitleEl.querySelector('span:last-child');
+  if (titleTextEl) titleTextEl.textContent = entry.title;
+  sourceModalUrlEl.textContent = entry.url;
+  sourceModalUrlEl.href = entry.url;
+  sourceModalActionEl.href = entry.url;
+  sourceModalEl.classList.add('is-open');
+  sourceModalEl.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('source-modal-open');
+}
+
+function closeSourceModal() {
+  if (!sourceModalEl) return;
+  sourceModalEl.classList.remove('is-open');
+  sourceModalEl.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('source-modal-open');
+  if (sourceModalLastTrigger instanceof HTMLElement) sourceModalLastTrigger.focus();
+}
+
+document.addEventListener('click', event => {
+  const trigger = event.target instanceof Element ? event.target.closest('.js-source-trigger') : null;
+  if (trigger instanceof HTMLElement) {
+    openSourceModal(trigger.dataset.sourceId, trigger);
+    return;
+  }
+
+  const closer = event.target instanceof Element ? event.target.closest('[data-source-close]') : null;
+  if (closer) closeSourceModal();
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && sourceModalEl?.classList.contains('is-open')) {
+    closeSourceModal();
+  }
+});
+
 window.addEventListener('spa-nav-click', e => {
   const dir = e.detail?.direction;
   if (typeof dir !== 'number') return;
@@ -729,7 +789,14 @@ function updateHUD(pageIdx) {
   if (topbarEl && statusbarEl) {
     if (isHaas) {
       topbarEl.innerHTML = '<div><div class="brand-team">MoneyGram Haas F1</div><div class="brand-car"><span>VF</span>-26</div></div><div class="season">Formule 1 · Saison 2026</div>';
-      statusbarEl.innerHTML = '<div class="stat-block"><div class="stat-label">Châssis</div><div class="stat-value">VF-26/C1</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Groupe motopropulseur</div><div class="stat-value">Ferrari 066/11</div></div><div class="sep"></div><div class="stat-block"><div class="stat-label">Pilotes</div><div class="stat-value hi">Bearman · Ocon</div></div><div class="sep"></div><div class="stat-block" style="text-align:right"><div class="stat-label">3D model source</div><div class="stat-value">Selva Marcello</div></div>';
+      statusbarEl.innerHTML = renderStatusbar({
+        chassis: 'VF-26/C1',
+        powerUnit: 'Ferrari 066/11',
+        drivers: 'Bearman · Ocon',
+        sourceLabel: '3D model source',
+        sourceValue: 'Selva Marcello',
+        sourceId: 'selva-marcello-3d',
+      });
     }
   }
 }
