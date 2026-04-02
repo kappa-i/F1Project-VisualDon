@@ -7,6 +7,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ShaderReveal from './components/ShaderReveal.tsx';
 import CrashTitles from './components/CrashTitles.tsx';
+import ImolaModal from './components/ImolaModal.tsx';
 import BottomSectionNav from './components/BottomSectionNav.tsx';
 import SpaSafety from './components/SpaSafety.tsx';
 import InfiniteGallery from './components/InfiniteGallery.tsx';
@@ -69,6 +70,12 @@ const crashTitlesMount = document.getElementById('crash-titles-root');
 if (crashTitlesMount) {
   const crashTitlesRoot = createRoot(crashTitlesMount);
   crashTitlesRoot.render(React.createElement(CrashTitles));
+}
+
+const imolaModalMount = document.getElementById('imola-modal-root');
+if (imolaModalMount) {
+  const imolaModalRoot = createRoot(imolaModalMount);
+  imolaModalRoot.render(React.createElement(ImolaModal));
 }
 
 const bottomNavMount = document.getElementById('bottom-nav-root');
@@ -419,6 +426,12 @@ let crashExitDistance = 0;
 let crashExitDirection = 0;
 let crashFrameVelocity = 0;
 let activeCrashTitleIndex = -1;
+// -1 = hidden, 0 = showing old layout, 1 = morphed to modern
+let activeImolaState = -1;
+// Frame thresholds for the Imola modal
+const IMOLA_SHOW_FRAME  = 90;   // modal appears ~30% into sequence
+const IMOLA_MORPH_FRAME = 230;  // morphs to modern ~few scrolls before end
+const IMOLA_RESET_FRAME = 20;   // reset when scrolling back to start
 
 function renderCrashFrame(frameIndex) {
   const clamped = THREE.MathUtils.clamp(frameIndex, 0, CRASH_FRAME_COUNT - 1);
@@ -441,11 +454,33 @@ function updateCrashTitles(frameIndex) {
     );
   }
 
-  if (nextTitleIndex === activeCrashTitleIndex) return;
-  activeCrashTitleIndex = nextTitleIndex;
-  window.dispatchEvent(new CustomEvent('crash-title-change', {
-    detail: { index: nextTitleIndex },
-  }));
+  if (nextTitleIndex !== activeCrashTitleIndex) {
+    activeCrashTitleIndex = nextTitleIndex;
+    window.dispatchEvent(new CustomEvent('crash-title-change', {
+      detail: { index: nextTitleIndex },
+    }));
+  }
+
+  // ── Imola modal state ────────────────────────────────────────────────
+  let nextImolaState = activeImolaState;
+  if (frameIndex < IMOLA_RESET_FRAME) {
+    nextImolaState = -1;
+  } else if (frameIndex >= IMOLA_MORPH_FRAME) {
+    nextImolaState = 1;
+  } else if (frameIndex >= IMOLA_SHOW_FRAME) {
+    nextImolaState = 0;
+  }
+
+  if (nextImolaState !== activeImolaState) {
+    activeImolaState = nextImolaState;
+    if (nextImolaState === -1) {
+      window.dispatchEvent(new CustomEvent('crash-imola-reset'));
+    } else if (nextImolaState === 0) {
+      window.dispatchEvent(new CustomEvent('crash-imola-show'));
+    } else {
+      window.dispatchEvent(new CustomEvent('crash-imola-morph'));
+    }
+  }
 }
 
 function setCrashProgress(nextProgress, immediate = false) {

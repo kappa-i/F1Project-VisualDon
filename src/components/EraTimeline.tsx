@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CometCard } from './CometCard';
 import SafetyChart from './SafetyChart';
 
 interface EraStep {
@@ -73,7 +72,40 @@ const ERA_TOTAL_STEPS = ERA_STEPS.length;
 
 export default function EraTimeline() {
   const [activeStep, setActiveStep] = useState(-1);
+  const [displayStep, setDisplayStep] = useState(-1);
+  const [isMorphing, setIsMorphing] = useState(false);
   const activeStepRef = useRef(-1);
+
+  useEffect(() => {
+    if (activeStep < 0) {
+      setDisplayStep(-1);
+      setIsMorphing(false);
+      return;
+    }
+
+    if (displayStep < 0) {
+      setDisplayStep(activeStep);
+      setIsMorphing(false);
+      return;
+    }
+
+    if (activeStep === displayStep) return;
+
+    setIsMorphing(true);
+
+    const swapTimer = window.setTimeout(() => {
+      setDisplayStep(activeStep);
+    }, 160);
+
+    const settleTimer = window.setTimeout(() => {
+      setIsMorphing(false);
+    }, 380);
+
+    return () => {
+      window.clearTimeout(swapTimer);
+      window.clearTimeout(settleTimer);
+    };
+  }, [activeStep, displayStep]);
 
   useEffect(() => {
     const handleStepChange = (e: Event) => {
@@ -88,7 +120,7 @@ export default function EraTimeline() {
     return () => window.removeEventListener('era-step-change', handleStepChange);
   }, []);
 
-  const step = activeStep >= 0 && activeStep < ERA_STEPS.length ? ERA_STEPS[activeStep] : null;
+  const step = displayStep >= 0 && displayStep < ERA_STEPS.length ? ERA_STEPS[displayStep] : null;
   const fromLeft = step?.side === 'left';
 
   // Progress: -1 = 0%, step 0 = 20%, …, step 4 = 100%
@@ -268,157 +300,165 @@ export default function EraTimeline() {
           left: fromLeft ? '4%' : 'auto',
           right: fromLeft ? 'auto' : '4%',
           top: '50%',
-          transform: 'translateY(-50%)',
+          transform: `translateY(-50%) translateX(${isMorphing ? (fromLeft ? '-14px' : '14px') : '0'}) scale(${isMorphing ? 0.985 : 1})`,
           pointerEvents: 'auto',
           width: 'clamp(400px, 46vw, 620px)',
+          opacity: isMorphing ? 0.74 : 1,
+          transition: 'left 0.35s ease, right 0.35s ease, transform 0.35s ease, opacity 0.22s ease',
         }}>
-          <div
-            key={activeStep}
-            className={fromLeft ? 'era-card-enter-left' : 'era-card-enter-right'}
-          >
-            <CometCard rotateDepth={10} translateDepth={14}>
+          <div style={{
+            background: 'rgba(5, 5, 5, 0.94)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.06)',
+            ...(fromLeft
+              ? { borderLeft: `3px solid ${step.accent}` }
+              : { borderRight: `3px solid ${step.accent}` }
+            ),
+            borderRadius: '3px',
+            padding: '40px 36px 32px',
+            fontFamily: "'Formula1', sans-serif",
+            color: '#e0ddd8',
+            position: 'relative',
+            overflow: 'hidden',
+            transition: 'border-color 0.35s ease',
+          }}>
+
+            {/* Coin accentué */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              ...(fromLeft ? { left: 0 } : { right: 0 }),
+              width: '40px',
+              height: '40px',
+              borderTop: `1px solid ${step.accent}`,
+              ...(fromLeft
+                ? { borderLeft: `1px solid ${step.accent}` }
+                : { borderRight: `1px solid ${step.accent}` }
+              ),
+              opacity: 0.55,
+              transition: 'border-color 0.35s ease',
+            }} />
+
+            <div style={{
+              position: 'absolute',
+              ...(fromLeft ? { left: '-80px' } : { right: '-80px' }),
+              top: '-80px',
+              width: '240px',
+              height: '240px',
+              background: `radial-gradient(circle, ${step.accent}14 0%, transparent 68%)`,
+              pointerEvents: 'none',
+              transition: 'background 0.35s ease',
+            }} />
+
+            <div style={{
+              opacity: isMorphing ? 0.82 : 1,
+              transform: `translateY(${isMorphing ? '6px' : '0'})`,
+              transition: 'opacity 0.22s ease, transform 0.22s ease',
+            }}>
+              {/* En-tête */}
               <div style={{
-                background: 'rgba(5, 5, 5, 0.94)',
-                backdropFilter: 'blur(28px)',
-                WebkitBackdropFilter: 'blur(28px)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                ...(fromLeft
-                  ? { borderLeft: `3px solid ${step.accent}` }
-                  : { borderRight: `3px solid ${step.accent}` }
-                ),
-                borderRadius: '3px',
-                padding: '40px 36px 32px',
-                fontFamily: "'Formula1', sans-serif",
-                color: '#e0ddd8',
-                position: 'relative',
-                overflow: 'hidden',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '22px',
               }}>
-
-                {/* Coin accentué */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  ...(fromLeft ? { left: 0 } : { right: 0 }),
-                  width: '40px',
-                  height: '40px',
-                  borderTop: `1px solid ${step.accent}`,
-                  ...(fromLeft
-                    ? { borderLeft: `1px solid ${step.accent}` }
-                    : { borderRight: `1px solid ${step.accent}` }
-                  ),
-                  opacity: 0.55,
-                }} />
-
-                {/* Lueur d'ambiance */}
-                <div style={{
-                  position: 'absolute',
-                  ...(fromLeft ? { left: '-80px' } : { right: '-80px' }),
-                  top: '-80px',
-                  width: '240px',
-                  height: '240px',
-                  background: `radial-gradient(circle, ${step.accent}14 0%, transparent 68%)`,
-                  pointerEvents: 'none',
-                }} />
-
-                {/* En-tête */}
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '22px',
-                }}>
-                  <span style={{
-                    fontSize: '11px',
-                    letterSpacing: '4px',
-                    color: step.accent,
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                  }}>
-                    Ère {step.tag}
-                  </span>
-                  <span style={{
-                    fontSize: '11px',
-                    letterSpacing: '2px',
-                    color: 'rgba(255,255,255,0.28)',
-                  }}>
-                    {step.period}
-                  </span>
-                </div>
-
-                {/* Titre */}
-                <h3 style={{
-                  fontSize: '32px',
+                <span style={{
+                  fontSize: '11px',
+                  letterSpacing: '4px',
+                  color: step.accent,
+                  textTransform: 'uppercase',
                   fontWeight: 700,
-                  lineHeight: 1.15,
-                  marginBottom: '20px',
-                  letterSpacing: '-0.8px',
-                  color: '#ffffff',
+                  transition: 'color 0.35s ease',
                 }}>
-                  {step.title}
-                </h3>
-
-                {/* Séparateur */}
-                <div style={{
-                  height: '1px',
-                  background: `linear-gradient(to ${fromLeft ? 'right' : 'left'}, ${step.accent}80, transparent)`,
-                  marginBottom: '16px',
-                }} />
-
-                {/* Description */}
-                <p style={{
-                  fontSize: '14.5px',
-                  lineHeight: 1.85,
-                  color: 'rgba(224, 221, 216, 0.72)',
-                  marginBottom: '28px',
-                  letterSpacing: '0.1px',
+                  Ère {step.tag}
+                </span>
+                <span style={{
+                  fontSize: '11px',
+                  letterSpacing: '2px',
+                  color: 'rgba(255,255,255,0.28)',
                 }}>
-                  {step.desc}
-                </p>
-
-                {/* Badge stat */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '14px 20px',
-                  background: `${step.accent}10`,
-                  border: `1px solid ${step.accent}28`,
-                  borderRadius: '2px',
-                }}>
-                  <span style={{
-                    fontSize: '8px',
-                    letterSpacing: '2.5px',
-                    color: 'rgba(255,255,255,0.3)',
-                    textTransform: 'uppercase',
-                  }}>
-                    {step.statLabel}
-                  </span>
-                  <span style={{
-                    fontSize: '17px',
-                    fontWeight: 700,
-                    color: step.accent,
-                    letterSpacing: '0.5px',
-                  }}>
-                    {step.stat}
-                  </span>
-                </div>
-
-                {/* Numéro d'étape en filigrane */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: '20px',
-                  ...(fromLeft ? { right: '24px' } : { left: '24px' }),
-                  fontSize: '72px',
-                  fontWeight: 700,
-                  color: `${step.accent}08`,
-                  lineHeight: 1,
-                  fontVariantNumeric: 'tabular-nums',
-                  userSelect: 'none',
-                }}>
-                  {step.tag}
-                </div>
+                  {step.period}
+                </span>
               </div>
-            </CometCard>
+
+              {/* Titre */}
+              <h3 style={{
+                fontSize: '32px',
+                fontWeight: 700,
+                lineHeight: 1.15,
+                marginBottom: '20px',
+                letterSpacing: '-0.8px',
+                color: '#ffffff',
+              }}>
+                {step.title}
+              </h3>
+
+              {/* Séparateur */}
+              <div style={{
+                height: '1px',
+                background: `linear-gradient(to ${fromLeft ? 'right' : 'left'}, ${step.accent}80, transparent)`,
+                marginBottom: '16px',
+                transition: 'background 0.35s ease',
+              }} />
+
+              {/* Description */}
+              <p style={{
+                fontSize: '14.5px',
+                lineHeight: 1.85,
+                color: 'rgba(224, 221, 216, 0.72)',
+                marginBottom: '28px',
+                letterSpacing: '0.1px',
+              }}>
+                {step.desc}
+              </p>
+
+              {/* Badge stat */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '14px 20px',
+                background: `${step.accent}10`,
+                border: `1px solid ${step.accent}28`,
+                borderRadius: '2px',
+                transition: 'background 0.35s ease, border-color 0.35s ease',
+              }}>
+                <span style={{
+                  fontSize: '8px',
+                  letterSpacing: '2.5px',
+                  color: 'rgba(255,255,255,0.3)',
+                  textTransform: 'uppercase',
+                }}>
+                  {step.statLabel}
+                </span>
+                <span style={{
+                  fontSize: '17px',
+                  fontWeight: 700,
+                  color: step.accent,
+                  letterSpacing: '0.5px',
+                  transition: 'color 0.35s ease',
+                }}>
+                  {step.stat}
+                </span>
+              </div>
+            </div>
+
+            {/* Numéro d'étape en filigrane */}
+            <div style={{
+              position: 'absolute',
+              bottom: '20px',
+              ...(fromLeft ? { right: '24px' } : { left: '24px' }),
+              fontSize: '72px',
+              fontWeight: 700,
+              color: `${step.accent}08`,
+              lineHeight: 1,
+              fontVariantNumeric: 'tabular-nums',
+              userSelect: 'none',
+              transition: 'color 0.35s ease',
+            }}>
+              {step.tag}
+            </div>
           </div>
         </div>
       )}
@@ -429,18 +469,13 @@ export default function EraTimeline() {
           position: 'absolute',
           left: '4%',
           top: '50%',
-          transform: 'translateY(-50%)',
+          transform: `translateY(-50%) scale(${isMorphing ? 0.985 : 1})`,
           pointerEvents: 'auto',
           width: 'clamp(480px, 52vw, 720px)',
+          opacity: isMorphing ? 0.78 : 1,
+          transition: 'transform 0.35s ease, opacity 0.22s ease',
         }}>
-          <div
-            key={activeStep}
-            className="era-card-enter-left"
-          >
-            <CometCard rotateDepth={6} translateDepth={10}>
-              <SafetyChart />
-            </CometCard>
-          </div>
+          <SafetyChart />
         </div>
       )}
     </div>
