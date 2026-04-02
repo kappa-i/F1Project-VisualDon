@@ -6,16 +6,13 @@ const WORLD_W = 2400;
 const WORLD_H = 1800;
 
 // ── Data types ────────────────────────────────────────────────────────────
-type Pt  = { x: number; y: number };
-type Seg = { cp1: Pt; cp2: Pt; end: Pt };
+type Pt       = { x: number; y: number };
+type Seg      = { cp1: Pt; cp2: Pt; end: Pt };
+type PathData = { start: Pt; segs: Seg[] };
+type TabKey   = 'circuit' | 'car1' | 'car2' | 'car3';
 
-// ── Initial path (from user-calibrated dev2 session) ─────────────────────
-const INIT_START: Pt = { x: 282, y: 405 };
-const INIT_SEGS: Seg[] = [
-  { cp1:{x:243,y:303},   cp2:{x:521,y:246},   end:{x:517,y:375}   },
-  { cp1:{x:533,y:469},   cp2:{x:511,y:673},   end:{x:638,y:726}   },
-  { cp1:{x:844,y:749},   cp2:{x:748,y:371},   end:{x:828,y:334}   },
-  { cp1:{x:984,y:297},   cp2:{x:1198,y:315},  end:{x:1247,y:374}  },
+// ── Calibrated paths (user-calibrated via dev2) ───────────────────────────
+const COMMON_SEGS_TAIL: Seg[] = [
   { cp1:{x:1312,y:446},  cp2:{x:2134,y:1263}, end:{x:2016,y:1319} },
   { cp1:{x:1989,y:1548}, cp2:{x:1675,y:1489}, end:{x:1443,y:1495} },
   { cp1:{x:1235,y:1499}, cp2:{x:1552,y:720},  end:{x:1067,y:883}  },
@@ -26,6 +23,51 @@ const INIT_SEGS: Seg[] = [
   { cp1:{x:816,y:1297},  cp2:{x:811,y:925},   end:{x:306,y:947}   },
   { cp1:{x:226,y:907},   cp2:{x:257,y:501},   end:{x:255,y:477}   },
 ];
+
+const INIT_START: Pt = { x: 282, y: 405 };
+
+// Circuit
+const INIT_START_CIRCUIT: Pt = {x:282,y:405};
+const INIT_SEGS_CIRCUIT: Seg[] = [
+  { cp1:{x:243,y:303},  cp2:{x:521,y:246},  end:{x:517,y:375} },
+  { cp1:{x:533,y:469},  cp2:{x:511,y:673},  end:{x:638,y:726} },
+  { cp1:{x:844,y:749},  cp2:{x:703,y:295},  end:{x:783,y:258} },
+  { cp1:{x:939,y:221},  cp2:{x:1198,y:315}, end:{x:1247,y:374} },
+  ...COMMON_SEGS_TAIL,
+];
+
+// Car 1
+const INIT_START_CAR1: Pt = {x:282,y:405};
+const INIT_SEGS_CAR1: Seg[] = [
+  { cp1:{x:243,y:303},  cp2:{x:521,y:246},  end:{x:517,y:375} },
+  { cp1:{x:533,y:469},  cp2:{x:511,y:673},  end:{x:638,y:726} },
+  { cp1:{x:844,y:749},  cp2:{x:748,y:371},  end:{x:828,y:334} },
+  { cp1:{x:984,y:297},  cp2:{x:1198,y:315}, end:{x:1247,y:374} },
+  ...COMMON_SEGS_TAIL,
+];
+
+// Car 2
+const INIT_START_CAR2: Pt = {x:282,y:405};
+const INIT_SEGS_CAR2: Seg[] = [
+  { cp1:{x:243,y:303},  cp2:{x:521,y:246},  end:{x:517,y:375} },
+  { cp1:{x:533,y:469},  cp2:{x:511,y:673},  end:{x:638,y:726} },
+  { cp1:{x:844,y:749},  cp2:{x:762,y:448},  end:{x:842,y:411} },
+  { cp1:{x:998,y:374},  cp2:{x:1198,y:315}, end:{x:1247,y:374} },
+  ...COMMON_SEGS_TAIL,
+];
+
+// Car 3
+const INIT_START_CAR3: Pt = {x:282,y:405};
+const INIT_SEGS_CAR3: Seg[] = [
+  { cp1:{x:243,y:303},  cp2:{x:521,y:246},  end:{x:517,y:375} },
+  { cp1:{x:533,y:469},  cp2:{x:511,y:673},  end:{x:638,y:726} },
+  { cp1:{x:844,y:749},  cp2:{x:740,y:322},  end:{x:820,y:285} },
+  { cp1:{x:976,y:248},  cp2:{x:1198,y:315}, end:{x:1247,y:374} },
+  ...COMMON_SEGS_TAIL,
+];
+
+// Alias for normal-mode camera (follows car1)
+const INIT_SEGS = INIT_SEGS_CAR1;
 
 function buildPath(start: Pt, segs: Seg[]): string {
   let d = `M ${start.x} ${start.y}`;
@@ -58,10 +100,17 @@ function splitSeg(p0: Pt, seg: Seg): [Seg, Seg] {
   ];
 }
 
+function clonePath(p: PathData): PathData {
+  return {
+    start: { ...p.start },
+    segs:  p.segs.map(s => ({ cp1:{...s.cp1}, cp2:{...s.cp2}, end:{...s.end} })),
+  };
+}
+
 // ── URL flag ─────────────────────────────────────────────────────────────
 const IS_DEV2 = new URLSearchParams(location.search).has('dev2');
 
-// ── Shared button style helper ────────────────────────────────────────────
+// ── Shared button style ───────────────────────────────────────────────────
 function btnStyle(color: string, disabled = false): React.CSSProperties {
   return {
     flex: 1,
@@ -74,24 +123,74 @@ function btnStyle(color: string, disabled = false): React.CSSProperties {
   };
 }
 
+// ── Tab metadata ─────────────────────────────────────────────────────────
+const TABS: { key: TabKey; label: string; color: string }[] = [
+  { key: 'circuit', label: 'Circuit', color: '#e0e0e0' },
+  { key: 'car1',    label: 'Car 1',   color: '#ffd700' },
+  { key: 'car2',    label: 'Car 2',   color: '#00cfff' },
+  { key: 'car3',    label: 'Car 3',   color: '#ff80ff' },
+];
+
 // ═════════════════════════════════════════════════════════════════════════
 // DEV2 EDITOR
 // ═════════════════════════════════════════════════════════════════════════
 function Dev2Editor() {
-  const [startPt,  setStartPt]  = useState<Pt>(INIT_START);
-  const [segs,     setSegs]     = useState<Seg[]>(INIT_SEGS);
-  const [selected, setSelected] = useState<number | 'start' | null>(null);
-  const [showInfo, setShowInfo] = useState(false);
-  const [copied,   setCopied]   = useState(false);
+  // ── Multi-path state ──────────────────────────────────────────────
+  const [paths, setPaths] = useState<Record<TabKey, PathData | null>>({
+    circuit: { start: INIT_START_CIRCUIT, segs: INIT_SEGS_CIRCUIT },
+    car1:    { start: INIT_START_CAR1,    segs: INIT_SEGS_CAR1    },
+    car2:    { start: INIT_START_CAR2,    segs: INIT_SEGS_CAR2    },
+    car3:    { start: INIT_START_CAR3,    segs: INIT_SEGS_CAR3    },
+  });
+  const [activeTab, setActiveTab] = useState<TabKey>('car1');
+  const [selected,  setSelected]  = useState<number | 'start' | null>(null);
+  const [showInfo,  setShowInfo]  = useState(false);
+  const [copied,    setCopied]    = useState(false);
 
-  const svgRef      = useRef<SVGSVGElement>(null);
-  const dragging    = useRef<string | null>(null);
-  const mdPt        = useRef<{ x: number; y: number } | null>(null); // mousedown position
-  const carsRef     = useRef<(HTMLImageElement | null)[]>([null, null, null]);
+  const svgRef   = useRef<SVGSVGElement>(null);
+  const dragging = useRef<string | null>(null);
+  const mdPt     = useRef<{ x: number; y: number } | null>(null);
+  const carsRef  = useRef<(HTMLImageElement | null)[]>([null, null, null]);
 
-  const pathStr = useMemo(() => buildPath(startPt, segs), [startPt, segs]);
+  // ── Active path helpers ─────────────────────────────────────────
+  const currPath = paths[activeTab]!;
+  const startPt  = currPath?.start ?? INIT_START;
+  const segs     = currPath?.segs  ?? [];
 
-  // ── Scale world to fit viewport ─────────────────────────────────────
+  const pathStrs = useMemo(() => {
+    const r: Partial<Record<TabKey, string>> = {};
+    (Object.keys(paths) as TabKey[]).forEach(k => {
+      if (paths[k]) r[k] = buildPath(paths[k]!.start, paths[k]!.segs);
+    });
+    return r;
+  }, [paths]);
+
+  // Functional updater scoped to active tab
+  const updPath = (fn: (p: PathData) => PathData) => {
+    setPaths(prev => {
+      const curr = prev[activeTab];
+      if (!curr) return prev;
+      return { ...prev, [activeTab]: fn(curr) };
+    });
+  };
+
+  // ── Enable / disable tabs ───────────────────────────────────────
+  const enableTab = (tab: TabKey) => {
+    setPaths(prev => {
+      if (prev[tab]) return prev;
+      const base = prev.car1!;
+      return { ...prev, [tab]: clonePath(base) };
+    });
+    setActiveTab(tab);
+    setSelected(null);
+  };
+
+  const disableTab = (tab: Exclude<TabKey, 'car1'>) => {
+    setPaths(prev => ({ ...prev, [tab]: null }));
+    if (activeTab === tab) { setActiveTab('car1'); setSelected(null); }
+  };
+
+  // ── Scale world to fit viewport ─────────────────────────────────
   const [dim, setDim] = useState({ scale: 1, ox: 0, oy: 0 });
   useEffect(() => {
     const calc = () => {
@@ -103,17 +202,19 @@ function Dev2Editor() {
     return () => window.removeEventListener('resize', calc);
   }, []);
 
-  // ── Update cars when path changes ──────────────────────────────────
+  // ── Update cars ──────────────────────────────────────────────────
   useEffect(() => {
     carsRef.current.forEach((car, i) => {
       if (!car) return;
-      car.style.setProperty('offset-path', `path('${pathStr}')`);
-      car.style.setProperty('offset-rotate', 'auto -90deg');
+      const tabKey: TabKey = i === 0 ? 'car1' : i === 1 ? 'car2' : 'car3';
+      const p = paths[tabKey] ?? paths.car1!;
+      car.style.setProperty('offset-path',     `path('${buildPath(p.start, p.segs)}')`);
+      car.style.setProperty('offset-rotate',   'auto -90deg');
       car.style.setProperty('offset-distance', (wrap(CARS[i].baseOffset) * 100).toFixed(2) + '%');
     });
-  }, [pathStr]);
+  }, [paths]);
 
-  // ── SVG world coords ───────────────────────────────────────────────
+  // ── SVG world coords ─────────────────────────────────────────────
   const svgCoord = (e: React.MouseEvent): Pt => {
     const rect = svgRef.current!.getBoundingClientRect();
     return {
@@ -122,28 +223,29 @@ function Dev2Editor() {
     };
   };
 
-  // ── Drag handlers ──────────────────────────────────────────────────
+  // ── Drag ─────────────────────────────────────────────────────────
   const onMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
-    if (!dragging.current) return;
+    if (!dragging.current || !currPath) return;
     const pt  = svgCoord(e);
     const key = dragging.current;
 
     if (key === 'start') {
-      const dx = pt.x - startPt.x, dy = pt.y - startPt.y;
-      setStartPt(pt);
-      setSegs(prev => {
-        const next = prev.map(s => ({...s,cp1:{...s.cp1},cp2:{...s.cp2},end:{...s.end}}));
+      setPaths(prev => {
+        const curr = prev[activeTab]!;
+        const dx = pt.x - curr.start.x, dy = pt.y - curr.start.y;
+        const next = curr.segs.map(s => ({...s,cp1:{...s.cp1},cp2:{...s.cp2},end:{...s.end}}));
         const last = next[next.length - 1];
         last.end = { x: last.end.x + dx, y: last.end.y + dy };
-        return next;
+        return { ...prev, [activeTab]: { start: pt, segs: next } };
       });
       return;
     }
 
     const [kind, idxStr] = key.split('_');
     const i = parseInt(idxStr);
-    setSegs(prev => {
-      const next = prev.map(s => ({...s,cp1:{...s.cp1},cp2:{...s.cp2},end:{...s.end}}));
+    setPaths(prev => {
+      const curr = prev[activeTab]!;
+      const next = curr.segs.map(s => ({...s,cp1:{...s.cp1},cp2:{...s.cp2},end:{...s.end}}));
       if (kind === 'end') {
         const dx = pt.x - next[i].end.x, dy = pt.y - next[i].end.y;
         next[i].end = pt;
@@ -154,7 +256,7 @@ function Dev2Editor() {
       } else {
         next[i].cp2 = pt;
       }
-      return next;
+      return { ...prev, [activeTab]: { ...curr, segs: next } };
     });
   };
 
@@ -165,7 +267,7 @@ function Dev2Editor() {
   };
 
   const onAnchorUp = (selIdx: number | 'start') => (e: React.MouseEvent) => {
-    e.stopPropagation(); // empêche le SVG onClick de désélectionner
+    e.stopPropagation();
     if (mdPt.current) {
       const moved = Math.abs(e.clientX - mdPt.current.x) + Math.abs(e.clientY - mdPt.current.y);
       if (moved < 5) setSelected(prev => prev === selIdx ? null : selIdx);
@@ -174,124 +276,117 @@ function Dev2Editor() {
     mdPt.current = null;
   };
 
-  const onSvgUp   = () => { dragging.current = null; };
-  const onSvgClick = () => { setSelected(null); }; // clic sur fond vide → désélectionner
+  const onSvgUp    = () => { dragging.current = null; };
+  const onSvgClick = () => { setSelected(null); };
 
-  // ── Ajouter au début (premier segment) ────────────────────────────
-  const addAtStart = () => {
-    setSegs(prev => {
-      const next = [...prev];
-      const [a, b] = splitSeg(startPt, next[0]);
-      next.splice(0, 1, a, b);
-      return next;
-    });
-  };
+  // ── Path manipulation ────────────────────────────────────────────
+  const addAtStart = () => updPath(p => {
+    const next = [...p.segs];
+    const [a, b] = splitSeg(p.start, next[0]);
+    next.splice(0, 1, a, b);
+    return { ...p, segs: next };
+  });
 
-  // ── Ajouter à la fin (dernier segment) ────────────────────────────
-  const addAtEnd = () => {
-    setSegs(prev => {
-      const next = [...prev];
-      const idx  = next.length - 1;
-      const p0   = next.length > 1 ? next[idx - 1].end : startPt;
-      const [a, b] = splitSeg(p0, next[idx]);
-      next.splice(idx, 1, a, b);
-      return next;
-    });
-  };
+  const addAtEnd = () => updPath(p => {
+    const next = [...p.segs];
+    const idx  = next.length - 1;
+    const p0   = next.length > 1 ? next[idx - 1].end : p.start;
+    const [a, b] = splitSeg(p0, next[idx]);
+    next.splice(idx, 1, a, b);
+    return { ...p, segs: next };
+  });
 
-  // ── Ajouter avant l'ancre sélectionnée ────────────────────────────
-  const addBefore = () => {
-    setSegs(prev => {
-      const next = [...prev];
-      const i    = selected as number;
-      const p0   = i === 0 ? startPt : next[i - 1].end;
-      const [a, b] = splitSeg(p0, next[i]);
-      next.splice(i, 1, a, b);
-      return next;
-    });
-  };
+  const addBefore = () => updPath(p => {
+    const next = [...p.segs];
+    const i    = selected as number;
+    const p0   = i === 0 ? p.start : next[i - 1].end;
+    const [a, b] = splitSeg(p0, next[i]);
+    next.splice(i, 1, a, b);
+    return { ...p, segs: next };
+  });
 
-  // ── Ajouter après l'ancre sélectionnée ────────────────────────────
-  const addAfter = () => {
-    setSegs(prev => {
-      const next    = [...prev];
-      const i       = selected as number;
-      const nextIdx = (i + 1) % next.length;
-      const p0      = next[i].end;
-      const [a, b]  = splitSeg(p0, next[nextIdx]);
-      next.splice(nextIdx, 1, a, b);
-      return next;
-    });
-  };
+  const addAfter = () => updPath(p => {
+    const next    = [...p.segs];
+    const i       = selected as number;
+    const nextIdx = (i + 1) % next.length;
+    const p0      = next[i].end;
+    const [a, b]  = splitSeg(p0, next[nextIdx]);
+    next.splice(nextIdx, 1, a, b);
+    return { ...p, segs: next };
+  });
 
-  // ── Supprimer l'ancre sélectionnée ────────────────────────────────
   const removePoint = () => {
     if (selected === null || selected === 'start' || segs.length <= 3) return;
     const i = selected as number;
-    setSegs(prev => {
-      const next = [...prev];
+    updPath(p => {
+      const next = [...p.segs];
       if (i === 0) {
         next.splice(0, 1);
       } else {
         const merged: Seg = { cp1: next[i-1].cp1, cp2: next[i].cp2, end: next[i].end };
         next.splice(i - 1, 2, merged);
       }
-      return next;
+      return { ...p, segs: next };
     });
     setSelected(null);
   };
 
-  // ── Reset Bézier : remet les 2 poignées de l'ancre sélectionnée ───
-  // cp2 de seg[i] + cp1 de seg[i+1] → positions 2/3 et 1/3 linéaires
   const resetBezier = () => {
     if (selected === null || selected === 'start') return;
     const i = selected as number;
-    setSegs(prev => {
-      const next = prev.map(s => ({...s, cp1:{...s.cp1}, cp2:{...s.cp2}, end:{...s.end}}));
-      const anchor  = next[i].end;
-      const prevAnchor = i === 0 ? startPt : next[i - 1].end;
-      const nextSeg    = next[(i + 1) % next.length];
-      const nextAnchor = nextSeg.end;
-      // cp2 of seg[i]: 2/3 from prevAnchor to anchor (linear exit)
+    updPath(p => {
+      const next = p.segs.map(s => ({...s,cp1:{...s.cp1},cp2:{...s.cp2},end:{...s.end}}));
+      const anchor     = next[i].end;
+      const prevAnchor = i === 0 ? p.start : next[i - 1].end;
+      const nextAnchor = next[(i + 1) % next.length].end;
       next[i].cp2 = {
-        x: Math.round(prevAnchor.x + (anchor.x - prevAnchor.x) * 2/3),
-        y: Math.round(prevAnchor.y + (anchor.y - prevAnchor.y) * 2/3),
+        x: Math.round(anchor.x + (prevAnchor.x - anchor.x) * 1/3),
+        y: Math.round(anchor.y + (prevAnchor.y - anchor.y) * 1/3),
       };
-      // cp1 of seg[i+1]: 1/3 from anchor to nextAnchor (linear entry)
       const ni = (i + 1) % next.length;
       next[ni].cp1 = {
         x: Math.round(anchor.x + (nextAnchor.x - anchor.x) * 1/3),
         y: Math.round(anchor.y + (nextAnchor.y - anchor.y) * 1/3),
       };
-      return next;
+      return { ...p, segs: next };
     });
   };
 
-  // ── Copy ───────────────────────────────────────────────────────────
+  // ── Copy ─────────────────────────────────────────────────────────
   const copyData = () => {
-    const out = `=== SVG PATH ===\n${pathStr}\n\n=== JSON ===\n${JSON.stringify({ start: startPt, segs }, null, 2)}`;
-    navigator.clipboard.writeText(out).then(() => {
+    const parts: string[] = [];
+    for (const { key } of TABS) {
+      const p = paths[key];
+      if (!p) continue;
+      parts.push(`// ── ${key.toUpperCase()} ────────────────────────────────────`);
+      parts.push(`const INIT_START_${key.toUpperCase()}: Pt = ${JSON.stringify(p.start)};`);
+      parts.push(`const INIT_SEGS_${key.toUpperCase()}: Seg[] = ${JSON.stringify(p.segs, null, 2)};`);
+      parts.push('');
+    }
+    navigator.clipboard.writeText(parts.join('\n')).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
   };
 
+  // ── Render ───────────────────────────────────────────────────────
   const { scale, ox, oy } = dim;
-  const displayW = WORLD_W * scale;
-  const displayH = WORLD_H * scale;
-  const ptR = 12, cpR = 8;
+  const displayW  = WORLD_W * scale;
+  const displayH  = WORLD_H * scale;
+  const ptR       = 12, cpR = 8;
   const canRemove = selected !== null && selected !== 'start' && segs.length > 3;
 
-  // ── Panel via portal → truly fixed, immune to GSAP transform ──────
+  // ── Panel (portal → immune to GSAP transform) ─────────────────
   const panel = createPortal(
     <div style={{
       position: 'fixed', top: 20, right: 20, zIndex: 99999,
       background: 'rgba(8,8,8,0.95)', border: '1px solid #e8002d',
       borderRadius: 10, padding: '16px 18px', fontFamily: 'monospace',
       fontSize: 12, color: '#fff', display: 'flex', flexDirection: 'column', gap: 10,
-      minWidth: 240, boxShadow: '0 0 30px rgba(232,0,45,0.2)',
+      minWidth: 260, boxShadow: '0 0 30px rgba(232,0,45,0.2)',
     }}>
-      {/* Header */}
+
+      {/* ── Header ──────────────────────────────────────────────── */}
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
         <span style={{ color:'#e8002d', fontWeight:'bold', letterSpacing:2, fontSize:11 }}>
           DEV2 · PATH EDITOR
@@ -304,12 +399,16 @@ function Dev2Editor() {
         }}>i</button>
       </div>
 
-      {/* Info panel */}
+      {/* ── Info tooltip ────────────────────────────────────────── */}
       {showInfo && (
         <div style={{
           background:'rgba(255,255,255,0.05)', borderRadius:6,
           padding:'10px 12px', fontSize:11, lineHeight:1.75, color:'rgba(255,255,255,0.8)',
         }}>
+          <b style={{color:'#ffd700'}}>Onglets en haut</b><br/>
+          Chaque tracé est indépendant. <b>Car 1</b> est toujours actif (tracé de référence).
+          Cliquer <b>Circuit / Car 2 / Car 3</b> active un onglet et crée une copie du tracé Car 1.
+          Le <b>×</b> désactive le tracé (les voitures retombent sur Car 1).<br/><br/>
           <b style={{color:'#4af'}}>● Ancre bleue / START</b><br/>
           Drag = déplace le point + ses handles.<br/>
           Clic = sélectionne pour +/−.<br/><br/>
@@ -317,30 +416,68 @@ function Dev2Editor() {
           <b style={{color:'rgba(255,160,0,0.9)'}}>● cp2 orange</b> = handle de sortie de la courbe<br/><br/>
           <b style={{color:'#1d6fa4'}}>+ Au début / À la fin</b> (sans sélection) : coupe le 1er ou dernier segment.<br/>
           <b style={{color:'#1d6fa4'}}>+ Avant / Après</b> (ancre sélectionnée) : coupe le segment qui arrive ou part de l'ancre.<br/>
-          <b style={{color:'#7c3aed'}}>↺ Reset Bézier</b> : remet cp1 + cp2 de l'ancre sélectionnée à une position linéaire neutre.<br/><br/>
-          <b style={{color:'#fff'}}>− Supprimer</b> : fusionne le segment sélectionné avec le précédent. Min 3 points.
+          <b style={{color:'#7c3aed'}}>↺ Reset Bézier</b> : remet cp1 + cp2 de l'ancre à une position neutre.<br/><br/>
+          <b style={{color:'#fff'}}>− Supprimer</b> : fusionne le segment avec le précédent. Min 3 points.<br/><br/>
+          <b style={{color:'#22c55e'}}>Copy</b> : copie tous les tracés actifs dans le presse-papier.
         </div>
       )}
 
-      {/* Legend */}
-      <div style={{ display:'flex', flexDirection:'column', gap:5, fontSize:11 }}>
-        <span><span style={{color:'#4af'}}>●</span> Ancre — drag (déplace) / clic (sélect)</span>
-        <span><span style={{color:'rgba(0,255,100,0.9)'}}>●</span> cp1 — entrée courbe</span>
-        <span><span style={{color:'rgba(255,160,0,0.9)'}}>●</span> cp2 — sortie courbe</span>
+      {/* ── Tabs ────────────────────────────────────────────────── */}
+      <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
+        {TABS.map(({ key, label, color }) => {
+          const isEnabled = paths[key] !== null;
+          const isActive  = activeTab === key;
+          const isCar1    = key === 'car1';
+          return (
+            <button
+              key={key}
+              onClick={() => isEnabled ? (setActiveTab(key), setSelected(null)) : enableTab(key)}
+              style={{
+                display:'flex', alignItems:'center', gap:5,
+                padding:'5px 9px', borderRadius:6, cursor:'pointer',
+                background: isActive && isEnabled ? 'rgba(232,0,45,0.18)' : isEnabled ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.03)',
+                border: isActive && isEnabled ? `1.5px solid ${color}` : '1.5px solid rgba(255,255,255,0.12)',
+                color: isEnabled ? '#fff' : 'rgba(255,255,255,0.3)',
+                fontFamily:'monospace', fontSize:11, transition:'all 0.15s',
+              }}
+            >
+              <span style={{ width:7, height:7, borderRadius:'50%', flexShrink:0, background: isEnabled ? color : 'rgba(255,255,255,0.18)' }} />
+              {label}
+              {!isCar1 && isEnabled && (
+                <span
+                  onClick={e => { e.stopPropagation(); disableTab(key as Exclude<TabKey,'car1'>); }}
+                  style={{ marginLeft:1, color:'rgba(255,100,100,0.65)', fontSize:14, lineHeight:'1', cursor:'pointer', paddingLeft:2 }}
+                  title="Désactiver ce tracé"
+                >×</span>
+              )}
+              {!isCar1 && !isEnabled && (
+                <span style={{ fontSize:9, color:'rgba(255,255,255,0.25)', marginLeft:1 }}>+ activer</span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Selected indicator */}
+      {/* ── Legend ──────────────────────────────────────────────── */}
+      <div style={{ display:'flex', flexDirection:'column', gap:4, fontSize:11 }}>
+        <span><span style={{color:'#4af'}}>●</span> Ancre — drag (déplace) / clic (sélect)</span>
+        <span><span style={{color:'rgba(0,255,100,0.9)'}}>●</span> cp1 entrée&nbsp;&nbsp;<span style={{color:'rgba(255,160,0,0.9)'}}>●</span> cp2 sortie</span>
+      </div>
+
+      {/* ── Selected indicator ──────────────────────────────────── */}
       <div style={{
-        fontSize: 11, padding: '6px 10px', borderRadius: 6,
+        fontSize:11, padding:'6px 10px', borderRadius:6,
         background: selected !== null ? 'rgba(232,0,45,0.15)' : 'rgba(255,255,255,0.05)',
         color: selected !== null ? '#ff6680' : 'rgba(255,255,255,0.35)',
       }}>
-        {selected === null        ? 'Aucun point — clic sur une ancre pour sélectionner'
-          : selected === 'start' ? 'START sélectionné — clic ailleurs pour désélectionner'
-          : `Ancre ${(selected as number) + 1}/${segs.length} — clic ailleurs pour désélectionner`}
+        {selected === null
+          ? 'Aucun point — clic sur une ancre pour sélectionner'
+          : selected === 'start'
+            ? 'START — clic ailleurs pour désélectionner'
+            : `Ancre ${(selected as number) + 1}/${segs.length} — clic ailleurs pour désélectionner`}
       </div>
 
-      {/* Boutons contextuels */}
+      {/* ── Contextual buttons ──────────────────────────────────── */}
       {selected === null && (
         <div style={{ display:'flex', gap:8 }}>
           <button onClick={addAtStart} style={btnStyle('#1d6fa4')}>+ Au début</button>
@@ -361,8 +498,8 @@ function Dev2Editor() {
       {typeof selected === 'number' && (
         <>
           <div style={{ display:'flex', gap:8 }}>
-            <button onClick={addBefore} style={btnStyle('#1d6fa4')}>+ Avant</button>
-            <button onClick={addAfter}  style={btnStyle('#22c55e')}>+ Après</button>
+            <button onClick={addBefore}  style={btnStyle('#1d6fa4')}>+ Avant</button>
+            <button onClick={addAfter}   style={btnStyle('#22c55e')}>+ Après</button>
             <button onClick={removePoint} disabled={!canRemove} style={btnStyle('#e8002d', !canRemove)}>
               − Suppr.
             </button>
@@ -375,7 +512,7 @@ function Dev2Editor() {
 
       <div style={{ height:1, background:'rgba(255,255,255,0.08)' }} />
 
-      {/* Copy */}
+      {/* ── Copy ────────────────────────────────────────────────── */}
       <button onClick={copyData} style={{ ...btnStyle(copied ? '#22c55e' : '#555'), flex:'none' }}>
         {copied ? '✓ Copié dans le presse-papier' : 'Copy path data →'}
       </button>
@@ -417,8 +554,20 @@ function Dev2Editor() {
           onMouseLeave={onSvgUp}
           onClick={onSvgClick}
         >
-          {/* Live path */}
-          <path d={pathStr} fill="none" stroke="rgba(255,80,0,0.85)" strokeWidth={8} strokeDasharray="28 10" />
+          {/* Background paths (non-active enabled) */}
+          {TABS.map(({ key, color }) => {
+            if (key === activeTab || !pathStrs[key]) return null;
+            return (
+              <path key={key} d={pathStrs[key]} fill="none"
+                stroke={color} strokeWidth={4} opacity={0.3} strokeDasharray="18 8" />
+            );
+          })}
+
+          {/* Active path */}
+          {pathStrs[activeTab] && (
+            <path d={pathStrs[activeTab]} fill="none"
+              stroke="rgba(255,80,0,0.85)" strokeWidth={8} strokeDasharray="28 10" />
+          )}
 
           {/* Handle lines */}
           {segs.map((seg, i) => {
@@ -492,7 +641,12 @@ function Dev2Editor() {
 export default function RaceTrack() {
   if (IS_DEV2) return <Dev2Editor />;
 
-  const TRACK_PATH = buildPath(INIT_START, INIT_SEGS);
+  const CAR_TRACK_PATHS = [
+    buildPath(INIT_START_CAR1, INIT_SEGS_CAR1),
+    buildPath(INIT_START_CAR2, INIT_SEGS_CAR2),
+    buildPath(INIT_START_CAR3, INIT_SEGS_CAR3),
+  ];
+  const CAM_PATH = CAR_TRACK_PATHS[0]; // camera follows car1
 
   const worldRef    = useRef<HTMLDivElement>(null);
   const svgPathRef  = useRef<SVGPathElement>(null);
@@ -502,9 +656,9 @@ export default function RaceTrack() {
   const rafRef      = useRef<number>(0);
 
   useEffect(() => {
-    carsRef.current.forEach(car => {
+    carsRef.current.forEach((car, i) => {
       if (!car) return;
-      car.style.setProperty('offset-path', `path('${TRACK_PATH}')`);
+      car.style.setProperty('offset-path', `path('${CAR_TRACK_PATHS[i]}')`);
       car.style.setProperty('offset-rotate', 'auto -90deg');
       car.style.setProperty('offset-distance', '0%');
     });
@@ -557,7 +711,7 @@ export default function RaceTrack() {
   return (
     <div className="rt-viewport">
       <svg aria-hidden style={{ position:'absolute', width:0, height:0, overflow:'visible', pointerEvents:'none' }}>
-        <path ref={svgPathRef} d={TRACK_PATH} fill="none" />
+        <path ref={svgPathRef} d={CAM_PATH} fill="none" />
       </svg>
       <div className="rt-world" ref={worldRef} style={{ width: WORLD_W, height: WORLD_H }}>
         <img className="rt-track" src="/racetrack/track.jpg" alt="" draggable={false} />
