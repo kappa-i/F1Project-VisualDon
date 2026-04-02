@@ -1338,3 +1338,137 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   text-align: center;
   text-transform: uppercase;
 }
+
+/* ── RACETRACK SECTION ──────────────────────────────────────────────────── */
+
+.section--data {
+  padding: 0;
+}
+
+.rt-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  cursor: default;
+}
+
+/* The large world container — moves via JS translate */
+.rt-world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.rt-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* F1 cars riding the offset-path */
+.rt-car {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 72px;
+  height: auto;
+  offset-distance: 0%;
+  transform-origin: center center;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 3px 10px rgba(0,0,0,0.7));
+  will-change: offset-distance;
+}
+
+/* Text overlay — bottom-left */
+.rt-overlay {
+  position: absolute;
+  bottom: 80px;
+  left: 64px;
+  z-index: 10;
+  pointer-events: none;
+  max-width: 480px;
+}
+
+.rt-overlay .section__eyebrow {
+  margin-bottom: 12px;
+}
+
+.rt-overlay .section__title {
+  margin-bottom: 18px;
+}
+
+/* Scroll hint — bottom-right */
+.rt-scroll-hint {
+  position: absolute;
+  bottom: 80px;
+  right: 64px;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.rt-scroll-hint span {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+
+.rt-scroll-arrow {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(232,0,45,0.6), transparent);
+  margin-right: 3px;
+  animation: rt-arrow 1.8s ease-in-out infinite;
+}
+
+@keyframes rt-arrow {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6) translateY(-6px); }
+  50%       { opacity: 1;   transform: scaleY(1)   translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .rt-overlay {
+    left: 24px;
+    bottom: 60px;
+    max-width: calc(100vw - 48px);
+  }
+  .rt-scroll-hint {
+    right: 24px;
+    bottom: 140px;
+  }
+  .rt-car {
+    width: 52px;
+  }
+}
+
+/* ── DEV2 mode : affiche uniquement la section données ───────────────────── */
+body.dev2-mode #canvas-wrap,
+body.dev2-mode #vignette,
+body.dev2-mode #scan-l,
+body.dev2-mode #scan-r,
+body.dev2-mode .hud-corner,
+body.dev2-mode #topbar,
+body.dev2-mode #rpm-deco,
+body.dev2-mode #statusbar,
+body.dev2-mode #bottom-section-nav,
+body.dev2-mode .infobox,
+body.dev2-mode #haas-blinker,
+body.dev2-mode #shader-reveal-root,
+body.dev2-mode #crash-titles-root,
+body.dev2-mode #spa-safety-root,
+body.dev2-mode #era-timeline-root,
+body.dev2-mode #era-gallery-root {
+  display: none !important;
+}

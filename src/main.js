@@ -11,6 +11,7 @@ import BottomSectionNav from './components/BottomSectionNav.tsx';
 import SpaSafety from './components/SpaSafety.tsx';
 import InfiniteGallery from './components/InfiniteGallery.tsx';
 import EraTimeline from './components/EraTimeline.tsx';
+import RaceTrack   from './components/RaceTrack.tsx';
 
 const ERA_IMAGES = [
   { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
@@ -82,6 +83,12 @@ const spaMount = document.getElementById('spa-root');
 if (spaMount) {
   const spaRoot = createRoot(spaMount);
   spaRoot.render(React.createElement(SpaSafety));
+}
+
+const racetrackMount = document.getElementById('racetrack-root');
+if (racetrackMount) {
+  const racetrackRoot = createRoot(racetrackMount);
+  racetrackRoot.render(React.createElement(RaceTrack));
 }
 
 const eraTimelineMount = document.getElementById('era-timeline-root');
@@ -158,6 +165,8 @@ const cam = { px: 4, py: 1.8, pz: 6, tx: 0, ty: 0, tz: 0 };
 // ── dev mode cam ──────────────────────────────────────────────────────────
 // Activé via ?dev dans l'URL  →  navigation libre + panel de coordonnées copiables
 const DEV_MODE = new URLSearchParams(location.search).has('dev');
+const IS_DEV2  = new URLSearchParams(location.search).has('dev2');
+if (IS_DEV2) document.body.classList.add('dev2-mode');
 let devControls = null;
 let _devPosEl = null, _devTargetEl = null;
 
@@ -374,6 +383,8 @@ const CONCLUSION_PAGE = DATA_PAGE + 1;
 const PAGE_COUNT = CONCLUSION_PAGE + 1;
 const CRASH_SCROLL_DISTANCE = 7000;
 const CRASH_EXIT_DISTANCE = 220;
+const DATA_SCROLL_DISTANCE = 5000;   // wheel delta to complete one full lap
+const DATA_EXIT_DISTANCE   = 220;    // delta needed to exit the section
 const CRASH_FRAME_COUNT = 301;
 const CRASH_VELOCITY_GAIN = 1.1;
 const CRASH_VELOCITY_FRICTION = 0.9;
@@ -530,6 +541,15 @@ let wheelGestureAccum = 0;
 let wheelGestureDirection = 0;
 let wheelLastEventAt = 0;
 let wheelUnlockAt = 0;
+
+// ── DATA section state ─────────────────────────────────────────────────
+let dataProgress     = 0;   // 0 → 1 (full lap)
+let dataExitDistance = 0;
+let dataExitDirection = 0;
+
+function dispatchDataProgress(p) {
+  window.dispatchEvent(new CustomEvent('data-anim-progress', { detail: { progress: p } }));
+}
 
 const pageEl = document.getElementById('page');
 let lastSectionNavProgress = -1;
@@ -852,6 +872,13 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
         updateSectionNav(idx);
         dispatchSpaPoiChange(idx);
         isTransitioning = false;
+      } else if (idx === DATA_PAGE) {
+        dataProgress = 0;
+        dataExitDistance = 0;
+        dataExitDirection = 0;
+        dispatchDataProgress(0);
+        updateSectionNav(idx);
+        isTransitioning = false;
       } else {
         updateSectionNav(idx);
         isTransitioning = false;
@@ -933,6 +960,38 @@ window.addEventListener('wheel', e => {
     return;
   }
 
+  // ── DATA section: wheel drives the lap animation ───────────────────
+  if (currentPage === DATA_PAGE) {
+    const direction = delta > 0 ? 1 : -1;
+    const distance  = Math.abs(delta);
+
+    if (direction > 0) {
+      if (dataProgress < 1) {
+        dataProgress = Math.min(1, dataProgress + distance / DATA_SCROLL_DISTANCE);
+        dispatchDataProgress(dataProgress);
+        dataExitDistance  = 0;
+        dataExitDirection = 0;
+        return;
+      }
+      if (dataExitDirection !== direction) { dataExitDirection = direction; dataExitDistance = 0; }
+      dataExitDistance += distance;
+      if (dataExitDistance >= DATA_EXIT_DISTANCE) { dataProgress = 0; goToPage(CONCLUSION_PAGE); }
+      return;
+    }
+
+    if (dataProgress > 0) {
+      dataProgress = Math.max(0, dataProgress - distance / DATA_SCROLL_DISTANCE);
+      dispatchDataProgress(dataProgress);
+      dataExitDistance  = 0;
+      dataExitDirection = 0;
+      return;
+    }
+    if (dataExitDirection !== direction) { dataExitDirection = direction; dataExitDistance = 0; }
+    dataExitDistance += distance;
+    if (dataExitDistance >= DATA_EXIT_DISTANCE) { dataProgress = 0; goToPage(SPA_PAGE_END); }
+    return;
+  }
+
   const now = performance.now();
   if (now < wheelUnlockAt) return;
 
@@ -977,6 +1036,31 @@ window.addEventListener('keydown', e => {
     return;
   }
 
+  if (currentPage === DATA_PAGE) {
+    const now = performance.now();
+    if (now < wheelUnlockAt) return;
+    if (direction > 0) {
+      if (dataProgress < 1) {
+        dataProgress = Math.min(1, dataProgress + 0.12);
+        dispatchDataProgress(dataProgress);
+        return;
+      }
+      wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
+      dataProgress = 0;
+      goToPage(CONCLUSION_PAGE);
+    } else {
+      if (dataProgress > 0) {
+        dataProgress = Math.max(0, dataProgress - 0.12);
+        dispatchDataProgress(dataProgress);
+        return;
+      }
+      wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
+      dataProgress = 0;
+      goToPage(SPA_PAGE_END);
+    }
+    return;
+  }
+
   const now = performance.now();
   if (now < wheelUnlockAt) return;
   wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
@@ -996,6 +1080,12 @@ new GLTFLoader().load(studioGlbUrl, gltf => {
   scene.add(studio);
 }, undefined, err => console.warn('Studio non chargé:', err));
 
+if (IS_DEV2) {
+  modelLoaded = true;
+  rebuildDots();
+  loaderEl.classList.add('hidden');
+  goToPage(DATA_PAGE);
+} else
 new GLTFLoader().load(
   '/haas/2026_HAASF1_CGT-V4.glb',
   gltf => {
