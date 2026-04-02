@@ -14,6 +14,7 @@ import InfiniteGallery from './components/InfiniteGallery.tsx';
 import EraTimeline from './components/EraTimeline.tsx';
 import RaceTrack   from './components/RaceTrack.tsx';
 import Footer from './components/Footer.tsx';
+import ConclusionGraph from './components/ConclusionGraph.tsx';
 
 const ERA_IMAGES = [
   { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
@@ -91,6 +92,13 @@ const footerMount = document.getElementById('footer-root');
 if (footerMount) {
   const footerRoot = createRoot(footerMount);
   footerRoot.render(React.createElement(Footer));
+}
+
+const conclusionGraphMount = document.getElementById('conclusion-graph-root');
+
+if (conclusionGraphMount) {
+  const conclusionGraphRoot = createRoot(conclusionGraphMount);
+  conclusionGraphRoot.render(React.createElement(ConclusionGraph));
 }
 
 const spaMount = document.getElementById('spa-root');
@@ -652,6 +660,7 @@ function dispatchDataProgress(p) {
 }
 
 const pageEl = document.getElementById('page');
+const conclusionSectionEl = document.getElementById('s-conclusion');
 let lastSectionNavProgress = -1;
 let lastSectionNavIndex = -1;
 
@@ -911,6 +920,12 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
   resetWheelGesture();
 
   const prevPage = currentPage;
+  if (prevPage !== CONCLUSION_PAGE && idx === CONCLUSION_PAGE && conclusionSectionEl) {
+    conclusionSectionEl.scrollTop = 0;
+  }
+  if (prevPage === CONCLUSION_PAGE && idx !== CONCLUSION_PAGE && conclusionSectionEl) {
+    conclusionSectionEl.scrollTop = 0;
+  }
   if (isCrashPage(idx) && prevPage < CRASH_PAGE_START) {
     setCrashProgress(0, true);
   }
@@ -1003,6 +1018,54 @@ if (heroScrollBtn) {
 // ── wheel : 1 tick = 1 page ───────────────────────────────────────────────
 window.addEventListener('wheel', e => {
   if (DEV_MODE) return;
+
+  if (currentPage === CONCLUSION_PAGE) {
+    e.preventDefault();
+    if (!modelLoaded || isTransitioning) return;
+
+    const delta = normalizeWheelDelta(e);
+    if (Math.abs(delta) < 1) return;
+
+    if (!(conclusionSectionEl instanceof HTMLElement)) return;
+
+    const maxScrollTop = Math.max(0, conclusionSectionEl.scrollHeight - conclusionSectionEl.clientHeight);
+    const isAtTop = conclusionSectionEl.scrollTop <= 0;
+    const isAtBottom = conclusionSectionEl.scrollTop >= maxScrollTop - 1;
+    const direction = delta > 0 ? 1 : -1;
+
+    if (direction > 0 && !isAtBottom) {
+      conclusionSectionEl.scrollTop = Math.min(maxScrollTop, conclusionSectionEl.scrollTop + delta);
+      resetWheelGesture();
+      return;
+    }
+
+    if (direction < 0 && !isAtTop) {
+      conclusionSectionEl.scrollTop = Math.max(0, conclusionSectionEl.scrollTop + delta);
+      resetWheelGesture();
+      return;
+    }
+
+    if (direction > 0) return;
+
+    const now = performance.now();
+    if (now < wheelUnlockAt) return;
+    const isNewGesture = now - wheelLastEventAt > WHEEL_GESTURE_GAP || direction !== wheelGestureDirection;
+
+    if (isNewGesture) {
+      wheelGestureAccum = delta;
+      wheelGestureDirection = direction;
+    } else {
+      wheelGestureAccum += delta;
+    }
+
+    wheelLastEventAt = now;
+    if (Math.abs(wheelGestureAccum) < WHEEL_NAV_THRESHOLD) return;
+
+    wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
+    goToPage(currentPage + direction);
+    return;
+  }
+
   e.preventDefault();
   if (!modelLoaded || isTransitioning) return;
 

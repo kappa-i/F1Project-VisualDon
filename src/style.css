@@ -538,15 +538,58 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   border-top: 1px solid var(--line);
   z-index: 8;
   padding: 0;
+  height: 100vh;
+  min-height: unset;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(232, 0, 45, 0.75) rgba(255, 255, 255, 0.08);
 }
 
 .section--conclusion .section__inner {
   width: 100%;
   max-width: none;
   padding: 120px 64px 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 48px;
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+.section--conclusion::-webkit-scrollbar {
+  width: 10px;
+}
+
+.section--conclusion::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.section--conclusion::-webkit-scrollbar-thumb {
+  background: rgba(232, 0, 45, 0.75);
+  border-radius: 999px;
+  border: 2px solid rgba(14, 14, 14, 0.9);
+}
+
+.section--conclusion::-webkit-scrollbar-thumb:hover {
+  background: rgba(232, 0, 45, 0.95);
+}
+
+.conclusion-text {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.conclusion-graph {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4px;
 }
 
 #footer-root {
@@ -1042,6 +1085,21 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 
 .site-footer__bottom div {
   text-align: right;
+}
+
+@media (max-width: 960px) {
+  .section--conclusion .section__inner {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .conclusion-text {
+    flex: none;
+    max-width: none;
+    width: 100%;
+  }
+  .conclusion-graph {
+    width: 100%;
+  }
 }
 
 @media (max-width: 720px) {
