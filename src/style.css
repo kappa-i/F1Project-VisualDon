@@ -545,8 +545,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   justify-content: flex-start;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(232, 0, 45, 0.75) rgba(255, 255, 255, 0.08);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .section--conclusion .section__inner {
@@ -562,21 +562,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 
 .section--conclusion::-webkit-scrollbar {
-  width: 10px;
-}
-
-.section--conclusion::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.section--conclusion::-webkit-scrollbar-thumb {
-  background: rgba(232, 0, 45, 0.75);
-  border-radius: 999px;
-  border: 2px solid rgba(14, 14, 14, 0.9);
-}
-
-.section--conclusion::-webkit-scrollbar-thumb:hover {
-  background: rgba(232, 0, 45, 0.95);
+  display: none;
 }
 
 .conclusion-text {
