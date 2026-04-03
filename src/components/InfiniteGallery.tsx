@@ -873,24 +873,24 @@ const InfiniteGallery: React.FC<InfiniteGalleryProps> = ({
           onImageHoverEnd={handleImageHoverEnd}
         />
       </Canvas>
-      {cursorVisible && (
-        <div
-          style={{
-            position: "absolute",
-            left: cursorPos.x,
-            top: cursorPos.y,
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-            zIndex: 10,
-          }}
-        >
-          <CircularText
-            text="ZOOMER*DANS*L'IMAGE*"
-            spinDuration={8}
-            onHover="speedUp"
-          />
-        </div>
-      )}
+      <div
+        style={{
+          position: "absolute",
+          left: cursorPos.x,
+          top: cursorPos.y,
+          transform: "translate(-50%, -50%)",
+          pointerEvents: "none",
+          zIndex: 10,
+          opacity: cursorVisible ? 1 : 0,
+          transition: cursorVisible ? "opacity 0.3s ease" : "opacity 0.15s ease",
+        }}
+      >
+        <CircularText
+          text="ZOOMER*DANS*L'IMAGE*"
+          spinDuration={8}
+          onHover="speedUp"
+        />
+      </div>
     </div>
   );
 };
