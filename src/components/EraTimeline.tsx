@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SafetyChart from './SafetyChart';
-import GlitterWarp from './GlitterWarp';
 
 interface EraStep {
   period: string;
@@ -127,9 +126,6 @@ export default function EraTimeline() {
   // Progress: -1 = 0%, step 0 = 20%, …, step 4 = 100%
   const progressPct = activeStep < 0 ? 0 : (activeStep + 1) / ERA_TOTAL_STEPS;
 
-  // Couleur du fond : accent de la carte active, ou rouge F1 en intro
-  const glitterColor = step ? step.accent : activeStep < 0 ? '#8a001a' : ERA_STEPS[activeStep]?.accent ?? '#8a001a';
-
   return (
     <div style={{
       position: 'absolute',
@@ -138,17 +134,6 @@ export default function EraTimeline() {
       zIndex: 10,
       overflow: 'hidden',
     }}>
-
-      {/* Fond GlitterWarp — couleur synchronisée avec la carte active */}
-      <GlitterWarp
-        color={glitterColor}
-        speed={0.8}
-        density={18}
-        brightness={1.5}
-        starSize={0.12}
-        turbulence={0.2}
-        focalDepth={0.04}
-      />
 
       {/* Intro hint — visible avant la première carte */}
       <div style={{

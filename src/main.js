@@ -12,6 +12,7 @@ import BottomSectionNav from './components/BottomSectionNav.tsx';
 import SpaSafety from './components/SpaSafety.tsx';
 import InfiniteGallery from './components/InfiniteGallery.tsx';
 import EraTimeline from './components/EraTimeline.tsx';
+import EraGlitter from './components/EraGlitter.tsx';
 import RaceTrack   from './components/RaceTrack.tsx';
 import Footer from './components/Footer.tsx';
 import ConclusionGraph from './components/ConclusionGraph.tsx';
@@ -114,6 +115,11 @@ if (racetrackMount) {
   racetrackRoot.render(React.createElement(RaceTrack));
 }
 
+const eraGlitterMount = document.getElementById('era-glitter-root');
+if (eraGlitterMount) {
+  createRoot(eraGlitterMount).render(React.createElement(EraGlitter));
+}
+
 const eraTimelineMount = document.getElementById('era-timeline-root');
 if (eraTimelineMount) {
   const eraTimelineRoot = createRoot(eraTimelineMount);
@@ -143,6 +149,7 @@ if (eraGalleryMount) {
     backgroundColor: '#000000',
     fogColor: '#000000',
     wheelSpeed: 0.0025,
+    transparent: true,
   }));
 }
 

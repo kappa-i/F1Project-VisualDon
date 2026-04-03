@@ -39,6 +39,7 @@ export interface InfiniteGalleryProps {
   allowImageFocusOnClick?: boolean;
   backgroundColor?: string;
   fogColor?: string;
+  transparent?: boolean;
   /** Scroll wheel / pinch-to-zoom sensitivity (default 0.006) */
   wheelSpeed?: number;
 }
@@ -830,6 +831,7 @@ const InfiniteGallery: React.FC<InfiniteGalleryProps> = ({
   backgroundColor = "#000000",
   fogColor = "#000000",
   wheelSpeed = 0.006,
+  transparent = false,
 }) => {
   const imgs = images && images.length > 0 ? images : [];
   const bg = normalizeHex(backgroundColor);
@@ -859,9 +861,9 @@ const InfiniteGallery: React.FC<InfiniteGalleryProps> = ({
         camera={{ position: [0, 0, 50], fov: 60, near: 1, far: 500 }}
         dpr={dpr}
         flat
-        gl={{ antialias: false, powerPreference: "high-performance" }}
+        gl={{ antialias: false, powerPreference: "high-performance", alpha: transparent }}
       >
-        <color attach="background" args={[bg]} />
+        {!transparent && <color attach="background" args={[bg]} />}
         <fog attach="fog" args={[fg, fogNear, fogFar]} />
         <Controller
           images={imgs}
