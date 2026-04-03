@@ -22,7 +22,7 @@ export default function EraGlitter() {
   }, []);
 
   return (
-    <div style={{ position: 'absolute', inset: 0, opacity: 0.6 }}>
+    <div style={{ position: 'absolute', inset: 0, opacity: 0.4 }}>
       <GlitterWarp
         color={color}
         speed={0.8}
