@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { Canvas, useFrame, useThree, ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
+import CircularText from "./CircularText";
 
 const cn = (...classes: (string | undefined | false | null)[]) =>
   classes.filter(Boolean).join(" ");
@@ -219,6 +220,8 @@ function ImagePlane({
   viewRange,
   imageRadius,
   onFocus,
+  onHover,
+  onHoverEnd,
 }: {
   info: PlaneInfo;
   media: GalleryImage;
@@ -227,6 +230,8 @@ function ImagePlane({
   viewRange: number;
   imageRadius: number;
   onFocus: ((target: FocusTarget) => void) | null;
+  onHover?: () => void;
+  onHoverEnd?: () => void;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const matRef = useRef<THREE.ShaderMaterial>(null);
@@ -235,7 +240,10 @@ function ImagePlane({
     return ft && ft.px === info.px && ft.py === info.py && ft.pz === info.pz;
   })();
   const opRef = useRef(isFocusedOnMount ? 1 : 0);
+  const effectiveOpRef = useRef(isFocusedOnMount ? 1 : 0);
+  const isHoveredRef = useRef(false);
   const hasTexRef = useRef(false);
+  const { scene } = useThree();
 
   const scale = useMemo(() => {
     const aspect = media.width / media.height;
@@ -301,6 +309,21 @@ function ImagePlane({
     const target = isFocused || dist < fadeEnd ? 1 : 0;
     opRef.current = isFocused ? 1 : lerp(opRef.current, target, 0.12);
 
+    // Compute effective visibility including fog
+    const fog = scene.fog as THREE.Fog | null;
+    if (fog && fog.near !== undefined && fog.far !== undefined) {
+      const fogFactor = clamp((dist - fog.near) / (fog.far - fog.near), 0, 1);
+      effectiveOpRef.current = opRef.current * (1 - fogFactor);
+    } else {
+      effectiveOpRef.current = opRef.current;
+    }
+
+    // Auto-clear hover if image becomes invisible
+    if (isHoveredRef.current && effectiveOpRef.current < 0.15) {
+      isHoveredRef.current = false;
+      onHoverEnd?.();
+    }
+
     mat.uniforms.uOpacity.value = opRef.current;
     mat.uniforms.uRadius.value = imageRadius;
     mat.uniforms.uSize.value.set(scale.x, scale.y);
@@ -333,6 +356,17 @@ function ImagePlane({
       scale={scale}
       visible={false}
       onClick={handleClick}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        if (effectiveOpRef.current >= 0.15) {
+          isHoveredRef.current = true;
+          onHover?.();
+        }
+      }}
+      onPointerOut={() => {
+        isHoveredRef.current = false;
+        onHoverEnd?.();
+      }}
     >
       <shaderMaterial
         ref={matRef}
@@ -367,6 +401,8 @@ function GalleryCell({
   viewRange,
   imageRadius,
   onFocus,
+  onHover,
+  onHoverEnd,
 }: {
   cx: number;
   cy: number;
@@ -379,6 +415,8 @@ function GalleryCell({
   viewRange: number;
   imageRadius: number;
   onFocus: ((target: FocusTarget) => void) | null;
+  onHover?: () => void;
+  onHoverEnd?: () => void;
 }) {
   const planes = useMemo(
     () => generateCell(cx, cy, cz, cellSize, density, imageSize),
@@ -400,6 +438,8 @@ function GalleryCell({
             viewRange={viewRange}
             imageRadius={imageRadius}
             onFocus={onFocus}
+            onHover={onHover}
+            onHoverEnd={onHoverEnd}
           />
         );
       })}
@@ -421,6 +461,8 @@ interface ControllerProps {
   imageRadius: number;
   allowFocus: boolean;
   wheelSpeed: number;
+  onImageHover?: () => void;
+  onImageHoverEnd?: () => void;
 }
 
 function Controller({
@@ -437,6 +479,8 @@ function Controller({
   imageRadius,
   allowFocus,
   wheelSpeed,
+  onImageHover,
+  onImageHoverEnd,
 }: ControllerProps) {
   const { camera, gl } = useThree();
   const offsets = useMemo(() => buildCellOffsets(viewRange + 1), [viewRange]);
@@ -736,6 +780,8 @@ function Controller({
           viewRange={viewRange}
           imageRadius={imageRadius}
           onFocus={allowFocus ? handleFocus : null}
+          onHover={onImageHover}
+          onHoverEnd={onImageHoverEnd}
         />
       ))}
     </>
@@ -782,10 +828,23 @@ const InfiniteGallery: React.FC<InfiniteGalleryProps> = ({
   const fg = normalizeHex(fogColor);
   const dpr = useSyncExternalStore(subscribeDpr, getDpr, serverDpr);
 
+  const [cursorVisible, setCursorVisible] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  }, []);
+
+  const handleImageHover = useCallback(() => setCursorVisible(true), []);
+  const handleImageHoverEnd = useCallback(() => setCursorVisible(false), []);
+
   return (
     <div
       className={cn("relative overflow-hidden touch-none", className)}
-      style={{ width, height }}
+      style={{ width, height, cursor: cursorVisible ? "none" : "default" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setCursorVisible(false)}
     >
       <Canvas
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
@@ -810,8 +869,28 @@ const InfiniteGallery: React.FC<InfiniteGalleryProps> = ({
           imageRadius={imageRadius}
           allowFocus={allowImageFocusOnClick}
           wheelSpeed={wheelSpeed}
+          onImageHover={handleImageHover}
+          onImageHoverEnd={handleImageHoverEnd}
         />
       </Canvas>
+      {cursorVisible && (
+        <div
+          style={{
+            position: "absolute",
+            left: cursorPos.x,
+            top: cursorPos.y,
+            transform: "translate(-50%, -50%)",
+            pointerEvents: "none",
+            zIndex: 10,
+          }}
+        >
+          <CircularText
+            text="ZOOMER*DANS*L'IMAGE*"
+            spinDuration={8}
+            onHover="speedUp"
+          />
+        </div>
+      )}
     </div>
   );
 };
