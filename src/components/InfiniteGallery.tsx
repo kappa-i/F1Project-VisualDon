@@ -318,8 +318,12 @@ function ImagePlane({
       effectiveOpRef.current = opRef.current;
     }
 
-    // Auto-clear hover if image becomes invisible
-    if (isHoveredRef.current && effectiveOpRef.current < 0.15) {
+    // Auto-clear hover if image becomes invisible OR this image is now focused
+    const thisIsFocused = !!(focusRef.current &&
+      focusRef.current.px === info.px &&
+      focusRef.current.py === info.py &&
+      focusRef.current.pz === info.pz);
+    if (isHoveredRef.current && (effectiveOpRef.current < 0.15 || thisIsFocused)) {
       isHoveredRef.current = false;
       onHoverEnd?.();
     }
@@ -358,7 +362,11 @@ function ImagePlane({
       onClick={handleClick}
       onPointerOver={(e) => {
         e.stopPropagation();
-        if (effectiveOpRef.current >= 0.15) {
+        const thisIsFocused = !!(focusRef.current &&
+          focusRef.current.px === info.px &&
+          focusRef.current.py === info.py &&
+          focusRef.current.pz === info.pz);
+        if (effectiveOpRef.current >= 0.15 && !thisIsFocused) {
           isHoveredRef.current = true;
           onHover?.();
         }
