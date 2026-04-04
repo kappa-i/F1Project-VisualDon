@@ -480,9 +480,10 @@ const CRASH_EXIT_DISTANCE = 220;
 const DATA_SCROLL_DISTANCE = 5000;   // wheel delta to complete one full lap
 const DATA_EXIT_DISTANCE   = 220;    // delta needed to exit the section
 const CRASH_FRAME_COUNT = 301;
-const CRASH_VELOCITY_GAIN = 1.1;
-const CRASH_VELOCITY_FRICTION = 0.9;
-const CRASH_VELOCITY_EPSILON = 0.01;
+const CRASH_VELOCITY_GAIN = 0.25;
+const CRASH_VELOCITY_FRICTION = 0.972;
+const CRASH_VELOCITY_EPSILON = 0.003;
+const CRASH_LERP_FACTOR = 0.08;
 const WHEEL_GESTURE_GAP = 140;
 const WHEEL_NAV_THRESHOLD = 42;
 const WHEEL_NAV_LOCK_MS = 1150;
@@ -498,6 +499,7 @@ const INFOBOXES  = {
 };
 
 const crashFrameEl = document.getElementById('crash-frame');
+const crashCtx = crashFrameEl ? crashFrameEl.getContext('2d') : null;
 const crashFrameUrls = Array.from({ length: CRASH_FRAME_COUNT }, (_, index) =>
   `/crash-frames/frame_${String(index + 1).padStart(3, '0')}.jpg`
 );
@@ -520,11 +522,35 @@ const IMOLA_SHOW_FRAME  = 90;   // modal appears ~30% into sequence
 const IMOLA_MORPH_FRAME = 230;  // morphs to modern ~few scrolls before end
 const IMOLA_RESET_FRAME = 20;   // reset when scrolling back to start
 
+function resizeCrashCanvas() {
+  if (!crashFrameEl || !crashCtx) return;
+  crashFrameEl.width = window.innerWidth;
+  crashFrameEl.height = window.innerHeight;
+  // Redraw current frame after resize
+  renderCrashFrame(crashRenderedFrame);
+}
+
 function renderCrashFrame(frameIndex) {
   const clamped = THREE.MathUtils.clamp(frameIndex, 0, CRASH_FRAME_COUNT - 1);
-  if (!crashFrameEl || crashFrameSrcIndex === clamped) return;
-  crashFrameEl.src = crashFrameUrls[clamped];
+  if (!crashCtx) return;
+  const img = crashFrameImages[clamped];
+  if (!img.complete || img.naturalWidth === 0) return;
+  // Skip redraw if same frame and canvas dimensions didn't change
+  if (crashFrameSrcIndex === clamped &&
+      crashFrameEl.width === window.innerWidth &&
+      crashFrameEl.height === window.innerHeight) return;
   crashFrameSrcIndex = clamped;
+  // Draw with object-fit: cover behaviour
+  const cw = crashFrameEl.width;
+  const ch = crashFrameEl.height;
+  const iw = img.naturalWidth;
+  const ih = img.naturalHeight;
+  const scale = Math.max(cw / iw, ch / ih);
+  const dw = iw * scale;
+  const dh = ih * scale;
+  const dx = (cw - dw) / 2;
+  const dy = (ch - dh) / 2;
+  crashCtx.drawImage(img, dx, dy, dw, dh);
 }
 
 function updateCrashTitles(frameIndex) {
@@ -602,7 +628,18 @@ function normalizeWheelDelta(event) {
   return delta;
 }
 
-renderCrashFrame(0);
+resizeCrashCanvas();
+// Draw frame 0 immediately if already decoded, otherwise wait for load
+const _firstCrashImg = crashFrameImages[0];
+if (_firstCrashImg.complete && _firstCrashImg.naturalWidth > 0) {
+  crashFrameSrcIndex = -1; // force redraw
+  renderCrashFrame(0);
+} else {
+  _firstCrashImg.onload = () => {
+    crashFrameSrcIndex = -1;
+    renderCrashFrame(0);
+  };
+}
 updateCrashTitles(0);
 
 function isEraPage(idx) {
@@ -1335,6 +1372,7 @@ window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  resizeCrashCanvas();
 });
 
 // ── render loop ───────────────────────────────────────────────────────────
@@ -1364,19 +1402,16 @@ window.addEventListener('resize', () => {
     crashFrameVelocity = 0;
   }
 
-  const targetFrameIndex = Math.round(crashTargetFrame);
-  if (crashRenderedFrame < targetFrameIndex) {
-    crashRenderedFrame += 1;
-    renderCrashFrame(crashRenderedFrame);
-    updateCrashTitles(crashRenderedFrame);
-  } else if (crashRenderedFrame > targetFrameIndex) {
-    crashRenderedFrame -= 1;
-    renderCrashFrame(crashRenderedFrame);
-    updateCrashTitles(crashRenderedFrame);
+  // Lerp: rendered frame eases toward target — gives organic inertia on start/stop
+  const lerpDelta = crashTargetFrame - crashRenderedFrame;
+  if (Math.abs(lerpDelta) > 0.05) {
+    crashRenderedFrame += lerpDelta * CRASH_LERP_FACTOR;
   } else {
-    renderCrashFrame(crashRenderedFrame);
-    updateCrashTitles(crashRenderedFrame);
+    crashRenderedFrame = crashTargetFrame;
   }
+  const renderedIndex = Math.round(crashRenderedFrame);
+  renderCrashFrame(renderedIndex);
+  updateCrashTitles(renderedIndex);
 
   if (isCrashPage(currentPage)) {
     currentPage = THREE.MathUtils.clamp(
