@@ -1,7 +1,4 @@
-"use client";
-
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function CTA5() {
@@ -32,9 +29,9 @@ export default function CTA5() {
           }}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: -90, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: 'relative',
               width: '100%',
@@ -80,35 +77,16 @@ export default function CTA5() {
             </svg>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            style={{
-              margin: 0,
-              fontSize: '14px',
-              lineHeight: 1,
-              textTransform: 'uppercase',
-              letterSpacing: '0.12em',
-              color: '#525252',
-              fontWeight: 500,
-              fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-              textAlign: 'center',
-            }}
-          >
-            MOTION THAT MOVES YOU
-          </motion.p>
-
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 64 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.95, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
             style={{
               margin: 0,
               maxWidth: '576px',
               fontSize: 'clamp(20px, 3vw, 30px)',
               fontWeight: 400,
-              color: '#171717',
+              color: 'rgba(255, 255, 255, 0.6)',
               textAlign: 'center',
               lineHeight: 1.25,
               fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
@@ -117,56 +95,6 @@ export default function CTA5() {
             Bring your ideas to life with stunning animations that captivate and
             inspire.
           </motion.h2>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <button
-              type="button"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                padding: '14px 32px',
-                borderRadius: '999px',
-                background: '#f9a8d4',
-                color: '#171717',
-                fontWeight: 500,
-                fontSize: '16px',
-                border: '0',
-                transition: 'background-color 0.2s ease',
-                fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#f472b6';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#f9a8d4';
-              }}
-            >
-              <span>START ANIMATING</span>
-              <span
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '18px',
-                  height: '18px',
-                  flexShrink: 0,
-                }}
-              >
-                <ArrowRight
-                  size={18}
-                  strokeWidth={2}
-                  style={{ display: 'block' }}
-                />
-              </span>
-            </button>
-          </motion.div>
         </div>
       </div>
     </section>
