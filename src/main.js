@@ -16,7 +16,6 @@ import EraGlitter from './components/EraGlitter.tsx';
 import RaceTrack   from './components/RaceTrack.tsx';
 import Footer from './components/Footer.tsx';
 import ConclusionGraph from './components/ConclusionGraph.tsx';
-import F1UICards from './components/F1UICards.tsx';
 
 const ERA_IMAGES = [
   { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
@@ -67,11 +66,6 @@ if (shaderRevealMount) {
       BFECC: true,
     }),
   );
-}
-
-const f1UICardsMount = document.getElementById('f1-ui-cards-root');
-if (f1UICardsMount) {
-  createRoot(f1UICardsMount).render(React.createElement(F1UICards));
 }
 
 const crashTitlesMount = document.getElementById('crash-titles-root');
