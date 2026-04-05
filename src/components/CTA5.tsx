@@ -40,26 +40,23 @@ export default function CTA5() {
               width: '100%',
               maxWidth: '768px',
               aspectRatio: '1204 / 845',
+              overflow: 'hidden',
             }}
           >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
+            <iframe
+              src="https://www.youtube.com/embed/My5ROaPlc3c?autoplay=1&mute=1&loop=1&playlist=My5ROaPlc3c&controls=0&modestbranding=1&rel=0&playsinline=1"
+              title="CTA showcase video"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
               style={{
                 position: 'absolute',
-                inset: 0,
-                width: '100%',
+                top: 0,
+                left: '-13%',
+                width: '126%',
                 height: '100%',
-                objectFit: 'cover',
+                border: '0',
               }}
-            >
-              <source
-                src="https://cdn.dribbble.com/userupload/43431316/file/original-f36381b829979e87849e8ba1d56c5c28.mp4"
-                type="video/mp4"
-              />
-            </video>
+            />
 
             <svg
               viewBox="0 0 1204 845"
