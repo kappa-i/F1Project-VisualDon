@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ShaderReveal from './components/ShaderReveal.tsx';
+import HeroSafetyIntro from './components/HeroSafetyIntro.tsx';
 import CrashTitles from './components/CrashTitles.tsx';
 import ImolaModal from './components/ImolaModal.tsx';
 import BottomSectionNav from './components/BottomSectionNav.tsx';
@@ -66,6 +67,11 @@ if (shaderRevealMount) {
       BFECC: true,
     }),
   );
+}
+
+const heroSafetyIntroMount = document.getElementById('hero-safety-intro-root');
+if (heroSafetyIntroMount) {
+  createRoot(heroSafetyIntroMount).render(React.createElement(HeroSafetyIntro));
 }
 
 const crashTitlesMount = document.getElementById('crash-titles-root');
@@ -447,18 +453,22 @@ new RGBELoader().load(
 // ── navigation par pages ──────────────────────────────────────────────────
 //
 // Pages virtuelles :
-//   0       → hero        (translateY 0vh)
-//   1–6     → era         (translateY -100vh, 1=intro, 2-6=étapes timeline)
-//   7–54    → crash       (translateY -200vh, 48 pas, vidéo pinnée)
-//   55–63   → viewer      (translateY -300vh, 9 keyframes caméra)
-//   64–67   → spa         (translateY -400vh, 4 POI)
-//   68      → data        (translateY -500vh)
-//   69      → conclusion  (translateY -600vh)
+//   0       → hero initial   (translateY 0vh)
+//   1–2     → hero intro     (translateY 0vh, 2 étapes overlay)
+//   3–8     → era            (translateY -100vh, 1=intro, 5 étapes timeline)
+//   9–56    → crash          (translateY -200vh, 48 pas, vidéo pinnée)
+//   57–64   → viewer         (translateY -300vh, 8 étapes caméra)
+//   65–68   → spa            (translateY -400vh, 4 POI)
+//   69      → data           (translateY -500vh)
+//   70      → conclusion     (translateY -600vh)
 
-const ERA_PAGE_START  = 1;
+const HERO_PAGE_START = 0;
+const HERO_PAGE_STEPS = 2;
+const HERO_PAGE_END = HERO_PAGE_START + HERO_PAGE_STEPS;
+const ERA_PAGE_START  = HERO_PAGE_END + 1;
 const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline
-const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS; // 6
-const CRASH_PAGE_START = ERA_PAGE_END + 1;           // 7
+const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS;
+const CRASH_PAGE_START = ERA_PAGE_END + 1;
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
@@ -640,6 +650,17 @@ function isEraPage(idx) {
   return idx >= ERA_PAGE_START && idx <= ERA_PAGE_END;
 }
 
+function isHeroPage(idx) {
+  return idx >= HERO_PAGE_START && idx <= HERO_PAGE_END;
+}
+
+function dispatchHeroStepChange(pageIdx) {
+  const step = pageIdx <= HERO_PAGE_START ? -1 : Math.min(HERO_PAGE_STEPS - 1, pageIdx - 1);
+  const heroSectionEl = document.getElementById('s-hero');
+  heroSectionEl?.classList.toggle('is-story-active', step >= 0);
+  window.dispatchEvent(new CustomEvent('hero-step-change', { detail: { step } }));
+}
+
 function dispatchEraStepChange(pageIdx) {
   // page ERA_PAGE_START = intro (step -1), ERA_PAGE_START+1 = step 0, …
   const step = isEraPage(pageIdx) ? pageIdx - ERA_PAGE_START - 1 : -1;
@@ -647,7 +668,7 @@ function dispatchEraStepChange(pageIdx) {
 }
 
 function pageToY(idx) {
-  if (idx === 0) return 0;
+  if (isHeroPage(idx)) return 0;
   if (isEraPage(idx)) return -100;
   if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -200;
   if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -300;
@@ -719,7 +740,7 @@ function dispatchSpaPoiChange(pageIdx) {
 }
 
 function pageToSectionIndex(pageIdx) {
-  if (pageIdx <= 0) return 0;
+  if (isHeroPage(pageIdx)) return 0;
   if (isEraPage(pageIdx)) return 1;
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 2;
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 3;
@@ -730,7 +751,10 @@ function pageToSectionIndex(pageIdx) {
 }
 
 function pageToSectionProgress(pageIdx) {
-  if (pageIdx === 0) return 0;
+  if (isHeroPage(pageIdx)) {
+    const heroProgress = pageIdx / Math.max(1, HERO_PAGE_END);
+    return heroProgress * 0.92;
+  }
   if (isEraPage(pageIdx)) {
     const eraProgress = (pageIdx - ERA_PAGE_START) / ERA_PAGE_STEPS;
     return 1 + eraProgress * 0.92;
@@ -992,6 +1016,13 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
     return;
   }
 
+  if (targetY === currentY && isHeroPage(idx)) {
+    dispatchHeroStepChange(idx);
+    updateSectionNav(idx);
+    isTransitioning = false;
+    return;
+  }
+
   // Si on reste sur la même section (crash) → seulement la frame change
   if (targetY === currentY && isCrashPage(idx)) {
     setCrashProgress(crashPageToProgress(idx));
@@ -1018,7 +1049,11 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
     duration: 1.0,
     ease: 'power3.inOut',
     onComplete: () => {
-      if (isEraPage(idx)) {
+      if (isHeroPage(idx)) {
+        dispatchHeroStepChange(idx);
+        updateSectionNav(idx);
+        isTransitioning = false;
+      } else if (isEraPage(idx)) {
         dispatchEraStepChange(idx);
         updateSectionNav(idx);
         isTransitioning = false;
@@ -1214,6 +1249,8 @@ window.addEventListener('wheel', e => {
   wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
   goToPage(currentPage + direction);
 }, { passive: false });
+
+dispatchHeroStepChange(currentPage);
 
 // ── keyboard navigation ───────────────────────────────────────────────────
 window.addEventListener('keydown', e => {

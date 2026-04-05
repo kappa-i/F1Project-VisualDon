@@ -509,6 +509,196 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
     linear-gradient(105deg, rgba(232, 0, 45, 0.06) 0%, transparent 60%),
     linear-gradient(180deg, rgba(8, 8, 8, 0.12) 0%, rgba(8, 8, 8, 0.56) 100%);
 }
+.section--hero.is-story-active .section__inner {
+  opacity: 0.28;
+  transform: translateY(-18px) scale(0.98);
+  filter: blur(3px);
+}
+
+#hero-safety-intro-root {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.hero-safety-intro {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(24px);
+}
+
+.hero-safety-intro__shell {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(320px, 0.95fr) minmax(420px, 1.05fr);
+  gap: 40px;
+  align-items: end;
+  padding: 120px 64px 72px;
+  background:
+    radial-gradient(circle at 74% 42%, rgba(232, 0, 45, 0.12), transparent 24%),
+    linear-gradient(120deg, rgba(7, 7, 9, 0.82) 12%, rgba(7, 7, 9, 0.52) 48%, rgba(7, 7, 9, 0.9) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hero-safety-intro__cta-shell {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(126, 87, 255, 0.1), transparent 28%),
+    linear-gradient(180deg, rgba(5, 5, 7, 0.86) 0%, rgba(5, 5, 7, 0.9) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hero-safety-intro__cta-shell > section {
+  width: 100%;
+  max-width: 1400px;
+}
+
+.hero-safety-intro__copy {
+  max-width: 620px;
+  align-self: center;
+}
+
+.hero-safety-intro__eyebrow {
+  margin: 0 0 18px;
+  font-size: 10px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.hero-safety-intro__title {
+  margin: 0 0 24px;
+  font-family: var(--font-bold);
+  font-size: clamp(32px, 4vw, 58px);
+  line-height: 0.96;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.hero-safety-intro__lead {
+  margin: 0;
+  max-width: 560px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.hero-safety-intro__panel {
+  display: grid;
+  gap: 22px;
+  align-self: stretch;
+}
+
+.hero-safety-intro__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.hero-safety-intro__stat,
+.hero-safety-intro__chart-wrap {
+  background: rgba(10, 10, 12, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+}
+
+.hero-safety-intro__stat {
+  min-height: 176px;
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-safety-intro__stat-value {
+  font-family: var(--font-bold);
+  font-size: clamp(42px, 4vw, 72px);
+  line-height: 0.9;
+  color: #fff;
+}
+
+.hero-safety-intro__stat-label {
+  margin: 16px 0 0;
+  font-size: 11px;
+  line-height: 1.55;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.hero-safety-intro__chart-wrap {
+  padding: 20px 22px 18px;
+}
+
+.hero-safety-intro__chart-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.hero-safety-chart {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 10px;
+  align-items: end;
+  min-height: 190px;
+}
+
+.hero-safety-chart__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-safety-chart__bars {
+  height: 160px;
+  width: 100%;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 6px;
+}
+
+.hero-safety-chart__bar {
+  width: min(18px, 34%);
+  border-radius: 999px 999px 0 0;
+}
+
+.hero-safety-chart__bar--deaths {
+  background: linear-gradient(180deg, #ff5b7f 0%, #e8002d 100%);
+  box-shadow: 0 0 20px rgba(232, 0, 45, 0.22);
+}
+
+.hero-safety-chart__bar--safety {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.28) 100%);
+}
+
+.hero-safety-chart__label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.section--hero .section__inner {
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+}
 .section--era        { background: #000; border-top: 1px solid var(--line); z-index: 2; padding: 0; position: relative; }
 
 /* ── Era Timeline Cards ─────────────────────────────────────────────────── */
@@ -1920,6 +2110,60 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 
 @media (max-width: 768px) {
+  .hero-safety-intro__shell {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 104px 24px 36px;
+    align-items: start;
+    overflow-y: auto;
+  }
+
+  .hero-safety-intro__cta-shell {
+    padding: 88px 24px 36px;
+  }
+
+  .hero-safety-intro__copy {
+    max-width: none;
+  }
+
+  .hero-safety-intro__title {
+    font-size: clamp(28px, 9vw, 44px);
+  }
+
+  .hero-safety-intro__lead {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .hero-safety-intro__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-safety-intro__stat {
+    min-height: 132px;
+  }
+
+  .hero-safety-intro__chart-wrap {
+    min-height: 0;
+  }
+
+  .hero-safety-chart {
+    gap: 6px;
+  }
+
+  .hero-safety-chart__bars {
+    height: 124px;
+    gap: 4px;
+  }
+
+  .hero-safety-chart__bar {
+    width: min(14px, 36%);
+  }
+
+  .hero-safety-chart__label {
+    font-size: 8px;
+  }
+
   .rt-overlay {
     left: 24px;
     bottom: 60px;
