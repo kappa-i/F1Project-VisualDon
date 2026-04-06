@@ -150,7 +150,9 @@ export default function Stats4() {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
-                  background: 'rgba(255,255,255,0.03)',
+                  background: 'rgba(0,0,0,0.6)',
+                  backdropFilter: 'blur(14px)',
+                  WebkitBackdropFilter: 'blur(14px)',
                   overflow: 'hidden',
                   boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
                 }}
