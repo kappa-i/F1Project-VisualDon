@@ -519,6 +519,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   position: absolute;
   inset: 0;
   z-index: 3;
+  pointer-events: none;
 }
 
 .hero-safety-intro {
@@ -551,6 +552,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   align-items: center;
   justify-content: center;
   padding: 64px;
+  pointer-events: auto;
   background:
     radial-gradient(circle at 50% 30%, rgba(126, 87, 255, 0.1), transparent 28%),
     linear-gradient(180deg, rgba(5, 5, 7, 0.86) 0%, rgba(5, 5, 7, 0.9) 100%);

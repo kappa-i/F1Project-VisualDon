@@ -13,6 +13,10 @@ const FONT = 'ui-sans-serif, system-ui, -apple-system, sans-serif';
 const FONT_F1 = 'Formula1, sans-serif';
 
 export default function Stats4() {
+  const handleDiscoverClick = () => {
+    window.dispatchEvent(new CustomEvent('hero-next-step'));
+  };
+
   return (
     <section
       style={{
@@ -27,7 +31,7 @@ export default function Stats4() {
         fontFamily: FONT,
         boxSizing: 'border-box',
         zIndex: 2,
-        pointerEvents: 'none',
+        pointerEvents: 'auto',
       }}
     >
       <div
@@ -108,6 +112,7 @@ export default function Stats4() {
               }}
               onMouseEnter={e => (e.currentTarget.style.background = '#e5e5e5')}
               onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
+              onClick={handleDiscoverClick}
             >
               Découvrir
               <ArrowRight size={18} />

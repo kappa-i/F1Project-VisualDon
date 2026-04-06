@@ -815,6 +815,11 @@ window.addEventListener('section-nav-jump', event => {
   goToPage(sectionToPage(sectionIdx));
 });
 
+window.addEventListener('hero-next-step', () => {
+  if (!isHeroPage(currentPage) || currentPage >= HERO_PAGE_END) return;
+  goToPage(currentPage + 1);
+});
+
 function resetWheelGesture() {
   wheelGestureAccum = 0;
   wheelGestureDirection = 0;
