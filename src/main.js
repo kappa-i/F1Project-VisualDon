@@ -17,6 +17,7 @@ import EraGlitter from './components/EraGlitter.tsx';
 import RaceTrack   from './components/RaceTrack.tsx';
 import Footer from './components/Footer.tsx';
 import ConclusionGraph from './components/ConclusionGraph.tsx';
+import Stats4 from './components/Stats4.tsx';
 
 const ERA_IMAGES = [
   { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
@@ -41,6 +42,11 @@ import shaderFrontUrl from './assets/CadillacF1Team_2203_HiRes.jpg.avif';
 import shaderBackUrl from './assets/dessous.webp';
 import studioGlbUrl from './models/tunel.glb';
 
+
+const stats4Mount = document.getElementById('stats4-root');
+if (stats4Mount) {
+  createRoot(stats4Mount).render(React.createElement(Stats4));
+}
 
 const shaderRevealMount = document.getElementById('shader-reveal-root');
 

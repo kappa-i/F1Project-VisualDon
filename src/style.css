@@ -702,6 +702,20 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .section--era        { background: #000; border-top: 1px solid var(--line); z-index: 2; padding: 0; position: relative; }
 
 /* ── Era Timeline Cards ─────────────────────────────────────────────────── */
+@keyframes stats4-ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+.stats4-ping {
+  position: absolute;
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  opacity: 0.75;
+  animation: stats4-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
 @keyframes era-slide-from-left {
   from { opacity: 0; transform: translateX(-110%); }
   to   { opacity: 1; transform: translateX(0); }
