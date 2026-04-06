@@ -1,24 +1,53 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Instagram, Linkedin } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
+
+const footerCards = [
+  {
+    title: 'Parcours',
+    links: [
+      { text: 'Introduction', href: '#s-hero' },
+      { text: 'Ere dangereuse', href: '#s-era' },
+      { text: 'Crashs', href: '#s-crash' },
+      { text: 'Spa-Francorchamps', href: '#s-spa' },
+    ],
+  },
+  {
+    title: 'Visualisations',
+    links: [
+      { text: 'Scene 3D', href: '#s-haas' },
+      { text: 'Donnees', href: '#s-data' },
+      { text: 'Conclusion', href: '#s-conclusion' },
+    ],
+  },
+  {
+    title: 'Projet',
+    links: [
+      { text: 'Depot GitHub', href: 'https://github.com/kappa-i/F1Project-VisualDon', external: true },
+      { text: 'README', href: 'https://github.com/kappa-i/F1Project-VisualDon#readme', external: true },
+      { text: 'HEIG-VD', href: 'https://www.heig-vd.ch/', external: true },
+      { text: 'Retour en haut', href: '#s-hero' },
+    ],
+  },
+];
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.12,
+      staggerChildren: 0.08,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.55,
+      duration: 0.5,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -27,73 +56,76 @@ const itemVariants = {
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <div className="site-footer__bg" aria-hidden="true">
-        <img
-          src="https://images.unsplash.com/photo-1616144058124-979005390426?q=80&w=1744&auto=format&fit=crop"
-          alt=""
-        />
-      </div>
-
-      <div className="site-footer__inner">
-        <div className="site-footer__spacer" aria-hidden="true" />
-
-        <div className="site-footer__panel">
-          <div className="site-footer__corner site-footer__corner--left" aria-hidden="true">
-            <svg viewBox="0 0 614 153" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0H451.601C467.78 0 483.071 7.75893 491.954 21.2815C558.518 122.612 538.359 153.074 614 153H0V0Z" />
-            </svg>
-          </div>
-
-          <div className="site-footer__corner site-footer__corner--right" aria-hidden="true">
-            <svg viewBox="0 0 614 153" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0H451.601C467.78 0 483.071 7.75893 491.954 21.2815C558.518 122.612 538.359 153.074 614 153H0V0Z" />
-            </svg>
-          </div>
-
-          <motion.div
-            className="site-footer__content"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-          >
+      <div className="site-footer__container">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          className="site-footer__stack"
+        >
+          <div className="site-footer__grid">
             <motion.div variants={itemVariants} className="site-footer__brand">
-              <p className="site-footer__kicker">F1 Project · VisualDon</p>
-              <h2>LIGHTNESS</h2>
-              <p>Safety, speed and engineered survival.</p>
-            </motion.div>
+              <div className="site-footer__logo" aria-hidden="true">
+                <div className="site-footer__logo-mark">
+                  <span>F</span>
+                </div>
+                <span className="site-footer__logo-text">LIGHTNESS</span>
+              </div>
 
-            <motion.div variants={itemVariants} className="site-footer__links">
-              <a href="#s-hero">Retour au début</a>
-              <span aria-hidden="true">·</span>
-              <a href="#s-era">Explorer l’histoire</a>
-              <span aria-hidden="true">·</span>
-              <a href="#s-conclusion">Relire la conclusion</a>
-            </motion.div>
+              <div className="site-footer__headline">
+                <h3>
+                  Peut-on aller plus vite
+                  <br />
+                  en etant plus en securite ?
+                </h3>
+              </div>
 
-            <motion.div variants={itemVariants} className="site-footer__socials">
-              <a href="#" aria-label="Instagram">
-                <Instagram size={24} strokeWidth={1.8} />
-              </a>
-              <a href="#" aria-label="X">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </a>
-              <a href="#" aria-label="LinkedIn">
-                <Linkedin size={24} strokeWidth={1.8} />
-              </a>
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="site-footer__bottom">
-              <p>© 2026 F1 Project VisualDon. Tous droits réservés.</p>
-              <div>
-                <p>Formule 1 · 1950 → 2026</p>
-                <p>Réglementation, crashs, innovation</p>
+              <div className="site-footer__meta">
+                <p>Projet VisualDon sur la securite en Formule 1 depuis 1950</p>
               </div>
             </motion.div>
+
+            {footerCards.map((card, index) => {
+              const classes = ['site-footer__card'];
+
+              if (index > 0) {
+                classes.push('site-footer__card--stacked');
+              }
+
+              return (
+                <motion.div key={card.title} variants={itemVariants} className={classes.join(' ')}>
+                  <h4>{card.title}</h4>
+                  <ul>
+                    {card.links.map((link) => (
+                      <li key={link.text}>
+                        <a
+                          href={link.href}
+                          target={link.external ? '_blank' : undefined}
+                          rel={link.external ? 'noreferrer' : undefined}
+                        >
+                          <span>{link.text}</span>
+                          {link.external ? <ArrowUpRight aria-hidden="true" /> : null}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div variants={itemVariants} className="site-footer__wordmark" aria-hidden="true">
+            <div className="site-footer__wordmark-track">
+              <span>LIGHTNESS</span>
+            </div>
           </motion.div>
-        </div>
+
+          <motion.div variants={itemVariants} className="site-footer__bottom">
+            <p>© 2026 F1 Project VisualDon. Tous droits reserves.</p>
+            <p>Vitesse, crashs, reglementation, survie.</p>
+          </motion.div>
+        </motion.div>
       </div>
     </footer>
   );
