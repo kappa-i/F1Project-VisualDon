@@ -460,16 +460,16 @@ new RGBELoader().load(
 //
 // Pages virtuelles :
 //   0       → hero initial   (translateY 0vh)
-//   1–2     → hero intro     (translateY 0vh, 2 étapes overlay)
-//   3–8     → era            (translateY -100vh, 1=intro, 5 étapes timeline)
-//   9–56    → crash          (translateY -200vh, 48 pas, vidéo pinnée)
-//   57–64   → viewer         (translateY -300vh, 8 étapes caméra)
-//   65–68   → spa            (translateY -400vh, 4 POI)
-//   69      → data           (translateY -500vh)
-//   70      → conclusion     (translateY -600vh)
+//   1       → hero CTA       (translateY 0vh, 1 étape overlay)
+//   2–7     → era            (translateY -100vh, 1=intro, 5 étapes timeline)
+//   8–55    → crash          (translateY -200vh, 48 pas, vidéo pinnée)
+//   56–63   → viewer         (translateY -300vh, 8 étapes caméra)
+//   64–67   → spa            (translateY -400vh, 4 POI)
+//   68      → data           (translateY -500vh)
+//   69      → conclusion     (translateY -600vh)
 
 const HERO_PAGE_START = 0;
-const HERO_PAGE_STEPS = 2;
+const HERO_PAGE_STEPS = 1;
 const HERO_PAGE_END = HERO_PAGE_START + HERO_PAGE_STEPS;
 const ERA_PAGE_START  = HERO_PAGE_END + 1;
 const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline
@@ -661,7 +661,7 @@ function isHeroPage(idx) {
 }
 
 function dispatchHeroStepChange(pageIdx) {
-  const step = pageIdx <= HERO_PAGE_START ? -1 : Math.min(HERO_PAGE_STEPS - 1, pageIdx - 1);
+  const step = pageIdx <= HERO_PAGE_START ? -1 : Math.min(HERO_PAGE_STEPS - 1, pageIdx - HERO_PAGE_START - 1);
   const heroSectionEl = document.getElementById('s-hero');
   heroSectionEl?.classList.toggle('is-story-active', step >= 0);
   window.dispatchEvent(new CustomEvent('hero-step-change', { detail: { step } }));

@@ -2,39 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import CTA5 from './CTA5.tsx';
 
-const DECADE_DATA = [
-  { label: '1950s', deaths: 14, safety: 0 },
-  { label: '1960s', deaths: 18, safety: 5 },
-  { label: '1970s', deaths: 10, safety: 22 },
-  { label: '1980s', deaths: 4, safety: 48 },
-  { label: '1990s', deaths: 3, safety: 62 },
-  { label: '2000s', deaths: 0, safety: 78 },
-  { label: '2010s', deaths: 1, safety: 88 },
-  { label: '2020s', deaths: 0, safety: 97 },
-];
-
-function SafetyBars() {
-  return (
-    <div className="hero-safety-chart" aria-hidden="true">
-      {DECADE_DATA.map((item) => (
-        <div className="hero-safety-chart__col" key={item.label}>
-          <div className="hero-safety-chart__bars">
-            <div
-              className="hero-safety-chart__bar hero-safety-chart__bar--deaths"
-              style={{ height: `${Math.max(8, item.deaths * 8)}px` }}
-            />
-            <div
-              className="hero-safety-chart__bar hero-safety-chart__bar--safety"
-              style={{ height: `${Math.max(12, item.safety * 1.35)}px` }}
-            />
-          </div>
-          <div className="hero-safety-chart__label">{item.label}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export default function HeroSafetyIntro() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(-1);
@@ -90,53 +57,9 @@ export default function HeroSafetyIntro() {
 
   return (
     <div className="hero-safety-intro" ref={rootRef}>
-      {activeStep === 0 ? (
-        <div className="hero-safety-intro__shell">
-          <div className="hero-safety-intro__copy">
-            <p className="hero-safety-intro__eyebrow hero-safety-intro__animate">
-              Introduction
-            </p>
-            <h2 className="hero-safety-intro__title hero-safety-intro__animate">
-              La vitesse a continue d&apos;augmenter.
-              <br />
-              La mortalite, elle, a chute.
-            </h2>
-            <p className="hero-safety-intro__lead hero-safety-intro__animate">
-              Avant d&apos;entrer dans les accidents, les voitures et les circuits, on pose le paradoxe
-              central du site: la F1 moderne va plus vite, mais protege mieux.
-            </p>
-          </div>
-
-          <div className="hero-safety-intro__panel">
-            <div className="hero-safety-intro__stats hero-safety-intro__animate">
-              <article className="hero-safety-intro__stat">
-                <div className="hero-safety-intro__stat-value">49</div>
-                <p className="hero-safety-intro__stat-label">deces pilotes recenses avant 2000</p>
-              </article>
-              <article className="hero-safety-intro__stat">
-                <div className="hero-safety-intro__stat-value">97%</div>
-                <p className="hero-safety-intro__stat-label">indice securite projete pour les annees 2020</p>
-              </article>
-              <article className="hero-safety-intro__stat">
-                <div className="hero-safety-intro__stat-value">220</div>
-                <p className="hero-safety-intro__stat-label">km/h lors du crash de Grosjean en 2020</p>
-              </article>
-            </div>
-
-            <div className="hero-safety-intro__chart-wrap hero-safety-intro__animate">
-              <div className="hero-safety-intro__chart-header">
-                <span>Deces pilotes</span>
-                <span>Indice securite</span>
-              </div>
-              <SafetyBars />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="hero-safety-intro__cta-shell hero-safety-intro__animate">
-          <CTA5 />
-        </div>
-      )}
+      <div className="hero-safety-intro__cta-shell hero-safety-intro__animate">
+        <CTA5 />
+      </div>
     </div>
   );
 }
