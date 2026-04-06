@@ -10,6 +10,7 @@ const stats = [
 ];
 
 const FONT = 'ui-sans-serif, system-ui, -apple-system, sans-serif';
+const FONT_F1 = 'Formula1, sans-serif';
 
 export default function Stats4() {
   return (
@@ -56,11 +57,11 @@ export default function Stats4() {
             style={{
               margin: 0,
               fontSize: 'clamp(36px, 4.5vw, 68px)',
-              fontWeight: 500,
-              letterSpacing: '-0.02em',
+              fontWeight: 700,
+              letterSpacing: '0.03em',
               color: '#fff',
-              lineHeight: 1.08,
-              fontFamily: FONT,
+              lineHeight: 0.95,
+              fontFamily: FONT_F1,
             }}
           >
             L&apos;histoire de la<br />sécurité en F1
@@ -205,10 +206,10 @@ export default function Stats4() {
                     style={{
                       margin: 0,
                       fontSize: 'clamp(34px, 3.2vw, 52px)',
-                      fontWeight: 500,
-                      letterSpacing: '-0.04em',
+                      fontWeight: 700,
+                      letterSpacing: '0.02em',
                       color: stat.highlight ? '#22c55e' : '#fff',
-                      fontFamily: FONT,
+                      fontFamily: FONT_F1,
                       lineHeight: 1,
                     }}
                   >
