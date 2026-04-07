@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion, useAnimationFrame, useMotionValue, useTransform } from 'motion/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useAnimationFrame, useMotionValue } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import pilot1Url from '../assets/pilot1.png';
 import logo1Url from '../assets/l1.png';
@@ -79,23 +79,58 @@ function ChevronSweep() {
 }
 
 function LogoMarquee() {
-  const xPercent = useMotionValue(0);
-  const x = useTransform(xPercent, value => `${value}%`);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const cycleWidthRef = useRef(0);
+  const offsetRef = useRef(0);
+  const x = useMotionValue(0);
+  const [repeatCount, setRepeatCount] = useState(3);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const rebuildTrack = () => {
+      const measuredWidths = TEAM_LOGOS.map((_, index) => {
+        const width = itemRefs.current[index]?.getBoundingClientRect().width ?? 0;
+        return Math.max(width, 1);
+      });
+
+      if (!measuredWidths.every(width => width > 0)) return;
+
+      const totalCycleWidth = measuredWidths.reduce((sum, width) => sum + width, 0);
+      const containerWidth = container.getBoundingClientRect().width;
+      const neededRepeats = Math.max(3, Math.ceil((containerWidth * 2) / totalCycleWidth) + 1);
+      cycleWidthRef.current = totalCycleWidth;
+      offsetRef.current = 0;
+      x.set(0);
+      setRepeatCount(neededRepeats);
+    };
+
+    const resizeObserver = new ResizeObserver(rebuildTrack);
+    resizeObserver.observe(container);
+    rebuildTrack();
+
+    return () => resizeObserver.disconnect();
+  }, [x]);
 
   useAnimationFrame((_, delta) => {
-    const speed = 3.6;
-    const moveBy = (speed * delta) / 1000;
-    const nextX = xPercent.get() - moveBy;
+    const cycleWidth = cycleWidthRef.current;
+    if (!cycleWidth) return;
 
-    if (nextX <= -100) {
-      xPercent.set(0);
-      return;
-    }
-
-    xPercent.set(nextX);
+    const speed = 42;
+    const nextOffset = (offsetRef.current + (speed * delta) / 1000) % cycleWidth;
+    offsetRef.current = nextOffset;
+    x.set(-nextOffset);
   });
 
-  const items = [...TEAM_LOGOS, ...TEAM_LOGOS];
+  const repeatedLogos = Array.from({ length: repeatCount }, (_, repeatIndex) =>
+    TEAM_LOGOS.map((team, logoIndex) => ({
+      key: `${repeatIndex}-${team.name}-${logoIndex}`,
+      team,
+      measureIndex: repeatIndex === 0 ? logoIndex : -1,
+    })),
+  ).flat();
 
   return (
     <motion.div
@@ -108,6 +143,7 @@ function LogoMarquee() {
       }}
     >
       <div
+        ref={containerRef}
         style={{
           position: 'relative',
           overflow: 'hidden',
@@ -121,9 +157,15 @@ function LogoMarquee() {
             padding: '12px 0',
           }}
         >
-          {items.map((team, index) => (
+          {repeatedLogos.map(item => {
+            const team = item.team;
+
+            return (
             <div
-              key={`${team.name}-${index}`}
+              key={item.key}
+              ref={node => {
+                if (item.measureIndex >= 0) itemRefs.current[item.measureIndex] = node;
+              }}
               style={{
                 flex: '0 0 auto',
                 display: 'flex',
@@ -145,7 +187,8 @@ function LogoMarquee() {
                 }}
               />
             </div>
-          ))}
+            );
+          })}
         </motion.div>
       </div>
     </motion.div>
