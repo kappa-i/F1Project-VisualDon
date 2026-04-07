@@ -27,7 +27,7 @@ function ChevronSweep() {
         pointerEvents: 'none',
         zIndex: 1,
         overflow: 'hidden',
-        opacity: 0.22,
+        opacity: 0.32,
       }}
     >
       {[0, 1, 2].map((row) => (
@@ -35,12 +35,12 @@ function ChevronSweep() {
           key={row}
           style={{
             position: 'absolute',
-            top: `${20 + row * 24}%`,
-            left: '-28%',
-            width: '40%',
-            height: '32%',
+            top: `${14 + row * 23}%`,
+            left: '-34%',
+            width: '54%',
+            height: '42%',
             animation: `stats4-chevron-sweep 1.45s linear ${row * 0.38}s infinite`,
-            filter: 'blur(0.35px)',
+            filter: 'blur(0.2px)',
           }}
         >
           <svg
@@ -50,10 +50,10 @@ function ChevronSweep() {
           >
             {dots.map((index) => {
               const t = index / (dots.length - 1);
-              const x = 20 + t * 64;
-              const yTop = 14 + t * 28;
-              const yBottom = 70 - t * 28;
-              const radius = 1.8 + t * 1.1;
+              const x = 10 + t * 92;
+              const yTop = 10 + t * 32;
+              const yBottom = 74 - t * 32;
+              const radius = 3.1 + t * 1.8;
 
               return (
                 <React.Fragment key={index}>
