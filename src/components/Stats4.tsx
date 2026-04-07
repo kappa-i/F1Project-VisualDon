@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useAnimate } from 'motion/react';
+import { motion, useAnimate, AnimatePresence } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import TextScatter from './TextScatter';
 import pilot1Url from '../assets/pilot1.png';
@@ -10,12 +10,24 @@ import logo4Url from '../assets/logos-slider-optimized/L4.png';
 import logo5Url from '../assets/logos-slider-optimized/L5.png';
 import logo6Url from '../assets/logos-slider-optimized/L6.png';
 
-const stats = [
+const slides = [
   {
-    label: 'Records processed',
-    value: 'Nous savions tous que nous pouvions mourir a chaque course.',
-    highlight: false,
+    value: 'Nous savions tous que nous pouvions mourir à chaque course.',
     citation: 'Jacky Ickx',
+    color: '#8fd3ff',
+    glow: 'rgba(143, 211, 255, 0.45)',
+  },
+  {
+    value: 'La mort fait partie du métier. On l\'accepte ou on arrête.',
+    citation: 'Niki Lauda',
+    color: '#ff6b6b',
+    glow: 'rgba(255, 107, 107, 0.45)',
+  },
+  {
+    value: 'Chaque matin de Grand Prix, je me demandais si c\'était mon dernier.',
+    citation: 'James Hunt',
+    color: '#ffa94d',
+    glow: 'rgba(255, 169, 77, 0.45)',
   },
 ];
 
@@ -41,7 +53,7 @@ const skeletonStyle = `
   }
 `;
 
-function ChevronSweep() {
+function ChevronSweep({ color = '#8fd3ff' }: { color?: string }) {
   const dots = Array.from({ length: 11 }, (_, index) => index);
 
   return (
@@ -82,8 +94,8 @@ function ChevronSweep() {
 
               return (
                 <React.Fragment key={index}>
-                  <circle cx={x} cy={yTop} r={radius} fill="#8fd3ff" />
-                  <circle cx={x} cy={yBottom} r={radius} fill="#8fd3ff" />
+                  <circle cx={x} cy={yTop} r={radius} fill={color} />
+                  <circle cx={x} cy={yBottom} r={radius} fill={color} />
                 </React.Fragment>
               );
             })}
@@ -211,6 +223,14 @@ function LogoMarquee() {
 export default function Stats4() {
   const [btnScope, animateBtn] = useAnimate();
   const [scrollTriggered, setScrollTriggered] = useState(false);
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSlideIndex(i => (i + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(id);
+  }, []);
 
   const runSwipeAnim = async () => {
     if (scrollTriggered) return;
@@ -396,7 +416,6 @@ export default function Stats4() {
           }}
         >
           <motion.div
-            key={stats[0].label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.12 }}
@@ -419,7 +438,19 @@ export default function Stats4() {
               boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
             }}
           >
-            <ChevronSweep />
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={slideIndex + '-bg'}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6 }}
+                style={{ position: 'absolute', inset: 0, zIndex: 1 }}
+              >
+                <ChevronSweep color={slides[slideIndex].color} />
+              </motion.div>
+            </AnimatePresence>
+
             <div
               style={{
                 position: 'absolute',
@@ -459,36 +490,50 @@ export default function Stats4() {
                 gap: '16px',
               }}
             >
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: 'clamp(14px, 1.08vw, 18px)',
-                  fontWeight: 500,
-                  letterSpacing: '0.02em',
-                  color: '#fff',
-                  fontFamily: FONT_F1,
-                  lineHeight: 1.16,
-                  maxWidth: '55%',
-                }}
-              >
-                {`« ${stats[0].value} »`}
-              </p>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={slideIndex + '-quote'}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
+                  style={{
+                    margin: 0,
+                    fontSize: 'clamp(14px, 1.08vw, 18px)',
+                    fontWeight: 500,
+                    letterSpacing: '0.02em',
+                    color: '#fff',
+                    fontFamily: FONT_F1,
+                    lineHeight: 1.16,
+                    maxWidth: '55%',
+                  }}
+                >
+                  {`« ${slides[slideIndex].value} »`}
+                </motion.p>
+              </AnimatePresence>
 
-              <p
-                style={{
-                  margin: 0,
-                  alignSelf: 'flex-end',
-                  fontSize: 'clamp(15px, 1.08vw, 18px)',
-                  lineHeight: 1.2,
-                  color: '#8fd3ff',
-                  fontFamily: FONT_F1,
-                  fontWeight: 700,
-                  textAlign: 'right',
-                  textShadow: '0 0 14px rgba(143, 211, 255, 0.45)',
-                }}
-              >
-                {stats[0].citation}
-              </p>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={slideIndex + '-citation'}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, delay: 0.08 }}
+                  style={{
+                    margin: 0,
+                    alignSelf: 'flex-end',
+                    fontSize: 'clamp(15px, 1.08vw, 18px)',
+                    lineHeight: 1.2,
+                    color: slides[slideIndex].color,
+                    fontFamily: FONT_F1,
+                    fontWeight: 700,
+                    textAlign: 'right',
+                    textShadow: `0 0 14px ${slides[slideIndex].glow}`,
+                  }}
+                >
+                  {slides[slideIndex].citation}
+                </motion.p>
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>
