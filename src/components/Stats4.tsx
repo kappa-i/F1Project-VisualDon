@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useAnimationFrame, useMotionValue } from 'motion/react';
+import React, { useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import pilot1Url from '../assets/pilot1.png';
-import logo1Url from '../assets/L1.png';
-import logo2Url from '../assets/L2.png';
-import logo3Url from '../assets/L3.png';
-import logo4Url from '../assets/L4.png';
-import logo5Url from '../assets/L5.png';
-import logo6Url from '../assets/L6.png';
-import logo7Url from '../assets/L7.png';
+import logo1Url from '../assets/logos-slider-optimized/L1.png';
+import logo2Url from '../assets/logos-slider-optimized/L2.png';
+import logo3Url from '../assets/logos-slider-optimized/L3.png';
+import logo4Url from '../assets/logos-slider-optimized/L4.png';
+import logo5Url from '../assets/logos-slider-optimized/L5.png';
+import logo6Url from '../assets/logos-slider-optimized/L6.png';
+import logo7Url from '../assets/logos-slider-optimized/L7.png';
 
 const stats = [
   {
@@ -90,57 +90,57 @@ function ChevronSweep() {
 
 function LogoMarquee() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
   const cycleWidthRef = useRef(0);
   const offsetRef = useRef(0);
-  const x = useMotionValue(0);
-  const [repeatCount, setRepeatCount] = useState(3);
+  const rafRef = useRef(0);
+
+  const SPEED = 42; // px/s
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    const track = trackRef.current;
+    if (!container || !track) return;
 
-    const rebuildTrack = () => {
-      const measuredWidths = TEAM_LOGOS.map((_, index) => {
-        const width = itemRefs.current[index]?.getBoundingClientRect().width ?? 0;
-        return Math.max(width, 1);
-      });
-
-      if (!measuredWidths.every(width => width > 0)) return;
-
-      const totalCycleWidth = measuredWidths.reduce((sum, width) => sum + width, 0);
-      const containerWidth = container.getBoundingClientRect().width;
-      const neededRepeats = Math.max(3, Math.ceil((containerWidth * 2) / totalCycleWidth) + 1);
-      cycleWidthRef.current = totalCycleWidth;
-      offsetRef.current = 0;
-      x.set(0);
-      setRepeatCount(neededRepeats);
+    const measure = () => {
+      const widths = TEAM_LOGOS.map((_, i) => itemRefs.current[i]?.getBoundingClientRect().width ?? 0);
+      if (widths.every(w => w > 0)) {
+        cycleWidthRef.current = widths.reduce((s, w) => s + w, 0);
+      }
     };
 
-    const resizeObserver = new ResizeObserver(rebuildTrack);
-    resizeObserver.observe(container);
-    rebuildTrack();
+    const ro = new ResizeObserver(measure);
+    ro.observe(container);
+    measure();
 
-    return () => resizeObserver.disconnect();
-  }, [x]);
+    let lastTime = performance.now();
 
-  useAnimationFrame((_, delta) => {
-    const cycleWidth = cycleWidthRef.current;
-    if (!cycleWidth) return;
+    const tick = (now: number) => {
+      const dt = Math.min(now - lastTime, 50); // cap delta pour eviter les gros sauts
+      lastTime = now;
 
-    const speed = 42;
-    const nextOffset = (offsetRef.current + (speed * delta) / 1000) % cycleWidth;
-    offsetRef.current = nextOffset;
-    x.set(-nextOffset);
-  });
+      if (cycleWidthRef.current > 0) {
+        offsetRef.current += SPEED * (dt / 1000);
+        if (offsetRef.current >= cycleWidthRef.current) {
+          offsetRef.current -= cycleWidthRef.current;
+        }
+        track.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+      }
 
-  const repeatedLogos = Array.from({ length: repeatCount }, (_, repeatIndex) =>
-    TEAM_LOGOS.map((team, logoIndex) => ({
-      key: `${repeatIndex}-${team.name}-${logoIndex}`,
-      team,
-      measureIndex: repeatIndex === 0 ? logoIndex : -1,
-    })),
-  ).flat();
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      ro.disconnect();
+    };
+  }, []);
+
+  // 2 copies suffisent pour le loop seamless
+  const allLogos = [...TEAM_LOGOS, ...TEAM_LOGOS];
 
   return (
     <motion.div
@@ -159,22 +159,20 @@ function LogoMarquee() {
           overflow: 'hidden',
         }}
       >
-        <motion.div
+        <div
+          ref={trackRef}
           style={{
-            x,
             display: 'flex',
             width: 'max-content',
             padding: '12px 0',
+            willChange: 'transform',
           }}
         >
-          {repeatedLogos.map(item => {
-            const team = item.team;
-
-            return (
+          {allLogos.map((team, index) => (
             <div
-              key={item.key}
+              key={`${index}-${team.name}`}
               ref={node => {
-                if (item.measureIndex >= 0) itemRefs.current[item.measureIndex] = node;
+                if (index < TEAM_LOGOS.length) itemRefs.current[index] = node;
               }}
               style={{
                 flex: '0 0 auto',
@@ -197,9 +195,8 @@ function LogoMarquee() {
                 }}
               />
             </div>
-            );
-          })}
-        </motion.div>
+          ))}
+        </div>
       </div>
     </motion.div>
   );

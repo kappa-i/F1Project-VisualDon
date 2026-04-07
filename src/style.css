@@ -739,6 +739,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   }
 }
 
+
 @keyframes era-slide-from-left {
   from { opacity: 0; transform: translateX(-110%); }
   to   { opacity: 1; transform: translateX(0); }
