@@ -8,7 +8,6 @@ import logo3Url from '../assets/logos-slider-optimized/L3.png';
 import logo4Url from '../assets/logos-slider-optimized/L4.png';
 import logo5Url from '../assets/logos-slider-optimized/L5.png';
 import logo6Url from '../assets/logos-slider-optimized/L6.png';
-import logo7Url from '../assets/logos-slider-optimized/L7.png';
 
 const stats = [
   {
@@ -32,7 +31,6 @@ const TEAM_LOGOS = [
   { name: 'Logo 4', src: logo4Url },
   { name: 'Logo 5', src: logo5Url },
   { name: 'Logo 6', src: logo6Url },
-  { name: 'Logo 7', src: logo7Url },
 ];
 
 function ChevronSweep() {
@@ -96,7 +94,7 @@ function LogoMarquee() {
   const offsetRef = useRef(0);
   const rafRef = useRef(0);
 
-  const SPEED = 42; // px/s
+  const SPEED = 36; // px/s
 
   useEffect(() => {
     const container = containerRef.current;
@@ -179,8 +177,8 @@ function LogoMarquee() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minWidth: '148px',
-                padding: '0 12px',
+                minWidth: '132px',
+                padding: '0 9px',
               }}
             >
               <img
@@ -189,8 +187,8 @@ function LogoMarquee() {
                 style={{
                   display: 'block',
                   width: 'auto',
-                  height: '42px',
-                  maxWidth: '160px',
+                  height: '36px',
+                  maxWidth: '142px',
                   objectFit: 'contain',
                 }}
               />
@@ -256,14 +254,14 @@ export default function Stats4() {
               color: '#fff',
               lineHeight: 1.18,
               fontFamily: FONT_F1,
-              textShadow: '0 6px 18px rgba(0, 0, 0, 0.55)',
+              textShadow: '0 12px 34px rgba(0, 0, 0, 0.62), 0 4px 14px rgba(0, 0, 0, 0.34)',
             }}
           >
             L&apos;histoire de la<br />sécurité en <span style={{ color: '#e10600' }}>F1</span>
           </motion.h2>
 
           {/* Description + Button – bottom left */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
             <LogoMarquee />
 
             <motion.p
@@ -272,44 +270,54 @@ export default function Stats4() {
               transition={{ duration: 0.5, delay: 0.1 }}
               style={{
                 margin: 0,
-                fontSize: 'clamp(15px, 1.2vw, 18px)',
+                fontSize: 'clamp(13px, 1.02vw, 16px)',
                 color: 'rgba(255,255,255,0.55)',
                 lineHeight: 1.7,
                 maxWidth: '420px',
                 fontFamily: FONT,
               }}
             >
-              Peut-on aller plus vite en étant plus en sécurité&nbsp;?
+              De l’ère des gladiateurs aux monoplaces ultra-sécurisées d’aujourd’hui. Une exploration interactive de l’évolution de la sécurité en Formule 1.
             </motion.p>
 
-            <motion.button
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              onClick={handleDiscoverClick}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '12px 28px',
-                borderRadius: '9999px',
-                background: '#fff',
-                color: '#08080b',
-                fontWeight: 500,
-                fontSize: '15px',
-                border: 'none',
-                cursor: 'pointer',
+                justifyContent: 'space-between',
+                gap: '12px',
+                padding: '4px',
+                borderRadius: '12px',
+                background: 'rgba(255,255,255,0.1)',
                 width: 'fit-content',
-                fontFamily: FONT,
-                transition: 'background 0.2s',
+                cursor: 'pointer',
                 pointerEvents: 'auto',
               }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#e5e5e5')}
-              onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
-              onClick={handleDiscoverClick}
             >
-              Découvrir
-              <ArrowRight size={18} />
-            </motion.button>
+              <button
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '10px 22px',
+                  borderRadius: '8px',
+                  background: '#fff',
+                  color: '#08080b',
+                  fontWeight: 500,
+                  fontSize: '15px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: FONT,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Commencer la visite
+              </button>
+              <ArrowRight size={18} color="#fff" style={{ marginRight: '12px', flexShrink: 0 }} />
+            </motion.div>
           </div>
         </div>
 
