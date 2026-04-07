@@ -4,10 +4,12 @@ import { ArrowRight } from 'lucide-react';
 import pilot1Url from '../assets/pilot1.png';
 
 const stats = [
-  { label: 'Data queries daily',  value: '8.7B+',  highlight: false },
-  { label: 'Active databases',    value: '2,400+', highlight: false },
-  { label: 'Records processed',   value: '142B+',  highlight: false },
-  { label: '24H query speed',     value: '<5ms',   highlight: true  },
+  {
+    label: 'Records processed',
+    value: 'Nous savions tous que nous pouvions mourir a chaque course.',
+    highlight: false,
+    citation: 'Jacky Ickx',
+  },
 ];
 
 const FONT = 'ui-sans-serif, system-ui, -apple-system, sans-serif';
@@ -40,7 +42,7 @@ function ChevronSweep() {
             left: '-34%',
             width: '54%',
             height: '42%',
-            animation: `stats4-chevron-sweep 1.45s linear ${row * 0.38}s infinite`,
+            animation: `stats4-chevron-sweep 4.1s linear ${row * 0.16}s infinite`,
             filter: 'blur(0.2px)',
           }}
         >
@@ -184,135 +186,100 @@ export default function Stats4() {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-end',
+            alignItems: 'flex-end',
           }}
         >
-          <div
+          <motion.div
+            key={stats[0].label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '16px',
-              alignItems: 'start',
+              position: 'relative',
+              width: 'min(100%, 360px)',
+              borderRadius: '24px',
+              border: '1px solid rgba(255,255,255,0.08)',
+              padding: '24px',
+              minHeight: CARD_LAYOUTS.right[0],
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              background: 'rgba(0,0,0,0.6)',
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
+              overflow: 'hidden',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
             }}
           >
-            {[stats.slice(0, 2), stats.slice(2, 4)].map((columnStats, columnIndex) => (
-              <div
-                key={columnIndex}
+            <ChevronSweep />
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                zIndex: 2,
+                pointerEvents: 'none',
+                backgroundImage: `url(${pilot1Url})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                opacity: 0.72,
+              }}
+            />
+
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundImage:
+                  'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)',
+                backgroundSize: '14px 14px',
+                zIndex: 0,
+              }}
+            />
+
+            <div
+              style={{
+                position: 'relative',
+                zIndex: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '100%',
+                gap: '16px',
+              }}
+            >
+              <p
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '16px',
+                  margin: 0,
+                  fontSize: 'clamp(14px, 1.08vw, 18px)',
+                  fontWeight: 500,
+                  letterSpacing: '0.02em',
+                  color: '#fff',
+                  fontFamily: FONT_F1,
+                  lineHeight: 1.16,
+                  maxWidth: '55%',
                 }}
               >
-                {columnStats.map((stat, cardIndex) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 + (columnIndex * 2 + cardIndex) * 0.1 }}
-                    style={{
-                      position: 'relative',
-                      borderRadius: '24px',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      padding: '24px',
-                      minHeight: CARD_LAYOUTS[columnIndex === 0 ? 'left' : 'right'][cardIndex],
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      background: 'rgba(0,0,0,0.6)',
-                      backdropFilter: 'blur(14px)',
-                      WebkitBackdropFilter: 'blur(14px)',
-                      overflow: 'hidden',
-                      boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
-                    }}
-                  >
-                    {columnIndex === 1 && cardIndex === 0 && (
-                      <>
-                        <ChevronSweep />
-                        <div
-                          style={{
-                            position: 'absolute',
-                            inset: 0,
-                            zIndex: 2,
-                            pointerEvents: 'none',
-                            backgroundImage: `url(${pilot1Url})`,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
-                            opacity: 0.72,
-                          }}
-                        />
-                      </>
-                    )}
+                {`« ${stats[0].value} »`}
+              </p>
 
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        backgroundImage:
-                          'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)',
-                        backgroundSize: '14px 14px',
-                        zIndex: 0,
-                      }}
-                    />
-
-                    <div
-                      style={{
-                        position: 'relative',
-                        zIndex: 3,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        height: '100%',
-                        gap: '16px',
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <p
-                          style={{
-                            margin: 0,
-                            fontSize: '13px',
-                            color: stat.highlight ? '#22c55e' : 'rgba(255,255,255,0.45)',
-                            fontFamily: FONT,
-                          }}
-                        >
-                          {stat.label}
-                        </p>
-                        {stat.highlight && (
-                          <span style={{ position: 'relative', display: 'inline-flex', width: '8px', height: '8px' }}>
-                            <span className="stats4-ping" />
-                            <span
-                              style={{
-                                position: 'relative',
-                                display: 'inline-flex',
-                                width: '8px',
-                                height: '8px',
-                                borderRadius: '50%',
-                                background: '#22c55e',
-                              }}
-                            />
-                          </span>
-                        )}
-                      </div>
-
-                      <p
-                        style={{
-                          margin: 0,
-                          fontSize: 'clamp(34px, 3.2vw, 52px)',
-                          fontWeight: 700,
-                          letterSpacing: '0.02em',
-                          color: stat.highlight ? '#22c55e' : '#fff',
-                          fontFamily: FONT_F1,
-                          lineHeight: 1,
-                        }}
-                      >
-                        {stat.value}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            ))}
-          </div>
+              <p
+                style={{
+                  margin: 0,
+                  alignSelf: 'flex-end',
+                  fontSize: 'clamp(15px, 1.08vw, 18px)',
+                  lineHeight: 1.2,
+                  color: '#8fd3ff',
+                  fontFamily: FONT_F1,
+                  fontWeight: 700,
+                  textAlign: 'right',
+                  textShadow: '0 0 14px rgba(143, 211, 255, 0.45)',
+                }}
+              >
+                {stats[0].citation}
+              </p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

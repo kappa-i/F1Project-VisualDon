@@ -723,11 +723,15 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
     transform: translateX(0) translateY(18px) scale(0.92);
     opacity: 0;
   }
-  12% {
+  6% {
     opacity: 1;
   }
-  78% {
+  22% {
     opacity: 1;
+  }
+  28% {
+    transform: translateX(420%) translateY(-18px) scale(1.05);
+    opacity: 0;
   }
   100% {
     transform: translateX(420%) translateY(-18px) scale(1.05);
