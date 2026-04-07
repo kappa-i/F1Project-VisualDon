@@ -429,29 +429,38 @@ export default function Stats4() {
             alignItems: 'flex-end',
           }}
         >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{ scale: 1.12 }}
-            transition={{ duration: 0.5, delay: 0.2, scale: { duration: 0.25, ease: 'easeOut' } }}
+          <div
             style={{
               position: 'relative',
               width: 'min(100%, 360px)',
-              borderRadius: '24px',
-              border: '1px solid rgba(255,255,255,0.08)',
-              padding: '24px',
-              transformOrigin: 'bottom right',
-              minHeight: CARD_LAYOUTS.right[0],
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              background: 'rgba(0,0,0,0.6)',
-              backdropFilter: 'blur(14px)',
-              WebkitBackdropFilter: 'blur(14px)',
-              overflow: 'hidden',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+              borderRadius: '28px',
+              boxShadow: '0 30px 90px rgba(0,0,0,0.34), 0 0 65px rgba(0,0,0,0.18)',
             }}
           >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.12 }}
+              transition={{ duration: 0.5, delay: 0.2, scale: { duration: 0.25, ease: 'easeOut' } }}
+              style={{
+                position: 'relative',
+                width: '100%',
+                borderRadius: '24px',
+                border: '1px solid rgba(255,255,255,0.08)',
+                padding: '24px',
+                transformOrigin: 'bottom right',
+                minHeight: CARD_LAYOUTS.right[0],
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                background: 'rgba(0,0,0,0.6)',
+                backdropFilter: 'blur(14px)',
+                WebkitBackdropFilter: 'blur(14px)',
+                overflow: 'hidden',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+              }}
+            >
+            
             <AnimatePresence mode="wait">
               <motion.div
                 key={slideIndex + '-bg'}
@@ -554,8 +563,9 @@ export default function Stats4() {
                   {slides[slideIndex].citation}
                 </motion.p>
               </AnimatePresence>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
