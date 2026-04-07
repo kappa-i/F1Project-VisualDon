@@ -38,8 +38,8 @@ const ERA_IMAGES = [
   { url: '/ere-imgs/peterson2.avif', width: 330, height: 241 },
   { url: '/ere-imgs/sddefault.avif', width: 640, height: 480 },
 ];
-import shaderFrontUrl from './assets/CadillacF1Team_2203_HiRes.jpg.avif';
-import shaderBackUrl from './assets/dessous.webp';
+import shaderFrontUrl from './assets/LC1.png';
+import shaderBackUrl from './assets/LC2.png';
 import studioGlbUrl from './models/tunel.glb';
 
 
