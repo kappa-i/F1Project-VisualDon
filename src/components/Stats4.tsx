@@ -313,9 +313,12 @@ export default function Stats4() {
                 position: 'absolute',
                 inset: 0,
                 backgroundImage:
-                  'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)',
+                  'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.16) 1px, transparent 0)',
                 backgroundSize: '14px 14px',
                 zIndex: 0,
+                maskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.82) 34%, rgba(0,0,0,0.42) 68%, rgba(0,0,0,0.1) 100%)',
+                WebkitMaskImage:
+                  'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.82) 34%, rgba(0,0,0,0.42) 68%, rgba(0,0,0,0.1) 100%)',
               }}
             />
 
