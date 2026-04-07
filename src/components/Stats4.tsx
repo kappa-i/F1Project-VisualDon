@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { motion } from 'motion/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useAnimate } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import TextScatter from './TextScatter';
 import pilot1Url from '../assets/pilot1.png';
 import logo1Url from '../assets/logos-slider-optimized/L1.png';
 import logo2Url from '../assets/logos-slider-optimized/L2.png';
@@ -208,6 +209,43 @@ function LogoMarquee() {
 }
 
 export default function Stats4() {
+  const [btnScope, animateBtn] = useAnimate();
+  const [scrollTriggered, setScrollTriggered] = useState(false);
+
+  const runSwipeAnim = async () => {
+    if (scrollTriggered) return;
+    setScrollTriggered(true);
+
+    // 1. Texte disparaît
+    await animateBtn('button span', { opacity: 0 }, { duration: 0.25, ease: 'easeOut' });
+
+    // 2. Le bloc se rétrecit depuis la droite vers la gauche (transformOrigin: left)
+    await animateBtn('button', { scaleX: 0.12 }, { duration: 0.38, ease: [0.4, 0, 0.2, 1] });
+
+    // 3. Slide vers la droite — iPhone unlock
+    await animateBtn('button', { x: 280 }, { duration: 0.38, ease: [0.4, 0.0, 1, 1] });
+
+    // 4. Snap hors champ à gauche, restore scaleX (clippé par overflow:hidden)
+    animateBtn('button', { x: -280, scaleX: 1 }, { duration: 0 });
+
+    // 5. Slide retour depuis la gauche
+    await animateBtn('button', { x: 0 }, { duration: 0.42, ease: [0.0, 0.0, 0.2, 1] });
+
+    // 6. Texte revient
+    await animateBtn('button span', { opacity: 1 }, { duration: 0.28, ease: 'easeIn' });
+
+    setScrollTriggered(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('wheel', runSwipeAnim, { once: true });
+    window.addEventListener('scroll', runSwipeAnim, { once: true });
+    return () => {
+      window.removeEventListener('wheel', runSwipeAnim);
+      window.removeEventListener('scroll', runSwipeAnim);
+    };
+  }, [scrollTriggered]);
+
   const handleDiscoverClick = () => {
     window.dispatchEvent(new CustomEvent('hero-next-step'));
   };
@@ -266,7 +304,10 @@ export default function Stats4() {
               textShadow: '0 12px 34px rgba(0, 0, 0, 0.62), 0 4px 14px rgba(0, 0, 0, 0.34)',
             }}
           >
-            L&apos;histoire de la<br />sécurité en <span style={{ color: '#e10600' }}>F1</span>
+            <TextScatter text="L'histoire de la" velocity={180} rotation={80} returnAfter={0.8} duration={1.8} />
+            <br />
+            <TextScatter text="sécurité en " velocity={180} rotation={80} returnAfter={0.8} duration={1.8} />
+            <TextScatter text="F1" velocity={180} rotation={80} returnAfter={0.8} duration={1.8} charStyle={{ color: '#e10600' }} />
           </motion.h2>
 
           {/* Description + Button – bottom left */}
@@ -290,10 +331,12 @@ export default function Stats4() {
             </motion.p>
 
             <motion.div
+              ref={btnScope}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               onClick={handleDiscoverClick}
+              onMouseEnter={runSwipeAnim}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -332,9 +375,11 @@ export default function Stats4() {
                   cursor: 'pointer',
                   fontFamily: FONT,
                   whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  transformOrigin: 'left center',
                 }}
               >
-                Scrollez pour démarrer...
+                <span>Scrollez pour démarrer...</span>
               </button>
               <ArrowRight size={18} color="#fff" style={{ marginRight: '12px', flexShrink: 0 }} />
             </motion.div>
@@ -354,13 +399,15 @@ export default function Stats4() {
             key={stats[0].label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            whileHover={{ scale: 1.12 }}
+            transition={{ duration: 0.5, delay: 0.2, scale: { duration: 0.25, ease: 'easeOut' } }}
             style={{
               position: 'relative',
               width: 'min(100%, 360px)',
               borderRadius: '24px',
               border: '1px solid rgba(255,255,255,0.08)',
               padding: '24px',
+              transformOrigin: 'bottom right',
               minHeight: CARD_LAYOUTS.right[0],
               display: 'flex',
               flexDirection: 'column',
