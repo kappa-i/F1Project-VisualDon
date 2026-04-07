@@ -548,7 +548,7 @@ export default function Stats4() {
                     fontFamily: FONT_F1,
                     fontWeight: 700,
                     textAlign: 'right',
-                    textShadow: `0 0 14px ${slides[slideIndex].glow}`,
+                    textShadow: `0 2px 8px rgba(0,0,0,0.8), 0 0 20px ${slides[slideIndex].glow}`,
                   }}
                 >
                   {slides[slideIndex].citation}
