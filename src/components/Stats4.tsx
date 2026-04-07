@@ -2,6 +2,8 @@ import React from 'react';
 import { motion, useAnimationFrame, useMotionValue, useTransform } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import pilot1Url from '../assets/pilot1.png';
+import logo1Url from '../assets/l1.png';
+import logo2Url from '../assets/l2.png';
 
 const stats = [
   {
@@ -19,14 +21,8 @@ const CARD_LAYOUTS = {
   right: ['230px', '130px'],
 };
 const TEAM_LOGOS = [
-  { name: 'Ferrari', color: '#ff4d4d' },
-  { name: 'McLaren', color: '#ff8a3d' },
-  { name: 'Mercedes', color: '#68f0cf' },
-  { name: 'Red Bull', color: '#8aa9ff' },
-  { name: 'Williams', color: '#6ab8ff' },
-  { name: 'Alpine', color: '#ff7fd1' },
-  { name: 'Aston Martin', color: '#66d8a8' },
-  { name: 'Haas', color: '#f4f4f5' },
+  { name: 'Logo 1', src: logo1Url },
+  { name: 'Logo 2', src: logo2Url },
 ];
 
 function ChevronSweep() {
@@ -130,29 +126,24 @@ function LogoMarquee() {
               key={`${team.name}-${index}`}
               style={{
                 flex: '0 0 auto',
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
-                minWidth: '160px',
-                padding: '0 20px',
-                color: 'rgba(255,255,255,0.88)',
-                fontFamily: FONT_F1,
-                fontSize: '13px',
-                whiteSpace: 'nowrap',
-                opacity: 0.78,
+                justifyContent: 'center',
+                minWidth: '190px',
+                padding: '0 24px',
               }}
             >
-              <span
-                aria-hidden="true"
+              <img
+                src={team.src}
+                alt={team.name}
                 style={{
-                  width: '10px',
-                  height: '10px',
-                  borderRadius: '999px',
-                  background: team.color,
-                  boxShadow: `0 0 14px ${team.color}`,
+                  display: 'block',
+                  width: 'auto',
+                  height: '32px',
+                  maxWidth: '140px',
+                  objectFit: 'contain',
                 }}
               />
-              <span>{team.name}</span>
             </div>
           ))}
         </motion.div>
