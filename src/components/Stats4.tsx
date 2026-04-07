@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimate, AnimatePresence } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import TextScatter from './TextScatter';
+import StaggeredText, { StaggeredTextHandle } from './StaggeredText';
 import pilot1Url from '../assets/pilot1.png';
 import logo1Url from '../assets/logos-slider-optimized/L1.png';
 import logo2Url from '../assets/logos-slider-optimized/L2.png';
@@ -224,13 +225,22 @@ export default function Stats4() {
   const [btnScope, animateBtn] = useAnimate();
   const [scrollTriggered, setScrollTriggered] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
+  const staggerRef = useRef<StaggeredTextHandle>(null);
 
   useEffect(() => {
-    const id = setInterval(() => {
+    // Exit text 1.2s before slide change
+    const exitId = setTimeout(() => staggerRef.current?.exit(), 4800);
+    // Change slide at 6s
+    const slideId = setTimeout(() => {
       setSlideIndex(i => (i + 1) % slides.length);
     }, 6000);
-    return () => clearInterval(id);
-  }, []);
+    return () => { clearTimeout(exitId); clearTimeout(slideId); };
+  }, [slideIndex]);
+
+  // Replay stagger animation on each new slide
+  useEffect(() => {
+    staggerRef.current?.replay();
+  }, [slideIndex]);
 
   const runSwipeAnim = async () => {
     if (scrollTriggered) return;
@@ -490,27 +500,27 @@ export default function Stats4() {
                 gap: '16px',
               }}
             >
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={slideIndex + '-quote'}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.4 }}
-                  style={{
-                    margin: 0,
-                    fontSize: 'clamp(14px, 1.08vw, 18px)',
-                    fontWeight: 500,
-                    letterSpacing: '0.02em',
-                    color: '#fff',
-                    fontFamily: FONT_F1,
-                    lineHeight: 1.16,
-                    maxWidth: '55%',
-                  }}
-                >
-                  {`« ${slides[slideIndex].value} »`}
-                </motion.p>
-              </AnimatePresence>
+              <StaggeredText
+                ref={staggerRef}
+                text={`« ${slides[slideIndex].value} »`}
+                as="p"
+                segmentBy="words"
+                direction="top"
+                blur={true}
+                delay={55}
+                duration={0.5}
+                staggerDirection="forward"
+                style={{
+                  margin: 0,
+                  fontSize: 'clamp(14px, 1.08vw, 18px)',
+                  fontWeight: 500,
+                  letterSpacing: '0.02em',
+                  color: '#fff',
+                  fontFamily: FONT_F1,
+                  lineHeight: 1.16,
+                  maxWidth: '55%',
+                }}
+              />
 
               <AnimatePresence mode="wait">
                 <motion.p
