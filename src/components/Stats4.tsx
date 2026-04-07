@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import DitherCursor from './DitherCursor.tsx';
 
 const stats = [
   { label: 'Data queries daily',  value: '8.7B+',  highlight: false },
@@ -11,6 +12,10 @@ const stats = [
 
 const FONT = 'ui-sans-serif, system-ui, -apple-system, sans-serif';
 const FONT_F1 = 'Formula1, sans-serif';
+const CARD_LAYOUTS = {
+  left: ['180px', '180px'],
+  right: ['230px', '130px'],
+};
 
 export default function Stats4() {
   const handleDiscoverClick = () => {
@@ -133,97 +138,130 @@ export default function Stats4() {
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
               gap: '16px',
+              alignItems: 'start',
             }}
           >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+            {[stats.slice(0, 2), stats.slice(2, 4)].map((columnStats, columnIndex) => (
+              <div
+                key={columnIndex}
                 style={{
-                  position: 'relative',
-                  borderRadius: '24px',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  padding: '24px',
-                  minHeight: '180px',
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  background: 'rgba(0,0,0,0.6)',
-                  backdropFilter: 'blur(14px)',
-                  WebkitBackdropFilter: 'blur(14px)',
-                  overflow: 'hidden',
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+                  gap: '16px',
                 }}
               >
-                {/* Dotted background */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    backgroundImage:
-                      'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)',
-                    backgroundSize: '14px 14px',
-                    zIndex: 0,
-                  }}
-                />
-
-                {/* Content */}
-                <div
-                  style={{
-                    position: 'relative',
-                    zIndex: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    height: '100%',
-                    gap: '16px',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <p
-                      style={{
-                        margin: 0,
-                        fontSize: '13px',
-                        color: stat.highlight ? '#22c55e' : 'rgba(255,255,255,0.45)',
-                        fontFamily: FONT,
-                      }}
-                    >
-                      {stat.label}
-                    </p>
-                    {stat.highlight && (
-                      <span style={{ position: 'relative', display: 'inline-flex', width: '8px', height: '8px' }}>
-                        <span className="stats4-ping" />
-                        <span
-                          style={{
-                            position: 'relative',
-                            display: 'inline-flex',
-                            width: '8px',
-                            height: '8px',
-                            borderRadius: '50%',
-                            background: '#22c55e',
-                          }}
-                        />
-                      </span>
-                    )}
-                  </div>
-
-                  <p
+                {columnStats.map((stat, cardIndex) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 + (columnIndex * 2 + cardIndex) * 0.1 }}
                     style={{
-                      margin: 0,
-                      fontSize: 'clamp(34px, 3.2vw, 52px)',
-                      fontWeight: 700,
-                      letterSpacing: '0.02em',
-                      color: stat.highlight ? '#22c55e' : '#fff',
-                      fontFamily: FONT_F1,
-                      lineHeight: 1,
+                      position: 'relative',
+                      borderRadius: '24px',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      padding: '24px',
+                      minHeight: CARD_LAYOUTS[columnIndex === 0 ? 'left' : 'right'][cardIndex],
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      background: 'rgba(0,0,0,0.6)',
+                      backdropFilter: 'blur(14px)',
+                      WebkitBackdropFilter: 'blur(14px)',
+                      overflow: 'hidden',
+                      boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
                     }}
                   >
-                    {stat.value}
-                  </p>
-                </div>
-              </motion.div>
+                    {columnIndex === 1 && cardIndex === 0 && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          pointerEvents: 'none',
+                          zIndex: 1,
+                          mixBlendMode: 'screen',
+                          opacity: 0.2,
+                        }}
+                      >
+                        <DitherCursor
+                          active
+                          ditherSize={3}
+                          radius={0.22}
+                          exponent={2}
+                          decay={0.012}
+                          intensity={1.4}
+                          color="#8fd3ff"
+                        />
+                      </div>
+                    )}
+
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage:
+                          'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)',
+                        backgroundSize: '14px 14px',
+                        zIndex: 0,
+                      }}
+                    />
+
+                    <div
+                      style={{
+                        position: 'relative',
+                        zIndex: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        height: '100%',
+                        gap: '16px',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <p
+                          style={{
+                            margin: 0,
+                            fontSize: '13px',
+                            color: stat.highlight ? '#22c55e' : 'rgba(255,255,255,0.45)',
+                            fontFamily: FONT,
+                          }}
+                        >
+                          {stat.label}
+                        </p>
+                        {stat.highlight && (
+                          <span style={{ position: 'relative', display: 'inline-flex', width: '8px', height: '8px' }}>
+                            <span className="stats4-ping" />
+                            <span
+                              style={{
+                                position: 'relative',
+                                display: 'inline-flex',
+                                width: '8px',
+                                height: '8px',
+                                borderRadius: '50%',
+                                background: '#22c55e',
+                              }}
+                            />
+                          </span>
+                        )}
+                      </div>
+
+                      <p
+                        style={{
+                          margin: 0,
+                          fontSize: 'clamp(34px, 3.2vw, 52px)',
+                          fontWeight: 700,
+                          letterSpacing: '0.02em',
+                          color: stat.highlight ? '#22c55e' : '#fff',
+                          fontFamily: FONT_F1,
+                          lineHeight: 1,
+                        }}
+                      >
+                        {stat.value}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             ))}
           </div>
         </div>
