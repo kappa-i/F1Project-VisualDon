@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion, useAnimationFrame, useMotionValue, useTransform } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import pilot1Url from '../assets/pilot1.png';
 
@@ -18,6 +18,16 @@ const CARD_LAYOUTS = {
   left: ['180px', '180px'],
   right: ['230px', '130px'],
 };
+const TEAM_LOGOS = [
+  { name: 'Ferrari', color: '#ff4d4d' },
+  { name: 'McLaren', color: '#ff8a3d' },
+  { name: 'Mercedes', color: '#68f0cf' },
+  { name: 'Red Bull', color: '#8aa9ff' },
+  { name: 'Williams', color: '#6ab8ff' },
+  { name: 'Alpine', color: '#ff7fd1' },
+  { name: 'Aston Martin', color: '#66d8a8' },
+  { name: 'Haas', color: '#f4f4f5' },
+];
 
 function ChevronSweep() {
   const dots = Array.from({ length: 11 }, (_, index) => index);
@@ -72,6 +82,85 @@ function ChevronSweep() {
   );
 }
 
+function LogoMarquee() {
+  const xPercent = useMotionValue(0);
+  const x = useTransform(xPercent, value => `${value}%`);
+
+  useAnimationFrame((_, delta) => {
+    const speed = 3.6;
+    const moveBy = (speed * delta) / 1000;
+    const nextX = xPercent.get() - moveBy;
+
+    if (nextX <= -100) {
+      xPercent.set(0);
+      return;
+    }
+
+    xPercent.set(nextX);
+  });
+
+  const items = [...TEAM_LOGOS, ...TEAM_LOGOS];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.08 }}
+      style={{
+        width: 'min(100%, 520px)',
+        alignSelf: 'flex-start',
+      }}
+    >
+      <div
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <motion.div
+          style={{
+            x,
+            display: 'flex',
+            width: 'max-content',
+            padding: '12px 0',
+          }}
+        >
+          {items.map((team, index) => (
+            <div
+              key={`${team.name}-${index}`}
+              style={{
+                flex: '0 0 auto',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                minWidth: '160px',
+                padding: '0 20px',
+                color: 'rgba(255,255,255,0.88)',
+                fontFamily: FONT_F1,
+                fontSize: '13px',
+                whiteSpace: 'nowrap',
+                opacity: 0.78,
+              }}
+            >
+              <span
+                aria-hidden="true"
+                style={{
+                  width: '10px',
+                  height: '10px',
+                  borderRadius: '999px',
+                  background: team.color,
+                  boxShadow: `0 0 14px ${team.color}`,
+                }}
+              />
+              <span>{team.name}</span>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Stats4() {
   const handleDiscoverClick = () => {
     window.dispatchEvent(new CustomEvent('hero-next-step'));
@@ -100,7 +189,7 @@ export default function Stats4() {
           margin: '0 auto',
           width: '100%',
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: 'minmax(0, 1fr) minmax(320px, 360px)',
           gap: '48px',
           alignItems: 'stretch',
         }}
@@ -133,6 +222,8 @@ export default function Stats4() {
 
           {/* Description + Button – bottom left */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+            <LogoMarquee />
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
