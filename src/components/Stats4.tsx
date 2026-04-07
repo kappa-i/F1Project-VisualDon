@@ -2,8 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimationFrame, useMotionValue } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import pilot1Url from '../assets/pilot1.png';
-import logo1Url from '../assets/l1.png';
-import logo2Url from '../assets/l2.png';
+import logo1Url from '../assets/L1.png';
+import logo2Url from '../assets/L2.png';
+import logo3Url from '../assets/L3.png';
+import logo4Url from '../assets/L4.png';
+import logo5Url from '../assets/L5.png';
+import logo6Url from '../assets/L6.png';
+import logo7Url from '../assets/L7.png';
 
 const stats = [
   {
@@ -23,6 +28,11 @@ const CARD_LAYOUTS = {
 const TEAM_LOGOS = [
   { name: 'Logo 1', src: logo1Url },
   { name: 'Logo 2', src: logo2Url },
+  { name: 'Logo 3', src: logo3Url },
+  { name: 'Logo 4', src: logo4Url },
+  { name: 'Logo 5', src: logo5Url },
+  { name: 'Logo 6', src: logo6Url },
+  { name: 'Logo 7', src: logo7Url },
 ];
 
 function ChevronSweep() {
@@ -171,8 +181,8 @@ function LogoMarquee() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minWidth: '190px',
-                padding: '0 24px',
+                minWidth: '148px',
+                padding: '0 12px',
               }}
             >
               <img
@@ -181,8 +191,8 @@ function LogoMarquee() {
                 style={{
                   display: 'block',
                   width: 'auto',
-                  height: '32px',
-                  maxWidth: '140px',
+                  height: '42px',
+                  maxWidth: '160px',
                   objectFit: 'contain',
                 }}
               />
