@@ -3,7 +3,9 @@ import { motion, useAnimate, AnimatePresence } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import TextScatter from './TextScatter';
 import StaggeredText, { StaggeredTextHandle } from './StaggeredText';
-import pilot1Url from '../assets/pilot1.png';
+import pil1Url from '../assets/Pil1.png';
+import pil2Url from '../assets/Pil2.png';
+import pil3Url from '../assets/Pil3.png';
 import logo1Url from '../assets/logos-slider-optimized/L1.png';
 import logo2Url from '../assets/logos-slider-optimized/L2.png';
 import logo3Url from '../assets/logos-slider-optimized/L3.png';
@@ -17,18 +19,21 @@ const slides = [
     citation: 'Jacky Ickx',
     color: '#8fd3ff',
     glow: 'rgba(143, 211, 255, 0.45)',
+    image: pil1Url,
   },
   {
     value: 'La mort fait partie du métier. On l\'accepte ou on arrête.',
     citation: 'Niki Lauda',
     color: '#ff6b6b',
     glow: 'rgba(255, 107, 107, 0.45)',
+    image: pil2Url,
   },
   {
     value: 'Chaque matin de Grand Prix, je me demandais si c\'était mon dernier.',
     citation: 'James Hunt',
     color: '#ffa94d',
     glow: 'rgba(255, 169, 77, 0.45)',
+    image: pil3Url,
   },
 ];
 
@@ -460,19 +465,25 @@ export default function Stats4() {
               </motion.div>
             </AnimatePresence>
 
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                zIndex: 2,
-                pointerEvents: 'none',
-                backgroundImage: `url(${pilot1Url})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                opacity: 0.72,
-              }}
-            />
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={slideIndex + '-img'}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.72 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6 }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 2,
+                  pointerEvents: 'none',
+                  backgroundImage: `url(${slides[slideIndex].image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                }}
+              />
+            </AnimatePresence>
 
             <div
               style={{
