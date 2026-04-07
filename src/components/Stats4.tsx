@@ -33,6 +33,13 @@ const TEAM_LOGOS = [
   { name: 'Logo 6', src: logo6Url },
 ];
 
+const skeletonStyle = `
+  @keyframes skeleton-sweep {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(250%); }
+  }
+`;
+
 function ChevronSweep() {
   const dots = Array.from({ length: 11 }, (_, index) => index);
 
@@ -206,6 +213,8 @@ export default function Stats4() {
   };
 
   return (
+    <>
+    <style>{skeletonStyle}</style>
     <section
       style={{
         position: 'absolute',
@@ -296,25 +305,36 @@ export default function Stats4() {
                 width: 'fit-content',
                 cursor: 'pointer',
                 pointerEvents: 'auto',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
+              {/* skeleton shimmer */}
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                pointerEvents: 'none',
+                background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%)',
+                animation: 'skeleton-sweep 2s ease-in-out infinite',
+                borderRadius: '12px',
+              }} />
               <button
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   padding: '10px 22px',
                   borderRadius: '8px',
-                  background: '#fff',
-                  color: '#08080b',
+                  background: 'rgba(255,255,255,0.3)',
+                  color: '#fff',
                   fontWeight: 500,
-                  fontSize: '15px',
+                  fontSize: '13px',
                   border: 'none',
                   cursor: 'pointer',
                   fontFamily: FONT,
                   whiteSpace: 'nowrap',
                 }}
               >
-                Commencer la visite
+                Scrollez pour démarrer...
               </button>
               <ArrowRight size={18} color="#fff" style={{ marginRight: '12px', flexShrink: 0 }} />
             </motion.div>
@@ -427,5 +447,6 @@ export default function Stats4() {
         </div>
       </div>
     </section>
+    </>
   );
 }
