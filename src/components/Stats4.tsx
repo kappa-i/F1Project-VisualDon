@@ -250,11 +250,11 @@ export default function Stats4() {
             transition={{ duration: 0.5 }}
             style={{
               margin: 0,
-              fontSize: 'clamp(36px, 4.5vw, 68px)',
+              fontSize: 'clamp(34px, 4.2vw, 62px)',
               fontWeight: 700,
               letterSpacing: '0.03em',
               color: '#fff',
-              lineHeight: 0.95,
+              lineHeight: 1.18,
               fontFamily: FONT_F1,
             }}
           >
