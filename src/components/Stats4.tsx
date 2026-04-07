@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
-import DitherCursor from './DitherCursor.tsx';
 
 const stats = [
   { label: 'Data queries daily',  value: '8.7B+',  highlight: false },
@@ -16,6 +15,59 @@ const CARD_LAYOUTS = {
   left: ['180px', '180px'],
   right: ['230px', '130px'],
 };
+
+function ChevronSweep() {
+  const dots = Array.from({ length: 11 }, (_, index) => index);
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        zIndex: 1,
+        overflow: 'hidden',
+        opacity: 0.22,
+      }}
+    >
+      {[0, 1, 2].map((row) => (
+        <div
+          key={row}
+          style={{
+            position: 'absolute',
+            top: `${20 + row * 24}%`,
+            left: '-28%',
+            width: '40%',
+            height: '32%',
+            animation: `stats4-chevron-sweep 1.45s linear ${row * 0.38}s infinite`,
+            filter: 'blur(0.35px)',
+          }}
+        >
+          <svg
+            viewBox="0 0 180 84"
+            preserveAspectRatio="none"
+            style={{ width: '100%', height: '100%' }}
+          >
+            {dots.map((index) => {
+              const t = index / (dots.length - 1);
+              const x = 20 + t * 64;
+              const yTop = 14 + t * 28;
+              const yBottom = 70 - t * 28;
+              const radius = 1.8 + t * 1.1;
+
+              return (
+                <React.Fragment key={index}>
+                  <circle cx={x} cy={yTop} r={radius} fill="#8fd3ff" />
+                  <circle cx={x} cy={yBottom} r={radius} fill="#8fd3ff" />
+                </React.Fragment>
+              );
+            })}
+          </svg>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function Stats4() {
   const handleDiscoverClick = () => {
@@ -173,26 +225,7 @@ export default function Stats4() {
                     }}
                   >
                     {columnIndex === 1 && cardIndex === 0 && (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          inset: 0,
-                          pointerEvents: 'none',
-                          zIndex: 1,
-                          mixBlendMode: 'screen',
-                          opacity: 0.2,
-                        }}
-                      >
-                        <DitherCursor
-                          active
-                          ditherSize={3}
-                          radius={0.22}
-                          exponent={2}
-                          decay={0.012}
-                          intensity={1.4}
-                          color="#8fd3ff"
-                        />
-                      </div>
+                      <ChevronSweep />
                     )}
 
                     <div
