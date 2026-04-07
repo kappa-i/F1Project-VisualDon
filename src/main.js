@@ -38,8 +38,8 @@ const ERA_IMAGES = [
   { url: '/ere-imgs/peterson2.avif', width: 330, height: 241 },
   { url: '/ere-imgs/sddefault.avif', width: 640, height: 480 },
 ];
-import shaderFrontUrl from './assets/LC1.png';
-import shaderBackUrl from './assets/LC2.png';
+import shaderFrontUrl from './assets/BG111.png';
+import shaderBackUrl from './assets/BG222.png';
 import studioGlbUrl from './models/tunel.glb';
 
 
