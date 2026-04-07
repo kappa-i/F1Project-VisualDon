@@ -1135,7 +1135,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       dyeAdvection!: DyeAdvection;
       dyeSplat!: DyeSplat;
 
-      dyeDissipation = 0.976;
+      dyeDissipation = 0.984;
 
       constructor(options?: Partial<SimOptions>) {
         this.options = {
