@@ -229,11 +229,10 @@ export default function Stats4() {
 
   useEffect(() => {
     // Exit text 1.2s before slide change
-    const exitId = setTimeout(() => staggerRef.current?.exit(), 4800);
-    // Change slide at 6s
+    const exitId = setTimeout(() => staggerRef.current?.exit(), 8800);
     const slideId = setTimeout(() => {
       setSlideIndex(i => (i + 1) % slides.length);
-    }, 6000);
+    }, 10000);
     return () => { clearTimeout(exitId); clearTimeout(slideId); };
   }, [slideIndex]);
 
