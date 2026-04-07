@@ -354,14 +354,14 @@ export default function Stats4() {
               transition={{ duration: 0.5, delay: 0.1 }}
               style={{
                 margin: 0,
-                fontSize: 'clamp(13px, 1.02vw, 16px)',
+                fontSize: 'clamp(11px, 0.88vw, 14px)',
                 color: 'rgba(255,255,255,0.55)',
                 lineHeight: 1.7,
                 maxWidth: '420px',
                 fontFamily: FONT,
               }}
             >
-              De l’ère des gladiateurs aux monoplaces ultra-sécurisées d’aujourd’hui. Une exploration interactive de l’évolution de la sécurité en Formule 1.
+              De l’ère des gladiateurs aux monoplaces ultra-sécurisées d’aujourd’hui, laissez-vous guider à travers une exploration interactive de l’évolution de la sécurité en Formule 1.
             </motion.p>
 
             <motion.div
