@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import pilot1Url from '../assets/pilot1.png';
 
 const stats = [
   { label: 'Data queries daily',  value: '8.7B+',  highlight: false },
@@ -225,7 +226,22 @@ export default function Stats4() {
                     }}
                   >
                     {columnIndex === 1 && cardIndex === 0 && (
-                      <ChevronSweep />
+                      <>
+                        <ChevronSweep />
+                        <div
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            zIndex: 2,
+                            pointerEvents: 'none',
+                            backgroundImage: `url(${pilot1Url})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                            opacity: 0.72,
+                          }}
+                        />
+                      </>
                     )}
 
                     <div
@@ -242,7 +258,7 @@ export default function Stats4() {
                     <div
                       style={{
                         position: 'relative',
-                        zIndex: 2,
+                        zIndex: 3,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
