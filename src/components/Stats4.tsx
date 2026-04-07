@@ -256,9 +256,10 @@ export default function Stats4() {
               color: '#fff',
               lineHeight: 1.18,
               fontFamily: FONT_F1,
+              textShadow: '0 6px 18px rgba(0, 0, 0, 0.55)',
             }}
           >
-            L&apos;histoire de la<br />sécurité en F1
+            L&apos;histoire de la<br />sécurité en <span style={{ color: '#e10600' }}>F1</span>
           </motion.h2>
 
           {/* Description + Button – bottom left */}
