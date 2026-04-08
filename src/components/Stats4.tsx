@@ -508,12 +508,13 @@ export default function Stats4() {
               style={{
                 position: 'absolute',
                 inset: 0,
-                backgroundImage:
-                  'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.16) 1px, transparent 0)',
-                backgroundSize: '14px 14px',
+                backgroundImage: `
+                  radial-gradient(ellipse 160% 160% at -20% -20%, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.3) 50%, transparent 100%),
+                  radial-gradient(ellipse at 0% 100%, ${slides[slideIndex].color}22 0%, transparent 60%),
+                  radial-gradient(circle at 1px 1px, rgba(255,255,255,0.11) 1px, transparent 0)
+                `,
+                backgroundSize: 'auto, auto, 14px 14px',
                 zIndex: 0,
-                maskImage: 'radial-gradient(ellipse at 0% 100%, black 0%, transparent 70%), radial-gradient(ellipse at 100% 0%, black 0%, transparent 70%)',
-                WebkitMaskImage: 'radial-gradient(ellipse at 0% 100%, black 0%, transparent 70%), radial-gradient(ellipse at 100% 0%, black 0%, transparent 70%)',
               }}
             />
 
