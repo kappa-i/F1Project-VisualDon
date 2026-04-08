@@ -37,7 +37,7 @@ const slides = [
   },
 ];
 
-const FONT = 'ui-sans-serif, system-ui, -apple-system, sans-serif';
+const FONT = "'Inter', ui-sans-serif, system-ui, sans-serif";
 const FONT_F1 = 'Formula1, sans-serif';
 const CARD_LAYOUTS = {
   left: ['180px', '180px'],
@@ -204,7 +204,7 @@ function LogoMarquee() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 minWidth: '128px',
-                padding: '0 8px',
+                padding: '0 20px',
               }}
             >
               <img
@@ -213,8 +213,8 @@ function LogoMarquee() {
                 style={{
                   display: 'block',
                   width: 'auto',
-                  height: '34px',
-                  maxWidth: '135px',
+                  height: '42px',
+                  maxWidth: '160px',
                   objectFit: 'contain',
                 }}
               />
@@ -345,7 +345,7 @@ export default function Stats4() {
           </motion.h2>
 
           {/* Description + Button – bottom left */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <LogoMarquee />
 
             <motion.p
@@ -354,6 +354,7 @@ export default function Stats4() {
               transition={{ duration: 0.5, delay: 0.1 }}
               style={{
                 margin: 0,
+                marginBottom: '10px',
                 fontSize: 'clamp(11px, 0.88vw, 14px)',
                 color: 'rgba(255,255,255,0.55)',
                 lineHeight: 1.7,
