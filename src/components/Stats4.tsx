@@ -550,6 +550,7 @@ export default function Stats4() {
                   maxWidth: '55%',
                 }}
               />
+              </div>
 
               <AnimatePresence mode="wait">
                 <motion.p
@@ -560,7 +561,10 @@ export default function Stats4() {
                   transition={{ duration: 0.4, delay: 0.08 }}
                   style={{
                     margin: 0,
-                    alignSelf: 'flex-end',
+                    position: 'absolute',
+                    bottom: '24px',
+                    right: '24px',
+                    zIndex: 4,
                     fontSize: 'clamp(15px, 1.08vw, 18px)',
                     lineHeight: 1.2,
                     color: slides[slideIndex].color,
@@ -573,7 +577,6 @@ export default function Stats4() {
                   {slides[slideIndex].citation}
                 </motion.p>
               </AnimatePresence>
-              </div>
             </motion.div>
           </div>
         </div>
