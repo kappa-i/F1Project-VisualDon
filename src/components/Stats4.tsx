@@ -355,9 +355,9 @@ export default function Stats4() {
               style={{
                 margin: 0,
                 marginBottom: '10px',
-                fontSize: 'clamp(11px, 0.88vw, 14px)',
+                fontSize: 'clamp(12px, 0.96vw, 15px)',
                 color: 'rgba(255,255,255,0.55)',
-                lineHeight: 1.7,
+                lineHeight: 1.85,
                 maxWidth: '420px',
                 fontFamily: FONT,
               }}
