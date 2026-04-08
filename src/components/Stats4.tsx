@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useAnimate, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import TextScatter from './TextScatter';
 import StaggeredText, { StaggeredTextHandle } from './StaggeredText';
@@ -54,8 +54,10 @@ const TEAM_LOGOS = [
 
 const skeletonStyle = `
   @keyframes skeleton-sweep {
-    0%   { transform: translateX(-100%); }
-    100% { transform: translateX(250%); }
+    0%   { transform: translateX(-100%); opacity: 0; }
+    12%  { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { transform: translateX(250%); opacity: 0; }
   }
   @keyframes arrow-bg-spin {
     0%   { background-position: 0% 50%; }
@@ -237,8 +239,8 @@ function LogoMarquee() {
 }
 
 export default function Stats4() {
-  const [btnScope, animateBtn] = useAnimate();
-  const [scrollTriggered, setScrollTriggered] = useState(false);
+  const [ctaSkeletonRun, setCtaSkeletonRun] = useState(0);
+  const [ctaSkeletonVisible, setCtaSkeletonVisible] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
   const staggerRef = useRef<StaggeredTextHandle>(null);
 
@@ -256,39 +258,10 @@ export default function Stats4() {
     staggerRef.current?.replay();
   }, [slideIndex]);
 
-  const runSwipeAnim = async () => {
-    if (scrollTriggered) return;
-    setScrollTriggered(true);
-
-    // 1. Texte disparaît
-    await animateBtn('button span', { opacity: 0 }, { duration: 0.25, ease: 'easeOut' });
-
-    // 2. Le bloc se rétrecit depuis la droite vers la gauche (transformOrigin: left)
-    await animateBtn('button', { scaleX: 0.12 }, { duration: 0.38, ease: [0.4, 0, 0.2, 1] });
-
-    // 3. Slide vers la droite — iPhone unlock
-    await animateBtn('button', { x: 280 }, { duration: 0.38, ease: [0.4, 0.0, 1, 1] });
-
-    // 4. Snap hors champ à gauche, restore scaleX (clippé par overflow:hidden)
-    animateBtn('button', { x: -280, scaleX: 1 }, { duration: 0 });
-
-    // 5. Slide retour depuis la gauche
-    await animateBtn('button', { x: 0 }, { duration: 0.42, ease: [0.0, 0.0, 0.2, 1] });
-
-    // 6. Texte revient
-    await animateBtn('button span', { opacity: 1 }, { duration: 0.28, ease: 'easeIn' });
-
-    setScrollTriggered(false);
+  const triggerCtaSkeleton = () => {
+    setCtaSkeletonVisible(true);
+    setCtaSkeletonRun((run) => run + 1);
   };
-
-  useEffect(() => {
-    window.addEventListener('wheel', runSwipeAnim, { once: true });
-    window.addEventListener('scroll', runSwipeAnim, { once: true });
-    return () => {
-      window.removeEventListener('wheel', runSwipeAnim);
-      window.removeEventListener('scroll', runSwipeAnim);
-    };
-  }, [scrollTriggered]);
 
   const handleDiscoverClick = () => {
     window.dispatchEvent(new CustomEvent('hero-next-step'));
@@ -376,18 +349,18 @@ export default function Stats4() {
             </motion.p>
 
             <motion.div
-              ref={btnScope}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               onClick={handleDiscoverClick}
-              onMouseEnter={runSwipeAnim}
+              onMouseEnter={triggerCtaSkeleton}
+              onMouseLeave={() => setCtaSkeletonVisible(false)}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: '12px',
-                padding: '4px',
+                padding: '5px',
                 borderRadius: '12px',
                 background: 'rgba(255,255,255,0.1)',
                 width: 'fit-content',
@@ -397,15 +370,16 @@ export default function Stats4() {
                 overflow: 'hidden',
               }}
             >
-              {/* skeleton shimmer */}
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                pointerEvents: 'none',
-                background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%)',
-                animation: 'skeleton-sweep 2s ease-in-out infinite',
-                borderRadius: '12px',
-              }} />
+              {ctaSkeletonVisible ? (
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  pointerEvents: 'none',
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%)',
+                  animation: 'skeleton-sweep 1.1s ease-out 1',
+                  borderRadius: '12px',
+                }} key={ctaSkeletonRun} onAnimationEnd={() => setCtaSkeletonVisible(false)} />
+              ) : null}
               <button
                 style={{
                   display: 'inline-flex',
