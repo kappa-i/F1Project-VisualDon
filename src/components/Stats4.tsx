@@ -476,21 +476,32 @@ export default function Stats4() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={slideIndex + '-img'}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.72 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6 }}
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 0.72, x: 0 }}
+                exit={{ opacity: 0, transition: { duration: 0.5 } }}
+                transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
                 style={{
                   position: 'absolute',
                   inset: 0,
                   zIndex: 2,
                   pointerEvents: 'none',
-                  backgroundImage: `url(${slides[slideIndex].image})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
+                  overflow: 'hidden',
                 }}
-              />
+              >
+                <img
+                  src={slides[slideIndex].image}
+                  alt=""
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    display: 'block',
+                  }}
+                />
+              </motion.div>
             </AnimatePresence>
 
             <div
