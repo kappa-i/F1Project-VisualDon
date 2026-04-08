@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
 import TextScatter from './TextScatter';
 import StaggeredText, { StaggeredTextHandle } from './StaggeredText';
 import pil1Url from '../assets/Pil1.png';
@@ -360,9 +359,9 @@ export default function Stats4() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: '12px',
-                padding: '5px',
+                padding: '2px',
                 borderRadius: '12px',
-                background: 'rgba(255,255,255,0.1)',
+                background: '#ffffff30',
                 width: 'fit-content',
                 cursor: 'pointer',
                 pointerEvents: 'auto',
@@ -385,8 +384,8 @@ export default function Stats4() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   padding: '10px 22px',
-                  borderRadius: '8px',
-                  background: 'rgba(255,255,255,0.3)',
+                  borderRadius: '10px',
+                  background: '#0000008a',
                   color: '#fff',
                   fontWeight: 500,
                   fontSize: '13px',
@@ -400,7 +399,22 @@ export default function Stats4() {
               >
                 <span>Scrollez pour démarrer...</span>
               </button>
-              <ArrowRight size={18} color="#fff" style={{ marginRight: '12px', flexShrink: 0 }} />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ marginLeft: '8px', marginRight: '-2px', flexShrink: 0, color: '#fff', order: -1 }}
+                aria-hidden="true"
+              >
+                <rect x="5" y="2" width="14" height="20" rx="7" />
+                <path d="M12 6v4" />
+              </svg>
             </motion.div>
           </div>
         </div>
