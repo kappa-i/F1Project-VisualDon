@@ -203,8 +203,8 @@ function LogoMarquee() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minWidth: '132px',
-                padding: '0 9px',
+                minWidth: '128px',
+                padding: '0 8px',
               }}
             >
               <img
@@ -213,8 +213,8 @@ function LogoMarquee() {
                 style={{
                   display: 'block',
                   width: 'auto',
-                  height: '36px',
-                  maxWidth: '142px',
+                  height: '34px',
+                  maxWidth: '135px',
                   objectFit: 'contain',
                 }}
               />
