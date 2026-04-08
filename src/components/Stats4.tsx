@@ -361,7 +361,7 @@ export default function Stats4() {
                 gap: '12px',
                 padding: '2px',
                 borderRadius: '12px',
-                background: '#ffffff30',
+                background: 'rgba(255,255,255,0.17)',
                 width: 'fit-content',
                 cursor: 'pointer',
                 pointerEvents: 'auto',
