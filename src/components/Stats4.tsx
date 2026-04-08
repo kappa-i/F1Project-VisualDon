@@ -410,10 +410,12 @@ export default function Stats4() {
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0',
-                  padding: '0',
+                  padding: '10px 22px',
                   borderRadius: '8px',
-                  background: 'transparent',
+                  background: 'rgba(255,255,255,0.3)',
+                  color: '#fff',
+                  fontWeight: 500,
+                  fontSize: '13px',
                   border: 'none',
                   cursor: 'pointer',
                   fontFamily: FONT,
@@ -422,48 +424,9 @@ export default function Stats4() {
                   transformOrigin: 'left center',
                 }}
               >
-                {/* Carré flèche – gauche */}
-                <div
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    position: 'relative',
-                    overflow: 'hidden',
-                    background: 'linear-gradient(135deg, #1a0000 0%, #3d0000 30%, #e10600 65%, #ff2b00 100%)',
-                    backgroundSize: '300% 300%',
-                    animation: 'arrow-bg-spin 3s ease infinite, arrow-glow-pulse 2.4s ease-in-out infinite',
-                    border: '1px solid rgba(255,80,50,0.35)',
-                  }}
-                >
-                  {/* noise grain overlay */}
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 64 64\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.12\'/%3E%3C/svg%3E")',
-                    backgroundSize: '64px 64px',
-                    opacity: 0.55,
-                    mixBlendMode: 'overlay',
-                    pointerEvents: 'none',
-                  }} />
-                  <ArrowRight size={17} color="#fff" style={{ position: 'relative', zIndex: 1, filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.6))' }} />
-                </div>
-                {/* Texte sans cadre */}
-                <span
-                  style={{
-                    padding: '0 16px',
-                    color: '#fff',
-                    fontWeight: 500,
-                    fontSize: '13px',
-                  }}
-                >
-                  Scrollez pour démarrer...
-                </span>
+                <span>Scrollez pour démarrer...</span>
               </button>
+              <ArrowRight size={18} color="#fff" style={{ marginRight: '12px', flexShrink: 0 }} />
             </motion.div>
           </div>
         </div>
