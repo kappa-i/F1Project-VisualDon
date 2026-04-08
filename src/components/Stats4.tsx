@@ -335,7 +335,7 @@ export default function Stats4() {
               color: '#fff',
               lineHeight: 1.18,
               fontFamily: FONT_F1,
-              textShadow: '0 12px 34px rgba(0, 0, 0, 0.62), 0 4px 14px rgba(0, 0, 0, 0.34)',
+              textShadow: '0 10px 24px rgba(0, 0, 0, 0.48), 0 3px 10px rgba(0, 0, 0, 0.24)',
             }}
           >
             <TextScatter text="L'histoire de la" velocity={180} rotation={80} returnAfter={0.8} duration={1.8} />
