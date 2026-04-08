@@ -337,7 +337,7 @@ export default function Stats4() {
               style={{
                 margin: 0,
                 marginBottom: '15px',
-                fontSize: 'clamp(12px, 0.96vw, 15px)',
+                fontSize: 'clamp(11px, 0.88vw, 14px)',
                 color: '#9d9d9d',
                 lineHeight: 1.85,
                 maxWidth: '420px',
