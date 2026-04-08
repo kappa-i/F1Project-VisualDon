@@ -224,8 +224,8 @@ function LogoMarquee() {
                 style={{
                   display: 'block',
                   width: 'auto',
-                  height: '42px',
-                  maxWidth: '160px',
+                  height: '39px',
+                  maxWidth: '148px',
                   objectFit: 'contain',
                 }}
               />
@@ -336,9 +336,9 @@ export default function Stats4() {
               transition={{ duration: 0.5, delay: 0.1 }}
               style={{
                 margin: 0,
-                marginBottom: '10px',
+                marginBottom: '15px',
                 fontSize: 'clamp(12px, 0.96vw, 15px)',
-                color: 'rgba(255,255,255,0.55)',
+                color: '#9d9d9d',
                 lineHeight: 1.85,
                 maxWidth: '420px',
                 fontFamily: FONT,
