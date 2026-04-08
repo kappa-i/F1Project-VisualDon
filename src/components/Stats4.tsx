@@ -512,8 +512,8 @@ export default function Stats4() {
                   'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.16) 1px, transparent 0)',
                 backgroundSize: '14px 14px',
                 zIndex: 0,
-                maskImage: 'radial-gradient(ellipse at 0% 100%, black 0%, transparent 75%)',
-                WebkitMaskImage: 'radial-gradient(ellipse at 0% 100%, black 0%, transparent 75%)',
+                maskImage: 'radial-gradient(ellipse at 0% 100%, black 0%, transparent 70%), radial-gradient(ellipse at 100% 0%, black 0%, transparent 70%)',
+                WebkitMaskImage: 'radial-gradient(ellipse at 0% 100%, black 0%, transparent 70%), radial-gradient(ellipse at 100% 0%, black 0%, transparent 70%)',
               }}
             />
 
