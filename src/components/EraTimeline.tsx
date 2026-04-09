@@ -75,25 +75,29 @@ export default function EraTimeline() {
   const [displayStep, setDisplayStep] = useState(-1);
   const [isMorphing, setIsMorphing] = useState(false);
   const activeStepRef = useRef(-1);
+  const displayStepRef = useRef(-1);
 
   useEffect(() => {
     if (activeStep < 0) {
+      displayStepRef.current = -1;
       setDisplayStep(-1);
       setIsMorphing(false);
       return;
     }
 
-    if (displayStep < 0) {
+    if (displayStepRef.current < 0) {
+      displayStepRef.current = activeStep;
       setDisplayStep(activeStep);
       setIsMorphing(false);
       return;
     }
 
-    if (activeStep === displayStep) return;
+    if (activeStep === displayStepRef.current) return;
 
     setIsMorphing(true);
 
     const swapTimer = window.setTimeout(() => {
+      displayStepRef.current = activeStep;
       setDisplayStep(activeStep);
     }, 160);
 
@@ -105,7 +109,7 @@ export default function EraTimeline() {
       window.clearTimeout(swapTimer);
       window.clearTimeout(settleTimer);
     };
-  }, [activeStep, displayStep]);
+  }, [activeStep]); // displayStep retiré des deps — sinon son changement à 160ms annule settleTimer
 
   useEffect(() => {
     const handleStepChange = (e: Event) => {
