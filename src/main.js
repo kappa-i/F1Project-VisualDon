@@ -75,9 +75,40 @@ if (shaderRevealMount) {
   );
 }
 
-const heroSafetyIntroMount = document.getElementById('hero-safety-intro-root');
-if (heroSafetyIntroMount) {
-  createRoot(heroSafetyIntroMount).render(React.createElement(HeroSafetyIntro));
+// Era embed inside hero section (step 1)
+const heroEraGlitterMount = document.getElementById('hero-era-glitter-root');
+if (heroEraGlitterMount) {
+  createRoot(heroEraGlitterMount).render(React.createElement(EraGlitter));
+}
+
+const heroEraGalleryMount = document.getElementById('hero-era-gallery-root');
+if (heroEraGalleryMount) {
+  createRoot(heroEraGalleryMount).render(React.createElement(InfiniteGallery, {
+    width: '100%',
+    height: '100%',
+    images: ERA_IMAGES,
+    density: 2,
+    imageSize: 32,
+    cellSize: 150,
+    viewRange: 2,
+    fogNear: 130,
+    fogFar: 340,
+    dragSpeed: 0.6,
+    driftAmount: 6,
+    friction: 0.97,
+    autoZoom: false,
+    imageRadius: 0.06,
+    allowImageFocusOnClick: true,
+    backgroundColor: '#000000',
+    fogColor: '#000000',
+    wheelSpeed: 0.0025,
+    transparent: true,
+  }));
+}
+
+const heroEraTimelineMount = document.getElementById('hero-era-timeline-root');
+if (heroEraTimelineMount) {
+  createRoot(heroEraTimelineMount).render(React.createElement(EraTimeline));
 }
 
 const crashTitlesMount = document.getElementById('crash-titles-root');
@@ -665,6 +696,8 @@ function dispatchHeroStepChange(pageIdx) {
   const heroSectionEl = document.getElementById('s-hero');
   heroSectionEl?.classList.toggle('is-story-active', step >= 0);
   window.dispatchEvent(new CustomEvent('hero-step-change', { detail: { step } }));
+  // Déclenche l'era timeline dans l'embed hero quand step 1 est actif
+  window.dispatchEvent(new CustomEvent('era-step-change', { detail: { step: step >= 0 ? 0 : -1 } }));
 }
 
 function dispatchEraStepChange(pageIdx) {

@@ -515,11 +515,24 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   filter: blur(3px);
 }
 
-#hero-safety-intro-root {
+.hero-era-embed {
   position: absolute;
   inset: 0;
   z-index: 3;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.section--hero.is-story-active .hero-era-embed {
+  opacity: 1;
+  visibility: visible;
+}
+
+.section--hero.is-story-active #stats4-root {
+  opacity: 0;
   pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
 .hero-safety-intro {
