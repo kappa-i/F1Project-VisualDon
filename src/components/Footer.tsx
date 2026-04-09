@@ -66,13 +66,6 @@ export default function Footer() {
         >
           <div className="site-footer__grid">
             <motion.div variants={itemVariants} className="site-footer__brand">
-              <div className="site-footer__logo" aria-hidden="true">
-                <div className="site-footer__logo-mark">
-                  <span>F</span>
-                </div>
-                <span className="site-footer__logo-text">LIGHTNESS</span>
-              </div>
-
               <div className="site-footer__headline">
                 <h3>
                   Peut-on aller plus vite
