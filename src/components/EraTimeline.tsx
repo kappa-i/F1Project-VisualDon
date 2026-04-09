@@ -74,26 +74,34 @@ export default function EraTimeline() {
   const [activeStep, setActiveStep] = useState(-1);
   const [displayStep, setDisplayStep] = useState(-1);
   const [isMorphing, setIsMorphing] = useState(false);
+  const [isEntering, setIsEntering] = useState(false);
   const activeStepRef = useRef(-1);
+  const displayStepRef = useRef(-1);
 
   useEffect(() => {
     if (activeStep < 0) {
+      displayStepRef.current = -1;
       setDisplayStep(-1);
       setIsMorphing(false);
+      setIsEntering(false);
       return;
     }
 
-    if (displayStep < 0) {
+    if (displayStepRef.current < 0) {
+      displayStepRef.current = activeStep;
+      setIsEntering(true);
       setDisplayStep(activeStep);
       setIsMorphing(false);
+      window.setTimeout(() => setIsEntering(false), 32);
       return;
     }
 
-    if (activeStep === displayStep) return;
+    if (activeStep === displayStepRef.current) return;
 
     setIsMorphing(true);
 
     const swapTimer = window.setTimeout(() => {
+      displayStepRef.current = activeStep;
       setDisplayStep(activeStep);
     }, 160);
 
@@ -105,7 +113,7 @@ export default function EraTimeline() {
       window.clearTimeout(swapTimer);
       window.clearTimeout(settleTimer);
     };
-  }, [activeStep, displayStep]);
+  }, [activeStep]); // displayStep retiré des deps — sinon son changement à 160ms annule settleTimer
 
   useEffect(() => {
     const handleStepChange = (e: Event) => {
@@ -135,109 +143,6 @@ export default function EraTimeline() {
       overflow: 'hidden',
     }}>
 
-      {/* Intro hint — visible avant la première carte */}
-      <div style={{
-        position: 'absolute',
-        top: '38px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        textAlign: 'center',
-        pointerEvents: 'none',
-        opacity: activeStep < 0 ? 1 : 0,
-        transition: 'opacity 0.5s ease',
-        whiteSpace: 'nowrap',
-      }}>
-        <div style={{
-          fontSize: '9px',
-          letterSpacing: '4px',
-          color: 'rgba(255,255,255,0.3)',
-          fontFamily: "'Formula1', sans-serif",
-          textTransform: 'uppercase',
-          marginBottom: '8px',
-        }}>
-          L'ère dangereuse · 1950 — 2026
-        </div>
-        <div style={{
-          fontSize: '9px',
-          letterSpacing: '2px',
-          color: 'rgba(232, 0, 45, 0.55)',
-          fontFamily: "'Formula1', sans-serif",
-        }}>
-          ↓ Scrollez pour explorer l'histoire
-        </div>
-      </div>
-
-      {/* Indicateur d'étape — côté droit */}
-      <div style={{
-        position: 'absolute',
-        right: '32px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        pointerEvents: 'none',
-        opacity: activeStep >= 0 ? 1 : 0,
-        transition: 'opacity 0.5s ease',
-      }}>
-        {ERA_STEPS.map((s, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              flexDirection: 'row-reverse',
-            }}
-          >
-            {/* Label période — toujours réservé pour éviter le saut de layout */}
-            <div style={{
-              width: '130px',
-              textAlign: 'right',
-              overflow: 'hidden',
-            }}>
-              <span style={{
-                display: 'block',
-                fontSize: i === activeStep ? '11px' : '9px',
-                letterSpacing: '1.5px',
-                color: i === activeStep ? s.accent : i < activeStep ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.15)',
-                fontFamily: "'Formula1', sans-serif",
-                whiteSpace: 'nowrap',
-                transition: 'all 0.5s ease',
-              }}>
-                {s.period}
-              </span>
-              {i === activeStep && (
-                <span style={{
-                  display: 'block',
-                  fontSize: '9px',
-                  letterSpacing: '3px',
-                  color: 'rgba(255,255,255,0.35)',
-                  fontFamily: "'Formula1', sans-serif",
-                  marginTop: '2px',
-                  textTransform: 'uppercase',
-                }}>
-                  {s.tag} / {ERA_STEPS.length.toString().padStart(2,'0')}
-                </span>
-              )}
-            </div>
-
-            {/* Trait */}
-            <div style={{
-              width: i === activeStep ? '36px' : '10px',
-              height: i === activeStep ? '3px' : '2px',
-              borderRadius: '2px',
-              background: i === activeStep
-                ? s.accent
-                : i < activeStep
-                  ? 'rgba(255,255,255,0.3)'
-                  : 'rgba(255,255,255,0.08)',
-              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-              flexShrink: 0,
-            }} />
-          </div>
-        ))}
-      </div>
 
       {/* Barre de progression bas */}
       <div style={{
@@ -303,8 +208,8 @@ export default function EraTimeline() {
           transform: `translateY(-50%) translateX(${isMorphing ? (fromLeft ? '-14px' : '14px') : '0'}) scale(${isMorphing ? 0.985 : 1})`,
           pointerEvents: 'auto',
           width: 'clamp(400px, 46vw, 620px)',
-          opacity: isMorphing ? 0.74 : 1,
-          transition: 'left 0.35s ease, right 0.35s ease, transform 0.35s ease, opacity 0.22s ease',
+          opacity: isEntering ? 0 : 1,
+          transition: 'left 0.35s ease, right 0.35s ease, transform 0.35s ease, opacity 0.6s ease',
         }}>
           <div style={{
             background: 'rgba(5, 5, 5, 0.94)',

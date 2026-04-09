@@ -199,7 +199,10 @@ export default function BottomSectionNav() {
   };
 
   return (
-    <nav className="bottom-section-nav" aria-label="Navigation des sections">
+    <nav
+      className={`bottom-section-nav${activeSection === 0 ? ' is-hidden' : ''}`}
+      aria-label="Navigation des sections"
+    >
       <div className="bottom-section-nav__shell">
         <div className="bottom-section-nav__sections">
           <div className="bottom-section-nav__track" aria-hidden="true">

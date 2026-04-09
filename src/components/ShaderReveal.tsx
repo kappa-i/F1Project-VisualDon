@@ -365,21 +365,12 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       resumeDelay: number;
       rampDurationMs: number;
 
-      active = true;
-      current = new THREE.Vector2();
+      active = false;
       lastTime = performance.now();
       activationTime = performance.now();
-      margin = 0.15;
-      private _t = 0;
-      private hasStoppedForever = false;
 
-      private resetToStartCorner() {
-        const x = -(1 - this.margin);
-        const y = 1 - this.margin;
-        this.current.set(x, y);
-        this.mouse.coords_old.set(x, y);
-        this.mouse.setNormalized(x, y);
-      }
+      private waypoints: Array<{ x: number; y: number }> = [];
+      private routeT = 0;
 
       constructor(
         mouse: MouseClass,
@@ -397,8 +388,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this.speed = opts.speed;
         this.resumeDelay = opts.resumeDelay || 3000;
         this.rampDurationMs = (opts.rampDuration || 0) * 1000;
-        this.resetToStartCorner();
-        this.mouse.isAutoActive = true;
+        // Ne pas démarrer immédiatement – attendre l'idle
       }
 
       forceStop() {
@@ -406,28 +396,69 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this.mouse.isAutoActive = false;
       }
 
-      stopForever() {
-        this.hasStoppedForever = true;
-        this.enabled = false;
-        this.forceStop();
+      private randomEdgePoint(): { x: number; y: number } {
+        const side = Math.floor(Math.random() * 4);
+        const pos = Math.random() * 1.6 - 0.8;
+        const out = 1.4 + Math.random() * 0.3;
+        if (side === 0) return { x: -out, y: pos };
+        if (side === 1) return { x: out, y: pos };
+        if (side === 2) return { x: pos, y: out };
+        return { x: pos, y: -out };
+      }
+
+      private buildRoute() {
+        // Balayage simple gauche→droite ou droite→gauche
+        const leftToRight = Math.random() > 0.5;
+        const y = (Math.random() - 0.5) * 1.0; // hauteur aléatoire
+        const entry = { x: leftToRight ? -1.5 : 1.5, y };
+        const exit  = { x: leftToRight ?  1.5 : -1.5, y: y + (Math.random() - 0.5) * 0.3 };
+        this.waypoints = [entry, exit];
+        this.routeT = 0;
+        this.mouse.setNormalized(entry.x, entry.y);
+        this.mouse.coords_old.set(entry.x, entry.y);
+      }
+
+      private catmullRom(t: number, p0: number, p1: number, p2: number, p3: number): number {
+        return 0.5 * (
+          2 * p1 +
+          (-p0 + p2) * t +
+          (2 * p0 - 5 * p1 + 4 * p2 - p3) * t * t +
+          (-p0 + 3 * p1 - 3 * p2 + p3) * t * t * t
+        );
+      }
+
+      private getPos(t: number): { x: number; y: number } {
+        const n = this.waypoints.length;
+        if (n < 2) return { x: 0, y: 0 };
+        const seg = Math.min(Math.floor(t * (n - 1)), n - 2);
+        const lt = t * (n - 1) - seg;
+        const i0 = Math.max(0, seg - 1);
+        const i1 = seg;
+        const i2 = Math.min(n - 1, seg + 1);
+        const i3 = Math.min(n - 1, seg + 2);
+        return {
+          x: this.catmullRom(lt, this.waypoints[i0].x, this.waypoints[i1].x, this.waypoints[i2].x, this.waypoints[i3].x),
+          y: this.catmullRom(lt, this.waypoints[i0].y, this.waypoints[i1].y, this.waypoints[i2].y, this.waypoints[i3].y),
+        };
       }
 
       update() {
-        if (!this.enabled || this.hasStoppedForever) return;
+        if (!this.enabled) return;
         const now = performance.now();
         const idle = now - this.manager.lastUserInteraction;
+
         if (idle < this.resumeDelay) {
           if (this.active) this.forceStop();
           return;
         }
+
         if (!this.active) {
           this.active = true;
           this.lastTime = now;
           this.activationTime = now;
-          this.resetToStartCorner();
+          this.buildRoute();
+          this.mouse.isAutoActive = true;
         }
-
-        this.mouse.isAutoActive = true;
 
         let dtSec = (now - this.lastTime) / 1000;
         this.lastTime = now;
@@ -439,14 +470,18 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
           ramp = t * t * (3 - 2 * t);
         }
 
-        this._t += dtSec * this.speed * ramp;
+        // Vitesse calibrée : speed=1 → ~8s par route
+        this.routeT += dtSec * this.speed * 0.125 * ramp;
 
-        // Courbe de Lissajous : tracé fluide et continu
-        const x = Math.sin(this._t * 1.3) * (1 - this.margin);
-        const y = Math.sin(this._t * 0.7 + 0.9) * (1 - this.margin);
+        if (this.routeT >= 1) {
+          // Balayage terminé – pause avant le prochain
+          this.forceStop();
+          this.manager.lastUserInteraction = performance.now();
+          return;
+        }
 
-        this.current.set(x, y);
-        this.mouse.setNormalized(x, y);
+        const pos = this.getPos(this.routeT);
+        this.mouse.setNormalized(pos.x, pos.y);
       }
     }
 
@@ -1135,7 +1170,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       dyeAdvection!: DyeAdvection;
       dyeSplat!: DyeSplat;
 
-      dyeDissipation = 0.976;
+      dyeDissipation = 0.984;
 
       constructor(options?: Partial<SimOptions>) {
         this.options = {
@@ -1427,7 +1462,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
       props: Record<string, unknown>;
       output!: Output;
       autoDriver?: AutoDriver;
-      lastUserInteraction = performance.now() - 10000;
+      lastUserInteraction = performance.now();
       running = false;
 
       private _loop = this.loop.bind(this);
@@ -1448,7 +1483,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         Mouse.takeoverDuration = takeoverDuration;
         Mouse.onInteract = () => {
           this.lastUserInteraction = performance.now();
-          if (this.autoDriver) this.autoDriver.stopForever();
+          if (this.autoDriver) this.autoDriver.forceStop();
         };
 
         this.init();
@@ -1479,14 +1514,6 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
           resumeDelay: autoResumeDelay,
           rampDuration: autoRampDuration,
         });
-
-        if (this.autoDriver && this.autoDriver.enabled) {
-          for (let i = 0; i < 3; i++) {
-            this.autoDriver.update();
-            Mouse.update();
-            this.output.update();
-          }
-        }
 
         this.start();
       }

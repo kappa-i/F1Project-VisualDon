@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ShaderReveal from './components/ShaderReveal.tsx';
+import HeroSafetyIntro from './components/HeroSafetyIntro.tsx';
 import CrashTitles from './components/CrashTitles.tsx';
 import ImolaModal from './components/ImolaModal.tsx';
 import BottomSectionNav from './components/BottomSectionNav.tsx';
@@ -16,7 +17,7 @@ import EraGlitter from './components/EraGlitter.tsx';
 import RaceTrack   from './components/RaceTrack.tsx';
 import Footer from './components/Footer.tsx';
 import ConclusionGraph from './components/ConclusionGraph.tsx';
-import F1UICards from './components/F1UICards.tsx';
+import Stats4 from './components/Stats4.tsx';
 
 const ERA_IMAGES = [
   { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
@@ -37,10 +38,15 @@ const ERA_IMAGES = [
   { url: '/ere-imgs/peterson2.avif', width: 330, height: 241 },
   { url: '/ere-imgs/sddefault.avif', width: 640, height: 480 },
 ];
-import shaderFrontUrl from './assets/f1-merco.avif';
-import shaderBackUrl from './assets/verso-srl.avif';
+import shaderFrontUrl from './assets/BG111.png';
+import shaderBackUrl from './assets/BG222.png';
 import studioGlbUrl from './models/tunel.glb';
 
+
+const stats4Mount = document.getElementById('stats4-root');
+if (stats4Mount) {
+  createRoot(stats4Mount).render(React.createElement(Stats4));
+}
 
 const shaderRevealMount = document.getElementById('shader-reveal-root');
 
@@ -51,17 +57,17 @@ if (shaderRevealMount) {
       frontImage: shaderFrontUrl,
       backImage: shaderBackUrl,
       style: { width: '100%', height: '100%' },
-      mouseForce: 65,
-      cursorSize: 520,
+      mouseForce: 68,
+      cursorSize: 620,
       resolution: 0.5,
       iterationsViscous: 22,
       iterationsPoisson: 26,
-      revealStrength: 2.8,
-      revealSoftness: 1.0,
+      revealStrength: 2.4,
+      revealSoftness: 0.75,
       autoDemo: true,
-      autoSpeed: 1.0,
-      autoIntensity: 3.2,
-      autoResumeDelay: 1500,
+      autoSpeed: 1.4,
+      autoIntensity: 1.8,
+      autoResumeDelay: 5000,
       viscous: 18,
       dt: 0.016,
       BFECC: true,
@@ -69,9 +75,40 @@ if (shaderRevealMount) {
   );
 }
 
-const f1UICardsMount = document.getElementById('f1-ui-cards-root');
-if (f1UICardsMount) {
-  createRoot(f1UICardsMount).render(React.createElement(F1UICards));
+// Era embed inside hero section (step 1)
+const heroEraGlitterMount = document.getElementById('hero-era-glitter-root');
+if (heroEraGlitterMount) {
+  createRoot(heroEraGlitterMount).render(React.createElement(EraGlitter));
+}
+
+const heroEraGalleryMount = document.getElementById('hero-era-gallery-root');
+if (heroEraGalleryMount) {
+  createRoot(heroEraGalleryMount).render(React.createElement(InfiniteGallery, {
+    width: '100%',
+    height: '100%',
+    images: ERA_IMAGES,
+    density: 2,
+    imageSize: 32,
+    cellSize: 150,
+    viewRange: 2,
+    fogNear: 130,
+    fogFar: 340,
+    dragSpeed: 0.6,
+    driftAmount: 6,
+    friction: 0.97,
+    autoZoom: false,
+    imageRadius: 0.06,
+    allowImageFocusOnClick: true,
+    backgroundColor: '#000000',
+    fogColor: '#000000',
+    wheelSpeed: 0.0025,
+    transparent: true,
+  }));
+}
+
+const heroEraTimelineMount = document.getElementById('hero-era-timeline-root');
+if (heroEraTimelineMount) {
+  createRoot(heroEraTimelineMount).render(React.createElement(EraTimeline));
 }
 
 const crashTitlesMount = document.getElementById('crash-titles-root');
@@ -121,43 +158,6 @@ if (racetrackMount) {
   racetrackRoot.render(React.createElement(RaceTrack));
 }
 
-const eraGlitterMount = document.getElementById('era-glitter-root');
-if (eraGlitterMount) {
-  createRoot(eraGlitterMount).render(React.createElement(EraGlitter));
-}
-
-const eraTimelineMount = document.getElementById('era-timeline-root');
-if (eraTimelineMount) {
-  const eraTimelineRoot = createRoot(eraTimelineMount);
-  eraTimelineRoot.render(React.createElement(EraTimeline));
-}
-
-const eraGalleryMount = document.getElementById('era-gallery-root');
-
-if (eraGalleryMount) {
-  const eraRoot = createRoot(eraGalleryMount);
-  eraRoot.render(React.createElement(InfiniteGallery, {
-    width: '100%',
-    height: '100%',
-    images: ERA_IMAGES,
-    density: 2,
-    imageSize: 32,
-    cellSize: 150,
-    viewRange: 2,
-    fogNear: 130,
-    fogFar: 340,
-    dragSpeed: 0.6,
-    driftAmount: 6,
-    friction: 0.97,
-    autoZoom: false,
-    imageRadius: 0.06,
-    allowImageFocusOnClick: true,
-    backgroundColor: '#000000',
-    fogColor: '#000000',
-    wheelSpeed: 0.0025,
-    transparent: true,
-  }));
-}
 
 const SOURCE_ENTRIES = {
   'selva-marcello-3d': {
@@ -453,18 +453,22 @@ new RGBELoader().load(
 // ── navigation par pages ──────────────────────────────────────────────────
 //
 // Pages virtuelles :
-//   0       → hero        (translateY 0vh)
-//   1–6     → era         (translateY -100vh, 1=intro, 2-6=étapes timeline)
-//   7–54    → crash       (translateY -200vh, 48 pas, vidéo pinnée)
-//   55–63   → viewer      (translateY -300vh, 9 keyframes caméra)
-//   64–67   → spa         (translateY -400vh, 4 POI)
-//   68      → data        (translateY -500vh)
-//   69      → conclusion  (translateY -600vh)
+//   0       → hero initial   (translateY 0vh)
+//   1–6     → hero ère embed (translateY 0vh, 1=intro gallery, 2–6=5 cartes timeline)
+//   7–54    → crash          (translateY -100vh, 48 pas, vidéo pinnée)
+//   56–63   → viewer         (translateY -300vh, 8 étapes caméra)
+//   64–67   → spa            (translateY -400vh, 4 POI)
+//   68      → data           (translateY -500vh)
+//   69      → conclusion     (translateY -600vh)
 
-const ERA_PAGE_START  = 1;
-const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline
-const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS; // 6
-const CRASH_PAGE_START = ERA_PAGE_END + 1;           // 7
+const HERO_PAGE_START = 0;
+const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline (ère intégrée dans hero)
+const HERO_PAGE_STEPS = 1 + ERA_PAGE_STEPS;          // 1 intro + 5 cartes ère intégrées
+const HERO_PAGE_END = HERO_PAGE_START + HERO_PAGE_STEPS;
+// Section ère supprimée – ère intégrée dans hero (pages 1–6)
+const ERA_PAGE_START  = HERO_PAGE_END + 1;           // dead – conservé pour dispatchEraStepChange
+const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS; // dead
+const CRASH_PAGE_START = HERO_PAGE_END + 1;          // commence directement après hero
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
@@ -642,8 +646,22 @@ if (_firstCrashImg.complete && _firstCrashImg.naturalWidth > 0) {
 }
 updateCrashTitles(0);
 
-function isEraPage(idx) {
-  return idx >= ERA_PAGE_START && idx <= ERA_PAGE_END;
+function isEraPage(_idx) {
+  return false; // section ère supprimée – ère intégrée dans hero
+}
+
+function isHeroPage(idx) {
+  return idx >= HERO_PAGE_START && idx <= HERO_PAGE_END;
+}
+
+function dispatchHeroStepChange(pageIdx) {
+  const step = pageIdx <= HERO_PAGE_START ? -1 : Math.min(HERO_PAGE_STEPS - 1, pageIdx - HERO_PAGE_START - 1);
+  const heroSectionEl = document.getElementById('s-hero');
+  heroSectionEl?.classList.toggle('is-story-active', step >= 0);
+  window.dispatchEvent(new CustomEvent('hero-step-change', { detail: { step } }));
+  // Propage la progression ère dans l'embed hero (step 0 = intro sans carte, step 1-5 = cartes 0-4)
+  const eraStep = step >= 1 ? step - 1 : -1;
+  window.dispatchEvent(new CustomEvent('era-step-change', { detail: { step: eraStep } }));
 }
 
 function dispatchEraStepChange(pageIdx) {
@@ -653,14 +671,13 @@ function dispatchEraStepChange(pageIdx) {
 }
 
 function pageToY(idx) {
-  if (idx === 0) return 0;
-  if (isEraPage(idx)) return -100;
-  if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -200;
-  if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -300;
-  if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -400;
-  if (idx === DATA_PAGE) return -500;
-  if (idx === CONCLUSION_PAGE) return -600;
-  return -700;
+  if (isHeroPage(idx)) return 0;
+  if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -100;
+  if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -200;
+  if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -300;
+  if (idx === DATA_PAGE) return -400;
+  if (idx === CONCLUSION_PAGE) return -500;
+  return -600;
 }
 
 function pageToCamera(idx) {
@@ -725,8 +742,8 @@ function dispatchSpaPoiChange(pageIdx) {
 }
 
 function pageToSectionIndex(pageIdx) {
-  if (pageIdx <= 0) return 0;
-  if (isEraPage(pageIdx)) return 1;
+  if (pageIdx === HERO_PAGE_START) return 0;
+  if (isHeroPage(pageIdx)) return 1; // hero era embed → section "Ère" active dans le nav
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 2;
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 3;
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 4;
@@ -736,10 +753,11 @@ function pageToSectionIndex(pageIdx) {
 }
 
 function pageToSectionProgress(pageIdx) {
-  if (pageIdx === 0) return 0;
-  if (isEraPage(pageIdx)) {
-    const eraProgress = (pageIdx - ERA_PAGE_START) / ERA_PAGE_STEPS;
-    return 1 + eraProgress * 0.92;
+  if (pageIdx === HERO_PAGE_START) return 0;
+  if (isHeroPage(pageIdx)) {
+    // Hero era embed : progress entre 1.0 (intro) et 2.0 (fin des cartes)
+    const eraSubStep = pageIdx - HERO_PAGE_START - 1; // 0..ERA_PAGE_STEPS-1
+    return 1 + eraSubStep / ERA_PAGE_STEPS * 0.92;
   }
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) {
     return 2 + crashFrameToProgress(crashRenderedFrame) * 0.92;
@@ -776,7 +794,7 @@ function updateSectionNav(pageIdx = currentPage) {
 
 function sectionToPage(sectionIdx) {
   if (sectionIdx <= 0) return 0;
-  if (sectionIdx === 1) return ERA_PAGE_START;
+  if (sectionIdx === 1) return HERO_PAGE_START + 1; // ère intégrée dans hero
   if (sectionIdx === 2) return CRASH_PAGE_START;
   if (sectionIdx === 3) return VIEWER_PAGE_START;
   if (sectionIdx === 4) return SPA_PAGE_START;
@@ -789,6 +807,11 @@ window.addEventListener('section-nav-jump', event => {
   const sectionIdx = event.detail?.sectionIndex;
   if (typeof sectionIdx !== 'number') return;
   goToPage(sectionToPage(sectionIdx));
+});
+
+window.addEventListener('hero-next-step', () => {
+  if (!isHeroPage(currentPage) || currentPage >= HERO_PAGE_END) return;
+  goToPage(currentPage + 1);
 });
 
 function resetWheelGesture() {
@@ -998,6 +1021,13 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
     return;
   }
 
+  if (targetY === currentY && isHeroPage(idx)) {
+    dispatchHeroStepChange(idx);
+    updateSectionNav(idx);
+    isTransitioning = false;
+    return;
+  }
+
   // Si on reste sur la même section (crash) → seulement la frame change
   if (targetY === currentY && isCrashPage(idx)) {
     setCrashProgress(crashPageToProgress(idx));
@@ -1024,7 +1054,11 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
     duration: 1.0,
     ease: 'power3.inOut',
     onComplete: () => {
-      if (isEraPage(idx)) {
+      if (isHeroPage(idx)) {
+        dispatchHeroStepChange(idx);
+        updateSectionNav(idx);
+        isTransitioning = false;
+      } else if (isEraPage(idx)) {
         dispatchEraStepChange(idx);
         updateSectionNav(idx);
         isTransitioning = false;
@@ -1220,6 +1254,8 @@ window.addEventListener('wheel', e => {
   wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
   goToPage(currentPage + direction);
 }, { passive: false });
+
+dispatchHeroStepChange(currentPage);
 
 // ── keyboard navigation ───────────────────────────────────────────────────
 window.addEventListener('keydown', e => {

@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>F1 · Sécurité & Performance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
@@ -295,21 +298,15 @@
   <!-- 1. HERO -->
   <section class="section section--hero" id="s-hero">
     <div class="hero-reveal" id="shader-reveal-root"></div>
-    <div class="section__inner">
-      <h1 class="section__title section__title--hero">Peut-on<br>aller plus<br>vite en<br>étant plus<br>en sécurité ?</h1>
+    <div id="stats4-root"></div>
+    <div class="hero-era-embed" id="hero-era-embed">
+      <div id="hero-era-glitter-root" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></div>
+      <div id="hero-era-gallery-root" style="position:absolute;inset:0;width:100%;height:100%;"></div>
+      <div id="hero-era-timeline-root" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10;"></div>
     </div>
-    <div id="f1-ui-cards-root"></div>
   </section>
 
-  <!-- 2. ÈRE DANGEREUSE -->
-  <section class="section section--era" id="s-era">
-    <!-- Fond étoiles warp (derrière les images et les cartes) -->
-    <div id="era-glitter-root" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></div>
-    <div id="era-gallery-root" style="position:absolute;inset:0;width:100%;height:100%;"></div>
-    <div id="era-timeline-root" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10;"></div>
-  </section>
-
-  <!-- 3. CRASH -->
+  <!-- 2. CRASH -->
   <section class="section section--crash" id="s-crash">
     <canvas
       class="crash-video"
