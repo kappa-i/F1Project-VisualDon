@@ -491,19 +491,19 @@ new RGBELoader().load(
 //
 // Pages virtuelles :
 //   0       → hero initial   (translateY 0vh)
-//   1       → hero CTA       (translateY 0vh, 1 étape overlay)
-//   2–7     → era            (translateY -100vh, 1=intro, 5 étapes timeline)
-//   8–55    → crash          (translateY -200vh, 48 pas, vidéo pinnée)
+//   1–6     → hero ère embed (translateY 0vh, 1=intro gallery, 2–6=5 cartes timeline)
+//   7–12    → era            (translateY -100vh, 1=intro, 5 étapes timeline)
+//   13–60   → crash          (translateY -200vh, 48 pas, vidéo pinnée)
 //   56–63   → viewer         (translateY -300vh, 8 étapes caméra)
 //   64–67   → spa            (translateY -400vh, 4 POI)
 //   68      → data           (translateY -500vh)
 //   69      → conclusion     (translateY -600vh)
 
 const HERO_PAGE_START = 0;
-const HERO_PAGE_STEPS = 1;
+const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline (partagé hero embed + section ère)
+const HERO_PAGE_STEPS = 1 + ERA_PAGE_STEPS;          // 1 intro + 5 cartes ère intégrées
 const HERO_PAGE_END = HERO_PAGE_START + HERO_PAGE_STEPS;
 const ERA_PAGE_START  = HERO_PAGE_END + 1;
-const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline
 const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS;
 const CRASH_PAGE_START = ERA_PAGE_END + 1;
 const CRASH_PAGE_STEPS = 48;
@@ -696,8 +696,9 @@ function dispatchHeroStepChange(pageIdx) {
   const heroSectionEl = document.getElementById('s-hero');
   heroSectionEl?.classList.toggle('is-story-active', step >= 0);
   window.dispatchEvent(new CustomEvent('hero-step-change', { detail: { step } }));
-  // Déclenche l'era timeline dans l'embed hero quand step 1 est actif
-  window.dispatchEvent(new CustomEvent('era-step-change', { detail: { step: step >= 0 ? 0 : -1 } }));
+  // Propage la progression ère dans l'embed hero (step 0 = intro sans carte, step 1-5 = cartes 0-4)
+  const eraStep = step >= 1 ? step - 1 : -1;
+  window.dispatchEvent(new CustomEvent('era-step-change', { detail: { step: eraStep } }));
 }
 
 function dispatchEraStepChange(pageIdx) {
