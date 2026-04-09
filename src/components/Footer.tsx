@@ -109,8 +109,8 @@ export default function Footer() {
           </div>
 
           <motion.div variants={itemVariants} className="site-footer__bottom">
-            <p>© 2026 F1 Project VisualDon. Tous droits reserves.</p>
-            <p>Vitesse, crashs, reglementation, survie.</p>
+            <p>© 2026 F1 Project, Visualisation de donnees</p>
+            <p>Travail realise dans un cadre academique</p>
           </motion.div>
         </motion.div>
       </div>
