@@ -29,7 +29,7 @@ const slides = [
   },
   {
     value: 'Chaque matin de Grand Prix, je me demandais si c\'était mon dernier.',
-    citation: 'James Hunt',
+    citation: 'Jackie Stewart',
     color: '#ffa94d',
     glow: 'rgba(255, 169, 77, 0.45)',
     image: pil3Url,
