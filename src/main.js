@@ -158,43 +158,6 @@ if (racetrackMount) {
   racetrackRoot.render(React.createElement(RaceTrack));
 }
 
-const eraGlitterMount = document.getElementById('era-glitter-root');
-if (eraGlitterMount) {
-  createRoot(eraGlitterMount).render(React.createElement(EraGlitter));
-}
-
-const eraTimelineMount = document.getElementById('era-timeline-root');
-if (eraTimelineMount) {
-  const eraTimelineRoot = createRoot(eraTimelineMount);
-  eraTimelineRoot.render(React.createElement(EraTimeline));
-}
-
-const eraGalleryMount = document.getElementById('era-gallery-root');
-
-if (eraGalleryMount) {
-  const eraRoot = createRoot(eraGalleryMount);
-  eraRoot.render(React.createElement(InfiniteGallery, {
-    width: '100%',
-    height: '100%',
-    images: ERA_IMAGES,
-    density: 2,
-    imageSize: 32,
-    cellSize: 150,
-    viewRange: 2,
-    fogNear: 130,
-    fogFar: 340,
-    dragSpeed: 0.6,
-    driftAmount: 6,
-    friction: 0.97,
-    autoZoom: false,
-    imageRadius: 0.06,
-    allowImageFocusOnClick: true,
-    backgroundColor: '#000000',
-    fogColor: '#000000',
-    wheelSpeed: 0.0025,
-    transparent: true,
-  }));
-}
 
 const SOURCE_ENTRIES = {
   'selva-marcello-3d': {
@@ -492,20 +455,20 @@ new RGBELoader().load(
 // Pages virtuelles :
 //   0       → hero initial   (translateY 0vh)
 //   1–6     → hero ère embed (translateY 0vh, 1=intro gallery, 2–6=5 cartes timeline)
-//   7–12    → era            (translateY -100vh, 1=intro, 5 étapes timeline)
-//   13–60   → crash          (translateY -200vh, 48 pas, vidéo pinnée)
+//   7–54    → crash          (translateY -100vh, 48 pas, vidéo pinnée)
 //   56–63   → viewer         (translateY -300vh, 8 étapes caméra)
 //   64–67   → spa            (translateY -400vh, 4 POI)
 //   68      → data           (translateY -500vh)
 //   69      → conclusion     (translateY -600vh)
 
 const HERO_PAGE_START = 0;
-const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline (partagé hero embed + section ère)
+const ERA_PAGE_STEPS  = 5;                           // 5 cartes timeline (ère intégrée dans hero)
 const HERO_PAGE_STEPS = 1 + ERA_PAGE_STEPS;          // 1 intro + 5 cartes ère intégrées
 const HERO_PAGE_END = HERO_PAGE_START + HERO_PAGE_STEPS;
-const ERA_PAGE_START  = HERO_PAGE_END + 1;
-const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS;
-const CRASH_PAGE_START = ERA_PAGE_END + 1;
+// Section ère supprimée – ère intégrée dans hero (pages 1–6)
+const ERA_PAGE_START  = HERO_PAGE_END + 1;           // dead – conservé pour dispatchEraStepChange
+const ERA_PAGE_END    = ERA_PAGE_START + ERA_PAGE_STEPS; // dead
+const CRASH_PAGE_START = HERO_PAGE_END + 1;          // commence directement après hero
 const CRASH_PAGE_STEPS = 48;
 const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
@@ -683,8 +646,8 @@ if (_firstCrashImg.complete && _firstCrashImg.naturalWidth > 0) {
 }
 updateCrashTitles(0);
 
-function isEraPage(idx) {
-  return idx >= ERA_PAGE_START && idx <= ERA_PAGE_END;
+function isEraPage(_idx) {
+  return false; // section ère supprimée – ère intégrée dans hero
 }
 
 function isHeroPage(idx) {
@@ -709,13 +672,12 @@ function dispatchEraStepChange(pageIdx) {
 
 function pageToY(idx) {
   if (isHeroPage(idx)) return 0;
-  if (isEraPage(idx)) return -100;
-  if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -200;
-  if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -300;
-  if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -400;
-  if (idx === DATA_PAGE) return -500;
-  if (idx === CONCLUSION_PAGE) return -600;
-  return -700;
+  if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -100;
+  if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -200;
+  if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -300;
+  if (idx === DATA_PAGE) return -400;
+  if (idx === CONCLUSION_PAGE) return -500;
+  return -600;
 }
 
 function pageToCamera(idx) {
@@ -780,8 +742,8 @@ function dispatchSpaPoiChange(pageIdx) {
 }
 
 function pageToSectionIndex(pageIdx) {
-  if (isHeroPage(pageIdx)) return 0;
-  if (isEraPage(pageIdx)) return 1;
+  if (pageIdx === HERO_PAGE_START) return 0;
+  if (isHeroPage(pageIdx)) return 1; // hero era embed → section "Ère" active dans le nav
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 2;
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 3;
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 4;
@@ -791,13 +753,11 @@ function pageToSectionIndex(pageIdx) {
 }
 
 function pageToSectionProgress(pageIdx) {
+  if (pageIdx === HERO_PAGE_START) return 0;
   if (isHeroPage(pageIdx)) {
-    const heroProgress = pageIdx / Math.max(1, HERO_PAGE_END);
-    return heroProgress * 0.92;
-  }
-  if (isEraPage(pageIdx)) {
-    const eraProgress = (pageIdx - ERA_PAGE_START) / ERA_PAGE_STEPS;
-    return 1 + eraProgress * 0.92;
+    // Hero era embed : progress entre 1.0 (intro) et 2.0 (fin des cartes)
+    const eraSubStep = pageIdx - HERO_PAGE_START - 1; // 0..ERA_PAGE_STEPS-1
+    return 1 + eraSubStep / ERA_PAGE_STEPS * 0.92;
   }
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) {
     return 2 + crashFrameToProgress(crashRenderedFrame) * 0.92;
@@ -834,7 +794,7 @@ function updateSectionNav(pageIdx = currentPage) {
 
 function sectionToPage(sectionIdx) {
   if (sectionIdx <= 0) return 0;
-  if (sectionIdx === 1) return ERA_PAGE_START;
+  if (sectionIdx === 1) return HERO_PAGE_START + 1; // ère intégrée dans hero
   if (sectionIdx === 2) return CRASH_PAGE_START;
   if (sectionIdx === 3) return VIEWER_PAGE_START;
   if (sectionIdx === 4) return SPA_PAGE_START;
