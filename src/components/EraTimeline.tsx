@@ -74,6 +74,7 @@ export default function EraTimeline() {
   const [activeStep, setActiveStep] = useState(-1);
   const [displayStep, setDisplayStep] = useState(-1);
   const [isMorphing, setIsMorphing] = useState(false);
+  const [isEntering, setIsEntering] = useState(false);
   const activeStepRef = useRef(-1);
   const displayStepRef = useRef(-1);
 
@@ -82,13 +83,16 @@ export default function EraTimeline() {
       displayStepRef.current = -1;
       setDisplayStep(-1);
       setIsMorphing(false);
+      setIsEntering(false);
       return;
     }
 
     if (displayStepRef.current < 0) {
       displayStepRef.current = activeStep;
+      setIsEntering(true);
       setDisplayStep(activeStep);
       setIsMorphing(false);
+      window.setTimeout(() => setIsEntering(false), 32);
       return;
     }
 
@@ -204,8 +208,8 @@ export default function EraTimeline() {
           transform: `translateY(-50%) translateX(${isMorphing ? (fromLeft ? '-14px' : '14px') : '0'}) scale(${isMorphing ? 0.985 : 1})`,
           pointerEvents: 'auto',
           width: 'clamp(400px, 46vw, 620px)',
-          opacity: isMorphing ? 0.74 : 1,
-          transition: 'left 0.35s ease, right 0.35s ease, transform 0.35s ease, opacity 0.22s ease',
+          opacity: isEntering ? 0 : 1,
+          transition: 'left 0.35s ease, right 0.35s ease, transform 0.35s ease, opacity 0.6s ease',
         }}>
           <div style={{
             background: 'rgba(5, 5, 5, 0.94)',
