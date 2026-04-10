@@ -1211,7 +1211,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 1px;
   width: fit-content;
   padding: 2px;
   border: 0;

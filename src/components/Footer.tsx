@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ArrowUp, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Route } from 'lucide-react';
 import TextScatter from './TextScatter';
 
 const footerCards = [
@@ -105,7 +105,7 @@ export default function Footer() {
 
               <button type="button" className="site-footer__back-top" onClick={handleReturnToTop}>
                 <span className="site-footer__back-top-icon" aria-hidden="true">
-                  <ArrowUp size={18} strokeWidth={2} />
+                  <Route size={18} strokeWidth={2} />
                 </span>
                 <span>Retourner au début</span>
               </button>
