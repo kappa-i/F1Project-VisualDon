@@ -1239,6 +1239,12 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   animation: skeleton-sweep 1.1s ease-out 1;
 }
 
+.site-footer__back-top:hover .site-footer__back-top-icon,
+.site-footer__back-top:hover span:last-child {
+  color: #cbb7ff;
+  filter: drop-shadow(0 0 10px rgba(203, 183, 255, 0.8));
+}
+
 .site-footer__back-top span:last-child {
   display: inline-flex;
   align-items: center;
@@ -1249,6 +1255,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
+  transition: color 0.25s ease-in-out, filter 0.25s ease-in-out;
 }
 
 .site-footer__back-top-icon {
@@ -1258,6 +1265,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   width: 32px;
   height: 32px;
   color: #fff;
+  transition: color 0.25s ease-in-out, filter 0.25s ease-in-out;
 }
 
 .site-footer__card {
