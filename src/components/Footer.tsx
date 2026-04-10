@@ -5,16 +5,11 @@ import TextScatter from './TextScatter';
 
 const footerCards = [
   {
-    title: 'Parcours',
-    links: [
-      { text: 'Introduction', href: '#s-hero' },
-      { text: 'Ere dangereuse', href: '#s-era' },
-      { text: 'Crashs', href: '#s-crash' },
-      { text: 'Spa-Francorchamps', href: '#s-spa' },
-    ],
+    title: 'Sources',
+    links: [],
   },
   {
-    title: 'Visualisations',
+    title: 'Assets',
     links: [
       { text: 'Scene 3D', href: '#s-haas' },
       { text: 'Donnees', href: '#s-data' },
