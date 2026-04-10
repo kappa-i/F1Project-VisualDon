@@ -1279,6 +1279,14 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 }
 
+.site-footer__card:last-child {
+  background:
+    radial-gradient(ellipse 160% 160% at -20% -20%, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%),
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08) 1px, transparent 0),
+    rgba(255, 255, 255, 0.04);
+  background-size: auto, 18px 18px, auto;
+}
+
 .site-footer__card--sources,
 .site-footer__card--assets {
   position: relative;
