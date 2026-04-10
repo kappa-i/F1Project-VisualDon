@@ -1279,6 +1279,42 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 }
 
+.site-footer__card--sources {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  min-height: 300px;
+}
+
+.site-footer__card--sources::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 72px;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(180deg, rgba(25, 25, 25, 0) 0%, rgba(25, 25, 25, 0.82) 55%, #191919 100%);
+}
+
+.site-footer__card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.site-footer__card-body-bottom {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .site-footer__card--stacked {
   margin-left: -1px;
 }
@@ -1287,6 +1323,11 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.24);
+}
+
+.site-footer__card--sources:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 .site-footer__card h4 {
@@ -1302,6 +1343,58 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+.site-footer__source-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.site-footer__source-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  flex: 0 0 auto;
+}
+
+.site-footer__source-copy {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.site-footer__source-copy strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.site-footer__source-copy span {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.site-footer__source-link svg {
+  width: 14px;
+  height: 14px;
+  color: rgba(255, 255, 255, 0.42);
+  flex: 0 0 auto;
 }
 
 .site-footer__card a {
@@ -1324,6 +1417,95 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   width: 14px;
   height: 14px;
   flex: 0 0 auto;
+}
+
+.animated-list {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.animated-list__fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.animated-list__fade--top {
+  top: 0;
+}
+
+.animated-list__fade--bottom {
+  bottom: 0;
+}
+
+.animated-list__scroll {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.animated-list__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.animated-list__items {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  min-height: 100%;
+  list-style: none;
+}
+
+.animated-list__items--center {
+  justify-content: center;
+}
+
+.animated-list__items--bottom {
+  justify-content: flex-end;
+}
+
+.animated-list__item-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.animated-list__item-shell--clickable {
+  cursor: pointer;
+}
+
+.animated-list__item-body {
+  padding: 10px;
+}
+
+.animated-list__item-default {
+  color: #ffffff;
+}
+
+.animated-list__ripple {
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+
+.animated-list__swipe-indicator {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 
 .site-footer__wordmark {

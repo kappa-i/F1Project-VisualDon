@@ -1,12 +1,145 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight, Route } from 'lucide-react';
+import AnimatedList, { type AnimatedListItem } from './AnimatedList';
 import TextScatter from './TextScatter';
 
 const footerCards = [
   {
     title: 'Sources',
     links: [],
+    items: [
+      {
+        id: 'kaggle',
+        content: (
+          <a href="https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">01</span>
+            <span className="site-footer__source-copy">
+              <strong>Kaggle Dataset</strong>
+              <span>Formula 1 World Championship (1950-2020)</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+      {
+        id: 'jolpica',
+        content: (
+          <a href="https://api.jolpi.ca/" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">02</span>
+            <span className="site-footer__source-copy">
+              <strong>Jolpica API</strong>
+              <span>Historique F1 en JSON</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+      {
+        id: 'openf1',
+        content: (
+          <a href="https://openf1.org/" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">03</span>
+            <span className="site-footer__source-copy">
+              <strong>OpenF1</strong>
+              <span>Télémétrie, positions et météo</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+      {
+        id: 'fastf1',
+        content: (
+          <a href="https://docs.fastf1.dev/" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">04</span>
+            <span className="site-footer__source-copy">
+              <strong>FastF1</strong>
+              <span>Données temps réel et historiques</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+      {
+        id: 'f1',
+        content: (
+          <a href="https://www.formula1.com/" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">05</span>
+            <span className="site-footer__source-copy">
+              <strong>Formula1.com</strong>
+              <span>Références officielles et archives</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+      {
+        id: 'fia',
+        content: (
+          <a href="https://www.fia.com/" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">06</span>
+            <span className="site-footer__source-copy">
+              <strong>FIA</strong>
+              <span>Règlements et sécurité</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+      {
+        id: 'braithwaite',
+        content: (
+          <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12043339/" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">07</span>
+            <span className="site-footer__source-copy">
+              <strong>Braithwaite et al.</strong>
+              <span>Étude épidémiologique 1950-2023</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+      {
+        id: 'tracing',
+        content: (
+          <a href="https://www.tracinginsights.com/" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">08</span>
+            <span className="site-footer__source-copy">
+              <strong>Tracing Insights</strong>
+              <span>Visualisations et analyses F1</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+      {
+        id: 'pudding',
+        content: (
+          <a href="https://pudding.cool/" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">09</span>
+            <span className="site-footer__source-copy">
+              <strong>The Pudding</strong>
+              <span>Référence scrollytelling et narration</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+      {
+        id: 'figma',
+        content: (
+          <a href="https://www.figma.com/design/NScnLEtFSYWRrBWTcuhv4b/F1Project?node-id=0-1&t=meHIixZrsysDpq6a-1" target="_blank" rel="noreferrer" className="site-footer__source-link">
+            <span className="site-footer__source-badge">10</span>
+            <span className="site-footer__source-copy">
+              <strong>Wireframes Figma</strong>
+              <span>Structure et parcours de l’expérience</span>
+            </span>
+            <ArrowUpRight aria-hidden="true" />
+          </a>
+        ),
+      },
+    ] as AnimatedListItem[],
   },
   {
     title: 'Assets',
@@ -114,22 +247,48 @@ export default function Footer() {
               }
 
               return (
-                <motion.div key={card.title} variants={itemVariants} className={classes.join(' ')}>
+                <motion.div
+                  key={card.title}
+                  variants={itemVariants}
+                  className={`${classes.join(' ')}${card.title === 'Sources' ? ' site-footer__card--sources' : ''}`}
+                >
                   <h4>{card.title}</h4>
-                  <ul>
-                    {card.links.map((link) => (
-                      <li key={link.text}>
-                        <a
-                          href={link.href}
-                          target={link.external ? '_blank' : undefined}
-                          rel={link.external ? 'noreferrer' : undefined}
-                        >
-                          <span>{link.text}</span>
-                          {link.external ? <ArrowUpRight aria-hidden="true" /> : null}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+                  {card.title === 'Sources' ? (
+                    <div className="site-footer__card-body">
+                      <div className="site-footer__card-body-bottom">
+                        <AnimatedList
+                          items={card.items ?? []}
+                          autoAddDelay={0}
+                          maxItems={10}
+                          animationType="scale"
+                          enterFrom="top"
+                          startFrom="top"
+                          hoverEffect="none"
+                          pauseOnHover={true}
+                          fadeEdges={false}
+                          fadeEdgeSize={42}
+                          fadeColor="#121212"
+                          itemGap={10}
+                          height="100%"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <ul>
+                      {card.links.map((link) => (
+                        <li key={link.text}>
+                          <a
+                            href={link.href}
+                            target={link.external ? '_blank' : undefined}
+                            rel={link.external ? 'noreferrer' : undefined}
+                          >
+                            <span>{link.text}</span>
+                            {link.external ? <ArrowUpRight aria-hidden="true" /> : null}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </motion.div>
               );
             })}
