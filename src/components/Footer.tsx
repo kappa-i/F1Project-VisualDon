@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowUpRight, Route } from 'lucide-react';
+import { ArrowUpRight, Globe, Route } from 'lucide-react';
 import AnimatedList, { type AnimatedListItem } from './AnimatedList';
 import TextScatter from './TextScatter';
 
@@ -9,12 +9,11 @@ function createSourceItem(id: string, order: string, title: string, description:
     id,
     content: (
       <a href={href} target="_blank" rel="noreferrer" className="site-footer__source-link">
-        <span className="site-footer__source-badge">{order}</span>
         <span className="site-footer__source-copy">
           <strong>{title}</strong>
           <span>{description}</span>
         </span>
-        <ArrowUpRight aria-hidden="true" />
+        <Globe aria-hidden="true" />
       </a>
     ),
   };
