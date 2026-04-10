@@ -1287,7 +1287,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding-top: 18px;
+  margin-top: 50px;
+  padding-top: 50px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -1570,14 +1571,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   content: none;
 }
 
-.bottom-section-nav__link.is-active .bottom-section-nav__label {
-  color: var(--red);
-  font-weight: 700;
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-.bottom-section-nav__link:not(.is-active):hover .bottom-section-nav__label {
+.bottom-section-nav__link:hover .bottom-section-nav__label {
   color: rgba(255,255,255,0.96);
   opacity: 1;
   transform: translate(-50%, 0);
