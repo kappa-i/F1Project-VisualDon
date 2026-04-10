@@ -92,7 +92,7 @@ export default function Footer() {
 
                 <div className="site-footer__meta">
                   <p>
-                    Un projet réalisé par :
+                    Un projet de :
                     <br />
                     Tanguy Vaucher
                     <br />

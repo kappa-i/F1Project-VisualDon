@@ -1197,10 +1197,14 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 
 .site-footer__meta p {
-  max-width: 36ch;
+  margin: 0;
+  max-width: 420px;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
   font-size: clamp(11px, 0.88vw, 14px);
-  line-height: 1.85;
-  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.6;
+  color: #9d9d9d;
+  white-space: normal;
 }
 
 .site-footer__back-top {
