@@ -1279,7 +1279,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 }
 
-.site-footer__card--sources {
+.site-footer__card--sources,
+.site-footer__card--assets {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -1287,7 +1288,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   min-height: 300px;
 }
 
-.site-footer__card--sources::after {
+.site-footer__card--sources::after,
+.site-footer__card--assets::after {
   content: '';
   position: absolute;
   left: 0;
@@ -1301,7 +1303,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   transition: opacity 0.25s ease-in-out;
 }
 
-.site-footer__card--sources.is-scroll-end::after {
+.site-footer__card--sources.is-scroll-end::after,
+.site-footer__card--assets.is-scroll-end::after {
   opacity: 0;
 }
 
@@ -1331,7 +1334,8 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   border-color: rgba(255, 255, 255, 0.24);
 }
 
-.site-footer__card--sources:hover {
+.site-footer__card--sources:hover,
+.site-footer__card--assets:hover {
   background: rgba(255, 255, 255, 0.04);
   border-color: rgba(255, 255, 255, 0.14);
 }
@@ -1423,6 +1427,10 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 
 .site-footer__card a:hover {
   color: #ffffff;
+}
+
+.site-footer__card:last-child a:hover {
+  color: var(--red);
 }
 
 .site-footer__card a svg {
