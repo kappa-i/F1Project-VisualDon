@@ -19,6 +19,17 @@ import Footer from './components/Footer.tsx';
 import ConclusionGraph from './components/ConclusionGraph.tsx';
 import Stats4 from './components/Stats4.tsx';
 
+const shouldResetScroll = window.sessionStorage.getItem('scroll-to-top-on-reload') === '1';
+if (shouldResetScroll) {
+  window.sessionStorage.removeItem('scroll-to-top-on-reload');
+  if ('scrollRestoration' in window.history) {
+    window.history.scrollRestoration = 'manual';
+  }
+  window.addEventListener('load', () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, { once: true });
+}
+
 const ERA_IMAGES = [
   { url: '/ere-imgs/_107051595_79490dd6-1a63-49f3-8654-a070f0ab897e.jpg.avif', width: 480, height: 270 },
   { url: '/ere-imgs/1134655565_ys3qj0_1_hikmyd.avif', width: 3840, height: 1920 },

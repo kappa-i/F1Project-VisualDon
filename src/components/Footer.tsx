@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUp, ArrowUpRight } from 'lucide-react';
+import TextScatter from './TextScatter';
 
 const footerCards = [
   {
@@ -54,6 +55,12 @@ const itemVariants = {
 };
 
 export default function Footer() {
+  const handleReturnToTop = () => {
+    window.sessionStorage.setItem('scroll-to-top-on-reload', '1');
+    window.location.hash = 's-hero';
+    window.location.reload();
+  };
+
   return (
     <footer className="site-footer">
       <div className="site-footer__container">
@@ -66,17 +73,42 @@ export default function Footer() {
         >
           <div className="site-footer__grid">
             <motion.div variants={itemVariants} className="site-footer__brand">
-              <div className="site-footer__headline">
-                <h3>
-                  Peut-on aller plus vite
-                  <br />
-                  en etant plus en securite ?
-                </h3>
+              <div className="site-footer__brand-copy">
+                <div className="site-footer__headline">
+                  <h3>
+                    <TextScatter text="L'histoire de la" velocity={180} rotation={80} returnAfter={0.8} duration={1.8} />
+                    <br />
+                    <TextScatter text="sécurité en " velocity={180} rotation={80} returnAfter={0.8} duration={1.8} />
+                    <TextScatter
+                      text="F1"
+                      velocity={180}
+                      rotation={80}
+                      returnAfter={0.8}
+                      duration={1.8}
+                      charStyle={{ color: '#e10600' }}
+                    />
+                  </h3>
+                </div>
+
+                <div className="site-footer__meta">
+                  <p>
+                    Un projet réalisé par :
+                    <br />
+                    Tanguy Vaucher
+                    <br />
+                    Gabriel Cappai
+                    <br />
+                    Nuno Guilherme Amaro Faria
+                  </p>
+                </div>
               </div>
 
-              <div className="site-footer__meta">
-                <p>Projet VisualDon sur la securite en Formule 1 depuis 1950</p>
-              </div>
+              <button type="button" className="site-footer__back-top" onClick={handleReturnToTop}>
+                <span className="site-footer__back-top-icon" aria-hidden="true">
+                  <ArrowUp size={18} strokeWidth={2} />
+                </span>
+                <span>Retourner au début</span>
+              </button>
             </motion.div>
 
             {footerCards.map((card, index) => {
