@@ -40,6 +40,7 @@ export interface AnimatedListProps {
   className?: string;
   renderItem?: (item: AnimatedListItem) => React.ReactNode;
   height?: string | number;
+  onScrollStateChange?: (state: { atTop: boolean; atBottom: boolean }) => void;
 }
 
 const Ripple = ({
@@ -175,6 +176,7 @@ export default function AnimatedList({
   className,
   renderItem,
   height = '600px',
+  onScrollStateChange,
 }: AnimatedListProps) {
   const [items, setItems] = useState<AnimatedListItem[]>(() => initialItems);
   const itemIndexRef = useRef(initialItems.length);
@@ -186,6 +188,20 @@ export default function AnimatedList({
     setItems(initialItems);
     itemIndexRef.current = initialItems.length;
   }, [initialItems]);
+
+  const reportScrollState = useCallback(() => {
+    const scrollEl = scrollRef.current;
+    if (!scrollEl || !onScrollStateChange) return;
+
+    const maxScrollTop = Math.max(0, scrollEl.scrollHeight - scrollEl.clientHeight);
+    const atTop = scrollEl.scrollTop <= 1;
+    const atBottom = scrollEl.scrollTop >= maxScrollTop - 1;
+    onScrollStateChange({ atTop, atBottom });
+  }, [onScrollStateChange]);
+
+  useEffect(() => {
+    reportScrollState();
+  }, [items, reportScrollState]);
 
   useEffect(() => {
     if (intervalRef.current) {
@@ -306,6 +322,7 @@ export default function AnimatedList({
     const softenedDelta = event.deltaY * 0.35;
     const nextScrollTop = Math.max(0, Math.min(maxScrollTop, scrollEl.scrollTop + softenedDelta));
     scrollEl.scrollTop = nextScrollTop;
+    reportScrollState();
     event.preventDefault();
   };
 
@@ -334,6 +351,7 @@ export default function AnimatedList({
         ref={scrollRef}
         className="animated-list__scroll"
         onWheel={handleWheel}
+        onScroll={reportScrollState}
         onMouseEnter={() => pauseOnHover && setIsPaused(true)}
         onMouseLeave={() => pauseOnHover && setIsPaused(false)}
       >

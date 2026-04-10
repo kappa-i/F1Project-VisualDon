@@ -1,145 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight, Route } from 'lucide-react';
 import AnimatedList, { type AnimatedListItem } from './AnimatedList';
 import TextScatter from './TextScatter';
 
+function createSourceItem(id: string, order: string, title: string, description: string, href: string): AnimatedListItem {
+  return {
+    id,
+    content: (
+      <a href={href} target="_blank" rel="noreferrer" className="site-footer__source-link">
+        <span className="site-footer__source-badge">{order}</span>
+        <span className="site-footer__source-copy">
+          <strong>{title}</strong>
+          <span>{description}</span>
+        </span>
+        <ArrowUpRight aria-hidden="true" />
+      </a>
+    ),
+  };
+}
+
+const sourceItems: AnimatedListItem[] = [
+  createSourceItem('kaggle', '01', 'Kaggle Dataset', 'Formula 1 World Championship (1950-2020)', 'https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020'),
+  createSourceItem('jolpica-api', '02', 'Jolpica API', 'API historique F1 au format JSON', 'https://api.jolpi.ca'),
+  createSourceItem('jolpica-github', '03', 'Jolpica GitHub', 'Dépôt du projet Jolpica F1', 'https://github.com/jolpica/jolpica-f1'),
+  createSourceItem('openf1-site', '04', 'OpenF1', 'Télémétrie, positions GPS, météo', 'https://openf1.org'),
+  createSourceItem('openf1-github', '05', 'OpenF1 GitHub', 'Code source du projet OpenF1', 'https://github.com/br-g/openf1'),
+  createSourceItem('fastf1-docs', '06', 'FastF1 Docs', 'Librairie Python pour données F1 détaillées', 'https://docs.fastf1.dev'),
+  createSourceItem('fastf1-github', '07', 'FastF1 GitHub', 'Dépôt de la librairie Fast-F1', 'https://github.com/theOehrly/Fast-F1'),
+  createSourceItem('braithwaite', '08', 'Braithwaite et al.', 'Étude épidémiologique sur les blessures F1 (1950-2023)', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12043339/'),
+  createSourceItem('tracing', '09', 'Tracing Insights', 'Référence de visualisation F1', 'https://www.tracinginsights.com/'),
+  createSourceItem('pudding', '10', 'The Pudding', 'Référence scrollytelling et narration de données', 'https://pudding.cool/'),
+  createSourceItem('figma', '11', 'Wireframes Figma', 'Structure du projet et hiérarchie visuelle', 'https://www.figma.com/design/NScnLEtFSYWRrBWTcuhv4b/F1Project?node-id=0-1&t=meHIixZrsysDpq6a-1'),
+  createSourceItem('turbosquid', '12', 'TurboSquid', 'Modèle voiture Haas 2026', 'https://www.turbosquid.com/FullPreview/2534860'),
+  createSourceItem('dribbble', '13', 'Aston Martin F1', 'Inspiration interactive 3D scroll sur Dribbble', 'https://dribbble.com/shots/25945471-Aston-Martin-F1-Interactive-3D-Scroll'),
+  createSourceItem('caraddict', '14', 'CarAddict.ch', 'Référence UI automobile sombre et éditoriale', 'https://caraddict.ch/a-propos/'),
+  createSourceItem('viita', '15', 'VIITA Race', 'Inspiration scroll horizontal et immersion racing', 'https://race.viita-watches.com/'),
+  createSourceItem('genz', '16', 'Gen Z Broke the Marketing Funnel', 'Référence collage, typo et narration visuelle', 'https://genzbrokethefunnel.com'),
+  createSourceItem('bidwells', '17', 'Bidwells', 'Référence design et communication technique', 'https://www.bidwells.co.uk/insights-reports-events/driving-innovation-at-speed/'),
+  createSourceItem('reactbits', '18', 'React Bits', 'Bibliothèque de composants React interactifs', 'https://reactbits.dev/'),
+  createSourceItem('reactbits-pro', '19', 'React Bits Pro', 'Version avancée des composants React Bits', 'https://pro.reactbits.dev/'),
+  createSourceItem('aceternity', '20', 'Aceternity UI', 'Collection de composants React modernes', 'https://ui.aceternity.com/components'),
+  createSourceItem('magicui', '21', 'Magic UI', 'Composants UI animés pour interfaces modernes', 'https://magicui.design/docs/components'),
+  createSourceItem('shadcn', '22', 'shadcn/ui', 'Système de composants basé sur Radix UI', 'https://ui.shadcn.com/'),
+  createSourceItem('coss', '23', 'COSS UI', 'Collection de composants UI interactifs', 'https://coss.com/ui/'),
+  createSourceItem('heig', '24', 'HEIG-VD', 'Cadre académique du projet', 'https://www.heig-vd.ch/'),
+];
+
 const footerCards = [
   {
     title: 'Sources',
     links: [],
-    items: [
-      {
-        id: 'kaggle',
-        content: (
-          <a href="https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">01</span>
-            <span className="site-footer__source-copy">
-              <strong>Kaggle Dataset</strong>
-              <span>Formula 1 World Championship (1950-2020)</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-      {
-        id: 'jolpica',
-        content: (
-          <a href="https://api.jolpi.ca/" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">02</span>
-            <span className="site-footer__source-copy">
-              <strong>Jolpica API</strong>
-              <span>Historique F1 en JSON</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-      {
-        id: 'openf1',
-        content: (
-          <a href="https://openf1.org/" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">03</span>
-            <span className="site-footer__source-copy">
-              <strong>OpenF1</strong>
-              <span>Télémétrie, positions et météo</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-      {
-        id: 'fastf1',
-        content: (
-          <a href="https://docs.fastf1.dev/" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">04</span>
-            <span className="site-footer__source-copy">
-              <strong>FastF1</strong>
-              <span>Données temps réel et historiques</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-      {
-        id: 'f1',
-        content: (
-          <a href="https://www.formula1.com/" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">05</span>
-            <span className="site-footer__source-copy">
-              <strong>Formula1.com</strong>
-              <span>Références officielles et archives</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-      {
-        id: 'fia',
-        content: (
-          <a href="https://www.fia.com/" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">06</span>
-            <span className="site-footer__source-copy">
-              <strong>FIA</strong>
-              <span>Règlements et sécurité</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-      {
-        id: 'braithwaite',
-        content: (
-          <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12043339/" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">07</span>
-            <span className="site-footer__source-copy">
-              <strong>Braithwaite et al.</strong>
-              <span>Étude épidémiologique 1950-2023</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-      {
-        id: 'tracing',
-        content: (
-          <a href="https://www.tracinginsights.com/" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">08</span>
-            <span className="site-footer__source-copy">
-              <strong>Tracing Insights</strong>
-              <span>Visualisations et analyses F1</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-      {
-        id: 'pudding',
-        content: (
-          <a href="https://pudding.cool/" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">09</span>
-            <span className="site-footer__source-copy">
-              <strong>The Pudding</strong>
-              <span>Référence scrollytelling et narration</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-      {
-        id: 'figma',
-        content: (
-          <a href="https://www.figma.com/design/NScnLEtFSYWRrBWTcuhv4b/F1Project?node-id=0-1&t=meHIixZrsysDpq6a-1" target="_blank" rel="noreferrer" className="site-footer__source-link">
-            <span className="site-footer__source-badge">10</span>
-            <span className="site-footer__source-copy">
-              <strong>Wireframes Figma</strong>
-              <span>Structure et parcours de l’expérience</span>
-            </span>
-            <ArrowUpRight aria-hidden="true" />
-          </a>
-        ),
-      },
-    ] as AnimatedListItem[],
+    items: sourceItems,
   },
   {
     title: 'Assets',
@@ -183,6 +95,8 @@ const itemVariants = {
 };
 
 export default function Footer() {
+  const [sourcesAtBottom, setSourcesAtBottom] = useState(false);
+
   const handleReturnToTop = () => {
     window.sessionStorage.setItem('scroll-to-top-on-reload', '1');
     window.location.hash = 's-hero';
@@ -250,7 +164,7 @@ export default function Footer() {
                 <motion.div
                   key={card.title}
                   variants={itemVariants}
-                  className={`${classes.join(' ')}${card.title === 'Sources' ? ' site-footer__card--sources' : ''}`}
+                  className={`${classes.join(' ')}${card.title === 'Sources' ? ` site-footer__card--sources${sourcesAtBottom ? ' is-scroll-end' : ''}` : ''}`}
                 >
                   <h4>{card.title}</h4>
                   {card.title === 'Sources' ? (
@@ -259,7 +173,6 @@ export default function Footer() {
                         <AnimatedList
                           items={card.items ?? []}
                           autoAddDelay={0}
-                          maxItems={10}
                           animationType="scale"
                           enterFrom="top"
                           startFrom="top"
@@ -270,6 +183,7 @@ export default function Footer() {
                           fadeColor="#121212"
                           itemGap={10}
                           height="100%"
+                          onScrollStateChange={({ atBottom }) => setSourcesAtBottom(atBottom)}
                         />
                       </div>
                     </div>

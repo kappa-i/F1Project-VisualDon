@@ -1297,6 +1297,12 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   pointer-events: none;
   z-index: 3;
   background: linear-gradient(180deg, rgba(25, 25, 25, 0) 0%, rgba(25, 25, 25, 0.82) 55%, #191919 100%);
+  opacity: 1;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.site-footer__card--sources.is-scroll-end::after {
+  opacity: 0;
 }
 
 .site-footer__card-body {
@@ -1410,7 +1416,6 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 
 .site-footer__card a:hover {
   color: #ffffff;
-  transform: translateX(4px);
 }
 
 .site-footer__card a svg {
@@ -1478,6 +1483,11 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.04);
+  transition: border-color 0.25s ease-in-out;
+}
+
+.animated-list__item-shell:hover {
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .animated-list__item-shell--clickable {
