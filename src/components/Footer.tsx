@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight, Box, Globe, Route } from 'lucide-react';
 import AnimatedList, { type AnimatedListItem } from './AnimatedList';
@@ -110,6 +110,36 @@ const itemVariants = {
 export default function Footer() {
   const [sourcesAtBottom, setSourcesAtBottom] = useState(false);
   const [assetsAtBottom, setAssetsAtBottom] = useState(false);
+  const [footerListsUnlocked, setFooterListsUnlocked] = useState(false);
+
+  useEffect(() => {
+    const updateFooterScrollLock = () => {
+      const conclusionSection = document.getElementById('s-conclusion');
+
+      if (!(conclusionSection instanceof HTMLElement)) {
+        setFooterListsUnlocked(false);
+        return;
+      }
+
+      const maxScrollTop = Math.max(
+        0,
+        conclusionSection.scrollHeight - conclusionSection.clientHeight,
+      );
+
+      setFooterListsUnlocked(conclusionSection.scrollTop >= maxScrollTop - 1);
+    };
+
+    const conclusionSection = document.getElementById('s-conclusion');
+
+    updateFooterScrollLock();
+    conclusionSection?.addEventListener('scroll', updateFooterScrollLock, { passive: true });
+    window.addEventListener('resize', updateFooterScrollLock);
+
+    return () => {
+      conclusionSection?.removeEventListener('scroll', updateFooterScrollLock);
+      window.removeEventListener('resize', updateFooterScrollLock);
+    };
+  }, []);
 
   const handleReturnToTop = () => {
     window.sessionStorage.setItem('scroll-to-top-on-reload', '1');
@@ -184,6 +214,12 @@ export default function Footer() {
                   {card.title === 'Sources' || card.title === 'Assets' ? (
                     <div className="site-footer__card-body">
                       <div className="site-footer__card-body-bottom">
+                        {!footerListsUnlocked ? (
+                          <div
+                            className="site-footer__scroll-lock"
+                            aria-hidden="true"
+                          />
+                        ) : null}
                         <AnimatedList
                           items={card.items ?? []}
                           autoAddDelay={0}
@@ -197,6 +233,7 @@ export default function Footer() {
                           fadeColor="#121212"
                           itemGap={10}
                           height="100%"
+                          scrollEnabled={footerListsUnlocked}
                           onScrollStateChange={
                             card.title === 'Sources'
                               ? ({ atBottom }) => setSourcesAtBottom(atBottom)

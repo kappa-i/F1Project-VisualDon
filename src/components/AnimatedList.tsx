@@ -41,6 +41,7 @@ export interface AnimatedListProps {
   renderItem?: (item: AnimatedListItem) => React.ReactNode;
   height?: string | number;
   onScrollStateChange?: (state: { atTop: boolean; atBottom: boolean }) => void;
+  scrollEnabled?: boolean;
 }
 
 const Ripple = ({
@@ -177,6 +178,7 @@ export default function AnimatedList({
   renderItem,
   height = '600px',
   onScrollStateChange,
+  scrollEnabled = true,
 }: AnimatedListProps) {
   const [items, setItems] = useState<AnimatedListItem[]>(() => initialItems);
   const itemIndexRef = useRef(initialItems.length);
@@ -202,6 +204,16 @@ export default function AnimatedList({
   useEffect(() => {
     reportScrollState();
   }, [items, reportScrollState]);
+
+  useEffect(() => {
+    if (scrollEnabled) return;
+
+    const scrollEl = scrollRef.current;
+    if (!scrollEl) return;
+
+    scrollEl.scrollTop = 0;
+    reportScrollState();
+  }, [scrollEnabled, reportScrollState]);
 
   useEffect(() => {
     if (intervalRef.current) {
@@ -311,6 +323,10 @@ export default function AnimatedList({
         : '';
 
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (!scrollEnabled) {
+      return;
+    }
+
     event.stopPropagation();
 
     const scrollEl = scrollRef.current;
@@ -354,6 +370,11 @@ export default function AnimatedList({
         onScroll={reportScrollState}
         onMouseEnter={() => pauseOnHover && setIsPaused(true)}
         onMouseLeave={() => pauseOnHover && setIsPaused(false)}
+        style={{
+          overflowY: scrollEnabled ? 'auto' : 'hidden',
+          pointerEvents: scrollEnabled ? 'auto' : 'none',
+          touchAction: scrollEnabled ? 'auto' : 'none',
+        }}
       >
         <ul
           className={cn('animated-list__items', alignmentClass)}

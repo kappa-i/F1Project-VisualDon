@@ -1347,11 +1347,20 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 
 .site-footer__card-body-bottom {
+  position: relative;
   display: flex;
   flex: 1;
   height: 100%;
   min-height: 0;
   overflow: hidden;
+}
+
+.site-footer__scroll-lock {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: auto;
+  background: transparent;
 }
 
 .site-footer__card--stacked {
