@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
-import car1Url  from '../assets/Gb1.png';
-import car2Url  from '../assets/Gb2.png';
+import car1Url  from '../assets/1111.webp';
+import car2Url  from '../assets/2222.webp';
 import trackUrl from '../assets/track-asset2.webp';
 
 // ── World space = track image natural dimensions ───────────────────────────
