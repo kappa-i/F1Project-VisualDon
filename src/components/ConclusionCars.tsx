@@ -47,22 +47,22 @@ function splitSeg(p0: Pt, seg: Seg): [Seg, Seg] {
 // ── Calibrated paths — placeholder, calibrate with ?dev2 ──────────────────
 // START.y = -100  → car hidden just above viewport, appears after ~10% scroll
 // END.y   ≈ 1100  → car near bottom of viewport (adjust to match your screen)
-const INIT_START_CAR1: Pt = { x: 750, y: -100 };
+const INIT_START_CAR1: Pt = {"x":1060,"y":-225};
 const INIT_SEGS_CAR1: Seg[] = [
-  { cp1:{x:750,y:200}, cp2:{x:720,y:500}, end:{x:740,y:750}  },
-  { cp1:{x:755,y:900}, cp2:{x:745,y:1050},end:{x:750,y:1100} },
+  { cp1:{x:1120,y:221},  cp2:{x:825,y:436},  end:{x:779,y:733}  },
+  { cp1:{x:755,y:900},   cp2:{x:730,y:1121}, end:{x:890,y:1320} },
 ];
 
-const INIT_START_CAR2: Pt = { x: 960, y: -100 };
+const INIT_START_CAR2: Pt = {"x":1200,"y":-228};
 const INIT_SEGS_CAR2: Seg[] = [
-  { cp1:{x:960,y:200}, cp2:{x:950,y:500}, end:{x:960,y:750}  },
-  { cp1:{x:965,y:900}, cp2:{x:955,y:1050},end:{x:960,y:1100} },
+  { cp1:{x:1218,y:488},  cp2:{x:875,y:411},  end:{x:869,y:896}  },
+  { cp1:{x:888,y:1126},  cp2:{x:921,y:1209}, end:{x:1068,y:1304} },
 ];
 
-const INIT_START_CAR3: Pt = { x: 1170, y: -100 };
+const INIT_START_CAR3: Pt = {"x":1397,"y":-221};
 const INIT_SEGS_CAR3: Seg[] = [
-  { cp1:{x:1170,y:200}, cp2:{x:1190,y:500}, end:{x:1170,y:750}  },
-  { cp1:{x:1155,y:900}, cp2:{x:1165,y:1050},end:{x:1170,y:1100} },
+  { cp1:{x:1415,y:333},  cp2:{x:1219,y:338}, end:{x:1012,y:702} },
+  { cp1:{x:949,y:839},   cp2:{x:836,y:1034}, end:{x:1208,y:1310} },
 ];
 
 const CAR_SRCS: Record<TabKey, string> = { car1: car1Url, car2: car2Url, car3: car3Url };
