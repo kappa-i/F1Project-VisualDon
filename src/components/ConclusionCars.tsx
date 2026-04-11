@@ -48,14 +48,14 @@ function splitSeg(p0: Pt, seg: Seg): [Seg, Seg] {
 //   image_y(progress) ≈ progress × maxScroll_world + viewport_offset
 // where maxScroll_world = WORLD_H - approxViewH ≈ 1900–2000
 // → paths should span from Y≈0–300 (top) to Y≈2000–2900 (bottom)
-const INIT_START_CAR1: Pt = {"x":1054,"y":128};
+const INIT_START_CAR1: Pt = {"x":1093,"y":-160};
 const INIT_SEGS_CAR1: Seg[] = [
-  { cp1:{"x":812,"y":531},   cp2:{"x":700,"y":930},   end:{"x":693,"y":982}   },
+  { cp1:{"x":1054,"y":348},  cp2:{"x":700,"y":930},   end:{"x":693,"y":982}   },
   { cp1:{"x":637,"y":1296},  cp2:{"x":949,"y":1458},  end:{"x":1023,"y":1703} },
   { cp1:{"x":1089,"y":1976}, cp2:{"x":730,"y":2296},  end:{"x":890,"y":2618}  },
 ];
 
-const INIT_START_CAR2: Pt = {"x":1250,"y":116};
+const INIT_START_CAR2: Pt = {"x":1263,"y":-162};
 const INIT_SEGS_CAR2: Seg[] = [
   { cp1:{"x":1079,"y":342},  cp2:{"x":1048,"y":458},  end:{"x":959,"y":694}   },
   { cp1:{"x":866,"y":994},   cp2:{"x":893,"y":1073},  end:{"x":979,"y":1276}  },
@@ -63,7 +63,7 @@ const INIT_SEGS_CAR2: Seg[] = [
   { cp1:{"x":888,"y":2304},  cp2:{"x":921,"y":2438},  end:{"x":964,"y":2601}  },
 ];
 
-const INIT_START_CAR3: Pt = {"x":1464,"y":76};
+const INIT_START_CAR3: Pt = {"x":1463,"y":-171};
 const INIT_SEGS_CAR3: Seg[] = [
   { cp1:{"x":1389,"y":193},  cp2:{"x":1274,"y":359},  end:{"x":1208,"y":493}  },
   { cp1:{"x":1140,"y":637},  cp2:{"x":1071,"y":724},  end:{"x":1026,"y":933}  },
@@ -316,14 +316,15 @@ function Dev2Editor() {
   const updPath = (fn: (p: PathData) => PathData) =>
     setPaths(prev => ({ ...prev, [activeTab]: fn(prev[activeTab]) }));
 
-  // svgCoord: SVG is position:absolute inside scroll container.
-  // getBoundingClientRect().top is negative when scrolled (SVG is above viewport).
-  // (clientY - rect.top) / scale = absolute Y in world/image coordinates. ✓
+  // svgCoord: SVG top:0 inside relative wrapper (= top of top-margin spacer).
+  // viewBox starts at Y=-MARGIN, so we subtract MARGIN to get image coordinates.
+  // rect.top = -scrollTop (scroll container is fixed; wrapper scrolls up).
+  // y = (clientY + scrollTop) / scale - MARGIN = scrollTopWorld + clientY/scale - MARGIN ✓
   const svgCoord = (e: React.MouseEvent): Pt => {
     const rect = svgRef.current!.getBoundingClientRect();
     return {
       x: Math.round((e.clientX - rect.left) / scale),
-      y: Math.round((e.clientY - rect.top)  / scale),
+      y: Math.round((e.clientY - rect.top)  / scale - MARGIN),
     };
   };
 
@@ -447,7 +448,12 @@ function Dev2Editor() {
   // approxViewH: viewport height in world units (for the viewport indicator rect)
   const approxViewH = Math.round(window.innerHeight / scale);
 
-  const viewBox = `0 0 ${WORLD_W} ${WORLD_H}`;
+  // MARGIN: extra space in world units above/below the image so paths can start/end
+  // outside the image bounds (cars hidden behind overflow before entering).
+  const MARGIN = 1000;
+
+  // viewBox covers [-MARGIN … WORLD_H+MARGIN] on Y so the margin areas are editable.
+  const viewBox = `0 ${-MARGIN} ${WORLD_W} ${WORLD_H + 2 * MARGIN}`;
 
   const panel = createPortal(
     <div style={{
@@ -525,22 +531,26 @@ function Dev2Editor() {
           msOverflowStyle: 'none', scrollbarWidth: 'none',
         } as React.CSSProperties}
       >
-        {/* Relative wrapper so the absolute SVG positions over the image */}
+        {/* Relative wrapper so the absolute SVG positions over the full scrollable area */}
         <div style={{ position: 'relative' }}>
+          {/* Top margin: MARGIN world units of empty space — paths can start here */}
+          <div style={{ height: MARGIN * scale }} />
           <img
             src={trackUrl}
             style={{ display: 'block', width: '100%', height: 'auto', opacity: 0.4 }}
             alt=""
           />
-          <div style={{ height: 80 }} />
+          {/* Bottom margin + footer */}
+          <div style={{ height: MARGIN * scale + 80 }} />
 
-          {/* ── 2. SVG path editor — position:absolute, overlays the image ── */}
-          {/* Scrolls WITH the image → you can see paths on the circuit.       */}
+          {/* ── 2. SVG path editor — position:absolute, covers top-margin → bottom-margin ── */}
+          {/* top:0 = top of relative wrapper = top of top-margin spacer.                     */}
+          {/* viewBox Y starts at -MARGIN so svgCoord gives image-space coords (y=0 = image top). */}
           <svg
             ref={svgRef}
             viewBox={viewBox}
             width={WORLD_W * scale}
-            height={WORLD_H * scale}
+            height={(WORLD_H + 2 * MARGIN) * scale}
             style={{
               position: 'absolute', top: 0, left: 0,
               display: 'block', cursor: 'crosshair',
@@ -549,14 +559,15 @@ function Dev2Editor() {
             onMouseUp={() => { dragging.current = null; }}
             onClick={() => setSelected(null)}
           >
-            {/* Yellow rectangle = current viewport position in the image */}
+            {/* Yellow rectangle = current viewport position in the full coordinate space */}
+            {/* viewBox Y_top_of_viewport = -MARGIN + scrollTopWorld                     */}
             <rect
-              x={0} y={scrollTopWorld}
+              x={0} y={-MARGIN + scrollTopWorld}
               width={WORLD_W} height={approxViewH}
               fill="rgba(255,255,0,0.03)"
               stroke="rgba(255,255,0,0.45)" strokeWidth={5}
             />
-            <text x={14} y={scrollTopWorld + 35}
+            <text x={14} y={-MARGIN + scrollTopWorld + 35}
               fill="rgba(255,255,0,0.55)" fontSize={26} fontFamily="monospace">
               viewport ({approxViewH}px)
             </text>
