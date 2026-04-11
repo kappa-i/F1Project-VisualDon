@@ -1281,17 +1281,15 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 
 .site-footer__card:last-child {
   background:
-    radial-gradient(ellipse 160% 160% at -20% -20%, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%),
     radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08) 1px, transparent 0),
-    rgba(255, 255, 255, 0.04);
-  background-size: auto, 18px 18px, auto;
+    #0e0e0e;
+  background-size: 18px 18px, auto;
 }
 
 .site-footer__card:last-child:hover {
   background:
-    radial-gradient(ellipse 160% 160% at -20% -20%, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%),
     radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08) 1px, transparent 0),
-    rgba(255, 255, 255, 0.04);
+    #0e0e0e;
 }
 
 .site-footer__card--sources,
@@ -1353,7 +1351,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .site-footer__card--sources:hover,
 .site-footer__card--assets:hover {
   background: #0e0e0e;
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.24);
 }
 
 .site-footer__card h4 {
