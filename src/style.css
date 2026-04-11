@@ -781,6 +781,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   padding: 0;
   height: 100vh;
   min-height: unset;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -800,6 +801,22 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   gap: 48px;
   flex: 0 0 auto;
   min-height: 0;
+}
+
+.conclusion-track-asset {
+  width: 100%;
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.conclusion-track-asset__image {
+  display: block;
+  width: 100vw;
+  height: auto;
+  max-width: none;
+  flex: 0 0 auto;
 }
 
 .section--conclusion::-webkit-scrollbar {

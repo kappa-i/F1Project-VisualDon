@@ -6,7 +6,14 @@
       "Bash(npm run:*)",
       "Bash(npx vite:*)",
       "Bash(npx tsc:*)",
-      "Bash(xxd)"
+      "Bash(xxd)",
+      "Read(//Users/tanguyvaucher/Desktop/**)",
+      "Bash(cp /Users/tanguyvaucher/Desktop/1111.webp /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/1111.webp)",
+      "Bash(cp /Users/tanguyvaucher/Desktop/2222.webp /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/2222.webp)",
+      "Bash(cp /Users/tanguyvaucher/Desktop/3333.webp /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/3333.webp)",
+      "Bash(python3 -c \":*)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/track-asset2.webp)",
+      "Bash(sips:*)"
     ]
   }
 }

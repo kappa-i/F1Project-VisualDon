@@ -14,7 +14,8 @@ import SpaSafety from './components/SpaSafety.tsx';
 import InfiniteGallery from './components/InfiniteGallery.tsx';
 import EraTimeline from './components/EraTimeline.tsx';
 import EraGlitter from './components/EraGlitter.tsx';
-import RaceTrack   from './components/RaceTrack.tsx';
+import RaceTrack      from './components/RaceTrack.tsx';
+import ConclusionCars from './components/ConclusionCars.tsx';
 import Footer from './components/Footer.tsx';
 import ConclusionGraph from './components/ConclusionGraph.tsx';
 import Stats4 from './components/Stats4.tsx';
@@ -167,6 +168,12 @@ const racetrackMount = document.getElementById('racetrack-root');
 if (racetrackMount) {
   const racetrackRoot = createRoot(racetrackMount);
   racetrackRoot.render(React.createElement(RaceTrack));
+}
+
+const conclusionCarsMount = document.getElementById('conclusion-cars-root');
+if (conclusionCarsMount) {
+  const conclusionCarsRoot = createRoot(conclusionCarsMount);
+  conclusionCarsRoot.render(React.createElement(ConclusionCars));
 }
 
 
@@ -1006,9 +1013,11 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
   const prevPage = currentPage;
   if (prevPage !== CONCLUSION_PAGE && idx === CONCLUSION_PAGE && conclusionSectionEl) {
     conclusionSectionEl.scrollTop = 0;
+    window.dispatchEvent(new CustomEvent('conclusion-active'));
   }
   if (prevPage === CONCLUSION_PAGE && idx !== CONCLUSION_PAGE && conclusionSectionEl) {
     conclusionSectionEl.scrollTop = 0;
+    window.dispatchEvent(new CustomEvent('conclusion-inactive'));
   }
   if (isCrashPage(idx) && prevPage < CRASH_PAGE_START) {
     setCrashProgress(0, true);
