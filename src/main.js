@@ -1323,9 +1323,83 @@ window.addEventListener('keydown', e => {
 });
 
 // ── load glb ──────────────────────────────────────────────────────────────
-const fillEl   = document.getElementById('fill');
-const pctEl    = document.getElementById('pct');
-const loaderEl = document.getElementById('loader');
+const fillEl      = document.getElementById('fill');
+const pctEl       = document.getElementById('pct');
+const loaderEl    = document.getElementById('loader');
+const stepEl      = document.getElementById('loader-step');
+
+// Étapes affichées selon le pourcentage atteint
+const LOADER_STAGES = [
+  { threshold: 0,  label: 'Initialisation…' },
+  { threshold: 8,  label: 'Chargement scripts…' },
+  { threshold: 20, label: 'Chargement modèle 3D…' },
+  { threshold: 50, label: 'Parsing géométries…' },
+  { threshold: 75, label: 'Matériaux & textures…' },
+  { threshold: 92, label: 'Finalisation scène…' },
+];
+
+let _loaderCurrent = 0;   // % affiché actuellement
+let _loaderTarget  = 0;   // % cible vers lequel animer
+let _loaderDone    = false;
+let _loaderRafId   = null;
+
+function _setLoaderDisplay(p) {
+  const rounded = Math.round(p);
+  fillEl.style.width = rounded + '%';
+  pctEl.textContent  = rounded + '%';
+  if (stepEl) {
+    let label = LOADER_STAGES[0].label;
+    for (const s of LOADER_STAGES) { if (p >= s.threshold) label = s.label; }
+    stepEl.textContent = label;
+  }
+}
+
+// Démarre le fake ticker dès l'appel — avance asymptotiquement vers ~87%
+// sans jamais l'atteindre (la vraie fin fixe à 100%)
+function _startLoaderTicker() {
+  const t0 = performance.now();
+  const FAKE_DURATION = 25000; // 25 s pour atteindre ~87%
+  const FAKE_CEIL     = 87;
+
+  function tick() {
+    if (_loaderDone) return;
+    const elapsed = performance.now() - t0;
+    const t       = Math.min(elapsed / FAKE_DURATION, 1);
+    // Courbe exponentielle : atteint ~63% à t=1, ~87% asymptote
+    const fakeTarget = FAKE_CEIL * (1 - Math.exp(-4 * t));
+    if (fakeTarget > _loaderTarget) _loaderTarget = fakeTarget;
+
+    // Interpolation douce vers la cible
+    _loaderCurrent += (_loaderTarget - _loaderCurrent) * 0.04;
+    _setLoaderDisplay(_loaderCurrent);
+
+    _loaderRafId = requestAnimationFrame(tick);
+  }
+  _loaderRafId = requestAnimationFrame(tick);
+}
+
+// Appelé quand le modèle est entièrement chargé
+function _completeLoader() {
+  _loaderDone = true;
+  if (_loaderRafId) cancelAnimationFrame(_loaderRafId);
+  if (stepEl) stepEl.textContent = 'Prêt';
+
+  let p = _loaderCurrent;
+  function finish() {
+    p += (100 - p) * 0.12;
+    _setLoaderDisplay(p);
+    if (100 - p > 0.2) {
+      requestAnimationFrame(finish);
+    } else {
+      _setLoaderDisplay(100);
+      setTimeout(() => loaderEl.classList.add('hidden'), 400);
+    }
+  }
+  finish();
+}
+
+// Démarrer le ticker immédiatement
+_startLoaderTicker();
 
 new GLTFLoader().load(studioGlbUrl, gltf => {
   const studio = gltf.scene;
@@ -1338,7 +1412,7 @@ new GLTFLoader().load(studioGlbUrl, gltf => {
 if (IS_DEV2) {
   modelLoaded = true;
   rebuildDots();
-  loaderEl.classList.add('hidden');
+  _completeLoader();
   goToPage(DATA_PAGE);
 } else
 new GLTFLoader().load(
@@ -1400,18 +1474,16 @@ new GLTFLoader().load(
     modelLoaded = true;
     rebuildDots();
 
-    fillEl.style.width = '100%';
-    pctEl.textContent  = '100%';
-    setTimeout(() => loaderEl.classList.add('hidden'), 400);
+    _completeLoader();
   },
   xhr => {
+    // Si le serveur fournit Content-Length, mapper le vrai progress sur 20-92%
     if (xhr.lengthComputable) {
-      const p = Math.round(xhr.loaded / xhr.total * 100);
-      fillEl.style.width = p + '%';
-      pctEl.textContent  = p + '%';
+      const mapped = 20 + (xhr.loaded / xhr.total) * 72;
+      if (mapped > _loaderTarget) _loaderTarget = mapped;
     }
   },
-  err => { console.error(err); pctEl.textContent = 'Erreur'; }
+  err => { console.error(err); if (stepEl) stepEl.textContent = 'Erreur'; }
 );
 
 // ── resize ────────────────────────────────────────────────────────────────
