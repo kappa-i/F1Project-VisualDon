@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 
 import car1Url  from '../assets/1111.webp';
 import car2Url  from '../assets/2222.webp';
-import car3Url  from '../assets/3333.webp';
 import trackUrl from '../assets/track-asset2.webp';
 
 // ── World space = track image natural dimensions ───────────────────────────
@@ -18,7 +17,7 @@ const WORLD_H = 2909; // track-asset2.webp natural height
 
 type Pt     = { x: number; y: number };
 type Seg    = { cp1: Pt; cp2: Pt; end: Pt };
-type TabKey = 'car1' | 'car2' | 'car3';
+type TabKey = 'car1' | 'car2';
 
 // Open path — no Z
 function buildPath(start: Pt, segs: Seg[]): string {
@@ -63,16 +62,7 @@ const INIT_SEGS_CAR2: Seg[] = [
   { cp1:{"x":888,"y":2304},  cp2:{"x":921,"y":2438},  end:{"x":964,"y":2601}  },
 ];
 
-const INIT_START_CAR3: Pt = {"x":1463,"y":-171};
-const INIT_SEGS_CAR3: Seg[] = [
-  { cp1:{"x":1389,"y":193},  cp2:{"x":1274,"y":359},  end:{"x":1208,"y":493}  },
-  { cp1:{"x":1140,"y":637},  cp2:{"x":1071,"y":724},  end:{"x":1026,"y":933}  },
-  { cp1:{"x":1033,"y":1174}, cp2:{"x":1269,"y":1253}, end:{"x":1304,"y":1366} },
-  { cp1:{"x":1413,"y":1759}, cp2:{"x":1234,"y":2019}, end:{"x":1148,"y":2179} },
-  { cp1:{"x":1102,"y":2264}, cp2:{"x":1009,"y":2372}, end:{"x":1011,"y":2614} },
-];
-
-const CAR_SRCS: Record<TabKey, string> = { car1: car1Url, car2: car2Url, car3: car3Url };
+const CAR_SRCS: Record<TabKey, string> = { car1: car1Url, car2: car2Url };
 const CAR_H      = 250;  // world px
 const FADE_START = 0.80;
 
@@ -82,11 +72,10 @@ const FADE_START = 0.80;
 //   0.55 → fast, lower on screen at 50%
 //   0.65 → medium, near mid-screen at 50%
 //   0.75 → slower, upper third at 50%
-const EASINGS: [number, number, number] = [0.65, 0.75, 0.55];
+const EASINGS: [number, number] = [0.65, 0.75];
 
 // Speed factors randomised per page load → different car wins each time
-const SPEED_FACTORS: [number, number, number] = [
-  0.88 + Math.random() * 0.24,
+const SPEED_FACTORS: [number, number] = [
   0.88 + Math.random() * 0.24,
   0.88 + Math.random() * 0.24,
 ];
@@ -96,7 +85,6 @@ const IS_DEV2 = new URLSearchParams(location.search).has('dev2');
 const TABS: { key: TabKey; label: string; color: string }[] = [
   { key: 'car1', label: 'Car 1', color: '#ffd700' },
   { key: 'car2', label: 'Car 2', color: '#00cfff' },
-  { key: 'car3', label: 'Car 3', color: '#ff80ff' },
 ];
 
 function btnStyle(color: string, disabled = false): React.CSSProperties {
@@ -122,14 +110,12 @@ function ConclusionCarsMain() {
 
   const car1Ref  = useRef<HTMLImageElement>(null);
   const car2Ref  = useRef<HTMLImageElement>(null);
-  const car3Ref  = useRef<HTMLImageElement>(null);
-  const carRefs  = [car1Ref, car2Ref, car3Ref] as const;
+  const carRefs  = [car1Ref, car2Ref] as const;
   const worldRef = useRef<HTMLDivElement>(null);
 
   const pathStrs: Record<TabKey, string> = {
     car1: buildPath(INIT_START_CAR1, INIT_SEGS_CAR1),
     car2: buildPath(INIT_START_CAR2, INIT_SEGS_CAR2),
-    car3: buildPath(INIT_START_CAR3, INIT_SEGS_CAR3),
   };
 
   // Scale on resize
@@ -173,11 +159,10 @@ function ConclusionCarsMain() {
         const el = ref.current;
         if (!el) return;
         const dist = Math.min(1, Math.pow(progress, EASINGS[i]) * SPEED_FACTORS[i]);
-        const fade = dist < FADE_START
-          ? 1
-          : 1 - (dist - FADE_START) / (1 - FADE_START);
+        const distFade = dist < FADE_START ? 1 : 1 - (dist - FADE_START) / (1 - FADE_START);
+        const endFade  = progress < 0.85 ? 1 : Math.max(0, 1 - (progress - 0.85) / 0.15);
         el.style.setProperty('offset-distance', `${(dist * 100).toFixed(2)}%`);
-        el.style.opacity = String(Math.max(0, fade));
+        el.style.opacity = String(Math.max(0, Math.min(distFade, endFade)));
       });
     };
 
@@ -202,7 +187,7 @@ function ConclusionCarsMain() {
         transform: `scale(${scale})`,
         overflow: 'visible',
       }}>
-        {(['car1', 'car2', 'car3'] as TabKey[]).map((key, i) => (
+        {(['car1', 'car2'] as TabKey[]).map((key, i) => (
           <img
             key={key}
             ref={carRefs[i]}
@@ -235,7 +220,6 @@ function Dev2Editor() {
   const [paths, setPaths] = useState<Record<TabKey, PathData>>({
     car1: { start: INIT_START_CAR1, segs: INIT_SEGS_CAR1 },
     car2: { start: INIT_START_CAR2, segs: INIT_SEGS_CAR2 },
-    car3: { start: INIT_START_CAR3, segs: INIT_SEGS_CAR3 },
   });
   const [activeTab,      setActiveTab]      = useState<TabKey>('car1');
   const [selected,       setSelected]       = useState<number | 'start' | null>(null);
@@ -252,8 +236,7 @@ function Dev2Editor() {
 
   const car1Ref = useRef<HTMLImageElement>(null);
   const car2Ref = useRef<HTMLImageElement>(null);
-  const car3Ref = useRef<HTMLImageElement>(null);
-  const carRefs = [car1Ref, car2Ref, car3Ref] as const;
+  const carRefs = [car1Ref, car2Ref] as const;
 
   const [scale, setScale] = useState(() => window.innerWidth / WORLD_W);
   useEffect(() => {
@@ -297,11 +280,10 @@ function Dev2Editor() {
         const el = ref.current;
         if (!el) return;
         const dist = Math.min(1, Math.pow(progress, EASINGS[i]) * SPEED_FACTORS[i]);
-        const fade = dist < FADE_START
-          ? 1
-          : 1 - (dist - FADE_START) / (1 - FADE_START);
+        const distFade = dist < FADE_START ? 1 : 1 - (dist - FADE_START) / (1 - FADE_START);
+        const endFade  = progress < 0.85 ? 1 : Math.max(0, 1 - (progress - 0.85) / 0.15);
         el.style.setProperty('offset-distance', `${(dist * 100).toFixed(2)}%`);
-        el.style.opacity = String(Math.max(0, fade));
+        el.style.opacity = String(Math.max(0, Math.min(distFade, endFade)));
       });
 
       setScrollTopWorld(Math.round(stw));
@@ -316,7 +298,7 @@ function Dev2Editor() {
 
   const pathStrs = useMemo(() => {
     const r = {} as Record<TabKey, string>;
-    (['car1','car2','car3'] as TabKey[]).forEach(k => {
+    (['car1','car2'] as TabKey[]).forEach(k => {
       r[k] = buildPath(paths[k].start, paths[k].segs);
     });
     return r;
@@ -438,7 +420,7 @@ function Dev2Editor() {
 
   const copyData = () => {
     const parts: string[] = [];
-    (['car1','car2','car3'] as TabKey[]).forEach(key => {
+    (['car1','car2'] as TabKey[]).forEach(key => {
       const p = paths[key];
       parts.push(`// ${key.toUpperCase()}`);
       parts.push(`const INIT_START_${key.toUpperCase()}: Pt = ${JSON.stringify(p.start)};`);
@@ -633,7 +615,7 @@ function Dev2Editor() {
           transform: `scale(${scale})`,
           overflow: 'visible',
         }}>
-          {(['car1', 'car2', 'car3'] as TabKey[]).map((key, i) => (
+          {(['car1', 'car2'] as TabKey[]).map((key, i) => (
             <img
               key={key}
               ref={carRefs[i]}
