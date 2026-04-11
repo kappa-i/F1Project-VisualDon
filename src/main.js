@@ -14,7 +14,6 @@ import SpaSafety from './components/SpaSafety.tsx';
 import InfiniteGallery from './components/InfiniteGallery.tsx';
 import EraTimeline from './components/EraTimeline.tsx';
 import EraGlitter from './components/EraGlitter.tsx';
-import RaceTrack      from './components/RaceTrack.tsx';
 import ConclusionCars from './components/ConclusionCars.tsx';
 import Footer from './components/Footer.tsx';
 import ConclusionGraph from './components/ConclusionGraph.tsx';
@@ -162,12 +161,6 @@ const spaMount = document.getElementById('spa-root');
 if (spaMount) {
   const spaRoot = createRoot(spaMount);
   spaRoot.render(React.createElement(SpaSafety));
-}
-
-const racetrackMount = document.getElementById('racetrack-root');
-if (racetrackMount) {
-  const racetrackRoot = createRoot(racetrackMount);
-  racetrackRoot.render(React.createElement(RaceTrack));
 }
 
 const conclusionCarsMount = document.getElementById('conclusion-cars-root');
@@ -494,13 +487,10 @@ const VIEWER_PAGE_END = VIEWER_PAGE_START + 7;
 const SPA_PAGE_START = VIEWER_PAGE_END + 1;
 const SPA_PAGE_COUNT = 4;
 const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
-const DATA_PAGE = SPA_PAGE_END + 1;
-const CONCLUSION_PAGE = DATA_PAGE + 1;
+const CONCLUSION_PAGE = SPA_PAGE_END + 1;
 const PAGE_COUNT = CONCLUSION_PAGE + 1;
 const CRASH_SCROLL_DISTANCE = 7000;
 const CRASH_EXIT_DISTANCE = 220;
-const DATA_SCROLL_DISTANCE = 5000;   // wheel delta to complete one full lap
-const DATA_EXIT_DISTANCE   = 220;    // delta needed to exit the section
 const CRASH_FRAME_COUNT = 301;
 const CRASH_VELOCITY_GAIN = 0.25;
 const CRASH_VELOCITY_FRICTION = 0.972;
@@ -693,8 +683,7 @@ function pageToY(idx) {
   if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -100;
   if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -200;
   if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -300;
-  if (idx === DATA_PAGE) return -400;
-  if (idx === CONCLUSION_PAGE) return -500;
+  if (idx === CONCLUSION_PAGE) return -400;
   return -600;
 }
 
@@ -735,15 +724,6 @@ let wheelGestureDirection = 0;
 let wheelLastEventAt = 0;
 let wheelUnlockAt = 0;
 
-// ── DATA section state ─────────────────────────────────────────────────
-let dataProgress     = 0;   // 0 → 1 (full lap)
-let dataExitDistance = 0;
-let dataExitDirection = 0;
-
-function dispatchDataProgress(p) {
-  window.dispatchEvent(new CustomEvent('data-anim-progress', { detail: { progress: p } }));
-}
-
 const pageEl = document.getElementById('page');
 const conclusionSectionEl = document.getElementById('s-conclusion');
 let lastSectionNavProgress = -1;
@@ -765,9 +745,8 @@ function pageToSectionIndex(pageIdx) {
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 2;
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 3;
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 4;
-  if (pageIdx === DATA_PAGE) return 5;
-  if (pageIdx === CONCLUSION_PAGE) return 6;
-  return 6;
+  if (pageIdx === CONCLUSION_PAGE) return 5;
+  return 5;
 }
 
 function pageToSectionProgress(pageIdx) {
@@ -788,9 +767,8 @@ function pageToSectionProgress(pageIdx) {
     const spaProgress = (pageIdx - SPA_PAGE_START) / Math.max(1, SPA_PAGE_END - SPA_PAGE_START);
     return 4 + spaProgress * 0.92;
   }
-  if (pageIdx === DATA_PAGE) return 5;
-  if (pageIdx === CONCLUSION_PAGE) return 6;
-  return 6;
+  if (pageIdx === CONCLUSION_PAGE) return 5;
+  return 5;
 }
 
 function updateSectionNav(pageIdx = currentPage) {
@@ -816,8 +794,7 @@ function sectionToPage(sectionIdx) {
   if (sectionIdx === 2) return CRASH_PAGE_START;
   if (sectionIdx === 3) return VIEWER_PAGE_START;
   if (sectionIdx === 4) return SPA_PAGE_START;
-  if (sectionIdx === 5) return DATA_PAGE;
-  if (sectionIdx === 6) return CONCLUSION_PAGE;
+  if (sectionIdx === 5) return CONCLUSION_PAGE;
   return CONCLUSION_PAGE;
 }
 
@@ -992,20 +969,8 @@ function snapCamera(camIdx, onDone) {
 }
 
 // ── aller à une page ──────────────────────────────────────────────────────
-function goToPage(idx, { skipSpaComplete = false } = {}) {
+function goToPage(idx) {
   if (isTransitioning || idx < 0 || idx >= PAGE_COUNT) return;
-
-  // Compléter le tracé du circuit AVANT de quitter la section Spa
-  if (currentPage === SPA_PAGE_END && idx === DATA_PAGE && !skipSpaComplete) {
-    isTransitioning = true;
-    resetWheelGesture();
-    window.dispatchEvent(new CustomEvent('spa-poi-change', { detail: { index: SPA_PAGE_COUNT } }));
-    setTimeout(() => {
-      isTransitioning = false;
-      goToPage(DATA_PAGE, { skipSpaComplete: true });
-    }, 1200);
-    return;
-  }
 
   isTransitioning = true;
   resetWheelGesture();
@@ -1094,13 +1059,6 @@ function goToPage(idx, { skipSpaComplete = false } = {}) {
       } else if (isSpaPage(idx)) {
         updateSectionNav(idx);
         dispatchSpaPoiChange(idx);
-        isTransitioning = false;
-      } else if (idx === DATA_PAGE) {
-        dataProgress = 0;
-        dataExitDistance = 0;
-        dataExitDirection = 0;
-        dispatchDataProgress(0);
-        updateSectionNav(idx);
         isTransitioning = false;
       } else {
         updateSectionNav(idx);
@@ -1222,38 +1180,6 @@ window.addEventListener('wheel', e => {
     return;
   }
 
-  // ── DATA section: wheel drives the lap animation ───────────────────
-  if (currentPage === DATA_PAGE) {
-    const direction = delta > 0 ? 1 : -1;
-    const distance  = Math.abs(delta);
-
-    if (direction > 0) {
-      if (dataProgress < 1) {
-        dataProgress = Math.min(1, dataProgress + distance / DATA_SCROLL_DISTANCE);
-        dispatchDataProgress(dataProgress);
-        dataExitDistance  = 0;
-        dataExitDirection = 0;
-        return;
-      }
-      if (dataExitDirection !== direction) { dataExitDirection = direction; dataExitDistance = 0; }
-      dataExitDistance += distance;
-      if (dataExitDistance >= DATA_EXIT_DISTANCE) { dataProgress = 0; goToPage(CONCLUSION_PAGE); }
-      return;
-    }
-
-    if (dataProgress > 0) {
-      dataProgress = Math.max(0, dataProgress - distance / DATA_SCROLL_DISTANCE);
-      dispatchDataProgress(dataProgress);
-      dataExitDistance  = 0;
-      dataExitDirection = 0;
-      return;
-    }
-    if (dataExitDirection !== direction) { dataExitDirection = direction; dataExitDistance = 0; }
-    dataExitDistance += distance;
-    if (dataExitDistance >= DATA_EXIT_DISTANCE) { dataProgress = 0; goToPage(SPA_PAGE_END); }
-    return;
-  }
-
   const now = performance.now();
   if (now < wheelUnlockAt) return;
 
@@ -1297,31 +1223,6 @@ window.addEventListener('keydown', e => {
 
     if (atEnd)   { wheelUnlockAt = now + WHEEL_NAV_LOCK_MS; goToPage(VIEWER_PAGE_START); }
     if (atStart) { wheelUnlockAt = now + WHEEL_NAV_LOCK_MS; goToPage(CRASH_PAGE_START - 1); }
-    return;
-  }
-
-  if (currentPage === DATA_PAGE) {
-    const now = performance.now();
-    if (now < wheelUnlockAt) return;
-    if (direction > 0) {
-      if (dataProgress < 1) {
-        dataProgress = Math.min(1, dataProgress + 0.12);
-        dispatchDataProgress(dataProgress);
-        return;
-      }
-      wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
-      dataProgress = 0;
-      goToPage(CONCLUSION_PAGE);
-    } else {
-      if (dataProgress > 0) {
-        dataProgress = Math.max(0, dataProgress - 0.12);
-        dispatchDataProgress(dataProgress);
-        return;
-      }
-      wheelUnlockAt = now + WHEEL_NAV_LOCK_MS;
-      dataProgress = 0;
-      goToPage(SPA_PAGE_END);
-    }
     return;
   }
 
@@ -1422,7 +1323,7 @@ if (IS_DEV2) {
   modelLoaded = true;
   rebuildDots();
   _completeLoader();
-  goToPage(DATA_PAGE);
+  goToPage(CONCLUSION_PAGE);
 } else
 new GLTFLoader().load(
   '/haas/2026_HAASF1_CGT-V4.glb',
