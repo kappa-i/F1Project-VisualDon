@@ -47,19 +47,21 @@ function splitSeg(p0: Pt, seg: Seg): [Seg, Seg] {
 //   image_y(progress) ≈ progress × maxScroll_world + viewport_offset
 // where maxScroll_world = WORLD_H - approxViewH ≈ 1900–2000
 // → paths should span from Y≈0–300 (top) to Y≈2000–2900 (bottom)
-const INIT_START_CAR1: Pt = {"x":1093,"y":-160};
+const INIT_START_CAR1: Pt = {"x":1096,"y":-206};
 const INIT_SEGS_CAR1: Seg[] = [
-  { cp1:{"x":1054,"y":348},  cp2:{"x":700,"y":930},   end:{"x":693,"y":982}   },
-  { cp1:{"x":637,"y":1296},  cp2:{"x":949,"y":1458},  end:{"x":1023,"y":1703} },
-  { cp1:{"x":1089,"y":1976}, cp2:{"x":730,"y":2296},  end:{"x":890,"y":2618}  },
+  { cp1:{"x":1096,"y":188},  cp2:{"x":932,"y":398},   end:{"x":834,"y":714}   },
+  { cp1:{"x":781,"y":902},   cp2:{"x":752,"y":1040},  end:{"x":798,"y":1233}  },
+  { cp1:{"x":862,"y":1494},  cp2:{"x":1040,"y":1558}, end:{"x":1037,"y":1783} },
+  { cp1:{"x":1018,"y":2051}, cp2:{"x":730,"y":2296},  end:{"x":697,"y":2731}  },
 ];
 
-const INIT_START_CAR2: Pt = {"x":1263,"y":-162};
+const INIT_START_CAR2: Pt = {"x":1363,"y":-148};
 const INIT_SEGS_CAR2: Seg[] = [
-  { cp1:{"x":1079,"y":342},  cp2:{"x":1048,"y":458},  end:{"x":959,"y":694}   },
-  { cp1:{"x":866,"y":994},   cp2:{"x":893,"y":1073},  end:{"x":979,"y":1276}  },
-  { cp1:{"x":1012,"y":1381}, cp2:{"x":1231,"y":1648}, end:{"x":1127,"y":1857} },
-  { cp1:{"x":888,"y":2304},  cp2:{"x":921,"y":2438},  end:{"x":964,"y":2601}  },
+  { cp1:{"x":1349,"y":123},  cp2:{"x":1198,"y":446},  end:{"x":1180,"y":511}  },
+  { cp1:{"x":1129,"y":642},  cp2:{"x":1047,"y":832},  end:{"x":1030,"y":976}  },
+  { cp1:{"x":1014,"y":1088}, cp2:{"x":1038,"y":1273}, end:{"x":1182,"y":1518} },
+  { cp1:{"x":1254,"y":1666}, cp2:{"x":1228,"y":2074}, end:{"x":1131,"y":2214} },
+  { cp1:{"x":1024,"y":2401}, cp2:{"x":929,"y":2471},  end:{"x":912,"y":2732}  },
 ];
 
 const CAR_SRCS: Record<TabKey, string> = { car1: car1Url, car2: car2Url };
