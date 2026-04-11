@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
-import car1Url  from '../assets/1111.webp';
-import car2Url  from '../assets/2222.webp';
+import car1Url  from '../assets/Gb1.png';
+import car2Url  from '../assets/Gb2.png';
 import trackUrl from '../assets/track-asset2.webp';
 
 // ── World space = track image natural dimensions ───────────────────────────
@@ -65,7 +65,7 @@ const INIT_SEGS_CAR2: Seg[] = [
 ];
 
 const CAR_SRCS: Record<TabKey, string> = { car1: car1Url, car2: car2Url };
-const CAR_H      = 250;  // world px
+const CAR_H      = 280;  // world px
 const FADE_START = 0.80;
 
 // Easing exponents per car (progress^EASING[i], with exponent < 1 = ease-in).
