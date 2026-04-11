@@ -76,10 +76,19 @@ const CAR_SRCS: Record<TabKey, string> = { car1: car1Url, car2: car2Url, car3: c
 const CAR_H      = 250;  // world px
 const FADE_START = 0.80;
 
+// Easing exponents per car (progress^EASING[i], with exponent < 1 = ease-in).
+// Cars rush through the off-screen zone so they land at different heights
+// around mid-screen at ~50% of scroll — dynamic spread without altering the paths.
+//   0.55 → fast, lower on screen at 50%
+//   0.65 → medium, near mid-screen at 50%
+//   0.75 → slower, upper third at 50%
+const EASINGS: [number, number, number] = [0.65, 0.75, 0.55];
+
+// Speed factors randomised per page load → different car wins each time
 const SPEED_FACTORS: [number, number, number] = [
-  0.82 + Math.random() * 0.36,
-  0.82 + Math.random() * 0.36,
-  0.82 + Math.random() * 0.36,
+  0.88 + Math.random() * 0.24,
+  0.88 + Math.random() * 0.24,
+  0.88 + Math.random() * 0.24,
 ];
 
 const IS_DEV2 = new URLSearchParams(location.search).has('dev2');
@@ -163,7 +172,7 @@ function ConclusionCarsMain() {
       carRefs.forEach((ref, i) => {
         const el = ref.current;
         if (!el) return;
-        const dist = Math.min(1, progress * SPEED_FACTORS[i]);
+        const dist = Math.min(1, Math.pow(progress, EASINGS[i]) * SPEED_FACTORS[i]);
         const fade = dist < FADE_START
           ? 1
           : 1 - (dist - FADE_START) / (1 - FADE_START);
@@ -287,7 +296,7 @@ function Dev2Editor() {
       carRefs.forEach((ref, i) => {
         const el = ref.current;
         if (!el) return;
-        const dist = Math.min(1, progress * SPEED_FACTORS[i]);
+        const dist = Math.min(1, Math.pow(progress, EASINGS[i]) * SPEED_FACTORS[i]);
         const fade = dist < FADE_START
           ? 1
           : 1 - (dist - FADE_START) / (1 - FADE_START);
