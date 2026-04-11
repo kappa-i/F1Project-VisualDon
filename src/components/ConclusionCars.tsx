@@ -13,9 +13,10 @@ import trackUrl from '../assets/track-asset2.webp';
 // The exact Y extent depends on window.innerHeight / scale, calibrate with ?dev2.
 const WORLD_W = 1920;
 
-// Dev2 editor shows Y range [-200, 1300] so start/end points are both visible
-const DEV2_VIEW_Y = -200;
-const DEV2_VIEW_H = 1500;
+// Dev2 editor viewBox: Y range [-300, 1500] so start/end points are both visible
+// Width always = WORLD_W (1920), same scale as production (100vw).
+const DEV2_VIEW_Y = -300;
+const DEV2_VIEW_H = 1800; // -300 → 1500
 
 type Pt     = { x: number; y: number };
 type Seg    = { cp1: Pt; cp2: Pt; end: Pt };
@@ -227,20 +228,12 @@ function Dev2Editor() {
   const dragging = useRef<string | null>(null);
   const mdPt     = useRef<{ x: number; y: number } | null>(null);
 
-  // Fit the dev2 viewport to screen
-  const [dim, setDim] = useState({ scale: 1, ox: 0, oy: 0 });
+  // Same scale as production: width = 100vw → scale = vw / WORLD_W
+  const [scale, setScale] = useState(() => window.innerWidth / WORLD_W);
   useEffect(() => {
-    const calc = () => {
-      const s = Math.min(window.innerWidth / WORLD_W, window.innerHeight / DEV2_VIEW_H) * 0.96;
-      setDim({
-        scale: s,
-        ox: (window.innerWidth  - WORLD_W      * s) / 2,
-        oy: (window.innerHeight - DEV2_VIEW_H  * s) / 2,
-      });
-    };
-    calc();
-    window.addEventListener('resize', calc);
-    return () => window.removeEventListener('resize', calc);
+    const onResize = () => setScale(window.innerWidth / WORLD_W);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
   const currPath = paths[activeTab];
@@ -257,10 +250,10 @@ function Dev2Editor() {
 
   const svgCoord = (e: React.MouseEvent): Pt => {
     const rect = svgRef.current!.getBoundingClientRect();
-    // viewBox: "0 DEV2_VIEW_Y WORLD_W DEV2_VIEW_H"
+    // rect accounts for container scroll automatically via getBoundingClientRect
     return {
-      x: Math.round((e.clientX - rect.left) / dim.scale),
-      y: Math.round((e.clientY - rect.top)  / dim.scale + DEV2_VIEW_Y),
+      x: Math.round((e.clientX - rect.left) / scale),
+      y: Math.round((e.clientY - rect.top)  / scale + DEV2_VIEW_Y),
     };
   };
 
@@ -378,7 +371,6 @@ function Dev2Editor() {
     });
   };
 
-  const { scale, ox, oy } = dim;
   const ptR = 12, cpR = 8;
   const canRemove = selected !== null && selected !== 'start' && segs.length > 2;
 
@@ -455,14 +447,14 @@ function Dev2Editor() {
   );
 
   return (
-    <div style={{ position:'fixed', inset:0, background:'#080808', zIndex:9999, overflow:'hidden' }}>
+    <div style={{ position:'fixed', inset:0, background:'#080808', zIndex:9999, overflowY:'auto' }}>
       {panel}
       <svg
         ref={svgRef}
         viewBox={viewBox}
         width={WORLD_W * scale}
         height={DEV2_VIEW_H * scale}
-        style={{ position:'absolute', left: ox, top: oy, overflow:'visible', cursor:'crosshair' }}
+        style={{ display:'block', cursor:'crosshair' }}
         onMouseMove={onMouseMove}
         onMouseUp={() => { dragging.current = null; }}
         onClick={() => setSelected(null)}
