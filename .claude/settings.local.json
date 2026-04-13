@@ -13,7 +13,8 @@
       "Bash(cp /Users/tanguyvaucher/Desktop/3333.webp /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/3333.webp)",
       "Bash(python3 -c \":*)",
       "Bash(sips -g pixelWidth -g pixelHeight /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/track-asset2.webp)",
-      "Bash(sips:*)"
+      "Bash(sips:*)",
+      "Bash(grep -r \"loader\\\\|loading\\\\|Loading\\\\|Loader\" /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/*.js /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/*.tsx)"
     ]
   }
 }
