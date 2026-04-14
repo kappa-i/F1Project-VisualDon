@@ -337,6 +337,7 @@
         src="./assets/track-asset2.webp"
         alt="Illustration graphique d'un tracé de circuit HEIG-VD"
       />
+      <div id="debug-zone"></div>
     </div>
     <div id="footer-root"></div>
   </section>
@@ -348,5 +349,196 @@
 <div id="bottom-nav-root"></div>
 
 <script type="module" src="./main.js"></script>
+<script>
+(function () {
+  if (!new URLSearchParams(window.location.search).has('dev3')) return;
+
+  const zone = document.getElementById('debug-zone');
+  if (!zone) return;
+  zone.style.display = 'block';
+  zone.style.pointerEvents = 'all';
+
+  /* ── HUD panel ─────────────────────────────────────────────────────────── */
+  const hud = document.createElement('div');
+  hud.id = 'debug-hud';
+  hud.innerHTML = `
+    <div class="dh-title">📐 Zone debug</div>
+    <div class="dh-row"><span>left</span>  <b id="dh-l">—</b></div>
+    <div class="dh-row"><span>top</span>   <b id="dh-t">—</b></div>
+    <div class="dh-row"><span>width</span> <b id="dh-w">—</b></div>
+    <div class="dh-row"><span>height</span><b id="dh-h">—</b></div>
+    <button id="dh-copy">Copier CSS</button>
+    <div id="dh-copied" style="display:none;color:#4fffb0;font-size:11px;margin-top:4px">✓ Copié !</div>
+  `;
+  document.body.appendChild(hud);
+
+  /* ── Resize handles (8 directions) ─────────────────────────────────────── */
+  const handles = ['n','s','e','w','ne','nw','se','sw'];
+  handles.forEach(d => {
+    const h = document.createElement('div');
+    h.className = 'dz-handle dz-handle--' + d;
+    h.dataset.dir = d;
+    zone.appendChild(h);
+  });
+
+  /* ── Styles ─────────────────────────────────────────────────────────────── */
+  const style = document.createElement('style');
+  style.textContent = `
+    #debug-hud {
+      position: fixed; top: 20px; right: 20px; z-index: 99999;
+      background: rgba(10,10,20,0.92); border: 1px solid #444;
+      border-radius: 8px; padding: 12px 14px; font-family: monospace;
+      font-size: 12px; color: #ccc; min-width: 170px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+      user-select: none;
+    }
+    .dh-title { font-size: 11px; color: #888; margin-bottom: 8px; letter-spacing:.05em; }
+    .dh-row { display: flex; justify-content: space-between; gap: 12px; margin: 3px 0; }
+    .dh-row b { color: #fff; }
+    #dh-copy {
+      margin-top: 10px; width: 100%; padding: 5px 0;
+      background: #e10600; border: none; border-radius: 4px;
+      color: #fff; font-size: 11px; font-family: monospace;
+      cursor: pointer; letter-spacing: .04em;
+    }
+    #dh-copy:hover { background: #ff2a20; }
+
+    #debug-zone { cursor: move; }
+
+    .dz-handle {
+      position: absolute; background: #e10600;
+      pointer-events: all; z-index: 10;
+    }
+    /* corners */
+    .dz-handle--nw,.dz-handle--ne,.dz-handle--sw,.dz-handle--se {
+      width: 10px; height: 10px; border-radius: 2px;
+    }
+    .dz-handle--nw { top:-5px;  left:-5px;  cursor: nw-resize; }
+    .dz-handle--ne { top:-5px;  right:-5px; cursor: ne-resize; }
+    .dz-handle--sw { bottom:-5px; left:-5px;  cursor: sw-resize; }
+    .dz-handle--se { bottom:-5px; right:-5px; cursor: se-resize; }
+    /* edges */
+    .dz-handle--n,.dz-handle--s { height:6px; left:10px; right:10px; }
+    .dz-handle--e,.dz-handle--w { width:6px;  top:10px;  bottom:10px; }
+    .dz-handle--n  { top:-3px;    cursor: n-resize; }
+    .dz-handle--s  { bottom:-3px; cursor: s-resize; }
+    .dz-handle--e  { right:-3px;  cursor: e-resize; }
+    .dz-handle--w  { left:-3px;   cursor: w-resize; }
+  `;
+  document.head.appendChild(style);
+
+  /* ── Helpers ─────────────────────────────────────────────────────────────── */
+  function getParent() { return zone.parentElement; }
+
+  function pct(px, dim) { return (px / dim * 100); }
+
+  function readValues() {
+    const p = getParent();
+    const pr = p.getBoundingClientRect();
+    const zr = zone.getBoundingClientRect();
+    return {
+      l: pct(zr.left - pr.left, pr.width),
+      t: pct(zr.top  - pr.top,  pr.height),
+      w: pct(zr.width,          pr.width),
+      h: pct(zr.height,         pr.height),
+    };
+  }
+
+  function updateHUD() {
+    const v = readValues();
+    document.getElementById('dh-l').textContent = v.l.toFixed(1) + '%';
+    document.getElementById('dh-t').textContent = v.t.toFixed(1) + '%';
+    document.getElementById('dh-w').textContent = v.w.toFixed(1) + '%';
+    document.getElementById('dh-h').textContent = v.h.toFixed(1) + '%';
+  }
+
+  /* ── Drag (move) ─────────────────────────────────────────────────────────── */
+  let drag = null;
+
+  zone.addEventListener('mousedown', e => {
+    if (e.target !== zone) return; // only zone body, not handles
+    e.preventDefault();
+    const p = getParent();
+    const pr = p.getBoundingClientRect();
+    const zr = zone.getBoundingClientRect();
+    drag = {
+      startX: e.clientX, startY: e.clientY,
+      origL: zr.left - pr.left, origT: zr.top - pr.top,
+      pw: pr.width, ph: pr.height,
+    };
+  });
+
+  /* ── Resize ──────────────────────────────────────────────────────────────── */
+  let resize = null;
+
+  zone.querySelectorAll('.dz-handle').forEach(h => {
+    h.addEventListener('mousedown', e => {
+      e.preventDefault(); e.stopPropagation();
+      const p = getParent();
+      const pr = p.getBoundingClientRect();
+      const zr = zone.getBoundingClientRect();
+      resize = {
+        dir: h.dataset.dir,
+        startX: e.clientX, startY: e.clientY,
+        origL: zr.left - pr.left, origT: zr.top - pr.top,
+        origW: zr.width, origH: zr.height,
+        pw: pr.width, ph: pr.height,
+      };
+    });
+  });
+
+  /* ── Global mouse events ─────────────────────────────────────────────────── */
+  document.addEventListener('mousemove', e => {
+    if (drag) {
+      const dx = e.clientX - drag.startX;
+      const dy = e.clientY - drag.startY;
+      const newL = Math.max(0, drag.origL + dx);
+      const newT = Math.max(0, drag.origT + dy);
+      zone.style.left   = pct(newL, drag.pw)  + '%';
+      zone.style.top    = pct(newT, drag.ph) + '%';
+      updateHUD();
+    }
+    if (resize) {
+      const dx = e.clientX - resize.startX;
+      const dy = e.clientY - resize.startY;
+      const d = resize.dir;
+      let l = resize.origL, t = resize.origT, w = resize.origW, h = resize.origH;
+
+      if (d.includes('e')) w = Math.max(20, w + dx);
+      if (d.includes('s')) h = Math.max(20, h + dy);
+      if (d.includes('w')) { l = l + dx; w = Math.max(20, w - dx); }
+      if (d.includes('n')) { t = t + dy; h = Math.max(20, h - dy); }
+
+      zone.style.left   = pct(l, resize.pw) + '%';
+      zone.style.top    = pct(t, resize.ph) + '%';
+      zone.style.width  = pct(w, resize.pw) + '%';
+      zone.style.height = pct(h, resize.ph) + '%';
+      updateHUD();
+    }
+  });
+
+  document.addEventListener('mouseup', () => { drag = null; resize = null; });
+
+  /* ── Copy button ─────────────────────────────────────────────────────────── */
+  document.getElementById('dh-copy').addEventListener('click', () => {
+    const v = readValues();
+    const css =
+`left: ${v.l.toFixed(2)}%;
+top: ${v.t.toFixed(2)}%;
+width: ${v.w.toFixed(2)}%;
+height: ${v.h.toFixed(2)}%;`;
+    navigator.clipboard.writeText(css).then(() => {
+      const el = document.getElementById('dh-copied');
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 2000);
+    });
+  });
+
+  /* ── Init HUD ────────────────────────────────────────────────────────────── */
+  // Wait for image to be painted so getBoundingClientRect is accurate
+  window.addEventListener('load', updateHUD);
+  updateHUD();
+})();
+</script>
 </body>
 </html>

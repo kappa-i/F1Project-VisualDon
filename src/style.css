@@ -826,6 +826,19 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  position: relative;
+}
+
+#debug-zone {
+  display: none;
+  position: absolute;
+  left: 2.89%;
+  top: 53.12%;
+  width: 31.97%;
+  height: 19.47%;
+  border: 2px dashed rgba(255, 0, 0, 0.8);
+  background: rgba(255, 0, 0, 0.08);
+  pointer-events: none;
 }
 
 .conclusion-track-asset__image {

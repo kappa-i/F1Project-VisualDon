@@ -18,7 +18,8 @@
       "Bash(cp /Users/tanguyvaucher/Desktop/Pil1.png /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/pilote1.png)",
       "Bash(cp /Users/tanguyvaucher/Desktop/Pil2.png /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/pilote2.png)",
       "Bash(cp /Users/tanguyvaucher/Desktop/Pil3.png /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/pilote3.png)",
-      "Bash(cp /Users/tanguyvaucher/Desktop/Pil4.png /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/pilote4.png)"
+      "Bash(cp /Users/tanguyvaucher/Desktop/Pil4.png /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/pilote4.png)",
+      "Bash(ls /Users/tanguyvaucher/Desktop/Capture*)"
     ]
   }
 }
