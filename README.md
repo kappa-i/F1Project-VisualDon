@@ -276,6 +276,18 @@ Notre wireframe inclut des annotations précises sur le comportement dynamique d
 - Nuno Guilherme Amaro Faria
 
 
-## Sources 
+## Sources
 
 - Modèle voiture Haas 2026 : https://www.turbosquid.com/FullPreview/2534860 -
+
+---
+
+## Paramètres de développement
+
+Paramètres URL à ajouter en local pour activer des modes de debug. Utilisation : `http://localhost:5173/?<param>`
+
+| Paramètre | Effet |
+|-----------|-------|
+| `?dev` | Caméra libre sur la scène 3D (OrbitControls) + panel HUD copiable avec position/target de la caméra |
+| `?dev2` | Saute le loader et le chargement du modèle HAAS, va directement à la section conclusion |
+| `?dev3` | Affiche une zone debug déplaçable/redimensionnable sur l'image du circuit (section conclusion) avec panel de valeurs CSS copiables |
