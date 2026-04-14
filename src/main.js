@@ -1243,7 +1243,7 @@ const LOADER_STAGES = [
   { threshold: 0,  label: 'Initialisation…' },
   { threshold: 8,  label: 'Chargement scripts…' },
   { threshold: 20, label: 'Chargement modèle 3D…' },
-  { threshold: 50, label: 'Parsing géométries…' },
+  { threshold: 50, label: 'Préparation des géométries…' },
   { threshold: 75, label: 'Matériaux & textures…' },
   { threshold: 92, label: 'Finalisation scène…' },
 ];
