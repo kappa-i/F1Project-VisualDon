@@ -288,6 +288,6 @@ Paramètres URL à ajouter en local pour activer des modes de debug. Utilisation
 
 | Paramètre | Effet |
 |-----------|-------|
-| `?dev` | Caméra libre sur la scène 3D (OrbitControls) + panel HUD copiable avec position/target de la caméra |
-| `?dev2` | Saute le loader et le chargement du modèle HAAS, va directement à la section conclusion |
-| `?dev3` | Affiche une zone debug déplaçable/redimensionnable sur l'image du circuit (section conclusion) avec panel de valeurs CSS copiables |
+| `?dev` | Caméra libre sur la scène 3D + panel copiable avec position/target de la caméra |
+| `?dev2` | Permet de coordonner la trajectoire des voitures grâce à des points et des courbes de Bézier |
+| `?dev3` | Placement de zones sur le circuit avec un panel de valeurs CSS responsive copiables. |
