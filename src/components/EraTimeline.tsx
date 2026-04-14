@@ -276,15 +276,17 @@ export default function EraTimeline() {
                   fontWeight: 700,
                   transition: 'color 0.35s ease',
                 }}>
-                  Ère {step.tag}
+                  {step.tag === '01' ? step.period : `Ère ${step.tag}`}
                 </span>
-                <span style={{
-                  fontSize: '11px',
-                  letterSpacing: '2px',
-                  color: 'rgba(255,255,255,0.28)',
-                }}>
-                  {step.period}
-                </span>
+                {step.tag !== '01' && (
+                  <span style={{
+                    fontSize: '11px',
+                    letterSpacing: '2px',
+                    color: 'rgba(255,255,255,0.28)',
+                  }}>
+                    {step.period}
+                  </span>
+                )}
               </div>
 
               {/* Titre */}
@@ -314,6 +316,7 @@ export default function EraTimeline() {
                 color: 'rgba(224, 221, 216, 0.72)',
                 marginBottom: '28px',
                 letterSpacing: '0.1px',
+                fontFamily: step.tag === '01' ? "'Inter', ui-sans-serif, system-ui, sans-serif" : undefined,
               }}>
                 {step.desc}
               </p>
