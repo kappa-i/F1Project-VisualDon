@@ -162,9 +162,9 @@ export default function Footer() {
               <div className="site-footer__brand-copy">
                 <div className="site-footer__headline">
                   <h3>
-                    <TextScatter text="L'histoire de la" velocity={180} rotation={80} returnAfter={0.8} duration={1.8} />
+                    <TextScatter text="L'histoire de la" velocity={180} rotation={80} returnAfter={0.8} duration={1.8} interactive={false} />
                     <br />
-                    <TextScatter text="sécurité en " velocity={180} rotation={80} returnAfter={0.8} duration={1.8} />
+                    <TextScatter text="sécurité en " velocity={180} rotation={80} returnAfter={0.8} duration={1.8} interactive={false} />
                     <TextScatter
                       text="F1"
                       velocity={180}

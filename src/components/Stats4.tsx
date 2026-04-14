@@ -328,9 +328,9 @@ export default function Stats4() {
               textShadow: '0 10px 24px rgba(0, 0, 0, 0.48), 0 3px 10px rgba(0, 0, 0, 0.24)',
             }}
           >
-            <TextScatter text="L'histoire de la" velocity={180} rotation={80} returnAfter={0.8} duration={1.8} />
+            <TextScatter text="L'histoire de la" velocity={180} rotation={80} returnAfter={0.8} duration={1.8} interactive={false} />
             <br />
-            <TextScatter text="sécurité en " velocity={180} rotation={80} returnAfter={0.8} duration={1.8} />
+            <TextScatter text="sécurité en " velocity={180} rotation={80} returnAfter={0.8} duration={1.8} interactive={false} />
             <TextScatter text="F1" velocity={180} rotation={80} returnAfter={0.8} duration={1.8} charStyle={{ color: '#e10600' }} />
           </motion.h2>
 

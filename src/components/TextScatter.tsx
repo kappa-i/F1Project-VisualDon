@@ -10,6 +10,7 @@ export interface TextScatterProps {
   duration?: number;
   style?: React.CSSProperties;
   charStyle?: React.CSSProperties;
+  interactive?: boolean;
 }
 
 const TextScatter: React.FC<TextScatterProps> = ({
@@ -21,6 +22,7 @@ const TextScatter: React.FC<TextScatterProps> = ({
   duration = 2,
   style,
   charStyle,
+  interactive = true,
 }) => {
   const handleMouseEnter = (e: React.MouseEvent<HTMLSpanElement>) => {
     const target = e.currentTarget;
@@ -63,7 +65,7 @@ const TextScatter: React.FC<TextScatterProps> = ({
       {text.split("").map((char, index) => (
         <span
           key={index}
-          onMouseEnter={handleMouseEnter}
+          onMouseEnter={interactive ? handleMouseEnter : undefined}
           style={{
             display: "inline-block",
             willChange: "transform",
