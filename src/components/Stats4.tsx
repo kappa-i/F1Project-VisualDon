@@ -248,6 +248,7 @@ function LogoMarquee() {
 export default function Stats4() {
   const [ctaSkeletonRun, setCtaSkeletonRun] = useState(0);
   const [ctaSkeletonVisible, setCtaSkeletonVisible] = useState(false);
+  const [ctaSkeletonPlayedThisHover, setCtaSkeletonPlayedThisHover] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
   const staggerRef = useRef<StaggeredTextHandle>(null);
 
@@ -266,8 +267,14 @@ export default function Stats4() {
   }, [slideIndex]);
 
   const triggerCtaSkeleton = () => {
+    if (ctaSkeletonPlayedThisHover) return;
     setCtaSkeletonVisible(true);
+    setCtaSkeletonPlayedThisHover(true);
     setCtaSkeletonRun((run) => run + 1);
+  };
+
+  const resetCtaSkeletonHover = () => {
+    setCtaSkeletonPlayedThisHover(false);
   };
 
   const handleDiscoverClick = () => {
@@ -361,7 +368,7 @@ export default function Stats4() {
               transition={{ duration: 0.5, delay: 0.2 }}
               onClick={handleDiscoverClick}
               onMouseEnter={triggerCtaSkeleton}
-              onMouseLeave={() => setCtaSkeletonVisible(false)}
+              onMouseLeave={resetCtaSkeletonHover}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -383,7 +390,9 @@ export default function Stats4() {
                   inset: 0,
                   pointerEvents: 'none',
                   background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%)',
+                  opacity: 0,
                   animation: 'skeleton-sweep 1.1s ease-out 1',
+                  animationFillMode: 'forwards',
                   borderRadius: '12px',
                 }} key={ctaSkeletonRun} onAnimationEnd={() => setCtaSkeletonVisible(false)} />
               ) : null}
