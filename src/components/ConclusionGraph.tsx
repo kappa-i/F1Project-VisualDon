@@ -184,7 +184,8 @@ export default function ConclusionGraph() {
   }
 
   return (
-    <div ref={ref} style={{
+    <div ref={ref}>
+    <div style={{
       background: 'rgba(4,4,6,0.96)',
       backdropFilter: 'blur(32px)',
       WebkitBackdropFilter: 'blur(32px)',
@@ -518,6 +519,7 @@ export default function ConclusionGraph() {
       }}>
         07
       </div>
+    </div>
     </div>
   );
 }

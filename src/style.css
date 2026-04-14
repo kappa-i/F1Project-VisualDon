@@ -830,15 +830,17 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 }
 
 #debug-zone {
-  display: none;
   position: absolute;
   left: 2.89%;
   top: 53.12%;
   width: 31.97%;
-  height: 19.47%;
-  border: 2px dashed rgba(255, 0, 0, 0.8);
-  background: rgba(255, 0, 0, 0.08);
-  pointer-events: none;
+  overflow: visible;
+}
+
+/* ?dev3 only: show debug outline */
+body.dev3-active #debug-zone {
+  outline: 2px dashed rgba(255, 0, 0, 0.7);
+  background: rgba(255, 0, 0, 0.05);
 }
 
 .conclusion-track-asset__image {
