@@ -5,6 +5,7 @@ import StaggeredText, { StaggeredTextHandle } from './StaggeredText';
 import pil1Url from '../assets/pilote1.png';
 import pil2Url from '../assets/pilote2.png';
 import pil3Url from '../assets/pilote3.png';
+import pil4Url from '../assets/pilote4.png';
 import logo1Url from '../assets/logos-slider-optimized/L1.png';
 import logo2Url from '../assets/logos-slider-optimized/L2.png';
 import logo3Url from '../assets/logos-slider-optimized/L3.png';
@@ -33,6 +34,13 @@ const slides = [
     color: '#ffa94d',
     glow: 'rgba(255, 169, 77, 0.45)',
     image: pil3Url,
+  },
+  {
+    value: 'Pour gagner, il faut d\'abord survivre.',
+    citation: 'Juan Manuel Fangio',
+    color: '#c084fc',
+    glow: 'rgba(192, 132, 252, 0.45)',
+    image: pil4Url,
   },
 ];
 
