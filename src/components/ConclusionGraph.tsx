@@ -220,7 +220,7 @@ export default function ConclusionGraph() {
       </div>
 
       <h3 style={{ fontSize: 20, fontWeight: 700, lineHeight: 1.1, marginBottom: 3, letterSpacing: '-0.5px', color: '#fff' }}>
-        Données Clés
+        Plus vite, plus en vie
       </h3>
       <p style={{ fontSize: 9, letterSpacing: '1.5px', color: 'rgba(255,255,255,0.28)', marginBottom: 13, textTransform: 'uppercase' }}>
         Vitesse · Sécurité · Appui aéro · Survie · F1 1950–2026
