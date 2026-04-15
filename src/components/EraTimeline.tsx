@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import SafetyChart from './SafetyChart';
 
 interface EraStep {
@@ -78,7 +78,7 @@ export default function EraTimeline() {
   const activeStepRef = useRef(-1);
   const displayStepRef = useRef(-1);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (activeStep < 0) {
       displayStepRef.current = -1;
       setDisplayStep(-1);
@@ -205,11 +205,11 @@ export default function EraTimeline() {
           left: fromLeft ? '4%' : 'auto',
           right: fromLeft ? 'auto' : '4%',
           top: '50%',
-          transform: `translateY(-50%) translateX(${isMorphing ? (fromLeft ? '-14px' : '14px') : '0'}) scale(${isMorphing ? 0.985 : 1})`,
+          transform: 'translateY(-50%)',
           pointerEvents: 'auto',
           width: 'clamp(400px, 46vw, 620px)',
-          opacity: isEntering ? 0 : 1,
-          transition: 'left 0.35s ease, right 0.35s ease, transform 0.35s ease, opacity 0.6s ease',
+          opacity: isEntering || isMorphing ? 0 : 1,
+          transition: 'opacity 0.22s ease',
         }}>
           <div style={{
             background: 'rgba(5, 5, 5, 0.94)',
@@ -257,9 +257,7 @@ export default function EraTimeline() {
             }} />
 
             <div style={{
-              opacity: isMorphing ? 0.82 : 1,
-              transform: `translateY(${isMorphing ? '6px' : '0'})`,
-              transition: 'opacity 0.22s ease, transform 0.22s ease',
+              opacity: 1,
             }}>
               {/* En-tête */}
               <div style={{
@@ -276,15 +274,17 @@ export default function EraTimeline() {
                   fontWeight: 700,
                   transition: 'color 0.35s ease',
                 }}>
-                  Ère {step.tag}
+                  {step.tag === '01' ? step.period : `Ère ${step.tag}`}
                 </span>
-                <span style={{
-                  fontSize: '11px',
-                  letterSpacing: '2px',
-                  color: 'rgba(255,255,255,0.28)',
-                }}>
-                  {step.period}
-                </span>
+                {step.tag !== '01' && (
+                  <span style={{
+                    fontSize: '11px',
+                    letterSpacing: '2px',
+                    color: 'rgba(255,255,255,0.28)',
+                  }}>
+                    {step.period}
+                  </span>
+                )}
               </div>
 
               {/* Titre */}
@@ -314,6 +314,7 @@ export default function EraTimeline() {
                 color: 'rgba(224, 221, 216, 0.72)',
                 marginBottom: '28px',
                 letterSpacing: '0.1px',
+                fontFamily: step.tag === '01' ? "'Inter', ui-sans-serif, system-ui, sans-serif" : undefined,
               }}>
                 {step.desc}
               </p>

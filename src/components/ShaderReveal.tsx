@@ -123,7 +123,11 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
   const resizeRafRef = useRef<number | null>(null);
   const introFadeTimeoutRef = useRef<number | null>(null);
   const introRevealRafRef = useRef<number | null>(null);
+  const heroStateRafRef = useRef<number | null>(null);
   const isVisibleRef = useRef<boolean>(true);
+  const isHeroIntroActiveRef = useRef<boolean>(true);
+  const activeRevealOpacityRef = useRef<number>(0);
+  const currentRevealOpacityRef = useRef<number>(0);
   const frontTexRef = useRef<THREE.Texture | null>(null);
   const backTexRef = useRef<THREE.Texture | null>(null);
 
@@ -132,6 +136,85 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
     if (!container) return;
 
     let disposed = false;
+
+    const setRevealOpacity = (value: number) => {
+      currentRevealOpacityRef.current = value;
+      webglRef.current?.updateRevealOpacity?.(value);
+    };
+
+    const stopHeroStateAnimation = () => {
+      if (heroStateRafRef.current != null) {
+        cancelAnimationFrame(heroStateRafRef.current);
+        heroStateRafRef.current = null;
+      }
+    };
+
+    const animateRevealOpacity = (
+      target: number,
+      duration: number,
+      onComplete?: () => void,
+    ) => {
+      stopHeroStateAnimation();
+
+      const startValue = currentRevealOpacityRef.current;
+      if (Math.abs(startValue - target) < 0.001 || duration <= 0) {
+        setRevealOpacity(target);
+        onComplete?.();
+        return;
+      }
+
+      const startTime = performance.now();
+      const tick = () => {
+        const elapsed = performance.now() - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        const eased = t * t * (3 - 2 * t);
+        setRevealOpacity(startValue + (target - startValue) * eased);
+
+        if (t < 1) {
+          heroStateRafRef.current = requestAnimationFrame(tick);
+          return;
+        }
+
+        heroStateRafRef.current = null;
+        onComplete?.();
+      };
+
+      heroStateRafRef.current = requestAnimationFrame(tick);
+    };
+
+    const applyHeroIntroState = (isActive: boolean) => {
+      isHeroIntroActiveRef.current = isActive;
+      container.style.opacity = "1";
+      container.style.pointerEvents = isActive ? "auto" : "none";
+
+      const webgl = webglRef.current;
+      if (!webgl) return;
+
+      if (isActive) {
+        stopHeroStateAnimation();
+        setRevealOpacity(activeRevealOpacityRef.current);
+        if (isVisibleRef.current && !document.hidden) {
+          webgl.start();
+        }
+        return;
+      }
+
+      if (isVisibleRef.current && !document.hidden) {
+        webgl.start();
+      }
+      animateRevealOpacity(0, 450, () => {
+        if (!isHeroIntroActiveRef.current) {
+          webgl.pause();
+        }
+      });
+    };
+
+    const handleHeroStepChange = (event: Event) => {
+      const step = (event as CustomEvent<{ step?: number }>).detail?.step ?? -1;
+      applyHeroIntroState(step < 0);
+    };
+
+    window.addEventListener("hero-step-change", handleHeroStepChange);
 
     class CommonClass {
       width = 0;
@@ -1492,7 +1575,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         this._onVisibility = () => {
           const hidden = document.hidden;
           if (hidden) this.pause();
-          else if (isVisibleRef.current) this.start();
+          else if (isVisibleRef.current && isHeroIntroActiveRef.current) this.start();
         };
         document.addEventListener("visibilitychange", this._onVisibility);
       }
@@ -1652,18 +1735,20 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         });
         webgl.start();
         webglRef.current = webgl;
+        applyHeroIntroState(isHeroIntroActiveRef.current);
 
         introFadeTimeoutRef.current = window.setTimeout(() => {
           const fadeStart = performance.now();
           const fadeDuration = 1200;
-          const runFade = () => {
-            const elapsed = performance.now() - fadeStart;
-            const t = Math.min(elapsed / fadeDuration, 1);
-            const eased = t * t * (3 - 2 * t);
-            webglRef.current?.updateRevealOpacity?.(eased);
-            if (t < 1) {
-              introRevealRafRef.current = requestAnimationFrame(runFade);
-            } else {
+	          const runFade = () => {
+	            const elapsed = performance.now() - fadeStart;
+	            const t = Math.min(elapsed / fadeDuration, 1);
+	            const eased = t * t * (3 - 2 * t);
+	            activeRevealOpacityRef.current = eased;
+	            setRevealOpacity(eased);
+	            if (t < 1) {
+	              introRevealRafRef.current = requestAnimationFrame(runFade);
+	            } else {
               introRevealRafRef.current = null;
             }
           };
@@ -1677,7 +1762,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
               entry.isIntersecting && entry.intersectionRatio > 0;
             isVisibleRef.current = isVisible;
             if (!webglRef.current) return;
-            if (isVisible && !document.hidden) {
+            if (isVisible && !document.hidden && isHeroIntroActiveRef.current) {
               webglRef.current.start();
             } else {
               webglRef.current.pause();
@@ -1698,6 +1783,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         });
         ro.observe(container);
         resizeObserverRef.current = ro;
+
       } catch (error) {
         console.error("ShaderReveal texture loading failed:", error);
       }
@@ -1709,9 +1795,14 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
         window.clearTimeout(introFadeTimeoutRef.current);
         introFadeTimeoutRef.current = null;
       }
+      window.removeEventListener("hero-step-change", handleHeroStepChange);
       if (introRevealRafRef.current != null) {
         cancelAnimationFrame(introRevealRafRef.current);
         introRevealRafRef.current = null;
+      }
+      if (heroStateRafRef.current != null) {
+        cancelAnimationFrame(heroStateRafRef.current);
+        heroStateRafRef.current = null;
       }
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
       if (resizeObserverRef.current) {
