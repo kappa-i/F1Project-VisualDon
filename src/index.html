@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,358 +11,382 @@
   <link rel="stylesheet" href="./style.css" />
   <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
 </head>
+
 <body>
 
-<!-- ── LOADER ────────────────────────────────────────────────────────────── -->
-<div id="loader">
-  <lottie-player src="./assets/load3.json" background="transparent" speed="1" loop autoplay style="width:380px;height:380px;margin-top:-65px;margin-bottom:-100px;"></lottie-player>
-  <div class="loader-bar-wrap">
-    <div class="loader-label"><span id="loader-step">Initialisation…</span><span id="pct">0%</span></div>
-    <div class="loader-track"><div class="loader-fill" id="fill"></div></div>
-  </div>
-</div>
-
-<!-- ── HUD LAYER (fixed, visible uniquement dans la section 3D) ──────────── -->
-<div id="canvas-wrap"></div>
-<div id="vignette"></div>
-<div id="scan-l"></div>
-<div id="scan-r"></div>
-<div class="hud-corner tl"></div>
-<div class="hud-corner tr"></div>
-<div class="hud-corner bl"></div>
-<div class="hud-corner br"></div>
-
-<div id="topbar">
-  <div>
-    <div class="brand-team">Scuderia Ferrari HP</div>
-    <div class="brand-car"><span>SF</span>-26</div>
-  </div>
-  <div class="season">Formule 1 · Saison 2026</div>
-</div>
-
-<div id="rpm-deco"></div>
-
-<div id="statusbar">
-  <div class="stat-block">
-    <div class="stat-label">Châssis</div>
-    <div class="stat-value">SF-26/C1</div>
-  </div>
-  <div class="sep"></div>
-  <div class="stat-block">
-    <div class="stat-label">Groupe motopropulseur</div>
-    <div class="stat-value">Ferrari 066/11</div>
-  </div>
-  <div class="sep"></div>
-  <div class="stat-block">
-    <div class="stat-label">Pilotes</div>
-    <div class="stat-value hi">Leclerc · Hamilton</div>
-  </div>
-  <div class="sep"></div>
-  <div class="stat-block" style="text-align:right">
-    <div class="stat-label">
-      <button class="source-link source-link--label js-source-trigger" type="button" data-source-id="selva-marcello-3d">Source</button>
-    </div>
-    <div class="stat-value">
-      <button class="source-link source-link--value js-source-trigger" type="button" data-source-id="selva-marcello-3d">3D Model by Selva Marcello</button>
+  <!-- ── LOADER ────────────────────────────────────────────────────────────── -->
+  <div id="loader">
+    <lottie-player src="./assets/load3.json" background="transparent" speed="1" loop autoplay
+      style="width:380px;height:380px;margin-top:-65px;margin-bottom:-100px;"></lottie-player>
+    <div class="loader-bar-wrap">
+      <div class="loader-label"><span id="loader-step">Initialisation…</span><span id="pct">0%</span></div>
+      <div class="loader-track">
+        <div class="loader-fill" id="fill"></div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="source-modal" id="source-modal" aria-hidden="true">
-  <div class="source-modal__backdrop" data-source-close></div>
-  <div class="source-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="source-modal-title">
-    <div class="source-modal__header">
-      <h2 class="source-modal__title" id="source-modal-title">
-        <span class="source-modal__title-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" focusable="false">
-            <path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path>
-            <path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"></path>
-            <path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"></path>
-            <circle cx="12" cy="12" r="10"></circle>
-          </svg>
-        </span>
-        <span>Source</span>
-      </h2>
-    </div>
-    <div class="source-modal__body">
-      <div class="source-modal__meta">
-        <div class="source-modal__meta-label">URL</div>
-        <a
-          class="source-modal__url"
-          id="source-modal-url"
-          href="https://example.com"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          https://example.com
+  <!-- ── HUD LAYER (fixed, visible uniquement dans la section 3D) ──────────── -->
+  <div id="canvas-wrap"></div>
+  <div id="vignette"></div>
+  <div id="scan-r"></div>
+
+
+  <div id="rpm-deco"></div>
+  <div id="hud-source"></div>
+  <div id="viewer-intro">
+    <div class="viewer-intro__title">Innovations<br>sécuritaires</div>
+  </div>
+
+  <div class="source-modal" id="source-modal" aria-hidden="true">
+    <div class="source-modal__backdrop" data-source-close></div>
+    <div class="source-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="source-modal-title">
+      <div class="source-modal__header">
+        <h2 class="source-modal__title" id="source-modal-title">
+          <span class="source-modal__title-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path>
+              <path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"></path>
+              <path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"></path>
+              <circle cx="12" cy="12" r="10"></circle>
+            </svg>
+          </span>
+          <span>Source</span>
+        </h2>
+      </div>
+      <div class="source-modal__body">
+        <div class="source-modal__meta">
+          <div class="source-modal__meta-label">URL</div>
+          <a class="source-modal__url" id="source-modal-url" href="https://example.com" target="_blank"
+            rel="noreferrer noopener">
+            https://example.com
+          </a>
+        </div>
+      </div>
+      <div class="source-modal__footer">
+        <button class="source-modal__btn source-modal__btn--ghost" type="button" data-source-close>Retour</button>
+        <a class="source-modal__btn source-modal__btn--primary" id="source-modal-action" href="https://example.com"
+          target="_blank" rel="noreferrer noopener">
+          Accéder
         </a>
       </div>
     </div>
-    <div class="source-modal__footer">
-      <button class="source-modal__btn source-modal__btn--ghost" type="button" data-source-close>Retour</button>
-      <a
-        class="source-modal__btn source-modal__btn--primary"
-        id="source-modal-action"
-        href="https://example.com"
-        target="_blank"
-        rel="noreferrer noopener"
-      >
-        Accéder
-      </a>
+  </div>
+
+  <div class="infobox left" id="ib-3">
+    <div class="ib-tag">Composant 02</div>
+    <div class="ib-title">MONO-COQUE</div>
+    <div class="ib-divider"></div>
+    <div class="ib-specs">
+      <div class="ib-spec"><span class="spec-label">Matériau</span><span class="spec-dots"></span><span
+          class="spec-value">CFRP + Kevlar</span></div>
+      <div class="ib-spec"><span class="spec-label">Épaisseur paroi</span><span class="spec-dots"></span><span
+          class="spec-value accent">2 – 6 mm</span></div>
+      <div class="ib-spec"><span class="spec-label">Masse structure</span><span class="spec-dots"></span><span
+          class="spec-value">35 kg</span></div>
+      <div class="ib-spec"><span class="spec-label">Temp. cuisson</span><span class="spec-dots"></span><span
+          class="spec-value accent">120 °C / autoclave</span></div>
+      <div class="ib-spec"><span class="spec-label">Test FIA crash</span><span class="spec-dots"></span><span
+          class="spec-value">15 épreuves homologation</span></div>
+      <div class="ib-spec"><span class="spec-label">Rigidité torsionnelle</span><span class="spec-dots"></span><span
+          class="spec-value accent">> 40 000 Nm/°</span></div>
+    </div>
+    <div class="ib-desc">
+      La monocoque est la colonne vertébrale du SF-26. Fabriquée en fibre de carbone pré-imprégnée cuite en autoclave,
+      elle constitue à la fois la cellule de survie du pilote, le point d'ancrage de la suspension et le réservoir de
+      carburant intégré.
     </div>
   </div>
-</div>
 
-<div class="infobox left" id="ib-3">
-  <div class="ib-tag">Composant 02</div>
-  <div class="ib-title">MONO-COQUE</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Matériau</span><span class="spec-dots"></span><span class="spec-value">CFRP + Kevlar</span></div>
-    <div class="ib-spec"><span class="spec-label">Épaisseur paroi</span><span class="spec-dots"></span><span class="spec-value accent">2 – 6 mm</span></div>
-    <div class="ib-spec"><span class="spec-label">Masse structure</span><span class="spec-dots"></span><span class="spec-value">35 kg</span></div>
-    <div class="ib-spec"><span class="spec-label">Temp. cuisson</span><span class="spec-dots"></span><span class="spec-value accent">120 °C / autoclave</span></div>
-    <div class="ib-spec"><span class="spec-label">Test FIA crash</span><span class="spec-dots"></span><span class="spec-value">15 épreuves homologation</span></div>
-    <div class="ib-spec"><span class="spec-label">Rigidité torsionnelle</span><span class="spec-dots"></span><span class="spec-value accent">> 40 000 Nm/°</span></div>
-  </div>
-  <div class="ib-desc">
-    La monocoque est la colonne vertébrale du SF-26. Fabriquée en fibre de carbone pré-imprégnée cuite en autoclave, elle constitue à la fois la cellule de survie du pilote, le point d'ancrage de la suspension et le réservoir de carburant intégré.
-  </div>
-</div>
-
-<div class="infobox left" id="ib-1">
-  <div class="ib-tag">Composant 01</div>
-  <div class="ib-title">AILERON<br>AVANT</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Matériau</span><span class="spec-dots"></span><span class="spec-value">Fibre de carbone</span></div>
-    <div class="ib-spec"><span class="spec-label">Envergure</span><span class="spec-dots"></span><span class="spec-value accent">2000 mm</span></div>
-    <div class="ib-spec"><span class="spec-label">Éléments</span><span class="spec-dots"></span><span class="spec-value">5 plans</span></div>
-    <div class="ib-spec"><span class="spec-label">Appui @ 250 km/h</span><span class="spec-dots"></span><span class="spec-value accent">~380 kg</span></div>
-  </div>
-  <div class="ib-desc">Canalise le flux vers le fond plat et les pontons via les déflecteurs latéraux. DRS actif sur les zones de détection.</div>
-</div>
-
-<div class="infobox right" id="ib-2">
-  <div class="ib-tag">Composant 03</div>
-  <div class="ib-title">HALO<br>SYSTEM</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Matériau</span><span class="spec-dots"></span><span class="spec-value">Titane grade 5</span></div>
-    <div class="ib-spec"><span class="spec-label">Résistance statique</span><span class="spec-dots"></span><span class="spec-value accent">125 kN</span></div>
-    <div class="ib-spec"><span class="spec-label">Résistance dynamique</span><span class="spec-dots"></span><span class="spec-value accent">250 kN</span></div>
-    <div class="ib-spec"><span class="spec-label">Masse</span><span class="spec-dots"></span><span class="spec-value">9 kg</span></div>
-    <div class="ib-spec"><span class="spec-label">Obligatoire depuis</span><span class="spec-dots"></span><span class="spec-value">2018</span></div>
-    <div class="ib-spec"><span class="spec-label">Survies confirmées</span><span class="spec-dots"></span><span class="spec-value accent">Grosjean 2020, Zhou 2022</span></div>
-  </div>
-  <div class="ib-desc">
-    Né d'un incident impliquant Jules Bianchi en 2014, le Halo peut supporter 12 tonnes sans déformation. En 2020, il a sauvé Romain Grosjean lors d'un incendie à 220 km/h.
-  </div>
-</div>
-
-<div class="infobox right" id="ib-4">
-  <div class="ib-tag">Composant 04</div>
-  <div class="ib-title">FEU DE<br>PLUIE</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Norme FIA</span><span class="spec-dots"></span><span class="spec-value">8874-2019</span></div>
-    <div class="ib-spec"><span class="spec-label">Config. 2026</span><span class="spec-dots"></span><span class="spec-value accent">3 feux arrière</span></div>
-    <div class="ib-spec"><span class="spec-label">Nouveauté 2026</span><span class="spec-dots"></span><span class="spec-value">2 feux dans les endplates AR</span></div>
-    <div class="ib-spec"><span class="spec-label">Clignotement</span><span class="spec-dots"></span><span class="spec-value accent">4 Hz ± 0,5</span></div>
-    <div class="ib-spec"><span class="spec-label">Cycle lumineux</span><span class="spec-dots"></span><span class="spec-value">50 % ± 10 %</span></div>
-    <div class="ib-spec"><span class="spec-label">Intensité min.</span><span class="spec-dots"></span><span class="spec-value accent">800 cd</span></div>
-    <div class="ib-spec"><span class="spec-label">Cône visible</span><span class="spec-dots"></span><span class="spec-value">±4° vert. / ±10° horiz.</span></div>
-  </div>
-  <div class="ib-desc">
-    En 2026, la FIA renforce la visibilité arrière sous pluie avec trois feux homologués: un central et deux supplémentaires intégrés aux endplates de l'aileron arrière. Leur rôle est simple: rester visibles dans le spray dense pour réduire le risque de collision quand la voiture disparaît presque dans le brouillard d'eau.
-  </div>
-</div>
-
-<!-- ── INFOBOXES HAAS ─────────────────────────────────────────────────────── -->
-<div class="infobox left" id="ib-haas-8">
-  <div class="ib-tag">Sécurité 07</div>
-  <div class="ib-title">VOLANT<br>ANTI-RETOUR</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Incident déclencheur</span><span class="spec-dots"></span><span class="spec-value accent">Ricciardo · Zandvoort 2023</span></div>
-    <div class="ib-spec"><span class="spec-label">Blessure</span><span class="spec-dots"></span><span class="spec-value">Fracture métacarpe gauche</span></div>
-    <div class="ib-spec"><span class="spec-label">Cause</span><span class="spec-dots"></span><span class="spec-value accent">Retour de couple sur impact</span></div>
-    <div class="ib-spec"><span class="spec-label">Mesure FIA</span><span class="spec-dots"></span><span class="spec-value">Couple de rupture limité</span></div>
-    <div class="ib-spec"><span class="spec-label">Directive technique</span><span class="spec-dots"></span><span class="spec-value accent">TD039 · 2023</span></div>
-    <div class="ib-spec"><span class="spec-label">Application</span><span class="spec-dots"></span><span class="spec-value">Obligatoire dès 2024</span></div>
-  </div>
-  <div class="ib-desc">
-    En août 2023 à Zandvoort, Daniel Ricciardo percute un déflecteur à haute vitesse. Le choc provoque un retour de couple violent dans la colonne de direction — le volant lui fracture un métacarpe. La FIA émet la directive TD039 imposant un mécanisme de découplage mécanique limitant le couple transmis aux mains du pilote en cas d'impact frontal.
-  </div>
-</div>
-
-
-<div class="infobox right" id="ib-haas-2">
-  <div class="ib-tag">Sécurité 01</div>
-  <div class="ib-title">PNEUS<br>ANTI-CREVAISON</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Fournisseur</span><span class="spec-dots"></span><span class="spec-value">Pirelli P Zero</span></div>
-    <div class="ib-spec"><span class="spec-label">Structure</span><span class="spec-dots"></span><span class="spec-value accent">Flanc renforcé Kevlar</span></div>
-    <div class="ib-spec"><span class="spec-label">Pression min. FIA</span><span class="spec-dots"></span><span class="spec-value">21.5 psi (AV)</span></div>
-    <div class="ib-spec"><span class="spec-label">Vitesse max. homologuée</span><span class="spec-dots"></span><span class="spec-value accent">350 km/h</span></div>
-    <div class="ib-spec"><span class="spec-label">Protocole crevaison</span><span class="spec-dots"></span><span class="spec-value">Retour au stand possible</span></div>
-  </div>
-  <div class="ib-desc">
-    Depuis l'accident de Silverstone 2013 (Pirelli blowout), la FIA impose des structures de flancs renforcées au Kevlar. En cas de perte de pression, le pneu peut résister à plusieurs centaines de mètres à haute vitesse — le temps pour le pilote de rejoindre les stands en sécurité.
-  </div>
-</div>
-
-<div class="infobox left" id="ib-haas-3">
-  <div class="ib-tag">Sécurité 02</div>
-  <div class="ib-title">FREINS<br>CARBONE</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Matériau</span><span class="spec-dots"></span><span class="spec-value">Carbone-carbone (C/C)</span></div>
-    <div class="ib-spec"><span class="spec-label">Température de travail</span><span class="spec-dots"></span><span class="spec-value accent">400 — 1 000 °C</span></div>
-    <div class="ib-spec"><span class="spec-label">Distance 300 → 0 km/h</span><span class="spec-dots"></span><span class="spec-value">65 m / 4 g</span></div>
-    <div class="ib-spec"><span class="spec-label">Poids disque</span><span class="spec-dots"></span><span class="spec-value accent">~1 kg (vs 15 kg acier)</span></div>
-    <div class="ib-spec"><span class="spec-label">Refroidissement</span><span class="spec-dots"></span><span class="spec-value">Conduits dédiés NACA</span></div>
-  </div>
-  <div class="ib-desc">
-    Les disques en carbone-carbone offrent un coefficient de friction 5× supérieur à l'acier à haute température. Leur montée en chauffe est critique : en dessous de 400 °C, l'efficacité chute brutalement — d'où les températures pilotées par des conduits d'air ajustables pendant les tours de formation.
-  </div>
-</div>
-
-<div class="infobox right" id="ib-haas-4">
-  <div class="ib-tag">Sécurité 03</div>
-  <div class="ib-title">HALO<br>SYSTEM</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Matériau</span><span class="spec-dots"></span><span class="spec-value">Titane grade 5</span></div>
-    <div class="ib-spec"><span class="spec-label">Charge supportée</span><span class="spec-dots"></span><span class="spec-value accent">125 kN (12,5 t)</span></div>
-    <div class="ib-spec"><span class="spec-label">Poids</span><span class="spec-dots"></span><span class="spec-value">~9 kg</span></div>
-    <div class="ib-spec"><span class="spec-label">Norme FIA</span><span class="spec-dots"></span><span class="spec-value accent">8869-2018 · obligatoire</span></div>
-    <div class="ib-spec"><span class="spec-label">Vies sauvées (confirmées)</span><span class="spec-dots"></span><span class="spec-value">Grosjean 2020 · Zhou 2022</span></div>
-  </div>
-  <div class="ib-desc">
-    Né après l'accident fatal de Jules Bianchi au Japon en 2014, le Halo est rendu obligatoire en 2018. Lors du crash de Romain Grosjean à Bahreïn en 2020, il a résisté au cisaillement d'une glissière en acier à plus de 220 km/h, offrant au pilote la survie dans un cockpit en feu.
-  </div>
-</div>
-
-<div class="infobox right" id="ib-haas-5">
-  <div class="ib-tag">Sécurité 04</div>
-  <div class="ib-title">SIGNAL<br>LUMINEUX</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Activation</span><span class="spec-dots"></span><span class="spec-value accent">Dès 80 km/h</span></div>
-    <div class="ib-spec"><span class="spec-label">Norme FIA</span><span class="spec-dots"></span><span class="spec-value">Art. 14.3 règlement tech.</span></div>
-    <div class="ib-spec"><span class="spec-label">Couleur</span><span class="spec-dots"></span><span class="spec-value accent">Ambre clignotant</span></div>
-    <div class="ib-spec"><span class="spec-label">Fréquence</span><span class="spec-dots"></span><span class="spec-value">1 — 4 Hz selon vitesse</span></div>
-    <div class="ib-spec"><span class="spec-label">Visibilité</span><span class="spec-dots"></span><span class="spec-value accent">150 m min. (FIA)</span></div>
-  </div>
-  <div class="ib-desc">
-    Les indicateurs de direction et les feux latéraux ambrés s'activent automatiquement au-dessus de 80 km/h pour signaler aux commissaires et aux autres pilotes les changements de trajectoire en cours de freinage. Essentiel dans les zones de dégagement pour éviter les collisions avec le personnel de piste.
-  </div>
-</div>
-
-<div class="infobox left" id="ib-haas-6">
-  <div class="ib-tag">Sécurité 05</div>
-  <div class="ib-title">CHEMINÉE<br>ARCEAU</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Matériau</span><span class="spec-dots"></span><span class="spec-value">Titane + CFRP</span></div>
-    <div class="ib-spec"><span class="spec-label">Charge verticale FIA</span><span class="spec-dots"></span><span class="spec-value accent">50 kN (5 t)</span></div>
-    <div class="ib-spec"><span class="spec-label">Hauteur min. au-dessus du casque</span><span class="spec-dots"></span><span class="spec-value">50 mm</span></div>
-    <div class="ib-spec"><span class="spec-label">Norme FIA</span><span class="spec-dots"></span><span class="spec-value accent">8855-2021</span></div>
-    <div class="ib-spec"><span class="spec-label">Déploiement</span><span class="spec-dots"></span><span class="spec-value">Fixe · intégré châssis</span></div>
-  </div>
-  <div class="ib-desc">
-    La cheminée (rollhoop) forme l'arceau de sécurité principal derrière la tête du pilote. En cas de tonneau ou de retournement, elle doit absorber une charge de 5 tonnes sans se déformer de plus de 50 mm, maintenant un espace vital autour du casque même lorsque la voiture glisse sur le toit à haute vitesse.
-  </div>
-</div>
-
-<div class="infobox right" id="ib-haas-7">
-  <div class="ib-tag">Sécurité 06</div>
-  <div class="ib-title">FEU ARRIÈRE<br>& WARNING</div>
-  <div class="ib-divider"></div>
-  <div class="ib-specs">
-    <div class="ib-spec"><span class="spec-label">Norme FIA</span><span class="spec-dots"></span><span class="spec-value">8874-2019</span></div>
-    <div class="ib-spec"><span class="spec-label">Feux homologués</span><span class="spec-dots"></span><span class="spec-value accent">3 (1 central + 2 aileron)</span></div>
-    <div class="ib-spec"><span class="spec-label">Puissance lumineuse</span><span class="spec-dots"></span><span class="spec-value">≥ 15 W équivalent LED</span></div>
-    <div class="ib-spec"><span class="spec-label">Mode anti-brouillard</span><span class="spec-dots"></span><span class="spec-value accent">Déclenchement Manuel/SC</span></div>
-    <div class="ib-spec"><span class="spec-label">Clignotement freinage</span><span class="spec-dots"></span><span class="spec-value">Automatique > 2 g</span></div>
-  </div>
-  <div class="ib-desc">
-    En condition de pluie ou de Safety Car, le feu arrière rouge clignote pour signaler la voiture dans le spray dense. Au-delà de 2 g de décélération, il passe automatiquement en mode warning — une mesure introduite après plusieurs accidents par l'arrière à Spa et au Japon dans les années 2010.
-  </div>
-</div>
-
-<!-- ── PAGE SCROLLABLE ────────────────────────────────────────────────────── -->
-<main id="page">
-
-  <!-- 1. HERO -->
-  <section class="section section--hero" id="s-hero">
-    <div class="hero-reveal" id="shader-reveal-root"></div>
-    <div id="stats4-root"></div>
-    <div class="hero-era-embed" id="hero-era-embed">
-      <div id="hero-era-glitter-root" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></div>
-      <div id="hero-era-gallery-root" style="position:absolute;inset:0;width:100%;height:100%;"></div>
-      <div id="hero-era-timeline-root" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10;"></div>
+  <div class="infobox left" id="ib-1">
+    <div class="ib-tag">Composant 01</div>
+    <div class="ib-title">AILERON<br>AVANT</div>
+    <div class="ib-divider"></div>
+    <div class="ib-specs">
+      <div class="ib-spec"><span class="spec-label">Matériau</span><span class="spec-dots"></span><span
+          class="spec-value">Fibre de carbone</span></div>
+      <div class="ib-spec"><span class="spec-label">Envergure</span><span class="spec-dots"></span><span
+          class="spec-value accent">2000 mm</span></div>
+      <div class="ib-spec"><span class="spec-label">Éléments</span><span class="spec-dots"></span><span
+          class="spec-value">5 plans</span></div>
+      <div class="ib-spec"><span class="spec-label">Appui @ 250 km/h</span><span class="spec-dots"></span><span
+          class="spec-value accent">~380 kg</span></div>
     </div>
-  </section>
+    <div class="ib-desc">Canalise le flux vers le fond plat et les pontons via les déflecteurs latéraux. DRS actif sur
+      les zones de détection.</div>
+  </div>
 
-  <!-- 2. CRASH -->
-  <section class="section section--crash" id="s-crash">
-    <canvas
-      class="crash-video"
-      id="crash-frame"
-    ></canvas>
-    <div class="crash-overlay"></div>
-    <div id="imola-modal-root"></div>
-    <div class="crash-content">
-      <div id="crash-titles-root"></div>
+  <div class="infobox right" id="ib-2">
+    <div class="ib-tag">Composant 03</div>
+    <div class="ib-title">HALO<br>SYSTEM</div>
+    <div class="ib-divider"></div>
+    <div class="ib-specs">
+      <div class="ib-spec"><span class="spec-label">Matériau</span><span class="spec-dots"></span><span
+          class="spec-value">Titane grade 5</span></div>
+      <div class="ib-spec"><span class="spec-label">Résistance statique</span><span class="spec-dots"></span><span
+          class="spec-value accent">125 kN</span></div>
+      <div class="ib-spec"><span class="spec-label">Résistance dynamique</span><span class="spec-dots"></span><span
+          class="spec-value accent">250 kN</span></div>
+      <div class="ib-spec"><span class="spec-label">Masse</span><span class="spec-dots"></span><span
+          class="spec-value">9 kg</span></div>
+      <div class="ib-spec"><span class="spec-label">Obligatoire depuis</span><span class="spec-dots"></span><span
+          class="spec-value">2018</span></div>
+      <div class="ib-spec"><span class="spec-label">Survies confirmées</span><span class="spec-dots"></span><span
+          class="spec-value accent">Grosjean 2020, Zhou 2022</span></div>
     </div>
-  </section>
-
-  <!-- 4. SCÈNE 3D HAAS -->
-  <section class="section section--haas-viewer" id="s-haas">
-    <!-- Canvas Three.js en position:fixed — même logique que la section SF-26 -->
-  </section>
-
-  <!-- 5. SPA-FRANCORCHAMPS -->
-  <section class="section section--spa" id="s-spa">
-    <div id="spa-root"></div>
-  </section>
-
-  <!-- 7. CONCLUSION -->
-  <section class="section section--conclusion" id="s-conclusion">
-    <div class="conclusion-track-asset">
-      <img
-        class="conclusion-track-asset__image"
-        src="./assets/track-asset2.webp"
-        alt="Illustration graphique d'un tracé de circuit HEIG-VD"
-      />
-      <div id="debug-zone"><div id="conclusion-graph-root"></div></div>
+    <div class="ib-desc">
+      Né d'un incident impliquant Jules Bianchi en 2014, le Halo peut supporter 12 tonnes sans déformation. En 2020, il
+      a sauvé Romain Grosjean lors d'un incendie à 220 km/h.
     </div>
-    <div id="footer-root"></div>
-  </section>
+  </div>
+
+  <div class="infobox right" id="ib-4">
+    <div class="ib-tag">Composant 04</div>
+    <div class="ib-title">FEU DE<br>PLUIE</div>
+    <div class="ib-divider"></div>
+    <div class="ib-specs">
+      <div class="ib-spec"><span class="spec-label">Norme FIA</span><span class="spec-dots"></span><span
+          class="spec-value">8874-2019</span></div>
+      <div class="ib-spec"><span class="spec-label">Config. 2026</span><span class="spec-dots"></span><span
+          class="spec-value accent">3 feux arrière</span></div>
+      <div class="ib-spec"><span class="spec-label">Nouveauté 2026</span><span class="spec-dots"></span><span
+          class="spec-value">2 feux dans les endplates AR</span></div>
+      <div class="ib-spec"><span class="spec-label">Clignotement</span><span class="spec-dots"></span><span
+          class="spec-value accent">4 Hz ± 0,5</span></div>
+      <div class="ib-spec"><span class="spec-label">Cycle lumineux</span><span class="spec-dots"></span><span
+          class="spec-value">50 % ± 10 %</span></div>
+      <div class="ib-spec"><span class="spec-label">Intensité min.</span><span class="spec-dots"></span><span
+          class="spec-value accent">800 cd</span></div>
+      <div class="ib-spec"><span class="spec-label">Cône visible</span><span class="spec-dots"></span><span
+          class="spec-value">±4° vert. / ±10° horiz.</span></div>
+    </div>
+    <div class="ib-desc">
+      En 2026, la FIA renforce la visibilité arrière sous pluie avec trois feux homologués: un central et deux
+      supplémentaires intégrés aux endplates de l'aileron arrière. Leur rôle est simple: rester visibles dans le spray
+      dense pour réduire le risque de collision quand la voiture disparaît presque dans le brouillard d'eau.
+    </div>
+  </div>
+
+  <!-- ── INFOBOXES HAAS — générées depuis src/data/haas.json via main.js ──── -->
+  <div id="haas-infoboxes"></div>
+
+  <!-- ── PAGE SCROLLABLE ────────────────────────────────────────────────────── -->
+  <main id="page">
+
+    <!-- 1. HERO -->
+    <section class="section section--hero" id="s-hero">
+      <div class="hero-reveal" id="shader-reveal-root"></div>
+      <div id="stats4-root"></div>
+      <div class="hero-era-embed" id="hero-era-embed">
+        <div id="hero-era-glitter-root" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">
+        </div>
+        <div id="hero-era-gallery-root" style="position:absolute;inset:0;width:100%;height:100%;"></div>
+        <div id="hero-era-timeline-root"
+          style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10;"></div>
+      </div>
+    </section>
+
+    <!-- 2. CRASH -->
+    <section class="section section--crash" id="s-crash">
+      <!-- barre de nav YouTube -->
+      <div class="ytb-nav">
+        <div class="ytb-nav__left"></div>
+        <div class="ytb-nav__search">
+          <div class="ytb-nav__search-bar">
+            <div class="ytb-nav__search-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M20.87 20.17l-5.59-5.59A7.5 7.5 0 0 0 16 10a7 7 0 1 0-7 7 7.5 7.5 0 0 0 4.58-1.72l5.59 5.59.7-.7zM3 10a6 6 0 1 1 6 6 6 6 0 0 1-6-6z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="ytb-nav__right">
+          <div class="ytb-nav__dot"></div>
+          <div class="ytb-nav__dot"></div>
+          <div class="ytb-nav__avatar"></div>
+        </div>
+      </div>
+
+      <!-- contenu principal -->
+      <div class="ytb-layout">
+
+        <!-- colonne vidéo -->
+        <div class="ytb-main">
+          <div class="crash-player__stage">
+            <canvas class="crash-video" id="crash-frame"></canvas>
+            <!-- contrôles intégrés dans le player -->
+            <div class="ytb-controls-overlay">
+              <div class="ytb-progress-wrap">
+                <div class="ytb-progress-bar">
+                  <div class="ytb-progress-fill" id="crash-progress-fill"></div>
+                  <div class="ytb-progress-thumb" id="crash-progress-thumb"></div>
+                </div>
+              </div>
+              <div class="ytb-controls">
+                <div class="ytb-controls__left">
+                  <button class="ytb-btn ytb-btn--vol">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                  </button>
+                  <span class="ytb-time"><span id="ytb-current">0:00</span> / <span id="ytb-total">0:10</span></span>
+                </div>
+                <div class="ytb-controls__right">
+                  <button class="ytb-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- barre d'actions sous la vidéo -->
+          <div class="ytb-actions">
+            <div class="ytb-actions__left">
+              <div class="ytb-action-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>
+              </div>
+              <div class="ytb-action-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>
+              </div>
+              <div class="ytb-action-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+              </div>
+              <div class="ytb-action-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+              </div>
+            </div>
+            <div class="ytb-action-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- colonne infos crash -->
+        <div class="ytb-aside">
+
+          <div class="info-card" data-card="0">
+            <div class="info-card__ghost-thumb"></div>
+            <div class="info-card__ghost-lines">
+              <div class="info-card__ghost-line info-card__ghost-line--title"></div>
+              <div class="info-card__ghost-line info-card__ghost-line--sub"></div>
+              <div class="info-card__ghost-line info-card__ghost-line--sub"></div>
+            </div>
+            <div class="info-card__real">
+              <div class="info-card__visual info-card__visual--dark">
+                <span class="info-card__big" style="font-size:1.3rem">1994</span>
+                <span class="info-card__unit">Imola</span>
+              </div>
+              <div class="info-card__body">
+                <div class="info-card__label">San Marino GP · Tour 5</div>
+                <div class="info-card__title">1994, Imola</div>
+                <div class="info-card__desc">Le week-end le plus sombre de l'histoire de la Formule 1 moderne.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" data-card="1">
+            <div class="info-card__ghost-thumb"></div>
+            <div class="info-card__ghost-lines">
+              <div class="info-card__ghost-line info-card__ghost-line--title"></div>
+              <div class="info-card__ghost-line info-card__ghost-line--sub"></div>
+              <div class="info-card__ghost-line info-card__ghost-line--sub"></div>
+            </div>
+            <div class="info-card__real">
+              <div class="info-card__visual info-card__visual--red">
+                <span class="info-card__big" style="font-size:1.1rem">295</span>
+                <span class="info-card__unit">km/h</span>
+              </div>
+              <div class="info-card__body">
+                <div class="info-card__label">Imola · 1 mai 1994</div>
+                <div class="info-card__title">Courbe Tamburello</div>
+                <div class="info-card__desc">À 295 km/h, la Williams de Senna quitte la piste dans ce long virage sans échappatoire.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" data-card="2">
+            <div class="info-card__ghost-thumb"></div>
+            <div class="info-card__ghost-lines">
+              <div class="info-card__ghost-line info-card__ghost-line--title"></div>
+              <div class="info-card__ghost-line info-card__ghost-line--sub"></div>
+              <div class="info-card__ghost-line info-card__ghost-line--sub"></div>
+            </div>
+            <div class="info-card__real">
+              <div class="info-card__visual info-card__visual--dark">
+                <span class="info-card__big" style="font-size:1rem">67</span>
+                <span class="info-card__unit">G</span>
+              </div>
+              <div class="info-card__body">
+                <div class="info-card__label">Impact · mur de béton</div>
+                <div class="info-card__title">Un crash mythique</div>
+                <div class="info-card__desc">Le choc génère 67G de décélération, qui a tout changé dans la sécurité en F1.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" data-card="3">
+            <div class="info-card__ghost-thumb"></div>
+            <div class="info-card__ghost-lines">
+              <div class="info-card__ghost-line info-card__ghost-line--title"></div>
+              <div class="info-card__ghost-line info-card__ghost-line--sub"></div>
+              <div class="info-card__ghost-line info-card__ghost-line--sub"></div>
+            </div>
+            <div class="info-card__real">
+              <div class="info-card__visual info-card__visual--red">
+                <span class="info-card__big" style="font-size:0.9rem">80</span>
+                <span class="info-card__unit">km/h</span>
+              </div>
+              <div class="info-card__body">
+                <div class="info-card__label">Imola · Aujourd'hui</div>
+                <div class="info-card__title">Chicane de sécurité</div>
+                <div class="info-card__desc">Tamburello est devenu une chicane. La vitesse passe de 295 à 80 km/h pour toujours.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. SCÈNE 3D HAAS -->
+    <section class="section section--haas-viewer" id="s-haas">
+      <!-- Canvas Three.js en position:fixed — même logique que la section SF-26 -->
+    </section>
+
+    <!-- 5. SPA-FRANCORCHAMPS -->
+    <section class="section section--spa" id="s-spa">
+      <div id="spa-root"></div>
+    </section>
+
+    <!-- 7. CONCLUSION -->
+    <section class="section section--conclusion" id="s-conclusion">
+      <div class="conclusion-track-asset">
+        <img class="conclusion-track-asset__image" src="./assets/track-asset2.webp"
+          alt="Illustration graphique d'un tracé de circuit HEIG-VD" />
+        <div id="debug-zone">
+          <div id="conclusion-graph-root"></div>
+        </div>
+      </div>
+      <div id="footer-root"></div>
+    </section>
 
 
-</main>
+  </main>
 
-<div id="conclusion-cars-root"></div>
-<div id="bottom-nav-root"></div>
+  <div id="conclusion-cars-root"></div>
+  <div id="bottom-nav-root"></div>
 
-<script type="module" src="./main.js"></script>
-<script>
-(function () {
-  if (!new URLSearchParams(window.location.search).has('dev3')) return;
+  <script type="module" src="./main.js"></script>
+  <script>
+    (function () {
+      if (!new URLSearchParams(window.location.search).has('dev3')) return;
 
-  const zone = document.getElementById('debug-zone');
-  if (!zone) return;
-  zone.style.display = 'block';
-  zone.style.pointerEvents = 'all';
+      const zone = document.getElementById('debug-zone');
+      if (!zone) return;
+      zone.style.display = 'block';
+      zone.style.pointerEvents = 'all';
 
-  /* ── HUD panel ─────────────────────────────────────────────────────────── */
-  const hud = document.createElement('div');
-  hud.id = 'debug-hud';
-  hud.innerHTML = `
+      /* ── HUD panel ─────────────────────────────────────────────────────────── */
+      const hud = document.createElement('div');
+      hud.id = 'debug-hud';
+      hud.innerHTML = `
     <div class="dh-title">📐 Zone debug</div>
     <div class="dh-row"><span>left</span>  <b id="dh-l">—</b></div>
     <div class="dh-row"><span>top</span>   <b id="dh-t">—</b></div>
@@ -370,20 +395,20 @@
     <button id="dh-copy">Copier CSS</button>
     <div id="dh-copied" style="display:none;color:#4fffb0;font-size:11px;margin-top:4px">✓ Copié !</div>
   `;
-  document.body.appendChild(hud);
+      document.body.appendChild(hud);
 
-  /* ── Resize handles (8 directions) ─────────────────────────────────────── */
-  const handles = ['n','s','e','w','ne','nw','se','sw'];
-  handles.forEach(d => {
-    const h = document.createElement('div');
-    h.className = 'dz-handle dz-handle--' + d;
-    h.dataset.dir = d;
-    zone.appendChild(h);
-  });
+      /* ── Resize handles (8 directions) ─────────────────────────────────────── */
+      const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
+      handles.forEach(d => {
+        const h = document.createElement('div');
+        h.className = 'dz-handle dz-handle--' + d;
+        h.dataset.dir = d;
+        zone.appendChild(h);
+      });
 
-  /* ── Styles ─────────────────────────────────────────────────────────────── */
-  const style = document.createElement('style');
-  style.textContent = `
+      /* ── Styles ─────────────────────────────────────────────────────────────── */
+      const style = document.createElement('style');
+      style.textContent = `
     #debug-hud {
       position: fixed; top: 20px; right: 20px; z-index: 99999;
       background: rgba(10,10,20,0.92); border: 1px solid #444;
@@ -425,120 +450,121 @@
     .dz-handle--e  { right:-3px;  cursor: e-resize; }
     .dz-handle--w  { left:-3px;   cursor: w-resize; }
   `;
-  document.head.appendChild(style);
+      document.head.appendChild(style);
 
-  /* ── Helpers ─────────────────────────────────────────────────────────────── */
-  function getParent() { return zone.parentElement; }
+      /* ── Helpers ─────────────────────────────────────────────────────────────── */
+      function getParent() { return zone.parentElement; }
 
-  function pct(px, dim) { return (px / dim * 100); }
+      function pct(px, dim) { return (px / dim * 100); }
 
-  function readValues() {
-    const p = getParent();
-    const pr = p.getBoundingClientRect();
-    const zr = zone.getBoundingClientRect();
-    return {
-      l: pct(zr.left - pr.left, pr.width),
-      t: pct(zr.top  - pr.top,  pr.height),
-      w: pct(zr.width,          pr.width),
-      h: pct(zr.height,         pr.height),
-    };
-  }
+      function readValues() {
+        const p = getParent();
+        const pr = p.getBoundingClientRect();
+        const zr = zone.getBoundingClientRect();
+        return {
+          l: pct(zr.left - pr.left, pr.width),
+          t: pct(zr.top - pr.top, pr.height),
+          w: pct(zr.width, pr.width),
+          h: pct(zr.height, pr.height),
+        };
+      }
 
-  function updateHUD() {
-    const v = readValues();
-    document.getElementById('dh-l').textContent = v.l.toFixed(1) + '%';
-    document.getElementById('dh-t').textContent = v.t.toFixed(1) + '%';
-    document.getElementById('dh-w').textContent = v.w.toFixed(1) + '%';
-    document.getElementById('dh-h').textContent = v.h.toFixed(1) + '%';
-  }
+      function updateHUD() {
+        const v = readValues();
+        document.getElementById('dh-l').textContent = v.l.toFixed(1) + '%';
+        document.getElementById('dh-t').textContent = v.t.toFixed(1) + '%';
+        document.getElementById('dh-w').textContent = v.w.toFixed(1) + '%';
+        document.getElementById('dh-h').textContent = v.h.toFixed(1) + '%';
+      }
 
-  /* ── Drag (move) ─────────────────────────────────────────────────────────── */
-  let drag = null;
+      /* ── Drag (move) ─────────────────────────────────────────────────────────── */
+      let drag = null;
 
-  zone.addEventListener('mousedown', e => {
-    if (e.target !== zone) return; // only zone body, not handles
-    e.preventDefault();
-    const p = getParent();
-    const pr = p.getBoundingClientRect();
-    const zr = zone.getBoundingClientRect();
-    drag = {
-      startX: e.clientX, startY: e.clientY,
-      origL: zr.left - pr.left, origT: zr.top - pr.top,
-      pw: pr.width, ph: pr.height,
-    };
-  });
+      zone.addEventListener('mousedown', e => {
+        if (e.target !== zone) return; // only zone body, not handles
+        e.preventDefault();
+        const p = getParent();
+        const pr = p.getBoundingClientRect();
+        const zr = zone.getBoundingClientRect();
+        drag = {
+          startX: e.clientX, startY: e.clientY,
+          origL: zr.left - pr.left, origT: zr.top - pr.top,
+          pw: pr.width, ph: pr.height,
+        };
+      });
 
-  /* ── Resize ──────────────────────────────────────────────────────────────── */
-  let resize = null;
+      /* ── Resize ──────────────────────────────────────────────────────────────── */
+      let resize = null;
 
-  zone.querySelectorAll('.dz-handle').forEach(h => {
-    h.addEventListener('mousedown', e => {
-      e.preventDefault(); e.stopPropagation();
-      const p = getParent();
-      const pr = p.getBoundingClientRect();
-      const zr = zone.getBoundingClientRect();
-      resize = {
-        dir: h.dataset.dir,
-        startX: e.clientX, startY: e.clientY,
-        origL: zr.left - pr.left, origT: zr.top - pr.top,
-        origW: zr.width, origH: zr.height,
-        pw: pr.width, ph: pr.height,
-      };
-    });
-  });
+      zone.querySelectorAll('.dz-handle').forEach(h => {
+        h.addEventListener('mousedown', e => {
+          e.preventDefault(); e.stopPropagation();
+          const p = getParent();
+          const pr = p.getBoundingClientRect();
+          const zr = zone.getBoundingClientRect();
+          resize = {
+            dir: h.dataset.dir,
+            startX: e.clientX, startY: e.clientY,
+            origL: zr.left - pr.left, origT: zr.top - pr.top,
+            origW: zr.width, origH: zr.height,
+            pw: pr.width, ph: pr.height,
+          };
+        });
+      });
 
-  /* ── Global mouse events ─────────────────────────────────────────────────── */
-  document.addEventListener('mousemove', e => {
-    if (drag) {
-      const dx = e.clientX - drag.startX;
-      const dy = e.clientY - drag.startY;
-      const newL = Math.max(0, drag.origL + dx);
-      const newT = Math.max(0, drag.origT + dy);
-      zone.style.left   = pct(newL, drag.pw)  + '%';
-      zone.style.top    = pct(newT, drag.ph) + '%';
-      updateHUD();
-    }
-    if (resize) {
-      const dx = e.clientX - resize.startX;
-      const dy = e.clientY - resize.startY;
-      const d = resize.dir;
-      let l = resize.origL, t = resize.origT, w = resize.origW, h = resize.origH;
+      /* ── Global mouse events ─────────────────────────────────────────────────── */
+      document.addEventListener('mousemove', e => {
+        if (drag) {
+          const dx = e.clientX - drag.startX;
+          const dy = e.clientY - drag.startY;
+          const newL = Math.max(0, drag.origL + dx);
+          const newT = Math.max(0, drag.origT + dy);
+          zone.style.left = pct(newL, drag.pw) + '%';
+          zone.style.top = pct(newT, drag.ph) + '%';
+          updateHUD();
+        }
+        if (resize) {
+          const dx = e.clientX - resize.startX;
+          const dy = e.clientY - resize.startY;
+          const d = resize.dir;
+          let l = resize.origL, t = resize.origT, w = resize.origW, h = resize.origH;
 
-      if (d.includes('e')) w = Math.max(20, w + dx);
-      if (d.includes('s')) h = Math.max(20, h + dy);
-      if (d.includes('w')) { l = l + dx; w = Math.max(20, w - dx); }
-      if (d.includes('n')) { t = t + dy; h = Math.max(20, h - dy); }
+          if (d.includes('e')) w = Math.max(20, w + dx);
+          if (d.includes('s')) h = Math.max(20, h + dy);
+          if (d.includes('w')) { l = l + dx; w = Math.max(20, w - dx); }
+          if (d.includes('n')) { t = t + dy; h = Math.max(20, h - dy); }
 
-      zone.style.left   = pct(l, resize.pw) + '%';
-      zone.style.top    = pct(t, resize.ph) + '%';
-      zone.style.width  = pct(w, resize.pw) + '%';
-      zone.style.height = pct(h, resize.ph) + '%';
-      updateHUD();
-    }
-  });
+          zone.style.left = pct(l, resize.pw) + '%';
+          zone.style.top = pct(t, resize.ph) + '%';
+          zone.style.width = pct(w, resize.pw) + '%';
+          zone.style.height = pct(h, resize.ph) + '%';
+          updateHUD();
+        }
+      });
 
-  document.addEventListener('mouseup', () => { drag = null; resize = null; });
+      document.addEventListener('mouseup', () => { drag = null; resize = null; });
 
-  /* ── Copy button ─────────────────────────────────────────────────────────── */
-  document.getElementById('dh-copy').addEventListener('click', () => {
-    const v = readValues();
-    const css =
-`left: ${v.l.toFixed(2)}%;
+      /* ── Copy button ─────────────────────────────────────────────────────────── */
+      document.getElementById('dh-copy').addEventListener('click', () => {
+        const v = readValues();
+        const css =
+          `left: ${v.l.toFixed(2)}%;
 top: ${v.t.toFixed(2)}%;
 width: ${v.w.toFixed(2)}%;
 height: ${v.h.toFixed(2)}%;`;
-    navigator.clipboard.writeText(css).then(() => {
-      const el = document.getElementById('dh-copied');
-      el.style.display = 'block';
-      setTimeout(() => el.style.display = 'none', 2000);
-    });
-  });
+        navigator.clipboard.writeText(css).then(() => {
+          const el = document.getElementById('dh-copied');
+          el.style.display = 'block';
+          setTimeout(() => el.style.display = 'none', 2000);
+        });
+      });
 
-  /* ── Init HUD ────────────────────────────────────────────────────────────── */
-  // Wait for image to be painted so getBoundingClientRect is accurate
-  window.addEventListener('load', updateHUD);
-  updateHUD();
-})();
-</script>
+      /* ── Init HUD ────────────────────────────────────────────────────────────── */
+      // Wait for image to be painted so getBoundingClientRect is accurate
+      window.addEventListener('load', updateHUD);
+      updateHUD();
+    })();
+  </script>
 </body>
+
 </html>

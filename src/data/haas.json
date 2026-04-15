@@ -1,0 +1,166 @@
+{
+  "car": {
+    "team": "MoneyGram Haas F1",
+    "model": "VF-26",
+    "chassis": "VF-26/C1",
+    "powerUnit": "Ferrari 066/11",
+    "drivers": "Bearman · Ocon",
+    "season": "Formule 1 · Saison 2026",
+    "source": {
+      "id": "selva-marcello-3d",
+      "label": "3D model source",
+      "value": "Selva Marcello",
+      "url": "https://www.turbosquid.com/FullPreview/2534860"
+    }
+  },
+  "steps": [
+    {
+      "cameraIndex": 0,
+      "label": "Vue d'ensemble",
+      "infobox": null
+    },
+    {
+      "cameraIndex": 1,
+      "label": "Freins carbone",
+      "infobox": {
+        "id": "ib-haas-3",
+        "position": "left",
+        "tag": "Sécurité 02",
+        "title": ["FREINS", "CARBONE"],
+        "specs": [
+          { "label": "Matériau",               "value": "Carbone-carbone (C/C)",  "accent": false },
+          { "label": "Température de travail", "value": "400 — 1 000 °C",         "accent": true  },
+          { "label": "Distance 300 → 0 km/h",  "value": "65 m / > 5 g",           "accent": false },
+          { "label": "Poids disque",           "value": "~1 kg (vs 15 kg acier)", "accent": true  },
+          { "label": "Refroidissement",        "value": "Conduits dédiés NACA",   "accent": false }
+        ],
+        "desc": "Les disques en carbone-carbone offrent un coefficient de friction 5× supérieur à l'acier à haute température. Leur montée en chauffe est critique : en dessous de 400 °C, l'efficacité chute brutalement — d'où les températures pilotées par des conduits d'air ajustables pendant les tours de formation.",
+        "source": {
+          "id": "src-brakes",
+          "label": "Brembo Motorsport",
+          "url": "https://www.brembo.com/en/motorsport/formula1"
+        }
+      }
+    },
+    {
+      "cameraIndex": 2,
+      "label": "Halo",
+      "infobox": {
+        "id": "ib-haas-4",
+        "position": "right",
+        "tag": "Sécurité 03",
+        "title": ["HALO", "SYSTEM"],
+        "specs": [
+          { "label": "Matériau",                  "value": "Titane Ti6Al4V Grade 5",      "accent": false },
+          { "label": "Charge supportée",          "value": "125 kN (12,5 t)",             "accent": true  },
+          { "label": "Poids",                     "value": "7 — 9 kg",                    "accent": false },
+          { "label": "Obligatoire depuis",        "value": "2018 · FIA Art. 17",          "accent": true  },
+          { "label": "Vies sauvées (confirmées)", "value": "Grosjean 2020 · Zhou 2022",   "accent": false }
+        ],
+        "desc": "Né après l'accident fatal de Jules Bianchi au Japon en 2014, le Halo est rendu obligatoire en 2018. Lors du crash de Romain Grosjean à Bahreïn en 2020, il a résisté au cisaillement d'une glissière en acier à plus de 220 km/h, offrant au pilote la survie dans un cockpit en feu.",
+        "source": {
+          "id": "src-halo",
+          "label": "FIA — How to make an F1 Halo",
+          "url": "https://www.fia.com/news/how-make-f1-halo"
+        }
+      }
+    },
+    {
+      "cameraIndex": 3,
+      "label": "Feux d'alerte rétroviseurs",
+      "infobox": {
+        "id": "ib-haas-5",
+        "position": "right",
+        "tag": "Sécurité 04",
+        "title": ["FEUX", "D'ALERTE"],
+        "specs": [
+          { "label": "Activation",       "value": "Arrêt ou < 20 km/h",         "accent": true  },
+          { "label": "Norme FIA",        "value": "Art. 14.3.3 rèeg. tech. 2026","accent": false },
+          { "label": "Couleur",          "value": "Ambre clignotant",            "accent": true  },
+          { "label": "Position",         "value": "Rétroviseurs · ext. gauche/droite", "accent": false },
+          { "label": "Visibilité",       "value": "Avant + latéral 360°",        "accent": true  }
+        ],
+        "desc": "Nouveauté 2026 : des feux ambrés clignotants sont intégrés dans les rétroviseurs de chaque côté de la voiture. Ils s'allument dès que la voiture s'arrête ou passe en dessous de 20 km/h — typiquement lors d'un tête-à-queue ou d'un accident. Leur position garantit une visibilité depuis l'avant et les côtés, même sous forte pluie.",
+        "source": {
+          "id": "src-mirror-lights",
+          "label": "Formula1.com — New lights explained",
+          "url": "https://www.formula1.com/en/latest/article/explained-what-do-the-new-lights-on-f1-cars-mean.2W9KyVqIpHgZAvKqJXxAEM"
+        }
+      }
+    },
+    {
+      "cameraIndex": 4,
+      "label": "Cheminée arceau",
+      "infobox": {
+        "id": "ib-haas-6",
+        "position": "left",
+        "tag": "Sécurité 05",
+        "title": ["CHEMINÉE", "ARCEAU"],
+        "specs": [
+          { "label": "Matériau",                        "value": "Titane + CFRP",              "accent": false },
+          { "label": "Charge test FIA 2026",            "value": "167 kN (17 t)",              "accent": true  },
+          { "label": "Hausse vs règlement précédent",   "value": "+ 26 kN · 20G max",          "accent": false },
+          { "label": "Règlement",                       "value": "FIA 2026 Tech Regs · Sec. C","accent": true  },
+          { "label": "Déploiement",                     "value": "Fixe · intégré châssis",     "accent": false }
+        ],
+        "desc": "La cheminée (rollhoop) forme l'arceau de sécurité principal derrière la tête du pilote. En 2026, la FIA a durci les exigences : la structure doit désormais encaisser 167 kN de charge verticale — soit 26 kN de plus que le règlement précédent — sans déformation critique, maintenant un espace vital autour du casque en cas de retournement.",
+        "source": {
+          "id": "src-rollhoop",
+          "label": "GPFans — F1 2026 roll hoop regulation",
+          "url": "https://www.gpfans.com/en/f1-news/1077462/f1-2026-regulations-roll-hoop/"
+        }
+      }
+    },
+    {
+      "cameraIndex": 5,
+      "label": "Volant anti-retour",
+      "infobox": {
+        "id": "ib-haas-8",
+        "position": "left",
+        "tag": "Sécurité 07",
+        "title": ["VOLANT", "ANTI-RETOUR"],
+        "specs": [
+          { "label": "Incident déclencheur", "value": "Ricciardo · Zandvoort 2023",       "accent": true  },
+          { "label": "Blessure",             "value": "Fracture métacarpe · main gauche", "accent": false },
+          { "label": "Cause",                "value": "Volant non lâché à l'impact",      "accent": true  },
+          { "label": "Résultante",           "value": "Retour de couple violent",          "accent": false },
+          { "label": "Suivi FIA",            "value": "Travaux amortisseur direction",     "accent": true  }
+        ],
+        "desc": "En août 2023 à Zandvoort, Daniel Ricciardo percute le mur en FP2 sans avoir le temps de lâcher le volant. Le choc provoque un retour de couple violent — le volant lui fracture un métacarpe de la main gauche. Suite à cet incident, la FIA a engagé des travaux sur un amortisseur de direction pour limiter ce type de blessure, déjà déployé en Formula E.",
+        "source": {
+          "id": "src-steering",
+          "label": "The Race — Ricciardo broken hand Dutch GP",
+          "url": "https://www.the-race.com/formula-1/ricciardo-broken-wrist-dutch-gp-lawson-f1-debut/"
+        }
+      }
+    },
+    {
+      "cameraIndex": 6,
+      "label": "Feux arrières",
+      "infobox": {
+        "id": "ib-haas-7",
+        "position": "right",
+        "tag": "Sécurité 06",
+        "title": ["FEU ARRIÈRE", "& WARNING"],
+        "specs": [
+          { "label": "Norme FIA",             "value": "8874-2019",                  "accent": false },
+          { "label": "Feux homologués 2026",  "value": "3 (1 central + 2 aileron)",  "accent": true  },
+          { "label": "Puissance lumineuse",   "value": "≥ 15 W équivalent LED",      "accent": false },
+          { "label": "Mode anti-brouillard",  "value": "Déclenchement Manuel / SC",  "accent": true  },
+          { "label": "Clignotement freinage", "value": "Automatique > 2 g",          "accent": false }
+        ],
+        "desc": "En 2026, la FIA renforce la visibilité arrière sous pluie avec trois feux homologués : un central et deux supplémentaires intégrés aux endplates de l'aileron arrière. En condition de Safety Car ou de pluie intense, le feu central clignote. Au-delà de 2 g de décélération, il passe automatiquement en mode warning.",
+        "source": {
+          "id": "src-rear-lights",
+          "label": "The Race — 2026 rear lights explained",
+          "url": "https://www.the-race.com/formula-1/f1-2026-cars-what-flashing-rear-lights-mean/"
+        }
+      }
+    },
+    {
+      "cameraIndex": 7,
+      "label": "Fin",
+      "infobox": null
+    }
+  ]
+}

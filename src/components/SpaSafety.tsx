@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import ComparisonSlider from './ComparisonSlider';
+import spaData from '../data/spa.json';
 
 const CIRCUIT_PATH =
   'm4.447 290.28c0.13184 1.3988 0.74128 2.2328 1.7024 3.099 3.1469 2.8362 3.8732 2.3848 55.153-34.244' +
@@ -29,60 +30,10 @@ interface Poi {
   photoBefore: string | null; photoAfter: string | null;
   yearBefore: string; yearAfter: string;
   photoBeforePosition?: string; photoAfterPosition?: string;
+  source?: { label: string; url: string };
 }
 
-const SPA_POIS: Poi[] = [
-  {
-    id: 'la-source', label: 'LA SOURCE', tag: 'Zone 01', year: '1994', fraction: 0.0,
-    yearBefore: 'Avant 1994', yearAfter: 'Après 1994',
-    photoBefore: '/spa/la-source-avant.jpg', photoAfter: '/spa/la-source-apres.jpg',
-    photoBeforePosition: '25% center',
-    specs: [
-      { label: 'Type', value: 'Virage en épingle' },
-      { label: 'Modification', value: 'Chicane temporaire', accent: true },
-      { label: 'Contexte', value: 'Post-Senna / Ratzenberger' },
-      { label: 'Impact vitesse', value: '−30 km/h à l\'entrée', accent: true },
-    ],
-    description: 'Suite aux décès d\'Ayrton Senna et Roland Ratzenberger à Imola 1994, la FIA a imposé des chicanes d\'urgence sur tous les circuits. À Spa, La Source a été resserrée et les zones de gravier élargies pour absorber les sorties de piste.',
-  },
-  {
-    id: 'eau-rouge', label: 'EAU ROUGE / RAIDILLON', tag: 'Zone 02', year: '2022', fraction: 0.87,
-    yearBefore: 'Avant 2022', yearAfter: 'Après 2022',
-    photoBefore: '/spa/eau-rouge-avant.jpg', photoAfter: '/spa/eau-rouge-apres.jpg',
-    specs: [
-      { label: 'Type', value: 'Combinaison de virages' },
-      { label: 'Fermeture', value: '2021 — Hubert 2019', accent: true },
-      { label: 'Réouverture', value: '2022 — rénovation complète' },
-      { label: 'Dégagement', value: '+340 % de surface', accent: true },
-    ],
-    description: 'La mort d\'Anthoine Hubert en 2019 et l\'accident de Norris en 2021 ont provoqué la refonte totale du Raidillon. Les zones de dégagement ont été massivement élargies, les barrières repositionnées et l\'asphalte entièrement refait.',
-  },
-  {
-    id: 'pouhon', label: 'POUHON', tag: 'Zone 03', year: '2022', fraction: 0.50,
-    yearBefore: 'Avant 2022', yearAfter: 'Après 2022',
-    photoBefore: '/spa/pouhon-avant.jpg', photoAfter: '/spa/pouhon-apres.jpg',
-    photoAfterPosition: '25% center',
-    specs: [
-      { label: 'Type', value: 'Double gauche rapide' },
-      { label: 'Vitesse passage', value: '280 – 300 km/h', accent: true },
-      { label: 'Protection', value: 'Barrières TecPro' },
-      { label: 'Dégagement', value: 'Gravier → asphalte + gravier', accent: true },
-    ],
-    description: 'Longtemps encadré de gravier pur, Pouhon a été repensé lors de la rénovation de Spa en 2022. Les larges zones d\'échappatoire asphaltées permettent désormais aux pilotes de récupérer une sortie de piste, tandis qu\'une bande de gravier en retrait conserve un effet dissuasif.',
-  },
-  {
-    id: 'bus-stop', label: 'BUS STOP', tag: 'Zone 04', year: '1994', fraction: 0.1,
-    yearBefore: 'Avant 1994', yearAfter: 'Après 1994',
-    photoBefore: '/spa/bus-stop-avant.webp', photoAfter: '/spa/bus-stop-apres.png',
-    specs: [
-      { label: 'Type', value: 'Chicane lente' },
-      { label: 'Modification', value: 'Chicane resserrée', accent: true },
-      { label: 'Contexte', value: 'Saison 1994' },
-      { label: 'Vitesse passage', value: '80 km/h (−40 %)', accent: true },
-    ],
-    description: 'La chicane du Bus Stop a été considérablement resserrée après les tragiques événements d\'Imola. Conçue pour casser la vitesse avant le dernier virage, elle a radicalement changé la fin du tour — sacrifiant le spectacle pour la sécurité.',
-  },
-];
+const SPA_POIS: Poi[] = spaData.pois as Poi[];
 
 export default function SpaSafety() {
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -129,8 +80,9 @@ export default function SpaSafety() {
     let targetOffset: number;
     if (isComplete) {
       targetOffset = 0; // tout le path visible
-    } else if (activeIndex <= 0) {
-      targetOffset = -pathLength; // rien affiché (La Source = point de départ)
+    } else if (activeIndex < 1) {
+      // intro (−1) et La Source (0, fraction=0 = point de départ) : rien affiché
+      targetOffset = -pathLength;
     } else {
       targetOffset = -SPA_POIS[activeIndex].fraction * pathLength;
     }
@@ -183,7 +135,7 @@ export default function SpaSafety() {
         </div>
 
         <div className="spa-left__nav">
-          <button className="spa-nav-btn" onClick={() => navigate(-1)} disabled={activeIndex <= 0}>‹</button>
+          <button className="spa-nav-btn" onClick={() => navigate(-1)} disabled={activeIndex < 0}>‹</button>
           <span className="spa-nav-count">
             {activeIndex >= 0
               ? `${String(Math.min(activeIndex + 1, SPA_POIS.length)).padStart(2, '0')} / ${String(SPA_POIS.length).padStart(2, '0')}`
@@ -200,23 +152,41 @@ export default function SpaSafety() {
       <div className="spa-right">
         {activePoi ? (
           <div className="spa-right__content" key={activeIndex}>
-            <div className="spa-right__meta">
-              <span className="ib-tag">{activePoi.tag} · {activePoi.year}</span>
-              <h3 className="spa-right__title">{activePoi.label}</h3>
-            </div>
 
-            <div className="spa-right__specs">
-              {activePoi.specs.map(s => (
-                <div className="ib-spec" key={s.label}>
-                  <span className="spec-label">{s.label}</span>
-                  <span className="spec-dots" />
-                  <span className={`spec-value${s.accent ? ' accent' : ''}`}>{s.value}</span>
+            {/* Colonne gauche : données */}
+            <div className="spa-right__data">
+              <div className="spa-right__meta">
+                <span className="ib-tag">{activePoi.tag} · {activePoi.year}</span>
+                <h3 className="spa-right__title">{activePoi.label}</h3>
+              </div>
+
+              <div className="spa-right__specs">
+                {activePoi.specs.map(s => (
+                  <div className="ib-spec" key={s.label}>
+                    <span className="spec-label">{s.label}</span>
+                    <span className="spec-dots" />
+                    <span className={`spec-value${s.accent ? ' accent' : ''}`}>{s.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="ib-desc">{activePoi.description}</p>
+
+              {activePoi.source && (
+                <div className="spa-right__source">
+                  <a
+                    href={activePoi.source.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="source-link source-link--label"
+                  >
+                    Source
+                  </a>
                 </div>
-              ))}
+              )}
             </div>
 
-            <p className="ib-desc">{activePoi.description}</p>
-
+            {/* Colonne droite : slider pleine hauteur */}
             <div className="spa-photos">
               {activePoi.photoBefore && activePoi.photoAfter ? (
                 <ComparisonSlider
@@ -243,6 +213,7 @@ export default function SpaSafety() {
                 </div>
               )}
             </div>
+
           </div>
         ) : (
           <div className="spa-right__empty">

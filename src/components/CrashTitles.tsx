@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 const TITLES = [
-  '1994, Imola',
-  'Un crash mythique',
-  'qui a tout change...',
+  { label: '01', text: '1994, Imola' },
+  { label: '02', text: 'Un crash mythique' },
+  { label: '03', text: 'qui a tout changé...' },
 ];
 
 const CrashTitles = () => {
@@ -22,14 +22,15 @@ const CrashTitles = () => {
   }, []);
 
   return (
-    <div className="crash-title-stack">
-      {TITLES.map((title, index) => (
-        <h2
-          key={title}
-          className={`crash-title ${activeTitleIndex === index ? 'is-active' : ''}`}
+    <div className="crash-chapters">
+      {TITLES.map((item, index) => (
+        <div
+          key={item.text}
+          className={`crash-chapter ${activeTitleIndex === index ? 'is-active' : ''} ${activeTitleIndex > index ? 'is-done' : ''}`}
         >
-          {title}
-        </h2>
+          <span className="crash-chapter__num">{item.label}</span>
+          <span className="crash-chapter__text">{item.text}</span>
+        </div>
       ))}
     </div>
   );

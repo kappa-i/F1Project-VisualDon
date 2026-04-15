@@ -52,6 +52,7 @@ const ERA_IMAGES = [
 import shaderFrontUrl from './assets/BG111.png';
 import shaderBackUrl from './assets/BG222.png';
 import studioGlbUrl from './models/tunel.glb';
+import haasData from './data/haas.json';
 
 
 const stats4Mount = document.getElementById('stats4-root');
@@ -170,12 +171,21 @@ if (conclusionCarsMount) {
 }
 
 
-const SOURCE_ENTRIES = {
-  'selva-marcello-3d': {
-    title: 'Source',
-    url: 'https://example.com',
-  },
-};
+// SOURCE_ENTRIES : dérivé de haas.json (infoboxes + modèle 3D)
+const SOURCE_ENTRIES = Object.fromEntries([
+  // modèle 3D voiture
+  [haasData.car.source.id, {
+    title: haasData.car.source.value,
+    url:   haasData.car.source.url,
+  }],
+  // sources par infobox
+  ...haasData.steps
+    .filter(s => s.infobox?.source)
+    .map(s => [s.infobox.source.id, {
+      title: s.infobox.source.label,
+      url:   s.infobox.source.url,
+    }]),
+]);
 
 function renderSourceTrigger(text, sourceId, variant = 'value') {
   return `<button class="source-link source-link--${variant} js-source-trigger" type="button" data-source-id="${sourceId}">${text}</button>`;
@@ -485,76 +495,86 @@ const CRASH_PAGE_END = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
 const VIEWER_PAGE_END = VIEWER_PAGE_START + 7;
 const SPA_PAGE_START = VIEWER_PAGE_END + 1;
-const SPA_PAGE_COUNT = 4;
+const SPA_PAGE_COUNT = 5; // 1 page intro (index -1) + 4 zones
 const SPA_PAGE_END = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
 const CONCLUSION_PAGE = SPA_PAGE_END + 1;
 const PAGE_COUNT = CONCLUSION_PAGE + 1;
 const CRASH_SCROLL_DISTANCE = 7000;
 const CRASH_EXIT_DISTANCE = 220;
 const CRASH_FRAME_COUNT = 301;
-const CRASH_VELOCITY_GAIN = 0.25;
-const CRASH_VELOCITY_FRICTION = 0.972;
-const CRASH_VELOCITY_EPSILON = 0.003;
-const CRASH_LERP_FACTOR = 0.08;
+const CRASH_LERP_FACTOR = 0.35;
 const WHEEL_GESTURE_GAP = 140;
 const WHEEL_NAV_THRESHOLD = 42;
 const WHEEL_NAV_LOCK_MS = 1150;
-const INFOBOXES  = {
-  // KF0: vue d'ensemble → pas d'infobox
-  [VIEWER_PAGE_START + 1]: 'ib-haas-3', // freins carbone
-  [VIEWER_PAGE_START + 2]: 'ib-haas-4', // halo
-  [VIEWER_PAGE_START + 3]: 'ib-haas-5', // warnings rétroviseurs
-  [VIEWER_PAGE_START + 4]: 'ib-haas-6', // cheminée
-  [VIEWER_PAGE_START + 5]: 'ib-haas-8', // volant anti-retour
-  [VIEWER_PAGE_START + 6]: 'ib-haas-7', // feux arrières
-  // KF7: fin → pas d'infobox
-};
+
+// ── infoboxes Haas — générées depuis haas.json ────────────────────────────
+function renderHaasInfoboxes() {
+  const container = document.getElementById('haas-infoboxes');
+  if (!container) return;
+  container.innerHTML = haasData.steps
+    .filter(step => step.infobox !== null)
+    .map(step => {
+      const ib = step.infobox;
+      const specs = ib.specs.map(s =>
+        `<div class="ib-spec"><span class="spec-label">${s.label}</span><span class="spec-dots"></span><span class="spec-value${s.accent ? ' accent' : ''}">${s.value}</span></div>`
+      ).join('');
+      const sourceBtn = ib.source
+        ? `<div class="ib-source"><button class="source-link source-link--label js-source-trigger" type="button" data-source-id="${ib.source.id}">Source</button></div>`
+        : '';
+      return `
+<div class="infobox ${ib.position}" id="${ib.id}">
+  <div class="ib-tag">${ib.tag}</div>
+  <div class="ib-title">${ib.title.join('<br>')}</div>
+  <div class="ib-divider"></div>
+  <div class="ib-specs">${specs}</div>
+  <div class="ib-desc">${ib.desc}</div>
+  ${sourceBtn}
+</div>`;
+    }).join('');
+}
+renderHaasInfoboxes();
+
+// INFOBOXES : mapping page → id infobox, dérivé de haas.json
+const INFOBOXES = Object.fromEntries(
+  haasData.steps
+    .filter(step => step.infobox !== null)
+    .map(step => [VIEWER_PAGE_START + step.cameraIndex, step.infobox.id])
+);
 
 const crashFrameEl = document.getElementById('crash-frame');
 const crashCtx = crashFrameEl ? crashFrameEl.getContext('2d') : null;
-const crashFrameUrls = Array.from({ length: CRASH_FRAME_COUNT }, (_, index) =>
-  `/crash-frames/frame_${String(index + 1).padStart(3, '0')}.jpg`
+const crashProgressFill = document.getElementById('crash-progress-fill');
+const crashProgressThumb = document.getElementById('crash-progress-thumb');
+const ytbCurrent = document.getElementById('ytb-current');
+const CRASH_VIDEO_DURATION = 10;
+const infoCards = Array.from(document.querySelectorAll('.info-card[data-card]'));
+// seuils de frame auxquels chaque carte apparaît et devient active
+// seuils calés sur les events existants : titres (frame ~36, ~136, ~236) + imola (90, 230)
+const CARD_THRESHOLDS = [36, 90, 150, 230];
+const crashFrameUrls = Array.from({ length: CRASH_FRAME_COUNT }, (_, i) =>
+  `/crash-frames/frame_${String(i + 1).padStart(3, '0')}.jpg`
 );
 const crashFrameImages = crashFrameUrls.map(src => {
   const img = new Image();
   img.src = src;
   return img;
 });
-let crashTargetFrame = 0;
-let crashRenderedFrame = 0;
-let crashFrameSrcIndex = 0;
-let crashExitDistance = 0;
-let crashExitDirection = 0;
-let crashFrameVelocity = 0;
-let activeCrashTitleIndex = -1;
-// -1 = hidden, 0 = showing old layout, 1 = morphed to modern
-let activeImolaState = -1;
-// Frame thresholds for the Imola modal
-const IMOLA_SHOW_FRAME  = 90;   // modal appears ~30% into sequence
-const IMOLA_MORPH_FRAME = 230;  // morphs to modern ~few scrolls before end
-const IMOLA_RESET_FRAME = 20;   // reset when scrolling back to start
 
 function resizeCrashCanvas() {
   if (!crashFrameEl || !crashCtx) return;
-  crashFrameEl.width = window.innerWidth;
-  crashFrameEl.height = window.innerHeight;
-  // Redraw current frame after resize
+  crashFrameEl.width = crashFrameEl.offsetWidth;
+  crashFrameEl.height = crashFrameEl.offsetHeight;
   renderCrashFrame(crashRenderedFrame);
 }
 
 function renderCrashFrame(frameIndex) {
-  const clamped = THREE.MathUtils.clamp(frameIndex, 0, CRASH_FRAME_COUNT - 1);
+  const clamped = THREE.MathUtils.clamp(Math.round(frameIndex), 0, CRASH_FRAME_COUNT - 1);
   if (!crashCtx) return;
   const img = crashFrameImages[clamped];
   if (!img.complete || img.naturalWidth === 0) return;
-  // Skip redraw if same frame and canvas dimensions didn't change
-  if (crashFrameSrcIndex === clamped &&
-      crashFrameEl.width === window.innerWidth &&
-      crashFrameEl.height === window.innerHeight) return;
-  crashFrameSrcIndex = clamped;
-  // Draw with object-fit: cover behaviour
   const cw = crashFrameEl.width;
   const ch = crashFrameEl.height;
+  if (!cw || !ch) return;
   const iw = img.naturalWidth;
   const ih = img.naturalHeight;
   const scale = Math.max(cw / iw, ch / ih);
@@ -563,7 +583,36 @@ function renderCrashFrame(frameIndex) {
   const dx = (cw - dw) / 2;
   const dy = (ch - dh) / 2;
   crashCtx.drawImage(img, dx, dy, dw, dh);
+  const progress = clamped / (CRASH_FRAME_COUNT - 1);
+  const pct = (progress * 100).toFixed(2) + '%';
+  if (crashProgressFill) crashProgressFill.style.width = pct;
+  if (crashProgressThumb) crashProgressThumb.style.left = pct;
+  if (ytbCurrent) {
+    const secs = Math.round(progress * CRASH_VIDEO_DURATION);
+    ytbCurrent.textContent = '0:' + String(secs).padStart(2, '0');
+  }
+  // cartes info : apparition progressive + carte active
+  let activeCard = -1;
+  for (let i = CARD_THRESHOLDS.length - 1; i >= 0; i--) {
+    if (clamped >= CARD_THRESHOLDS[i]) { activeCard = i; break; }
+  }
+  infoCards.forEach((card, i) => {
+    card.classList.toggle('is-visible', clamped >= CARD_THRESHOLDS[i]);
+    card.classList.toggle('is-active', i === activeCard);
+  });
 }
+let crashTargetFrame = 0;
+let crashRenderedFrame = 0;
+let crashExitDistance = 0;
+let crashExitDirection = 0;
+let activeCrashTitleIndex = -1;
+// -1 = hidden, 0 = showing old layout, 1 = morphed to modern
+let activeImolaState = -1;
+// Frame thresholds for the Imola modal
+const IMOLA_SHOW_FRAME  = 90;   // modal appears ~30% into sequence
+const IMOLA_MORPH_FRAME = 230;  // morphs to modern ~few scrolls before end
+const IMOLA_RESET_FRAME = 20;   // reset when scrolling back to start
+
 
 function updateCrashTitles(frameIndex) {
   const introFrames = Math.floor(CRASH_FRAME_COUNT * 0.12);
@@ -633,6 +682,14 @@ function crashFrameToProgress(frameIndex) {
   return frameIndex / (CRASH_FRAME_COUNT - 1);
 }
 
+resizeCrashCanvas();
+const _firstCrashImg = crashFrameImages[0];
+if (_firstCrashImg.complete && _firstCrashImg.naturalWidth > 0) {
+  renderCrashFrame(0);
+} else {
+  _firstCrashImg.onload = () => renderCrashFrame(0);
+}
+
 function normalizeWheelDelta(event) {
   let delta = event.deltaY;
   if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) delta *= 16;
@@ -640,19 +697,6 @@ function normalizeWheelDelta(event) {
   return delta;
 }
 
-resizeCrashCanvas();
-// Draw frame 0 immediately if already decoded, otherwise wait for load
-const _firstCrashImg = crashFrameImages[0];
-if (_firstCrashImg.complete && _firstCrashImg.naturalWidth > 0) {
-  crashFrameSrcIndex = -1; // force redraw
-  renderCrashFrame(0);
-} else {
-  _firstCrashImg.onload = () => {
-    crashFrameSrcIndex = -1;
-    renderCrashFrame(0);
-  };
-}
-updateCrashTitles(0);
 
 function isEraPage(_idx) {
   return false; // section ère supprimée – ère intégrée dans hero
@@ -735,7 +779,8 @@ function isSpaPage(idx) {
 
 
 function dispatchSpaPoiChange(pageIdx) {
-  const index = isSpaPage(pageIdx) ? pageIdx - SPA_PAGE_START : -1;
+  // SPA_PAGE_START = page intro (index -1), SPA_PAGE_START+1 = zone 1 (index 0), etc.
+  const index = isSpaPage(pageIdx) ? pageIdx - SPA_PAGE_START - 1 : -1;
   window.dispatchEvent(new CustomEvent('spa-poi-change', { detail: { index } }));
 }
 
@@ -866,22 +911,19 @@ function updateHUD(pageIdx) {
   dotsEl.style.pointerEvents = isHaas ? 'auto' : 'none';
   if (!isHaas) {
     document.querySelectorAll('.infobox').forEach(el => el.classList.remove('visible'));
+    setViewerIntro(false);
+  } else if (pageIdx === VIEWER_PAGE_START) {
+    setViewerIntro(true);
   }
   if (haasModel) haasModel.visible = isHaas;
   if (!isHaas) { stopHaasBlinker(); stopHaasBacklight(); }
-  const topbarEl = document.getElementById('topbar');
-  const statusbarEl = document.getElementById('statusbar');
-  if (topbarEl && statusbarEl) {
+  const hudSourceEl = document.getElementById('hud-source');
+  if (hudSourceEl) {
     if (isHaas) {
-      topbarEl.innerHTML = '<div><div class="brand-team">MoneyGram Haas F1</div><div class="brand-car"><span>VF</span>-26</div></div><div class="season">Formule 1 · Saison 2026</div>';
-      statusbarEl.innerHTML = renderStatusbar({
-        chassis: 'VF-26/C1',
-        powerUnit: 'Ferrari 066/11',
-        drivers: 'Bearman · Ocon',
-        sourceLabel: '3D model source',
-        sourceValue: 'Selva Marcello',
-        sourceId: 'selva-marcello-3d',
-      });
+      const { car } = haasData;
+      hudSourceEl.innerHTML = `<div class="hud-source__label">${renderSourceTrigger(car.source.label, car.source.id, 'label')}</div><div class="hud-source__value">${renderSourceTrigger(car.source.value, car.source.id, 'value')}</div>`;
+    } else {
+      hudSourceEl.innerHTML = '';
     }
   }
 }
@@ -947,11 +989,17 @@ function stopHaasBlinker() {
   indicatorGlowR.intensity = 0;
 }
 
+function setViewerIntro(visible) {
+  const el = document.getElementById('viewer-intro');
+  if (el) el.classList.toggle('visible', visible);
+}
+
 function snapCamera(camIdx, onDone) {
   const kf = haasCamKF;
   if (!kf[camIdx]) { onDone?.(); return; }
 
   document.querySelectorAll('.infobox').forEach(el => el.classList.remove('visible'));
+  setViewerIntro(camIdx === 0);
 
   gsap.to(cam, {
     px: kf[camIdx].pos.x,    py: kf[camIdx].pos.y,    pz: kf[camIdx].pos.z,
@@ -1149,7 +1197,10 @@ window.addEventListener('wheel', e => {
 
     if (direction > 0) {
       if (crashTargetFrame < CRASH_FRAME_COUNT - 1) {
-        crashFrameVelocity += delta / CRASH_SCROLL_DISTANCE * (CRASH_FRAME_COUNT - 1) * CRASH_VELOCITY_GAIN;
+        crashTargetFrame = THREE.MathUtils.clamp(
+          crashTargetFrame + delta / CRASH_SCROLL_DISTANCE * (CRASH_FRAME_COUNT - 1),
+          0, CRASH_FRAME_COUNT - 1
+        );
         crashExitDistance = 0;
         crashExitDirection = 0;
         return;
@@ -1165,7 +1216,10 @@ window.addEventListener('wheel', e => {
     }
 
     if (crashTargetFrame > 0) {
-      crashFrameVelocity += delta / CRASH_SCROLL_DISTANCE * (CRASH_FRAME_COUNT - 1) * CRASH_VELOCITY_GAIN;
+      crashTargetFrame = THREE.MathUtils.clamp(
+        crashTargetFrame + delta / CRASH_SCROLL_DISTANCE * (CRASH_FRAME_COUNT - 1),
+        0, CRASH_FRAME_COUNT - 1
+      );
       crashExitDistance = 0;
       crashExitDirection = 0;
       return;
@@ -1213,7 +1267,7 @@ window.addEventListener('keydown', e => {
 
   if (isCrashPage(currentPage)) {
     const step = (CRASH_FRAME_COUNT - 1) / CRASH_PAGE_STEPS;
-    crashFrameVelocity += direction * step * CRASH_VELOCITY_GAIN;
+    crashTargetFrame = THREE.MathUtils.clamp(crashTargetFrame + direction * step, 0, CRASH_FRAME_COUNT - 1);
 
     const now = performance.now();
     if (now < wheelUnlockAt) return;
@@ -1407,31 +1461,7 @@ window.addEventListener('resize', () => {
 // ── render loop ───────────────────────────────────────────────────────────
 (function animate() {
   requestAnimationFrame(animate);
-  if (Math.abs(crashFrameVelocity) > CRASH_VELOCITY_EPSILON) {
-    const nextTargetFrame = THREE.MathUtils.clamp(
-      crashTargetFrame + crashFrameVelocity,
-      0,
-      CRASH_FRAME_COUNT - 1,
-    );
-    crashTargetFrame = nextTargetFrame;
-    currentPage = isCrashPage(currentPage)
-      ? THREE.MathUtils.clamp(
-          Math.round(CRASH_PAGE_START + crashFrameToProgress(crashTargetFrame) * (CRASH_PAGE_STEPS - 1)),
-          CRASH_PAGE_START,
-          CRASH_PAGE_END,
-        )
-      : currentPage;
-
-    if (nextTargetFrame <= 0 || nextTargetFrame >= CRASH_FRAME_COUNT - 1) {
-      crashFrameVelocity *= 0.5;
-    } else {
-      crashFrameVelocity *= CRASH_VELOCITY_FRICTION;
-    }
-  } else {
-    crashFrameVelocity = 0;
-  }
-
-  // Lerp: rendered frame eases toward target — gives organic inertia on start/stop
+  // Lerp: rendered frame eases toward target
   const lerpDelta = crashTargetFrame - crashRenderedFrame;
   if (Math.abs(lerpDelta) > 0.05) {
     crashRenderedFrame += lerpDelta * CRASH_LERP_FACTOR;

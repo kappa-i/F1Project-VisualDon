@@ -1,0 +1,94 @@
+{
+  "pois": [
+    {
+      "id": "la-source",
+      "label": "LA SOURCE",
+      "tag": "Zone 01",
+      "year": "2022",
+      "fraction": 0.0,
+      "yearBefore": "Avant 2022",
+      "yearAfter": "Après 2022",
+      "photoBefore": "/spa/la-source-avant.jpg",
+      "photoAfter": "/spa/la-source-apres.jpg",
+      "photoBeforePosition": "25% center",
+      "specs": [
+        { "label": "Type",        "value": "Virage en épingle",          "accent": false },
+        { "label": "Modification","value": "Gravier réintroduit",        "accent": true  },
+        { "label": "Contexte",    "value": "Rénovation Spa 2022",        "accent": false },
+        { "label": "Objectif",    "value": "Dissuasion + absorption",    "accent": true  }
+      ],
+      "description": "Dans le cadre de la rénovation complète de Spa en 2022, des pièges à gravier ont été réintroduits à La Source. L'objectif : retrouver un effet dissuasif que l'asphalte seul ne peut garantir, tout en conservant des zones d'échappatoire plus larges pour les sorties de piste à basse vitesse.",
+      "source": {
+        "label": "Motor Sport Magazine — Spa safety history",
+        "url": "https://www.motorsportmagazine.com/articles/single-seaters/f1/spa-circuit-how-safety-and-speed-shaped-an-f1-classic/"
+      }
+    },
+    {
+      "id": "eau-rouge",
+      "label": "EAU ROUGE / RAIDILLON",
+      "tag": "Zone 02",
+      "year": "2022",
+      "fraction": 0.87,
+      "yearBefore": "Avant 2022",
+      "yearAfter": "Après 2022",
+      "photoBefore": "/spa/eau-rouge-avant.jpg",
+      "photoAfter": "/spa/eau-rouge-apres.jpg",
+      "specs": [
+        { "label": "Type",        "value": "Combinaison de virages",     "accent": false },
+        { "label": "Rénovation",  "value": "Hiver 2021–2022 · €25 M",   "accent": true  },
+        { "label": "Déclencheur", "value": "Hubert 2019 (fatal · F2)",   "accent": false },
+        { "label": "Dégagement",  "value": "Zone massivement élargie",   "accent": true  }
+      ],
+      "description": "La mort d'Anthoine Hubert en 2019 en F2 a déclenché une rénovation complète du Raidillon pour €25 millions. Les zones de dégagement ont été massivement élargies des deux côtés, les barrières reculées et l'asphalte entièrement refait — le tout réalisé pendant l'hiver 2021–2022 pour la réouverture au GP de Belgique 2022.",
+      "source": {
+        "label": "RacingNews365 — Spa 2022 changes",
+        "url": "https://racingnews365.com/the-extensive-changes-made-to-spa-ahead-of-the-2022-f1-belgian-gp"
+      }
+    },
+    {
+      "id": "pouhon",
+      "label": "POUHON",
+      "tag": "Zone 03",
+      "year": "2022",
+      "fraction": 0.50,
+      "yearBefore": "Avant 2022",
+      "yearAfter": "Après 2022",
+      "photoBefore": "/spa/pouhon-avant.jpg",
+      "photoAfter": "/spa/pouhon-apres.jpg",
+      "photoAfterPosition": "25% center",
+      "specs": [
+        { "label": "Type",           "value": "Double gauche rapide",         "accent": false },
+        { "label": "Vitesse passage","value": "280 – 300 km/h",               "accent": true  },
+        { "label": "Dégagement",     "value": "Gravier → asphalte + gravier", "accent": false },
+        { "label": "Rénovation",     "value": "Refonte complète 2022",        "accent": true  }
+      ],
+      "description": "Longtemps encadré de gravier pur, Pouhon a été repensé lors de la rénovation de Spa en 2022. Les larges zones d'échappatoire asphaltées permettent désormais aux pilotes de récupérer une sortie de piste à plus de 280 km/h, tandis qu'une bande de gravier en retrait conserve un effet dissuasif.",
+      "source": {
+        "label": "Motor Sport Magazine — Spa safety history",
+        "url": "https://www.motorsportmagazine.com/articles/single-seaters/f1/spa-circuit-how-safety-and-speed-shaped-an-f1-classic/"
+      }
+    },
+    {
+      "id": "bus-stop",
+      "label": "BUS STOP",
+      "tag": "Zone 04",
+      "year": "1994",
+      "fraction": 0.1,
+      "yearBefore": "Avant 1994",
+      "yearAfter": "Après 1994",
+      "photoBefore": "/spa/bus-stop-avant.webp",
+      "photoAfter": "/spa/bus-stop-apres.png",
+      "specs": [
+        { "label": "Type",        "value": "Chicane lente",             "accent": false },
+        { "label": "Modification","value": "Chicane ajoutée",           "accent": true  },
+        { "label": "Contexte",    "value": "Post-Senna / Ratzenberger", "accent": false },
+        { "label": "Objectif",    "value": "Réduction de vitesse",      "accent": true  }
+      ],
+      "description": "Suite aux décès d'Ayrton Senna et Roland Ratzenberger à Imola 1994, la FIA a imposé une chicane au Bus Stop lors de la révision de sécurité du circuit. Cette configuration casse délibérément la vitesse en fin de tour — sacrifiant le spectacle pour protéger les pilotes lors des dépassements tardifs.",
+      "source": {
+        "label": "Motor Sport Magazine — Spa safety history",
+        "url": "https://www.motorsportmagazine.com/articles/single-seaters/f1/spa-circuit-how-safety-and-speed-shaped-an-f1-classic/"
+      }
+    }
+  ]
+}

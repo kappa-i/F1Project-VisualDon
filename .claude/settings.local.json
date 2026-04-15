@@ -19,7 +19,20 @@
       "Bash(cp /Users/tanguyvaucher/Desktop/Pil2.png /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/pilote2.png)",
       "Bash(cp /Users/tanguyvaucher/Desktop/Pil3.png /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/pilote3.png)",
       "Bash(cp /Users/tanguyvaucher/Desktop/Pil4.png /Users/tanguyvaucher/Desktop/Cours2/ProgWeb/Test2/Lightness/F1Project-VisualDon/src/assets/pilote4.png)",
-      "Bash(ls /Users/tanguyvaucher/Desktop/Capture*)"
+      "Bash(ls /Users/tanguyvaucher/Desktop/Capture*)",
+      "Bash(xargs grep:*)",
+      "WebSearch",
+      "WebFetch(domain:www.motorsportmagazine.com)",
+      "WebFetch(domain:racingnews365.com)",
+      "WebFetch(domain:www.racefans.net)",
+      "WebFetch(domain:www.autosport.com)",
+      "Bash(du -sh C:/Users/gabyk/Desktop/F1Project-VisualDon/public/*)",
+      "Bash(du -sh C:/Users/gabyk/Desktop/F1Project-VisualDon/src/assets/*.glb)",
+      "Bash(xargs du *)",
+      "Bash(du -sh \"C:/Users/gabyk/Desktop/F1Project-VisualDon/src/models/\"*)",
+      "Bash(du -sh \"C:/Users/gabyk/Desktop/F1Project-VisualDon/dist/haas/\"*)",
+      "Bash(ffmpeg -version)",
+      "Bash(ffmpeg -y -i C:/Users/gabyk/Desktop/F1Project-VisualDon/src/video/onboard_crash.mp4 -g 1 -vf scale=1920:-2 -c:v libx264 -crf 26 -preset fast -an C:/Users/gabyk/Desktop/F1Project-VisualDon/src/video/onboard_crash_scrub.mp4)"
     ]
   }
 }
