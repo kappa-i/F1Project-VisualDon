@@ -70,7 +70,7 @@ if (shaderRevealMount) {
       backImage: shaderBackUrl,
       style: { width: '100%', height: '100%' },
       mouseForce: 68,
-      cursorSize: 620,
+      cursorSize: 300,
       resolution: 0.5,
       iterationsViscous: 22,
       iterationsPoisson: 26,
@@ -756,7 +756,7 @@ let haasBacklightAnim = null;
 const haasCamKF = [
   { pos: new THREE.Vector3( 0.86,  0.96,  3.31), target: new THREE.Vector3(-0.49,  0.26,  0.89) }, // 0: vue d'ensemble
   { pos: new THREE.Vector3( 0.99,  0.43,  1.57), target: new THREE.Vector3(-0.49,  0.26,  0.89) }, // 1: freins carbone céramique
-  { pos: new THREE.Vector3( 0.15,  0.98,  0.82), target: new THREE.Vector3(-0.34,  0.64,  0.23) }, // 2: halo
+  { pos: new THREE.Vector3(-0.60, 0.62, 0.90), target: new THREE.Vector3(-0.59, 0.59, 0.51) }, // 2: halo
   { pos: new THREE.Vector3(-1.29, 0.69, 0.59), target: new THREE.Vector3(-0.70, 0.44, 0.17) }, // 3: rétroviseurs warning (blinker)
   { pos: new THREE.Vector3(-1.04,  0.81,  0.19), target: new THREE.Vector3(-0.69,  0.70, -0.11) }, // 4: cheminée
   { pos: new THREE.Vector3(-0.66, 0.60, 0.22), target: new THREE.Vector3(-0.38, 0.27, 0.85) }, // 5: volant anti-retour

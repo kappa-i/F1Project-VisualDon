@@ -94,6 +94,7 @@ const ShaderReveal: React.FC<ShaderRevealProps> = ({
   cursorSize = 250,
   resolution = 0.5,
 
+
   isViscous = true,
   viscous = 30,
   iterationsViscous = 24,
