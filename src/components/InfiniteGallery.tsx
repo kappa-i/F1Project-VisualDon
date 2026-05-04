@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useSyncExternalStore,
 } from "react";
+import { createPortal } from "react-dom";
 import { Canvas, useFrame, useThree, ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import CircularText from "./CircularText";
@@ -17,6 +18,7 @@ export interface GalleryImage {
   url: string;
   width: number;
   height: number;
+  caption?: string;
 }
 
 export interface InfiniteGalleryProps {
@@ -209,6 +211,7 @@ interface FocusTarget {
   pz: number;
   scaleX: number;
   scaleY: number;
+  imgIdx: number;
 }
 
 const focusRef: { current: FocusTarget | null } = { current: null };
@@ -216,6 +219,7 @@ const focusRef: { current: FocusTarget | null } = { current: null };
 function ImagePlane({
   info,
   media,
+  imgIdx,
   camRef,
   cellSize,
   viewRange,
@@ -226,6 +230,7 @@ function ImagePlane({
 }: {
   info: PlaneInfo;
   media: GalleryImage;
+  imgIdx: number;
   camRef: React.RefObject<{ x: number; y: number; z: number }>;
   cellSize: number;
   viewRange: number;
@@ -244,6 +249,10 @@ function ImagePlane({
   const effectiveOpRef = useRef(isFocusedOnMount ? 1 : 0);
   const isHoveredRef = useRef(false);
   const hasTexRef = useRef(false);
+  const staticInitRef = useRef(false);
+  const fogNearRef = useRef<number>(0);
+  const fogFarRef = useRef<number>(1);
+  const fogReadRef = useRef(false);
   const { scene } = useThree();
 
   const scale = useMemo(() => {
@@ -277,12 +286,14 @@ function ImagePlane({
   }, [media.url]);
 
   const fadeEnd = cellSize * (viewRange + 1);
+  const fadeEndSq = fadeEnd * fadeEnd;
 
   useFrame(() => {
     const mesh = meshRef.current;
     const mat = matRef.current;
     if (!mesh || !mat) return;
 
+    // Assign texture once
     if (!mat.uniforms.uMap.value && hasTexRef.current) {
       const tex = texCache.get(media.url);
       if (tex) {
@@ -296,46 +307,65 @@ function ImagePlane({
       return;
     }
 
+    // Set static uniforms once (never change after mount)
+    if (!staticInitRef.current) {
+      mat.uniforms.uRadius.value = imageRadius;
+      mat.uniforms.uSize.value.set(scale.x, scale.y);
+      staticInitRef.current = true;
+    }
+
+    // Cache fog params on first read (fog never changes)
+    if (!fogReadRef.current) {
+      const fog = scene.fog as THREE.Fog | null;
+      if (fog) {
+        fogNearRef.current = fog.near;
+        fogFarRef.current = fog.far;
+        fogReadRef.current = true;
+      }
+    }
+
     const cam = camRef.current;
     if (!cam) return;
 
     const dx = info.px - cam.x;
     const dy = info.py - cam.y;
     const dz = info.pz - cam.z;
-    const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+    const distSq = dx * dx + dy * dy + dz * dz;
 
     const ft = focusRef.current;
-    const isFocused =
-      ft && ft.px === info.px && ft.py === info.py && ft.pz === info.pz;
+    const isFocused = !!(ft && ft.px === info.px && ft.py === info.py && ft.pz === info.pz);
+
+    // Early exit: plane is invisible and well beyond fade range — nothing to update
+    if (!isFocused && opRef.current < 0.005 && distSq > fadeEndSq) {
+      mesh.visible = false;
+      return;
+    }
+
+    const dist = Math.sqrt(distSq);
     const target = isFocused || dist < fadeEnd ? 1 : 0;
     opRef.current = isFocused ? 1 : lerp(opRef.current, target, 0.12);
 
-    // Compute effective visibility including fog
-    const fog = scene.fog as THREE.Fog | null;
-    if (fog && fog.near !== undefined && fog.far !== undefined) {
-      const fogFactor = clamp((dist - fog.near) / (fog.far - fog.near), 0, 1);
+    // Effective opacity including fog (uses cached fog params)
+    if (fogReadRef.current) {
+      const fogFactor = clamp((dist - fogNearRef.current) / (fogFarRef.current - fogNearRef.current), 0, 1);
       effectiveOpRef.current = opRef.current * (1 - fogFactor);
     } else {
       effectiveOpRef.current = opRef.current;
     }
 
-    // Auto-clear hover if image becomes invisible OR this image is now focused
-    const thisIsFocused = !!(focusRef.current &&
-      focusRef.current.px === info.px &&
-      focusRef.current.py === info.py &&
-      focusRef.current.pz === info.pz);
-    if (isHoveredRef.current && (effectiveOpRef.current < 0.15 || thisIsFocused)) {
+    // Auto-clear hover
+    if (isHoveredRef.current && (effectiveOpRef.current < 0.15 || isFocused)) {
       isHoveredRef.current = false;
       onHoverEnd?.();
     }
 
     mat.uniforms.uOpacity.value = opRef.current;
-    mat.uniforms.uRadius.value = imageRadius;
-    mat.uniforms.uSize.value.set(scale.x, scale.y);
     mesh.visible = opRef.current > 0.01;
 
-    mesh.renderOrder = isFocused ? 999 : 0;
-    mat.depthTest = !isFocused;
+    // Only write renderOrder/depthTest when state actually changes
+    const wantOrder = isFocused ? 999 : 0;
+    if (mesh.renderOrder !== wantOrder) mesh.renderOrder = wantOrder;
+    if (mat.depthTest !== !isFocused) mat.depthTest = !isFocused;
   });
 
   const handleClick = useCallback(
@@ -348,9 +378,10 @@ function ImagePlane({
         pz: info.pz,
         scaleX: scale.x,
         scaleY: scale.y,
+        imgIdx,
       });
     },
-    [info, scale, onFocus],
+    [info, scale, onFocus, imgIdx],
   );
 
   return (
@@ -442,6 +473,7 @@ function GalleryCell({
             key={p.id}
             info={p}
             media={img}
+            imgIdx={p.imgIdx % images.length}
             camRef={camRef}
             cellSize={cellSize}
             viewRange={viewRange}
@@ -472,6 +504,7 @@ interface ControllerProps {
   wheelSpeed: number;
   onImageHover?: () => void;
   onImageHoverEnd?: () => void;
+  onFocusChange?: (imgIdx: number | null) => void;
 }
 
 function Controller({
@@ -490,9 +523,10 @@ function Controller({
   wheelSpeed,
   onImageHover,
   onImageHoverEnd,
+  onFocusChange,
 }: ControllerProps) {
   const { camera, gl } = useThree();
-  const offsets = useMemo(() => buildCellOffsets(viewRange + 1), [viewRange]);
+  const offsets = useMemo(() => buildCellOffsets(viewRange), [viewRange]);
 
   const state = useRef({
     vel: { x: 0, y: 0, z: 0 },
@@ -526,6 +560,8 @@ function Controller({
         s.focused = false;
         s.focusTarget = null;
         focusRef.current = null;
+        onFocusChange?.(null);
+        window.dispatchEvent(new CustomEvent('gallery-focus-change', { detail: { focused: false } }));
         return;
       }
       s.focusTarget = target;
@@ -533,6 +569,7 @@ function Controller({
       s.vel = { x: 0, y: 0, z: 0 };
       s.tgt = { x: 0, y: 0, z: 0 };
       s.scrollAccum = 0;
+      onFocusChange?.(target.imgIdx);
       return;
     }
 
@@ -543,7 +580,9 @@ function Controller({
     s.vel = { x: 0, y: 0, z: 0 };
     s.tgt = { x: 0, y: 0, z: 0 };
     s.scrollAccum = 0;
-  }, []);
+    onFocusChange?.(target.imgIdx);
+    window.dispatchEvent(new CustomEvent('gallery-focus-change', { detail: { focused: true } }));
+  }, [onFocusChange]);
 
   const handleBgClick = useCallback(() => {
     const s = state.current;
@@ -551,8 +590,10 @@ function Controller({
       s.focused = false;
       s.focusTarget = null;
       focusRef.current = null;
+      onFocusChange?.(null);
+      window.dispatchEvent(new CustomEvent('gallery-focus-change', { detail: { focused: false } }));
     }
-  }, []);
+  }, [onFocusChange]);
 
   useEffect(() => {
     const s = state.current;
@@ -600,6 +641,8 @@ function Controller({
             s.focused = false;
             s.focusTarget = null;
             focusRef.current = null;
+            onFocusChange?.(null);
+            window.dispatchEvent(new CustomEvent('gallery-focus-change', { detail: { focused: false } }));
           }
         } else {
           s.tgt.x -= ddx * dragSpeed * 0.025;
@@ -614,6 +657,8 @@ function Controller({
         s.focused = false;
         s.focusTarget = null;
         focusRef.current = null;
+        onFocusChange?.(null);
+        window.dispatchEvent(new CustomEvent('gallery-focus-change', { detail: { focused: false } }));
       }
       s.scrollAccum += e.deltaY * wheelSpeed;
     };
@@ -840,6 +885,7 @@ const InfiniteGallery: React.FC<InfiniteGalleryProps> = ({
 
   const [cursorVisible, setCursorVisible] = useState(false);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [focusedIdx, setFocusedIdx] = useState<number | null>(null);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -848,6 +894,7 @@ const InfiniteGallery: React.FC<InfiniteGalleryProps> = ({
 
   const handleImageHover = useCallback(() => setCursorVisible(true), []);
   const handleImageHoverEnd = useCallback(() => setCursorVisible(false), []);
+  const handleFocusChange = useCallback((idx: number | null) => setFocusedIdx(idx), []);
 
   return (
     <div
@@ -881,8 +928,72 @@ const InfiniteGallery: React.FC<InfiniteGalleryProps> = ({
           wheelSpeed={wheelSpeed}
           onImageHover={handleImageHover}
           onImageHoverEnd={handleImageHoverEnd}
+          onFocusChange={handleFocusChange}
         />
       </Canvas>
+      {focusedIdx !== null && imgs[focusedIdx]?.caption && createPortal(
+        <div
+          style={{
+            position: "fixed",
+            left: "40px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            pointerEvents: "none",
+            zIndex: 9999,
+            maxWidth: "360px",
+            width: "28vw",
+            minWidth: "240px",
+            animation: "gallery-panel-in 0.35s ease forwards",
+          }}
+        >
+          <style>{`
+            @keyframes gallery-panel-in {
+              from { opacity: 0; transform: translateY(-50%) translateX(-12px); }
+              to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+            }
+          `}</style>
+          <div
+            style={{
+              background: "rgba(5,5,5,0.92)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderLeft: "3px solid #8a001a",
+              borderRadius: "4px",
+              padding: "28px 26px 24px",
+              color: "rgba(224,221,216,0.88)",
+              fontFamily: "'Inter', ui-sans-serif, system-ui, sans-serif",
+              fontSize: "14.5px",
+              lineHeight: "1.8",
+              boxShadow: "0 16px 48px rgba(0,0,0,0.7)",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <div style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "32px",
+              height: "32px",
+              borderTop: "1px solid #8a001a",
+              borderLeft: "1px solid #8a001a",
+              opacity: 0.5,
+            }} />
+            <div style={{
+              position: "absolute",
+              left: "-60px",
+              top: "-60px",
+              width: "180px",
+              height: "180px",
+              background: "radial-gradient(circle, rgba(138,0,26,0.07) 0%, transparent 68%)",
+              pointerEvents: "none",
+            }} />
+            {imgs[focusedIdx].caption}
+          </div>
+        </div>,
+        document.body
+      )}
       <div
         style={{
           position: "absolute",

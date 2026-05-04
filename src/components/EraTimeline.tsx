@@ -75,6 +75,7 @@ export default function EraTimeline() {
   const [displayStep, setDisplayStep] = useState(-1);
   const [isMorphing, setIsMorphing] = useState(false);
   const [isEntering, setIsEntering] = useState(false);
+  const [galleryFocused, setGalleryFocused] = useState(false);
   const activeStepRef = useRef(-1);
   const displayStepRef = useRef(-1);
 
@@ -128,6 +129,14 @@ export default function EraTimeline() {
     return () => window.removeEventListener('era-step-change', handleStepChange);
   }, []);
 
+  useEffect(() => {
+    const handleGalleryFocus = (e: Event) => {
+      setGalleryFocused((e as CustomEvent<{ focused: boolean }>).detail.focused);
+    };
+    window.addEventListener('gallery-focus-change', handleGalleryFocus);
+    return () => window.removeEventListener('gallery-focus-change', handleGalleryFocus);
+  }, []);
+
   const step = displayStep >= 0 && displayStep < ERA_STEPS.length ? ERA_STEPS[displayStep] : null;
   const fromLeft = step?.side === 'left';
 
@@ -151,8 +160,8 @@ export default function EraTimeline() {
         left: '50%',
         transform: 'translateX(-50%)',
         width: '200px',
-        opacity: activeStep >= 0 ? 0.85 : 0,
-        transition: 'opacity 0.5s ease',
+        opacity: galleryFocused ? 0 : activeStep >= 0 ? 0.85 : 0,
+        transition: 'opacity 0.4s ease',
         pointerEvents: 'none',
         textAlign: 'center',
       }}>
@@ -206,10 +215,10 @@ export default function EraTimeline() {
           right: fromLeft ? 'auto' : '4%',
           top: '50%',
           transform: 'translateY(-50%)',
-          pointerEvents: 'auto',
+          pointerEvents: galleryFocused ? 'none' : 'auto',
           width: 'clamp(400px, 46vw, 620px)',
-          opacity: isEntering || isMorphing ? 0 : 1,
-          transition: 'opacity 0.22s ease',
+          opacity: galleryFocused ? 0 : isEntering || isMorphing ? 0 : 1,
+          transition: 'opacity 0.4s ease',
         }}>
           <div style={{
             background: 'rgba(5, 5, 5, 0.94)',
@@ -376,10 +385,10 @@ export default function EraTimeline() {
           left: '4%',
           top: '50%',
           transform: `translateY(-50%) scale(${isMorphing ? 0.985 : 1})`,
-          pointerEvents: 'auto',
+          pointerEvents: galleryFocused ? 'none' : 'auto',
           width: 'clamp(480px, 52vw, 720px)',
-          opacity: isMorphing ? 0.78 : 1,
-          transition: 'transform 0.35s ease, opacity 0.22s ease',
+          opacity: galleryFocused ? 0 : isMorphing ? 0.78 : 1,
+          transition: 'transform 0.35s ease, opacity 0.4s ease',
         }}>
           <SafetyChart />
         </div>

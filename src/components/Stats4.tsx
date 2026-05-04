@@ -6,12 +6,6 @@ import pil1Url from '../assets/pilote1.png';
 import pil2Url from '../assets/pilote2.png';
 import pil3Url from '../assets/pilote3.png';
 import pil4Url from '../assets/pilote4.png';
-import logo1Url from '../assets/logos-slider-optimized/L1.png';
-import logo2Url from '../assets/logos-slider-optimized/L2.png';
-import logo3Url from '../assets/logos-slider-optimized/L3.png';
-import logo4Url from '../assets/logos-slider-optimized/L4.png';
-import logo5Url from '../assets/logos-slider-optimized/L5.png';
-import logo6Url from '../assets/logos-slider-optimized/L6.png';
 
 const slides = [
   {
@@ -50,14 +44,6 @@ const CARD_LAYOUTS = {
   left: ['180px', '180px'],
   right: ['230px', '130px'],
 };
-const TEAM_LOGOS = [
-  { name: 'Logo 1', src: logo1Url },
-  { name: 'Logo 2', src: logo2Url },
-  { name: 'Logo 3', src: logo3Url },
-  { name: 'Logo 4', src: logo4Url },
-  { name: 'Logo 5', src: logo5Url },
-  { name: 'Logo 6', src: logo6Url },
-];
 
 const skeletonStyle = `
   @keyframes skeleton-sweep {
@@ -131,119 +117,6 @@ function ChevronSweep({ color = '#8fd3ff' }: { color?: string }) {
   );
 }
 
-function LogoMarquee() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const cycleWidthRef = useRef(0);
-  const offsetRef = useRef(0);
-  const rafRef = useRef(0);
-
-  const SPEED = 36; // px/s
-
-  useEffect(() => {
-    const container = containerRef.current;
-    const track = trackRef.current;
-    if (!container || !track) return;
-
-    const measure = () => {
-      const widths = TEAM_LOGOS.map((_, i) => itemRefs.current[i]?.getBoundingClientRect().width ?? 0);
-      if (widths.every(w => w > 0)) {
-        cycleWidthRef.current = widths.reduce((s, w) => s + w, 0);
-      }
-    };
-
-    const ro = new ResizeObserver(measure);
-    ro.observe(container);
-    measure();
-
-    let lastTime = performance.now();
-
-    const tick = (now: number) => {
-      const dt = Math.min(now - lastTime, 50); // cap delta pour eviter les gros sauts
-      lastTime = now;
-
-      if (cycleWidthRef.current > 0) {
-        offsetRef.current += SPEED * (dt / 1000);
-        if (offsetRef.current >= cycleWidthRef.current) {
-          offsetRef.current -= cycleWidthRef.current;
-        }
-        track.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
-      }
-
-      rafRef.current = requestAnimationFrame(tick);
-    };
-
-    rafRef.current = requestAnimationFrame(tick);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      ro.disconnect();
-    };
-  }, []);
-
-  // 2 copies suffisent pour le loop seamless
-  const allLogos = [...TEAM_LOGOS, ...TEAM_LOGOS];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.08 }}
-      style={{
-        width: 'min(100%, 520px)',
-        alignSelf: 'flex-start',
-      }}
-    >
-      <div
-        ref={containerRef}
-        style={{
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          ref={trackRef}
-          style={{
-            display: 'flex',
-            width: 'max-content',
-            padding: '12px 0',
-            willChange: 'transform',
-          }}
-        >
-          {allLogos.map((team, index) => (
-            <div
-              key={`${index}-${team.name}`}
-              ref={node => {
-                if (index < TEAM_LOGOS.length) itemRefs.current[index] = node;
-              }}
-              style={{
-                flex: '0 0 auto',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minWidth: '128px',
-                padding: '0 20px',
-              }}
-            >
-              <img
-                src={team.src}
-                alt={team.name}
-                style={{
-                  display: 'block',
-                  width: 'auto',
-                  height: '39px',
-                  maxWidth: '148px',
-                  objectFit: 'contain',
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
 
 export default function Stats4() {
   const [ctaSkeletonRun, setCtaSkeletonRun] = useState(0);
@@ -343,8 +216,6 @@ export default function Stats4() {
 
           {/* Description + Button – bottom left */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <LogoMarquee />
-
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
