@@ -4,6 +4,9 @@
 
 ---
 
+La présentation orale (11 mai) du projet est disponible ici :
+[Voir la présentation (PDF)](./VisualDon_Presentation_AmaroNuno_CappaiGabriel_VaucherTanguy_M532.pdf)
+
 ## Description
 
 Ce projet est un **scrollytelling interactif** qui explore l'évolution conjointe de la **sécurité** et de la **performance** en Formule 1, depuis les débuts du championnat du monde en 1950 jusqu'à nos jours.
