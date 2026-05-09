@@ -823,6 +823,16 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
 .section--crash      { background: #03070f; border-top: 1px solid var(--line); z-index: 4; padding: 64px; }
 .section--viewer     { background: transparent; height: 100vh; min-height: unset; padding: 0; z-index: 5; }
 .section--spa        { background: var(--bg); border-top: 1px solid var(--line); z-index: 6; padding: 0; }
+.section--cicatrice {
+  background: #050505;
+  border-top: 1px solid var(--line);
+  z-index: 7;
+  padding: 0;
+  height: 100vh;
+  min-height: unset;
+  position: relative;
+}
+
 .section--conclusion {
   background: var(--surface);
   border-top: 1px solid var(--line);
@@ -865,7 +875,7 @@ body.hud-active .infobox.right.visible { opacity: 1; transform: translateY(-50%)
   position: absolute;
   left: 2.89%;
   top: 53.12%;
-  width: 31.97%;
+  width: 46%;
   overflow: visible;
 }
 
@@ -898,6 +908,10 @@ body.dev3-active #debug-zone {
   display: flex;
   align-items: flex-start;
   padding-top: 4px;
+}
+
+#closing-question-root {
+  width: 100%;
 }
 
 #footer-root {

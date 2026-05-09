@@ -6,17 +6,18 @@ export const HERO_PAGE_END    = HERO_PAGE_START + HERO_PAGE_STEPS;
 export const ERA_PAGE_START   = HERO_PAGE_END + 1;   // dead – conservé pour dispatch
 export const ERA_PAGE_END     = ERA_PAGE_START + ERA_PAGE_STEPS;
 export const CRASH_PAGE_START = HERO_PAGE_END + 1;
-export const CRASH_PAGE_STEPS = 48;
+export const CRASH_PAGE_STEPS = 65;
 export const CRASH_PAGE_END   = CRASH_PAGE_START + CRASH_PAGE_STEPS - 1;
 export const VIEWER_PAGE_START = CRASH_PAGE_END + 1;
 export const VIEWER_PAGE_END   = VIEWER_PAGE_START + 7;
 export const SPA_PAGE_START   = VIEWER_PAGE_END + 1;
 export const SPA_PAGE_COUNT   = 5;
 export const SPA_PAGE_END     = SPA_PAGE_START + SPA_PAGE_COUNT - 1;
-export const CONCLUSION_PAGE  = SPA_PAGE_END + 1;
+export const CICATRICE_PAGE   = SPA_PAGE_END + 1;
+export const CONCLUSION_PAGE  = CICATRICE_PAGE + 1;
 export const PAGE_COUNT       = CONCLUSION_PAGE + 1;
 
-export const CRASH_SCROLL_DISTANCE = 7000;
+export const CRASH_SCROLL_DISTANCE = 9500;
 export const CRASH_EXIT_DISTANCE   = 220;
 export const CRASH_FRAME_COUNT     = 301;
 export const CRASH_LERP_FACTOR     = 0.35;
@@ -43,7 +44,8 @@ export function pageToY(idx) {
   if (idx >= CRASH_PAGE_START && idx <= CRASH_PAGE_END) return -100;
   if (idx >= VIEWER_PAGE_START && idx <= VIEWER_PAGE_END) return -200;
   if (idx >= SPA_PAGE_START && idx <= SPA_PAGE_END) return -300;
-  if (idx === CONCLUSION_PAGE) return -400;
+  if (idx === CICATRICE_PAGE) return -400;
+  if (idx === CONCLUSION_PAGE) return -500;
   return -600;
 }
 
@@ -66,8 +68,9 @@ export function pageToSectionIndex(pageIdx) {
   if (pageIdx >= CRASH_PAGE_START && pageIdx <= CRASH_PAGE_END) return 2;
   if (pageIdx >= VIEWER_PAGE_START && pageIdx <= VIEWER_PAGE_END) return 3;
   if (pageIdx >= SPA_PAGE_START && pageIdx <= SPA_PAGE_END) return 4;
-  if (pageIdx === CONCLUSION_PAGE) return 5;
-  return 5;
+  if (pageIdx === CICATRICE_PAGE) return 5;
+  if (pageIdx === CONCLUSION_PAGE) return 6;
+  return 6;
 }
 
 export function crashPageToProgress(idx) {

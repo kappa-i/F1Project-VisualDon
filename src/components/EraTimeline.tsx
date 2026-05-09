@@ -18,7 +18,7 @@ const ERA_STEPS: EraStep[] = [
     period: '1950 — 1960',
     title: "L'ère des pionniers",
     desc: "Les pilotes s'élancent sans ceinture de sécurité, sans arceau, sans combinaison ignifugée. La mort fait partie du spectacle — acceptée, banalisée par tous. On court sur des circuits publics avec des voitures à réservoir ouvert.",
-    stat: '≈ 2 décès / saison',
+    stat: '≈ 1.5 décès / saison',
     tag: '01',
     side: 'left',
     accent: '#8a001a',
@@ -28,11 +28,11 @@ const ERA_STEPS: EraStep[] = [
     period: '1960 — 1970',
     title: 'La décennie noire',
     desc: "Nürburgring, Spa-Francorchamps, Rouen — des pistes de 22 km sans glissières ni zones de dégagement. Jim Clark, Lorenzo Bandini, Jochen Rindt. Les podiums côtoient les nécrologies. La F1 est en guerre contre elle-même.",
-    stat: '≈ 3 décès / saison',
+    stat: '',
     tag: '02',
     side: 'right',
     accent: '#8a001a',
-    statLabel: 'Mortalité moyenne',
+    statLabel: '',
   },
   {
     period: '1970 — 1994',
@@ -48,11 +48,11 @@ const ERA_STEPS: EraStep[] = [
     period: 'Imola · 1994',
     title: 'Le week-end qui a tout changé',
     desc: "Roland Ratzenberger le samedi. Ayrton Senna le dimanche. Deux décès en 24 heures sur le même circuit. La F1 se réveille brutalement. Un choc collectif qui déclenche une révolution sécuritaire sans précédent dans le sport automobile.",
-    stat: 'Dernier décès en course',
+    stat: 'Ratzenberger · Senna',
     tag: '04',
     side: 'right',
     accent: '#e8002d',
-    statLabel: 'Jalon historique',
+    statLabel: '2 décès en 24 heures',
   },
   {
     period: '1950 — 2026',
@@ -329,7 +329,7 @@ export default function EraTimeline() {
               </p>
 
               {/* Badge stat */}
-              <div style={{
+              {step.stat && <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -339,14 +339,14 @@ export default function EraTimeline() {
                 borderRadius: '2px',
                 transition: 'background 0.35s ease, border-color 0.35s ease',
               }}>
-                <span style={{
+                {step.statLabel && <span style={{
                   fontSize: '8px',
                   letterSpacing: '2.5px',
                   color: 'rgba(255,255,255,0.3)',
                   textTransform: 'uppercase',
                 }}>
                   {step.statLabel}
-                </span>
+                </span>}
                 <span style={{
                   fontSize: '17px',
                   fontWeight: 700,
@@ -356,7 +356,7 @@ export default function EraTimeline() {
                 }}>
                   {step.stat}
                 </span>
-              </div>
+              </div>}
             </div>
 
             {/* Numéro d'étape en filigrane */}

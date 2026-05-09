@@ -32,7 +32,20 @@
       "Bash(du -sh \"C:/Users/gabyk/Desktop/F1Project-VisualDon/src/models/\"*)",
       "Bash(du -sh \"C:/Users/gabyk/Desktop/F1Project-VisualDon/dist/haas/\"*)",
       "Bash(ffmpeg -version)",
-      "Bash(ffmpeg -y -i C:/Users/gabyk/Desktop/F1Project-VisualDon/src/video/onboard_crash.mp4 -g 1 -vf scale=1920:-2 -c:v libx264 -crf 26 -preset fast -an C:/Users/gabyk/Desktop/F1Project-VisualDon/src/video/onboard_crash_scrub.mp4)"
+      "Bash(ffmpeg -y -i C:/Users/gabyk/Desktop/F1Project-VisualDon/src/video/onboard_crash.mp4 -g 1 -vf scale=1920:-2 -c:v libx264 -crf 26 -preset fast -an C:/Users/gabyk/Desktop/F1Project-VisualDon/src/video/onboard_crash_scrub.mp4)",
+      "Bash(node *)",
+      "Bash(cat tsconfig.json)",
+      "Bash(cat vite.config.js)",
+      "Bash(cat vite.config.ts)",
+      "Bash(timeout 5)",
+      "Bash(Start-Sleep -Seconds 4)",
+      "Bash(Get-Content \"C:\\\\Users\\\\gabyk\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-gabyk-Desktop-F1Project-VisualDon\\\\a34583fc-392d-4f59-a947-2045ba0ce5c5\\\\tasks\\\\b3idp31fk.output\")",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s \"https://api.jolpi.ca/ergast/f1/1992.json\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); races=d['MRData']['RaceTable']['Races']; print\\('Races 1992:', len\\(races\\)\\)\")",
+      "Bash(magick --version)",
+      "Bash(ffprobe *)",
+      "Bash(Copy-Item *)"
     ]
   }
 }

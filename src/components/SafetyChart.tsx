@@ -2,25 +2,26 @@ import React, { useState } from 'react';
 import {
   ComposedChart,
   Bar,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Area,
   ReferenceLine,
 } from 'recharts';
 
+// Décès de pilotes lors d'événements F1 (courses + qualifications)
+// Source : Wikipedia — Liste des accidents mortels en Formule 1
+// Note 1950s : inclut l'Indianapolis 500 (au calendrier F1 1950–1960), qui compte 8 décès à lui seul
 const DATA = [
-  { decade: '1950s', deces: 14, securite: 0,  milestone: 'Aucune protection réelle' },
-  { decade: '1960s', deces: 18, securite: 5,  milestone: 'Débuts des glissières Armco' },
-  { decade: '1970s', deces: 10, securite: 22, milestone: 'Armco + combinaisons ignifugées' },
-  { decade: '1980s', deces: 4,  securite: 48, milestone: 'Monocoque carbone (1981)' },
-  { decade: '1990s', deces: 3,  securite: 62, milestone: 'Commission sécurité FIA post-Imola' },
-  { decade: '2000s', deces: 0,  securite: 78, milestone: 'HANS device obligatoire (2003)' },
-  { decade: '2010s', deces: 1,  securite: 88, milestone: 'Halo introduit (2018)' },
-  { decade: '2020s', deces: 0,  securite: 97, milestone: 'Halo sauve Grosjean — 220 km/h (2020)' },
+  { decade: '1950s', deces: 15, milestone: 'Aucune protection · Indianapolis 500 au calendrier F1 · Fagioli, Marimon, Ascari, Musso, Collins, Lewis-Evans…' },
+  { decade: '1960s', deces: 12, milestone: 'Premières glissières Armco · Von Trips (1961), Bandini — Monaco 1967, Schlesser — France 1968' },
+  { decade: '1970s', deces: 10, milestone: 'J. Stewart force la FIA à agir · Nomex + médecins permanents · Rindt, Williamson, Cevert, Peterson' },
+  { decade: '1980s', deces: 4,  milestone: 'Monocoque carbone McLaren MP4/1 (1981) · Depailler, Villeneuve, Paletti, De Angelis' },
+  { decade: '1990s', deces: 2,  milestone: 'Imola 1994 · Ratzenberger + Senna · révolution réglementaire FIA : 30+ règles en 6 mois' },
+  { decade: '2000s', deces: 0,  milestone: 'HANS obligatoire (2003) · barrières TecPro · premier championnat complet sans décès' },
+  { decade: '2010s', deces: 1,  milestone: 'Jules Bianchi · accident Suzuka octobre 2014 · décédé juillet 2015 · Halo homologué 2018' },
+  { decade: '2020s', deces: 0,  milestone: 'Halo sauve Grosjean à Bahreïn (2020) et Zhou à Silverstone (2022) · structures d\'absorption maximales' },
 ];
 
 interface CustomTooltipProps {
@@ -34,13 +35,12 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 
   const row = DATA.find(d => d.decade === label);
   const deaths = payload.find(p => p.name === 'deces')?.value ?? 0;
-  const safety = payload.find(p => p.name === 'securite')?.value ?? 0;
 
   return (
     <div style={{
       background: 'rgba(5, 5, 5, 0.96)',
       border: '1px solid rgba(232,0,45,0.3)',
-      borderLeft: '3px solid #e8002d',
+      borderLeft: `3px solid ${deaths === 0 ? '#c8a96e' : '#e8002d'}`,
       borderRadius: '2px',
       padding: '16px 20px',
       fontFamily: "'Formula1', sans-serif",
@@ -50,7 +50,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
       <div style={{
         fontSize: '9px',
         letterSpacing: '3px',
-        color: '#e8002d',
+        color: deaths === 0 ? '#c8a96e' : '#e8002d',
         textTransform: 'uppercase',
         marginBottom: '10px',
         fontWeight: 700,
@@ -58,39 +58,18 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
         {label}
       </div>
 
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-        marginBottom: '12px',
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: '9px', letterSpacing: '2px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase' }}>
-            Décès pilotes
-          </span>
-          <span style={{
-            fontSize: '20px',
-            fontWeight: 700,
-            color: deaths === 0 ? '#c8a96e' : '#e8002d',
-            letterSpacing: '-0.5px',
-          }}>
-            {deaths}
-          </span>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: '9px', letterSpacing: '2px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase' }}>
-            Indice sécurité
-          </span>
-          <span style={{
-            fontSize: '16px',
-            fontWeight: 700,
-            color: '#c8a96e',
-            letterSpacing: '-0.5px',
-          }}>
-            {safety}%
-          </span>
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <span style={{ fontSize: '9px', letterSpacing: '2px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase' }}>
+          Décès pilotes
+        </span>
+        <span style={{
+          fontSize: '28px',
+          fontWeight: 700,
+          color: deaths === 0 ? '#c8a96e' : '#e8002d',
+          letterSpacing: '-0.5px',
+        }}>
+          {deaths === 0 ? '0' : deaths}
+        </span>
       </div>
 
       <div style={{
@@ -210,14 +189,6 @@ export default function SafetyChart() {
                 <stop offset="0%" stopColor="#e8002d" stopOpacity={1} />
                 <stop offset="100%" stopColor="#6b091d" stopOpacity={0.8} />
               </linearGradient>
-              <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#c8a96e" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#c8a96e" stopOpacity={1} />
-              </linearGradient>
-              <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#c8a96e" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#c8a96e" stopOpacity={0} />
-              </linearGradient>
             </defs>
 
             <CartesianGrid
@@ -240,7 +211,6 @@ export default function SafetyChart() {
             />
 
             <YAxis
-              yAxisId="deaths"
               tick={{
                 fontFamily: "'Formula1', sans-serif",
                 fontSize: 8,
@@ -248,25 +218,9 @@ export default function SafetyChart() {
               }}
               tickLine={false}
               axisLine={false}
-              domain={[0, 22]}
-              ticks={[0, 5, 10, 15, 20]}
-              width={32}
-            />
-
-            <YAxis
-              yAxisId="safety"
-              orientation="right"
-              tick={{
-                fontFamily: "'Formula1', sans-serif",
-                fontSize: 8,
-                fill: 'rgba(200,169,110,0.4)',
-              }}
-              tickLine={false}
-              axisLine={false}
-              domain={[0, 100]}
-              ticks={[0, 50, 100]}
-              tickFormatter={(v) => `${v}%`}
-              width={32}
+              domain={[0, 16]}
+              ticks={[0, 4, 8, 12, 16]}
+              width={28}
             />
 
             <Tooltip
@@ -276,7 +230,6 @@ export default function SafetyChart() {
 
             {/* Ligne de référence Imola 1994 */}
             <ReferenceLine
-              yAxisId="deaths"
               x="1990s"
               stroke="rgba(232,0,45,0.3)"
               strokeDasharray="4 4"
@@ -290,30 +243,12 @@ export default function SafetyChart() {
               }}
             />
 
-            {/* Aire indice sécurité */}
-            <Area
-              yAxisId="safety"
-              type="monotone"
-              dataKey="securite"
-              stroke="url(#lineGrad)"
-              strokeWidth={1.5}
-              fill="url(#areaGrad)"
-              dot={false}
-              activeDot={{
-                r: 4,
-                fill: '#c8a96e',
-                stroke: 'rgba(5,5,5,0.8)',
-                strokeWidth: 2,
-              }}
-            />
-
             {/* Barres décès */}
             <Bar
-              yAxisId="deaths"
               dataKey="deces"
               fill="url(#barGrad)"
               radius={[2, 2, 0, 0]}
-              maxBarSize={28}
+              maxBarSize={32}
               onMouseEnter={(_, idx) => setActiveBar(idx)}
             />
           </ComposedChart>
@@ -321,22 +256,11 @@ export default function SafetyChart() {
       </div>
 
       {/* Légende */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        gap: '24px',
-        marginTop: '16px',
-      }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '14px', height: '3px', background: 'url(#barGrad)', backgroundColor: '#e8002d', borderRadius: '2px' }} />
+          <div style={{ width: '14px', height: '3px', backgroundColor: '#e8002d', borderRadius: '2px' }} />
           <span style={{ fontSize: '8px', letterSpacing: '2px', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>
-            Décès
-          </span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '14px', height: '2px', background: '#c8a96e', borderRadius: '1px', opacity: 0.7 }} />
-          <span style={{ fontSize: '8px', letterSpacing: '2px', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' }}>
-            Indice sécurité
+            Décès en course · qualifications
           </span>
         </div>
       </div>
@@ -358,7 +282,7 @@ export default function SafetyChart() {
           color: 'rgba(255,255,255,0.3)',
           textTransform: 'uppercase',
         }}>
-          Réduction de la mortalité
+          Bilan F1 · 1994 — 2026
         </span>
         <span style={{
           fontSize: '17px',
@@ -366,8 +290,18 @@ export default function SafetyChart() {
           color: '#c8a96e',
           letterSpacing: '0.5px',
         }}>
-          −100% depuis 1994
+          1 décès depuis Imola 1994
         </span>
+      </div>
+
+      {/* Source */}
+      <div style={{
+        marginTop: '12px',
+        fontSize: '8px',
+        letterSpacing: '1px',
+        color: 'rgba(255,255,255,0.5)',
+      }}>
+        Source : Wikipedia — Liste des accidents mortels en Formule 1
       </div>
 
       {/* Numéro filigrane */}

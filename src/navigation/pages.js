@@ -6,7 +6,7 @@ import {
   CRASH_PAGE_START, CRASH_PAGE_END, CRASH_PAGE_STEPS,
   VIEWER_PAGE_START, VIEWER_PAGE_END,
   SPA_PAGE_START, SPA_PAGE_END,
-  CONCLUSION_PAGE,
+  CICATRICE_PAGE, CONCLUSION_PAGE,
   isHeroPage, isEraPage, isCrashPage, isSpaPage,
   pageToY, pageToCamera, pageToSectionIndex,
   crashPageToProgress, crashFrameToProgress,
@@ -38,8 +38,9 @@ function pageToSectionProgress(pageIdx) {
     const spaProgress = (pageIdx - SPA_PAGE_START) / Math.max(1, SPA_PAGE_END - SPA_PAGE_START);
     return 4 + spaProgress * 0.92;
   }
-  if (pageIdx === CONCLUSION_PAGE) return 5;
-  return 5;
+  if (pageIdx === CICATRICE_PAGE) return 5;
+  if (pageIdx === CONCLUSION_PAGE) return 6;
+  return 6;
 }
 
 export function updateSectionNav(pageIdx = nav.currentPage) {
@@ -62,7 +63,8 @@ export function sectionToPage(sectionIdx) {
   if (sectionIdx === 2) return CRASH_PAGE_START;
   if (sectionIdx === 3) return VIEWER_PAGE_START;
   if (sectionIdx === 4) return SPA_PAGE_START;
-  if (sectionIdx === 5) return CONCLUSION_PAGE;
+  if (sectionIdx === 5) return CICATRICE_PAGE;
+  if (sectionIdx === 6) return CONCLUSION_PAGE;
   return CONCLUSION_PAGE;
 }
 

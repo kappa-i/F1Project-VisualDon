@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, useInView } from 'motion/react';
-import { Zap, Shield, Wind, Heart, TrendingUp, TrendingDown } from 'lucide-react';
+import { Zap, Skull, TrendingUp, TrendingDown } from 'lucide-react';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -17,87 +17,60 @@ interface SeriesDef {
   Icon: React.ElementType;
   values: number[];
   milestones: string[];
+  inverted?: boolean; // down = good (ex: mortalité)
 }
 
 const SERIES: SeriesDef[] = [
   {
     id: 'speed',
     label: 'Vitesse max',
-    sublabel: 'Qualifications',
+    sublabel: 'Moy. qualifs Monza',
     unit: 'km/h',
     color: '#e8002d',
     glow: '232,0,45',
     Icon: Zap,
-    values: [250, 275, 295, 320, 340, 355, 365, 385],
+    // Jolpica (api.jolpi.ca) pour 1990s–2020s · archives historiques pour 1950s–1980s
+    // 1990s: Alesi Ferrari 1994 pole 1:23.844 → 249 km/h · 1995 pole 1:24.462 → 247 km/h
+    // 2000s: M. Schumacher Ferrari 2003 pole 1:20.963 → 258 km/h · 2005 pole 1:20.878 → 258 km/h
+    // 2010s: Hamilton 2010 1:21.962 → 254 km/h · Leclerc 2019 1:19.307 → 263 km/h (record)
+    // 2020s: Sainz Ferrari 2023 pole 1:20.294 → 259 km/h · 2022 pole 1:20.161 → 260 km/h
+    values: [195, 215, 237, 243, 249, 258, 254, 260],
     milestones: [
-      'Fangio · Mercedes W196 · Monaco 1955',
-      'Clark · Lotus 33 · Spa-Francorchamps 260 km/h',
-      'Lauda · Ferrari 312T · Nürburgring',
-      'Senna · Lotus 98T turbo 1.5T (1400 ch)',
-      'Hill · Williams FW15C · Spa 338 km/h',
-      'Schumacher · Ferrari F2003-GA · Monza',
-      'Hamilton · Mercedes W05 · DRS + KERS',
-      'Verstappen · Red Bull RB20 · Monza 2024',
+      'Fangio · Mercedes W196 · ~195 km/h moy. Monza',
+      'Clark · Lotus 25 · ~215 km/h · Monza 1963',
+      'Peterson · layout actuel (5.793 km) depuis 1972',
+      'Piquet · Brabham BT52 turbo · ~243 km/h · 1983',
+      'Alesi · Ferrari · pole 1:23.844 → 249 km/h · 1994',
+      'Schumacher · Ferrari · pole 1:20.963 → 258 km/h · 2003',
+      'Leclerc · Ferrari · pole 1:19.307 → 263 km/h · 2019',
+      'Sainz · Ferrari · pole 1:20.294 → 259 km/h · 2023',
     ],
   },
   {
-    id: 'safety',
-    label: 'Indice sécurité',
-    sublabel: 'Score FIA normalisé',
-    unit: 'pts',
-    color: '#c8a96e',
-    glow: '200,169,110',
-    Icon: Shield,
-    values: [0, 5, 22, 48, 62, 78, 88, 97],
+    id: 'mortality',
+    label: 'Décès / décennie',
+    sublabel: 'En compétition F1',
+    unit: 'décès',
+    color: '#e8e5e0',
+    glow: '232,229,224',
+    Icon: Skull,
+    inverted: true,
+    // Décès en compétition F1 par décennie (courses + qualifs WC) :
+    // 1950s : 5 (Fagioli, Marimon, Musso, Collins, Lewis-Evans)
+    // 1960s : 8 (Bristow, Stacey, von Trips, de Beaufort, Taylor, Bandini, Clark, Schlesser) ← pic
+    // 1970s : 8 (Courage, Rindt, Williamson, Cevert, Koinigg, Donohue, Pryce, Peterson)
+    // 1980s : 2 (Villeneuve, Paletti) · 1990s : 2 (Ratzenberger, Senna)
+    // 2000s : 0 · 2010s : 1 (Bianchi) · 2020s : 0
+    values: [5, 8, 8, 2, 2, 0, 1, 0],
     milestones: [
-      'Aucune protection · courses sur routes ouvertes',
-      'Premiers rails Armco · barrières de pneus',
-      'Combinaisons Nomex · casques Bell Star',
-      'Monocoque carbone · McLaren MP4/1 (1981)',
-      'Commission FIA post-Imola · crashbarriers TecPro',
-      'HANS device obligatoire · FIA 8860-2004',
-      'Halo homologué · FIA Medical Car avancé',
-      'Halo sauve Grosjean · Bahreïn 2020 · 220 km/h',
-    ],
-  },
-  {
-    id: 'downforce',
-    label: 'Appui aéro',
-    sublabel: 'Indice normalisé',
-    unit: 'pts',
-    color: '#00d2ff',
-    glow: '0,210,255',
-    Icon: Wind,
-    values: [3, 8, 35, 62, 68, 75, 82, 100],
-    milestones: [
-      'Carrosseries lisses · zéro aérodynamique',
-      'Premiers ailerons arrière · 1968 Lotus 49B',
-      'Effet de sol · Lotus 78/79 · jupes latérales',
-      'Diffuseurs actifs · turbo + downforce record',
-      'Post-ban effet de sol · ailerons multi-éléments',
-      'Bargeboards complexes + double diffuseurs',
-      'DRS + ERS · restrictions aéro 2014',
-      'Ground effect 2.0 · règlement technique 2022',
-    ],
-  },
-  {
-    id: 'survival',
-    label: 'Taux survie',
-    sublabel: 'Accidents graves',
-    unit: '%',
-    color: '#00ff87',
-    glow: '0,255,135',
-    Icon: Heart,
-    values: [28, 35, 50, 63, 74, 87, 95, 99],
-    milestones: [
-      'Accidents régulièrement mortels · aucun protocole',
-      'Premiers secours organisés · médecin piste',
-      'Extracteurs auto + vêtements coupe-feu Nomex',
-      'Barrières TechPro + cockpit renforcé carbone',
-      'Voiture médicale systématique · Bernd Maylander',
-      'HANS + head restraint + EMS circuit intégré',
-      'Halo + FIA Medical Car · médecin intégré',
-      'IA + biométrie + télémédecine embarquée',
+      '5 décès · Musso, Collins, Lewis-Evans · 1958',
+      '8 décès · decade la plus meurtrière · von Trips, Clark',
+      '8 décès · Cevert, Williamson, Peterson · Monza 1978',
+      '2 décès · Villeneuve, Paletti · 1982',
+      '2 décès · Ratzenberger & Senna · Imola 1994',
+      '0 décès · HANS device généralisé · 2003',
+      '1 décès · Jules Bianchi · Suzuka 2014',
+      '0 décès · Grosjean survive · Bahreïn 2020',
     ],
   },
 ];
@@ -174,7 +147,7 @@ export default function ConclusionGraph() {
   };
 
   // Tooltip geometry
-  const TW = 216, TH = 126;
+  const TW = 300, TH = 160;
   const tSeries = hovPt ? SERIES.find(s => s.id === hovPt.sid) : null;
   const tPt     = hovPt && tSeries ? allPts[tSeries.id][hovPt.idx] : null;
   let tx = 0, ty = 0;
@@ -216,14 +189,14 @@ export default function ConclusionGraph() {
         <span style={{ fontSize: 10, letterSpacing: '4px', color: '#e8002d', textTransform: 'uppercase', fontWeight: 700 }}>
           Ère 07 · Synthèse
         </span>
-        <span style={{ fontSize: 10, letterSpacing: '2px', color: 'rgba(255,255,255,0.22)' }}>1950 — 2026</span>
+        <span style={{ fontSize: 10, letterSpacing: '2px', color: 'rgba(255,255,255,0.55)' }}>1950 — 2026</span>
       </div>
 
       <h3 style={{ fontSize: 20, fontWeight: 700, lineHeight: 1.1, marginBottom: 3, letterSpacing: '-0.5px', color: '#fff' }}>
         Plus vite, plus en vie
       </h3>
-      <p style={{ fontSize: 9, letterSpacing: '1.5px', color: 'rgba(255,255,255,0.28)', marginBottom: 13, textTransform: 'uppercase' }}>
-        Vitesse · Sécurité · Appui aéro · Survie · F1 1950–2026
+      <p style={{ fontSize: 9, letterSpacing: '1.5px', color: 'rgba(255,255,255,0.60)', marginBottom: 13, textTransform: 'uppercase' }}>
+        Vitesse moy. Monza · Décès en compétition · F1 1950–2026
       </p>
       <div style={{ height: 1, background: 'linear-gradient(to right, rgba(232,0,45,0.55), transparent)', marginBottom: 8 }} />
 
@@ -367,7 +340,7 @@ export default function ConclusionGraph() {
           <text key={i}
             x={P.l + (i / (N - 1)) * GW} y={VH - 5}
             textAnchor="middle"
-            fill="rgba(255,255,255,0.22)"
+            fill="rgba(255,255,255,0.55)"
             fontSize={8.5}
             letterSpacing={0.8}
             fontFamily="'Formula1', sans-serif"
@@ -381,8 +354,9 @@ export default function ConclusionGraph() {
           {hovPt && tSeries && tPt && (() => {
             const trend = getTrend(tSeries, hovPt.idx);
             const TrendIcon = trend?.up ? TrendingUp : TrendingDown;
-            // All our series: more = better, so up = green
-            const trendColor = trend?.up ? '#00ff87' : '#e8002d';
+            // Pour les séries inversées (mortalité), down = good
+            const trendGood = tSeries.inverted ? !trend?.up : trend?.up;
+            const trendColor = trendGood ? '#00ff87' : '#e8002d';
 
             return (
               <foreignObject key={`tt-${hovPt.sid}-${hovPt.idx}`}
@@ -400,7 +374,7 @@ export default function ConclusionGraph() {
                     border: '1px solid rgba(255,255,255,0.08)',
                     borderLeft: `3px solid ${tSeries.color}`,
                     borderRadius: 2,
-                    padding: '10px 12px',
+                    padding: '14px 16px',
                     boxShadow: `0 16px 48px rgba(0,0,0,0.85), 0 0 28px rgba(${tSeries.glow},0.22)`,
                     fontFamily: "'Formula1', Arial, sans-serif",
                     pointerEvents: 'none',
@@ -409,9 +383,9 @@ export default function ConclusionGraph() {
                 >
                   {/* Series label + icon */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 7 }}>
-                    <tSeries.Icon size={10} color={tSeries.color} />
+                    <tSeries.Icon size={12} color={tSeries.color} />
                     <span style={{
-                      fontSize: 7.5, letterSpacing: 2.5, color: tSeries.color,
+                      fontSize: 9, letterSpacing: 2.5, color: tSeries.color,
                       textTransform: 'uppercase', fontWeight: 700,
                     }}>
                       {tSeries.label} · {tSeries.sublabel}
@@ -421,17 +395,17 @@ export default function ConclusionGraph() {
                   {/* Value + trend */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
                     <div>
-                      <span style={{ fontSize: 23, fontWeight: 700, color: '#fff', letterSpacing: '-0.8px', lineHeight: 1 }}>
+                      <span style={{ fontSize: 32, fontWeight: 700, color: '#fff', letterSpacing: '-0.8px', lineHeight: 1 }}>
                         {tSeries.values[hovPt.idx]}
                       </span>
-                      <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.32)', marginLeft: 4 }}>
+                      <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', marginLeft: 5 }}>
                         {tSeries.unit}
                       </span>
                     </div>
                     {trend && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                        <TrendIcon size={9} color={trendColor} />
-                        <span style={{ fontSize: 9.5, fontWeight: 700, color: trendColor }}>
+                        <TrendIcon size={12} color={trendColor} />
+                        <span style={{ fontSize: 12, fontWeight: 700, color: trendColor }}>
                           {trend.up ? '+' : '−'}{trend.pct.toFixed(0)}%
                         </span>
                       </div>
@@ -440,8 +414,8 @@ export default function ConclusionGraph() {
 
                   {/* Decade */}
                   <div style={{
-                    fontSize: 8, letterSpacing: 2,
-                    color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 7,
+                    fontSize: 10, letterSpacing: 2,
+                    color: 'rgba(255,255,255,0.60)', textTransform: 'uppercase', marginBottom: 9,
                   }}>
                     {DECADES[hovPt.idx]}
                   </div>
@@ -450,9 +424,9 @@ export default function ConclusionGraph() {
                   <div style={{
                     borderTop: '1px solid rgba(255,255,255,0.07)',
                     paddingTop: 7,
-                    fontSize: 8.5,
-                    lineHeight: 1.45,
-                    color: 'rgba(220,218,214,0.46)',
+                    fontSize: 11,
+                    lineHeight: 1.5,
+                    color: 'rgba(220,218,214,0.85)',
                   }}>
                     {tSeries.milestones[hovPt.idx]}
                   </div>
@@ -468,6 +442,7 @@ export default function ConclusionGraph() {
         display: 'flex', flexWrap: 'wrap', gap: '5px 18px',
         marginTop: 8, paddingTop: 9,
         borderTop: '1px solid rgba(255,255,255,0.05)',
+        alignItems: 'center', justifyContent: 'space-between',
       }}>
         {SERIES.map(s => {
           const active = !hovSeries || hovSeries === s.id;
@@ -485,28 +460,14 @@ export default function ConclusionGraph() {
             >
               <s.Icon size={9} color={s.color} />
               <div style={{ width: 16, height: 2, background: s.color, borderRadius: 1 }} />
-              <span style={{ fontSize: 7.5, letterSpacing: 2, color: 'rgba(255,255,255,0.36)', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: 7.5, letterSpacing: 2, color: 'rgba(255,255,255,0.65)', textTransform: 'uppercase' }}>
                 {s.label}
               </span>
             </button>
           );
         })}
-      </div>
-
-      {/* ── Bottom stat badge ── */}
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '9px 14px',
-        background: 'rgba(232,0,45,0.05)',
-        border: '1px solid rgba(232,0,45,0.14)',
-        borderRadius: 2,
-        marginTop: 11,
-      }}>
-        <span style={{ fontSize: 7.5, letterSpacing: 2.5, color: 'rgba(255,255,255,0.26)', textTransform: 'uppercase' }}>
-          Plus vite · Plus sûr · depuis 1950
-        </span>
-        <span style={{ fontSize: 13, fontWeight: 700, color: '#c8a96e', letterSpacing: 0.3 }}>
-          +54% vitesse · +97 pts sécurité
+        <span style={{ fontSize: 7, letterSpacing: 1.5, color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+          Accidents normalisés par nombre de courses · source Jolpica API
         </span>
       </div>
 

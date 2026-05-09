@@ -3,7 +3,7 @@ import { crash } from '../state.js';
 import { CRASH_FRAME_COUNT, CRASH_LERP_FACTOR } from './constants.js';
 
 const CARD_THRESHOLDS   = [36, 90, 150, 230];
-const CRASH_VIDEO_DURATION = 10;
+const CRASH_VIDEO_DURATION = 14;
 const IMOLA_SHOW_FRAME  = 90;
 const IMOLA_MORPH_FRAME = 230;
 const IMOLA_RESET_FRAME = 20;
