@@ -145,13 +145,15 @@ function ConclusionCarsMain() {
     if (!section) return;
 
     const update = () => {
-      const max = section.scrollHeight - section.clientHeight;
-      if (max <= 0) return;
-      const progress = Math.min(1, section.scrollTop / max);
+      // Use the track image height (not the full section) as the scroll reference
+      // so that ClosingQuestion/footer added below don't offset the car animation.
+      const trackMax = Math.max(1, WORLD_H * scale - section.clientHeight);
+      const progress = Math.min(1, section.scrollTop / trackMax);
 
       // Shift the world container up by scrollTop (in world units) so that
-      // a car at image_y stays at screen_y = image_y − scrollTop_world
-      const scrollTopWorld = section.scrollTop / scale;
+      // a car at image_y stays at screen_y = image_y − scrollTop_world.
+      // Clamp to WORLD_H so the container doesn't overshoot once scrolled past the track.
+      const scrollTopWorld = Math.min(WORLD_H, section.scrollTop / scale);
       if (worldRef.current) {
         worldRef.current.style.transform =
           `scale(${scale}) translateY(${-scrollTopWorld}px)`;
