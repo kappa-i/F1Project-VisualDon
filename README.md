@@ -2,7 +2,11 @@
 
 > Projet de visualisation de données — Cours VisualDon, 2026, COMEM, HEIG-VD
 
+
+>La présentation orale (11 mai) du projet est disponible ici :
+>[Voir la présentation (PDF)](./VisualDon_Presentation_AmaroNuno_CappaiGabriel_VaucherTanguy_M532.pdf)
 ---
+
 
 ## Description
 

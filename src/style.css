@@ -2494,7 +2494,7 @@ body.dev3-active #debug-zone {
 
 .spa-section {
   display: grid;
-  grid-template-columns: 0.65fr 1px 1.35fr;
+  grid-template-columns: 0.85fr 1px 1.15fr;
   width: 100%;
   height: 100vh;
   padding-bottom: 88px; /* dégage la nav fixe du bas */
@@ -2578,10 +2578,9 @@ body.dev3-active #debug-zone {
 }
 
 .spa-right__content {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  position: relative;
+  display: block;
   height: 100%;
-  animation: spa-ib-in 0.45s ease forwards;
 }
 
 @keyframes spa-ib-in {
@@ -2589,21 +2588,31 @@ body.dev3-active #debug-zone {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Colonne gauche : données ── */
+/* ── Overlay texte sur le slider ── */
 
 .spa-right__data {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   scrollbar-width: none;
-  border-right: 1px solid rgba(255,255,255,0.06);
+  max-height: calc(100% - 48px);
+  max-width: 52%;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 6px;
 }
 
 .spa-right__data::-webkit-scrollbar { display: none; }
 
 .spa-right__meta {
-  padding: 44px 40px 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .spa-right__title {
@@ -2619,20 +2628,20 @@ body.dev3-active #debug-zone {
 .spa-right__specs {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 24px 40px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  gap: 10px;
+  padding: 16px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .spa-right__data > .ib-desc {
-  padding: 20px 40px 16px;
+  padding: 14px 28px 12px;
   font-size: 11px;
   line-height: 1.75;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.55);
 }
 
 .spa-right__source {
-  padding: 0 40px 28px;
+  padding: 0 28px 20px;
 }
 
 .spa-right__source .source-link {
@@ -2642,11 +2651,13 @@ body.dev3-active #debug-zone {
   color: rgba(255,255,255,0.3);
 }
 
-/* ── Colonne droite : slider pleine hauteur ── */
+/* ── Slider pleine hauteur (prend tout le bloc droit) ── */
 
 .spa-photos {
+  position: absolute;
+  inset: 0;
   height: 100%;
-  min-height: 0;
+  width: 100%;
 }
 
 .spa-photo {

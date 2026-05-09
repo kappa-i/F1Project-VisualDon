@@ -38,9 +38,11 @@ const SPA_POIS: Poi[] = spaData.pois as Poi[];
 export default function SpaSafety() {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [visibleActiveIndex, setVisibleActiveIndex] = useState(-1);
-  const pathRef  = useRef<SVGPathElement>(null);
-  const traceRef = useRef<SVGPathElement>(null);
+  const [displayedIndex, setDisplayedIndex] = useState(-1);
+  const pathRef    = useRef<SVGPathElement>(null);
+  const traceRef   = useRef<SVGPathElement>(null);
   const traceTweenRef = useRef<gsap.core.Tween | null>(null);
+  const dataBoxRef = useRef<HTMLDivElement>(null);
   const [pathLength, setPathLength] = useState(0);
   const [poiPoints, setPoiPoints]   = useState<{ x: number; y: number }[]>([]);
 
@@ -97,7 +99,44 @@ export default function SpaSafety() {
     });
   }, [activeIndex, pathLength]);
 
-  const activePoi = activeIndex >= 0 && activeIndex < SPA_POIS.length ? SPA_POIS[activeIndex] : null;
+  // ── Animation d'entrée / sortie de la box de texte ──
+  useEffect(() => {
+    const box = dataBoxRef.current;
+    if (!box) return;
+    gsap.killTweensOf(box);
+
+    const hasContent = activeIndex >= 0 && activeIndex < SPA_POIS.length;
+    const currentOpacity = gsap.getProperty(box, 'opacity') as number;
+
+    if (!hasContent) {
+      gsap.to(box, { opacity: 0, y: 14, duration: 0.28, ease: 'power2.in',
+        onComplete: () => setDisplayedIndex(activeIndex) });
+      return;
+    }
+
+    if (currentOpacity > 0.05) {
+      // Sortie → swap contenu → entrée
+      gsap.to(box, {
+        opacity: 0, y: 14, duration: 0.22, ease: 'power2.in',
+        onComplete: () => {
+          setDisplayedIndex(activeIndex);
+          gsap.fromTo(box,
+            { opacity: 0, y: -12 },
+            { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+          );
+        },
+      });
+    } else {
+      // Box cachée → juste entrée
+      setDisplayedIndex(activeIndex);
+      gsap.fromTo(box,
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', delay: 0.05 }
+      );
+    }
+  }, [activeIndex]);
+
+  const activePoi = displayedIndex >= 0 && displayedIndex < SPA_POIS.length ? SPA_POIS[displayedIndex] : null;
   const navigate = (dir: number) =>
     window.dispatchEvent(new CustomEvent('spa-nav-click', { detail: { direction: dir } }));
 
@@ -148,74 +187,79 @@ export default function SpaSafety() {
       {/* ── Séparateur ── */}
       <div className="spa-divider" />
 
-      {/* ── Moitié droite : infobox ── */}
+      {/* ── Moitié droite : slider + overlay texte ── */}
       <div className="spa-right">
-        {activePoi ? (
-          <div className="spa-right__content" key={activeIndex}>
+        <div className="spa-right__content">
 
-            {/* Colonne gauche : données */}
-            <div className="spa-right__data">
-              <div className="spa-right__meta">
-                <span className="ib-tag">{activePoi.tag} · {activePoi.year}</span>
-                <h3 className="spa-right__title">{activePoi.label}</h3>
+          {/* Slider pleine hauteur */}
+          <div className="spa-photos">
+            {activePoi?.photoBefore && activePoi?.photoAfter ? (
+              <ComparisonSlider
+                key={displayedIndex}
+                beforeImage={activePoi.photoBefore}
+                afterImage={activePoi.photoAfter}
+                beforeAlt={`${activePoi.label} avant`}
+                afterAlt={`${activePoi.label} apres`}
+                beforeLabel={activePoi.yearBefore}
+                afterLabel={activePoi.yearAfter}
+                beforePosition={activePoi.photoBeforePosition}
+                afterPosition={activePoi.photoAfterPosition}
+                initialPosition={48}
+                dividerWidth={4}
+                dividerColor="rgba(255, 255, 255, 0.92)"
+                handleColor="#ffffff"
+                handleSize={52}
+                showLabels={true}
+                ariaLabel={`Comparaison ${activePoi.label} avant apres`}
+                className="spa-comparison"
+              />
+            ) : (
+              <div className="spa-photo">
+                <div className="spa-photo__placeholder" />
               </div>
-
-              <div className="spa-right__specs">
-                {activePoi.specs.map(s => (
-                  <div className="ib-spec" key={s.label}>
-                    <span className="spec-label">{s.label}</span>
-                    <span className="spec-dots" />
-                    <span className={`spec-value${s.accent ? ' accent' : ''}`}>{s.value}</span>
-                  </div>
-                ))}
-              </div>
-
-              <p className="ib-desc">{activePoi.description}</p>
-
-              {activePoi.source && (
-                <div className="spa-right__source">
-                  <a
-                    href={activePoi.source.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="source-link source-link--label"
-                  >
-                    Source
-                  </a>
-                </div>
-              )}
-            </div>
-
-            {/* Colonne droite : slider pleine hauteur */}
-            <div className="spa-photos">
-              {activePoi.photoBefore && activePoi.photoAfter ? (
-                <ComparisonSlider
-                  beforeImage={activePoi.photoBefore}
-                  afterImage={activePoi.photoAfter}
-                  beforeAlt={`${activePoi.label} avant`}
-                  afterAlt={`${activePoi.label} apres`}
-                  beforeLabel={activePoi.yearBefore}
-                  afterLabel={activePoi.yearAfter}
-                  beforePosition={activePoi.photoBeforePosition}
-                  afterPosition={activePoi.photoAfterPosition}
-                  initialPosition={48}
-                  dividerWidth={4}
-                  dividerColor="rgba(255, 255, 255, 0.92)"
-                  handleColor="#ffffff"
-                  handleSize={52}
-                  showLabels={true}
-                  ariaLabel={`Comparaison ${activePoi.label} avant apres`}
-                  className="spa-comparison"
-                />
-              ) : (
-                <div className="spa-photo">
-                  <div className="spa-photo__placeholder" />
-                </div>
-              )}
-            </div>
-
+            )}
           </div>
-        ) : (
+
+          {/* Overlay texte – bas gauche, animé par GSAP */}
+          <div className="spa-right__data" ref={dataBoxRef} style={{ opacity: 0 }}>
+            {activePoi && (
+              <>
+                <div className="spa-right__meta">
+                  <span className="ib-tag">{activePoi.tag} · {activePoi.year}</span>
+                  <h3 className="spa-right__title">{activePoi.label}</h3>
+                </div>
+
+                <div className="spa-right__specs">
+                  {activePoi.specs.map(s => (
+                    <div className="ib-spec" key={s.label}>
+                      <span className="spec-label">{s.label}</span>
+                      <span className="spec-dots" />
+                      <span className={`spec-value${s.accent ? ' accent' : ''}`}>{s.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="ib-desc">{activePoi.description}</p>
+
+                {activePoi.source && (
+                  <div className="spa-right__source">
+                    <a
+                      href={activePoi.source.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="source-link source-link--label"
+                    >
+                      Source
+                    </a>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+        </div>
+
+        {activeIndex < 0 && (
           <div className="spa-right__empty">
             <span>↑ Défiler pour explorer le circuit</span>
           </div>
