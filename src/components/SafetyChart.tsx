@@ -220,7 +220,20 @@ export default function SafetyChart() {
               axisLine={false}
               domain={[0, 16]}
               ticks={[0, 4, 8, 12, 16]}
-              width={28}
+              width={52}
+              label={{
+                value: 'Nb. décès',
+                angle: -90,
+                position: 'insideLeft',
+                offset: 12,
+                style: {
+                  fontFamily: "'Formula1', sans-serif",
+                  fontSize: 8,
+                  fill: 'rgba(255,255,255,0.25)',
+                  letterSpacing: '1px',
+                  textAnchor: 'middle',
+                },
+              }}
             />
 
             <Tooltip
