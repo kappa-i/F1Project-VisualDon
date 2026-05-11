@@ -313,19 +313,19 @@ export default function CicatriceViz() {
             return (
               <React.Fragment key={y}>
                 <line x1={x} y1={0} x2={x} y2={colH + 2}
-                  stroke={is94 ? 'rgba(232,0,45,0.2)' : 'rgba(255,255,255,0.04)'}
-                  strokeWidth={is94 ? 1 : 0.5}
+                  stroke={is94 ? 'rgba(232,0,45,0.9)' : is18 ? 'rgba(200,169,110,0.85)' : 'rgba(255,255,255,0.04)'}
+                  strokeWidth={is94 || is18 ? 1.5 : 0.5}
                   strokeDasharray={is94 || is18 ? '4 8' : undefined}
                 />
                 {is94 && (
-                  <text x={x + 8} y={18} fill="rgba(232,0,45,0.5)"
-                    fontSize={8.5} fontFamily="'Formula1', sans-serif" letterSpacing={1.5}>
+                  <text x={x + 8} y={24} fill="rgba(232,0,45,0.9)"
+                    fontSize={14} fontFamily="'Formula1', sans-serif" letterSpacing={2}>
                     IMOLA 1994
                   </text>
                 )}
                 {is18 && (
-                  <text x={x + 8} y={18} fill="rgba(200,169,110,0.4)"
-                    fontSize={8.5} fontFamily="'Formula1', sans-serif" letterSpacing={1.5}>
+                  <text x={x + 8} y={24} fill="rgba(200,169,110,0.85)"
+                    fontSize={14} fontFamily="'Formula1', sans-serif" letterSpacing={2}>
                     HALO 2018
                   </text>
                 )}
@@ -438,10 +438,80 @@ export default function CicatriceViz() {
             });
           })()}
 
+          {/* ── Y-axis absolut mode ── */}
+          {mode === 'absolut' && (() => {
+            const step = Math.ceil(maxCount / 5);
+            const ticks = Array.from({ length: Math.ceil(maxCount / step) + 1 }, (_, i) => i * step).filter(v => v <= maxCount);
+            return (
+              <g>
+                <text
+                  x={PAD_X - 46} y={colH / 2}
+                  fill="rgba(255,255,255,0.32)"
+                  fontSize={8.5} textAnchor="middle"
+                  fontFamily="'Formula1', sans-serif" letterSpacing={1.5}
+                  transform={`rotate(-90, ${PAD_X - 46}, ${colH / 2})`}
+                >
+                  ACCIDENTS / SAISON
+                </text>
+                {ticks.map(v => {
+                  const ty = colH - v * DOT_GAP;
+                  return (
+                    <React.Fragment key={v}>
+                      <line x1={PAD_X - 5} y1={ty} x2={PAD_X} y2={ty}
+                        stroke="rgba(255,255,255,0.12)" strokeWidth={0.5} />
+                      <text x={PAD_X - 9} y={ty + 3}
+                        fill="rgba(255,255,255,0.38)" fontSize={8} textAnchor="end"
+                        fontFamily="'Formula1', sans-serif">
+                        {v}
+                      </text>
+                    </React.Fragment>
+                  );
+                })}
+              </g>
+            );
+          })()}
+
+          {/* ── Y-axis rate mode ── */}
+          {mode === 'rate' && (() => {
+            const step = maxRate > 2 ? 0.5 : 0.25;
+            const ticks: number[] = [];
+            for (let v = 0; v <= maxRate * 1.02; v += step) {
+              ticks.push(Math.round(v * 100) / 100);
+            }
+            const yForRate = (r: number) => colH - (r / maxRate) * (colH - 24);
+            return (
+              <g>
+                <text
+                  x={PAD_X - 46} y={colH / 2}
+                  fill="rgba(255,255,255,0.32)"
+                  fontSize={8.5} textAnchor="middle"
+                  fontFamily="'Formula1', sans-serif" letterSpacing={1.5}
+                  transform={`rotate(-90, ${PAD_X - 46}, ${colH / 2})`}
+                >
+                  ACC. / COURSE
+                </text>
+                {ticks.map(v => {
+                  const ty = yForRate(v);
+                  return (
+                    <React.Fragment key={v}>
+                      <line x1={PAD_X - 5} y1={ty} x2={PAD_X} y2={ty}
+                        stroke="rgba(255,255,255,0.12)" strokeWidth={0.5} />
+                      <text x={PAD_X - 9} y={ty + 3}
+                        fill="rgba(255,255,255,0.38)" fontSize={8} textAnchor="end"
+                        fontFamily="'Formula1', sans-serif">
+                        {v.toFixed(1)}
+                      </text>
+                    </React.Fragment>
+                  );
+                })}
+              </g>
+            );
+          })()}
+
           {/* X-axis labels */}
           {TICKS.map(y => (
             <text key={`lbl-${y}`} x={toX(y)} y={svgH - 8}
-              fill={y === 1994 ? 'rgba(232,0,45,0.5)' : 'rgba(255,255,255,0.18)'}
+              fill={y === 1994 ? 'rgba(232,0,45,0.75)' : 'rgba(255,255,255,0.50)'}
               fontSize={9} textAnchor="middle"
               fontFamily="'Formula1', sans-serif" letterSpacing={0.5}>
               {y}
