@@ -234,7 +234,7 @@ export default function CicatriceViz() {
               transition={{ duration: 0.22 }}
               style={{
                 fontSize: 10, letterSpacing: '2px',
-                color: 'rgba(255,255,255,0.26)',
+                color: 'rgba(255,255,255,0.55)',
                 marginTop: 10, textTransform: 'uppercase',
               }}
             >
