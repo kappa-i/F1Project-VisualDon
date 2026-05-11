@@ -335,6 +335,62 @@ export default function ConclusionGraph() {
           })
         )}
 
+        {/* ── Left Y-axis: Vitesse (km/h) ── */}
+        {(() => {
+          const mn = 195, mx = 260;
+          const ticks = [200, 220, 240, 260];
+          const yFor = (v: number) => P.t + GH - ((v - mn) / (mx - mn)) * GH;
+          return (
+            <g>
+              <text
+                x={P.l - 36} y={P.t + GH / 2}
+                fill="rgba(232,0,45,0.6)" fontSize={7} textAnchor="middle"
+                fontFamily="'Formula1', sans-serif" letterSpacing={1.5}
+                transform={`rotate(-90, ${P.l - 36}, ${P.t + GH / 2})`}
+              >KM/H</text>
+              {ticks.map(v => (
+                <React.Fragment key={v}>
+                  <line x1={P.l - 4} y1={yFor(v)} x2={P.l} y2={yFor(v)}
+                    stroke="rgba(232,0,45,0.3)" strokeWidth={0.5} />
+                  <text x={P.l - 7} y={yFor(v) + 3}
+                    fill="rgba(232,0,45,0.7)" fontSize={8} textAnchor="end"
+                    fontFamily="'Formula1', sans-serif">
+                    {v}
+                  </text>
+                </React.Fragment>
+              ))}
+            </g>
+          );
+        })()}
+
+        {/* ── Right Y-axis: Décès ── */}
+        {(() => {
+          const mn = 0, mx = 8;
+          const ticks = [0, 2, 4, 6, 8];
+          const yFor = (v: number) => P.t + GH - ((v - mn) / (mx - mn)) * GH;
+          return (
+            <g>
+              <text
+                x={P.l + GW + 36} y={P.t + GH / 2}
+                fill="rgba(232,229,224,0.55)" fontSize={7} textAnchor="middle"
+                fontFamily="'Formula1', sans-serif" letterSpacing={1.5}
+                transform={`rotate(90, ${P.l + GW + 36}, ${P.t + GH / 2})`}
+              >DÉCÈS</text>
+              {ticks.map(v => (
+                <React.Fragment key={v}>
+                  <line x1={P.l + GW} y1={yFor(v)} x2={P.l + GW + 4} y2={yFor(v)}
+                    stroke="rgba(232,229,224,0.25)" strokeWidth={0.5} />
+                  <text x={P.l + GW + 7} y={yFor(v) + 3}
+                    fill="rgba(232,229,224,0.65)" fontSize={8} textAnchor="start"
+                    fontFamily="'Formula1', sans-serif">
+                    {v}
+                  </text>
+                </React.Fragment>
+              ))}
+            </g>
+          );
+        })()}
+
         {/* X-axis decade labels */}
         {DECADES.map((d, i) => (
           <text key={i}
