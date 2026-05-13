@@ -217,7 +217,7 @@ export default function CicatriceViz() {
             fontSize: 10, letterSpacing: '4px', color: '#e8002d',
             textTransform: 'uppercase', fontWeight: 700, marginBottom: 10,
           }}>
-            Section 05 · Données brutes
+            05 · Données brutes
           </div>
           <h2 style={{
             fontSize: 'clamp(26px, 2.8vw, 44px)', fontWeight: 700,

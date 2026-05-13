@@ -187,7 +187,7 @@ export default function ConclusionGraph() {
       {/* ── Header ── */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 13 }}>
         <span style={{ fontSize: 10, letterSpacing: '4px', color: '#e8002d', textTransform: 'uppercase', fontWeight: 700 }}>
-          Ère 07 · Synthèse
+          07 · Synthèse
         </span>
         <span style={{ fontSize: 10, letterSpacing: '2px', color: 'rgba(255,255,255,0.55)' }}>1950 — 2026</span>
       </div>
