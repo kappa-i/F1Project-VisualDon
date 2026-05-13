@@ -314,7 +314,7 @@ export default function SafetyChart() {
         letterSpacing: '1px',
         color: 'rgba(255,255,255,0.5)',
       }}>
-        Source : Wikipedia — Liste des accidents mortels en Formule 1
+        Source : <a href="https://fr.wikipedia.org/wiki/Liste_des_accidents_mortels_en_Formule_1" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Wikipedia</a> — Liste des accidents mortels en Formule 1
       </div>
 
       {/* Numéro filigrane */}

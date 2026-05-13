@@ -523,7 +523,7 @@ export default function ConclusionGraph() {
           );
         })}
         <span style={{ fontSize: 7, letterSpacing: 1.5, color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
-          Accidents normalisés par nombre de courses · source Jolpica API
+          Accidents normalisés par nombre de courses · source <a href="https://api.jolpi.ca" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Jolpica API</a>
         </span>
       </div>
 

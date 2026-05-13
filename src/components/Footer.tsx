@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight, Box, Globe, Route } from 'lucide-react';
 import AnimatedList, { type AnimatedListItem } from './AnimatedList';
@@ -108,6 +108,7 @@ const itemVariants = {
 };
 
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
   const [sourcesAtBottom, setSourcesAtBottom] = useState(false);
   const [assetsAtBottom, setAssetsAtBottom] = useState(false);
   const [footerListsUnlocked, setFooterListsUnlocked] = useState(false);
@@ -141,14 +142,53 @@ export default function Footer() {
     };
   }, []);
 
-  const handleReturnToTop = () => {
-    window.sessionStorage.setItem('scroll-to-top-on-reload', '1');
-    window.location.hash = 's-hero';
-    window.location.reload();
+  useEffect(() => {
+    const footer = footerRef.current;
+    if (!footer) return;
+
+    const conclusionSection = document.getElementById('s-conclusion');
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        document.body.classList.toggle('footer-in-view', entry.isIntersecting);
+      },
+      {
+        root: conclusionSection instanceof HTMLElement ? conclusionSection : null,
+        threshold: 0.08,
+      },
+    );
+
+    observer.observe(footer);
+
+    return () => {
+      observer.disconnect();
+      document.body.classList.remove('footer-in-view');
+    };
+  }, []);
+
+  const handleReturnToTop = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const sourceModal = document.getElementById('source-modal');
+    sourceModal?.classList.remove('is-open');
+    sourceModal?.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('source-modal-open');
+
+    window.dispatchEvent(new CustomEvent('section-nav-jump', {
+      detail: { sectionIndex: 0, source: 'footer' },
+    }));
   };
 
   return (
-    <footer className="site-footer">
+    <footer
+      ref={footerRef}
+      className="site-footer"
+      onClick={(event) => event.stopPropagation()}
+      onPointerDown={(event) => event.stopPropagation()}
+      onPointerUp={(event) => event.stopPropagation()}
+      onMouseMove={(event) => event.stopPropagation()}
+      onWheel={(event) => event.stopPropagation()}
+    >
       <div className="site-footer__container">
         <motion.div
           variants={containerVariants}

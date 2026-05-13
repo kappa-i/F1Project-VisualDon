@@ -240,7 +240,7 @@ export default function CicatriceViz() {
             >
               {mode === 'absolut'
                 ? `${total.toLocaleString()} accidents enregistrés · chaque point = un pilote retiré · 1980 — 2025`
-                : 'Accidents normalisés par nombre de courses · source Jolpica API'}
+                : <>Accidents normalisés par nombre de courses · source <a href="https://api.jolpi.ca" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Jolpica API</a></>}
             </motion.p>
           </AnimatePresence>
         </div>

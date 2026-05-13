@@ -8,9 +8,9 @@
       "fraction": 0.0,
       "yearBefore": "Avant 2022",
       "yearAfter": "Après 2022",
-      "photoBefore": "/spa/la-source-avant.jpg",
-      "photoAfter": "/spa/la-source-apres.jpg",
-      "photoBeforePosition": "25% center",
+      "photoBefore": "/spa/la-source-apres.jpg",
+      "photoAfter": "/spa/la-source-avant.jpg",
+      "photoAfterPosition": "25% center",
       "specs": [
         { "label": "Type",        "value": "Virage en épingle",          "accent": false },
         { "label": "Modification","value": "Gravier réintroduit",        "accent": true  },

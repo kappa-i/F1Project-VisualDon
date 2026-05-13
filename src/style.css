@@ -1459,9 +1459,24 @@ body.dev3-active #debug-zone {
   transform: translateY(18px);
 }
 
+.footer-in-view .bottom-section-nav {
+  opacity: 0;
+  transform: translateY(18px);
+  pointer-events: none;
+}
+
+.footer-in-view #page {
+  z-index: 90;
+}
+
 .bottom-section-nav.is-hidden .bottom-section-nav__shell {
   pointer-events: none;
 }
+
+.footer-in-view .bottom-section-nav__shell {
+  pointer-events: none;
+}
+
 
 .bottom-section-nav__shell {
   --timeline-y: 12px;
@@ -1539,10 +1554,12 @@ body.dev3-active #debug-zone {
 
 .site-footer {
   position: relative;
+  z-index: 100;
   width: 100%;
   overflow: visible;
   background: var(--surface);
   color: #f2f2f2;
+  pointer-events: auto;
 }
 
 .site-footer__container {
@@ -1569,6 +1586,8 @@ body.dev3-active #debug-zone {
 }
 
 .site-footer__brand {
+  position: relative;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -1646,6 +1665,7 @@ body.dev3-active #debug-zone {
   cursor: pointer;
   color: #ffffff;
   position: relative;
+  z-index: 6;
   overflow: hidden;
 }
 
