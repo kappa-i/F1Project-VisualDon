@@ -101,7 +101,14 @@ export default function CicatriceViz() {
   const [hovYear, setHovYear] = useState<number | null>(null);
   const [hovRateCol,   setHovRateCol]   = useState<number | null>(null);
   const [rateTooltipPos, setRateTooltipPos] = useState<{ x: number; y: number } | null>(null);
-
+  const getTooltipX = (x: number, tooltipWidth: number) => {
+    const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1400;
+    const rightSpace = viewportWidth - x;
+    if (rightSpace < tooltipWidth + 48) {
+      return Math.max(12, x - tooltipWidth - 24);
+    }
+    return x + 16;
+  };
   // ── Process data ────────────────────────────────────────────────────────────
 
   const { cols, total, maxCount, worstYear, maxRate, safestYear, worstRateYear } = useMemo(() => {
@@ -576,7 +583,7 @@ export default function CicatriceViz() {
         return createPortal(
           <div style={{
             position: 'fixed',
-            left: rateTooltipPos.x + 16,
+            left: getTooltipX(rateTooltipPos.x, 260),
             top: Math.max(12, rateTooltipPos.y - 130),
             background: 'rgba(4,4,6,0.98)',
             border: '1px solid rgba(255,255,255,0.07)',
@@ -630,7 +637,7 @@ export default function CicatriceViz() {
       {mode === 'absolut' && tooltip && createPortal(
         <div style={{
           position: 'fixed',
-          left: tooltip.sx + 16,
+          left: getTooltipX(tooltip.sx, 280),
           top: Math.max(12, tooltip.sy - 150),
           background: 'rgba(4,4,6,0.98)',
           border: '1px solid rgba(255,255,255,0.07)',
