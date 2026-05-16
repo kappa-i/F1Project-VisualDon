@@ -90,7 +90,7 @@ export default function ClosingQuestion() {
         </AnimatePresence>
 
         {/* texte principal */}
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 660, padding: '0 64px', width: '100%' }}>
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: active?.isQuestion ? 840 : 660, padding: '0 64px', width: '100%' }}>
           <AnimatePresence mode="wait">
             {active && (
               <motion.div
@@ -116,6 +116,7 @@ export default function ClosingQuestion() {
                   lineHeight: 1.38,
                   letterSpacing: active.isQuestion ? '-0.025em' : '-0.01em',
                   whiteSpace: 'pre-line',
+                  textShadow: active.isQuestion ? '0 22px 66px rgba(0,0,0,0.28)' : 'none',
                 }}>
                   {active.text}
                 </p>

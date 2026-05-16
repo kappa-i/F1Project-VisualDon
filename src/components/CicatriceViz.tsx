@@ -184,7 +184,7 @@ export default function CicatriceViz() {
         width: '100%', height: '100%',
         background: '#050505',
         display: 'flex', flexDirection: 'column',
-        padding: '48px 64px 36px',
+        padding: '48px 64px 96px',
         boxSizing: 'border-box',
         fontFamily: "'Formula1', sans-serif",
         color: '#e0ddd8',
