@@ -14,7 +14,7 @@ const TOTAL_HEIGHT  = (PHRASES.length - 1) * PHRASE_SCROLL + 700 + 120;
 
 export default function ClosingQuestion() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeIdx, setActiveIdx]   = useState(-1);
+  const [activeIdx, setActiveIdx] = useState(-1);
 
   useEffect(() => {
     const sectionEl = document.getElementById('s-conclusion');

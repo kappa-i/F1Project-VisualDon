@@ -87,75 +87,76 @@ D'autres projets, dans la presse de données ou la recherche académique, ont ut
 
 ```
 F1Project-VisualDon/
-├── .gitattributes
-├── .gitignore
-├── package.json
-├── package-lock.json
-├── vite.config.js
-├── README.md
-├── assests/                              # Images d'inspiration utilisées dans le README
-│   ├── AstonMartinImg1.png
-│   ├── AstonMartinImg2.png
-│   ├── BidwellsImg1.png
-│   ├── BidwellsImg2.png
-│   ├── FerrariCarAddictImg1.png
-│   ├── FerrariCarAddictImg2.png
-│   ├── VitaImg1.png
-│   ├── VitaImg2.png
-│   ├── VogueImg1.png
-│   └── VogueImg2.png
+├── README.md                         # Documentation du projet
+├── package.json                      # Dépendances et scripts npm
+├── vite.config.js                    # Configuration Vite
+├── assests/                          # Images utilisées dans la section Inspirations du README
 ├── data/
-│   └── crashs/                           # Données d'accidents compilées par saison
-│       ├── f1_accidents.py               # Script Python de génération des données
-│       ├── f1_accidents_1950_2025.json   # Dataset consolidé complet (1950–2025)
-│       └── f1_accidents_YYYY.json        # Un fichier par saison (1950 → 2025)
+│   └── crashs/                       # Données d'accidents F1 compilées
+│       ├── f1_accidents.py           # Script de génération des fichiers JSON
+│       ├── f1_accidents_1950_2025.json
+│       └── f1_accidents_YYYY.json    # Fichiers annuels, non listés un par un
 └── src/
-    ├── index.html
-    ├── main.js
-    ├── style.css
-    ├── assets/                           # Médias statiques (images)
-    │   ├── f1-merco.avif
-    │   ├── shader-back.jpg
-    │   ├── shader-front.webp
-    │   └── verso-srl.avif
-    ├── components/                       # Composants React/TSX
+    ├── index.html                    # Point d'entrée HTML
+    ├── main.js                       # Initialisation de l'application
+    ├── style.css                     # Styles globaux
+    ├── state.js                      # État partagé de l'expérience
+    ├── assets/                       # Images, visuels et animations légères
+    ├── components/                   # Composants React de narration et visualisation
+    │   ├── AnimatedList.tsx
     │   ├── BottomSectionNav.tsx
+    │   ├── CTA5.tsx
+    │   ├── CicatriceViz.tsx
+    │   ├── ClosingQuestion.tsx
     │   ├── ComparisonSlider.tsx
+    │   ├── ConclusionCars.tsx
+    │   ├── ConclusionGraph.tsx
     │   ├── CrashTitles.tsx
+    │   ├── EraTimeline.tsx
+    │   ├── F1UICards.tsx
+    │   ├── Footer.tsx
+    │   ├── HeroSafetyIntro.tsx
+    │   ├── ImolaModal.tsx
+    │   ├── InfiniteGallery.tsx
+    │   ├── SafetyChart.tsx
     │   ├── ShaderReveal.tsx
+    │   ├── SimpleGraph.tsx
     │   ├── SpaSafety.tsx
-    │   └── SplitText.tsx
-    ├── fonts/                            # Polices Formula 1 officielles
-    │   ├── Formula1-Bold-4.ttf
-    │   ├── Formula1-Italic.ttf
-    │   └── Formula1-Regular-1.ttf
-    ├── models/                           # Modèles 3D (GLB)
-    │   ├── Ferrari_SF26_2026.glb
-    │   └── studio.glb
-    ├── public/
-    │   ├── crash-frames/                 # Séquence d'images exportée frame par frame (301 frames)
-    │   │   ├── frame_001.jpg
-    │   │   └── … frame_301.jpg
-    │   ├── haas/                         # Modèle 3D Haas F1 2026 + textures PBR
-    │   │   ├── 2026_HAASF1_CGT-V3.glb
-    │   │   └── 26_HAASF1_Textures/
-    │   │       ├── 26_HAASF1_Basecolor.png
-    │   │       ├── 26_HAASF1_Metallic.png
-    │   │       ├── 26_HAASF1_Normal.png
-    │   │       ├── 26_HAASF1_Roughness.png
-    │   │       ├── 26_HAASF1_Texture.png
-    │   │       └── … (autres maps PBR : carbone, pneus, échappement…)
-    │   └── spa/                          # Comparaisons avant/après des virages de Spa-Francorchamps
-    │       ├── bus-stop-avant.webp
-    │       ├── bus-stop-apres.png
-    │       ├── eau-rouge-avant.jpg
-    │       ├── eau-rouge-apres.webp
-    │       ├── la-source-avant.jpg
-    │       ├── la-source-apres.jpg
-    │       ├── pouhon-avant.jpg
-    │       └── pouhon-apres.jpg
-    └── video/
-        └── onboard_crash.mp4
+    │   └── ...                       # Autres composants d'animation/texte
+    ├── data/                         # Données JSON/JS utilisées par l'interface
+    │   ├── eraImages.js
+    │   ├── haas.json
+    │   └── spa.json
+    ├── fonts/                        # Polices Formula 1
+    ├── models/                       # Modèles 3D GLB
+    ├── navigation/                   # Gestion du scroll, clavier et pages
+    │   ├── constants.js
+    │   ├── crash.js
+    │   ├── keyboard.js
+    │   ├── pages.js
+    │   └── wheel.js
+    ├── public/                       # Assets lourds servis statiquement
+    │   ├── crash-frames/             # Séquence d'images pour l'animation d'accident
+    │   ├── draco/                    # Décodeurs et ressources Draco
+    │   ├── ere-imgs/                 # Images utilisées pour les sections par époque
+    │   ├── haas/                     # Modèle Haas et textures PBR
+    │   └── spa/                      # Images comparatives du circuit de Spa
+    ├── scene/                        # Mise en place de la scène Three.js
+    │   ├── environment.js
+    │   ├── lights.js
+    │   └── setup.js
+    ├── ui/                           # Loader, modales et points de montage React
+    │   ├── loader.js
+    │   ├── reactMounts.js
+    │   └── sourceModal.js
+    ├── video/                        # Vidéos intégrées dans la narration
+    └── viewer/                       # Caméra, modèle 3D, HUD et interactions voiture
+        ├── camera.js
+        ├── dots.js
+        ├── haasAnimations.js
+        ├── haasModel.js
+        ├── hud.js
+        └── infoboxes.js
 ```
 
 ---
