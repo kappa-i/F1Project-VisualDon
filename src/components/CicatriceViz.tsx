@@ -168,18 +168,25 @@ export default function CicatriceViz() {
 
   // ── Stats by mode ───────────────────────────────────────────────────────────
 
-  const statsRows = mode === 'absolut'
+  const sourceLink = (
+    <>
+      <a href="https://api.jolpi.ca" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Jolpica</a>
+      {' / '}
+      <a href="https://publicapi.dev/ergast-f1-api" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Ergast API</a>
+    </>
+  );
+
+  const statsRows: { label: string; value: React.ReactNode; accent?: boolean }[] = mode === 'absolut'
     ? [
-        { label: 'Accidents enregistrés',  value: total.toLocaleString() },
-        { label: 'Année record (brut)',    value: `${worstYear} — ${maxCount} accidents` },
-        { label: 'Collisions (sur total)', value: '566 / 1 102' },
-        { label: 'Rupture historique',     value: 'Imola · 1er mai 1994', accent: true },
+        { label: 'Accidents enregistrés', value: total.toLocaleString() },
+        { label: 'Année record (brut)',   value: `${worstYear} — ${maxCount} accidents` },
+        { label: 'Source',                value: sourceLink },
       ]
     : [
         { label: 'Pire taux normalisé',    value: `${worstRateYear} — ${cols.find(c=>c.year===worstRateYear)?.rate.toFixed(2)} acc./course` },
         { label: 'Meilleur taux (post-94)',value: `${safestYear} — ${cols.find(c=>c.year===safestYear)?.rate.toFixed(2)} acc./course` },
         { label: 'Réduction depuis 1992',  value: `−${Math.round((1 - (cols.find(c=>c.year===2024)?.rate ?? 1) / maxRate) * 100)}%`, accent: true },
-        { label: 'Source',                 value: 'Jolpica / Ergast API' },
+        { label: 'Source',                 value: sourceLink },
       ];
 
   // ── Render ──────────────────────────────────────────────────────────────────
@@ -529,7 +536,7 @@ export default function CicatriceViz() {
 
       {/* ── Stats row ───────────────────────────────────────────────────────── */}
       <div style={{
-        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+        display: 'grid', gridTemplateColumns: `repeat(${statsRows.length}, 1fr)`,
         marginTop: 12, paddingTop: 16,
         borderTop: '1px solid rgba(255,255,255,0.05)',
         flexShrink: 0,

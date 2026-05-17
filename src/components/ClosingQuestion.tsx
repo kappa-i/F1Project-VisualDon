@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const PHRASES = [
-  { text: 'Chaque décennie, des pilotes mouraient.', isQuestion: false },
-  { text: 'Chaque décennie, on continuait.', isQuestion: false },
-  { text: 'Puis Senna.\nEt tout a changé.', isQuestion: false },
-  { text: "Parce qu'il a fallu Senna.", isQuestion: false },
+  { text: 'Décennie après décennie, des pilotes mouraient.', isQuestion: false },
+  { text: 'Le monde regardait. Et on continuait.', isQuestion: false },
+  { text: 'Imola, 1994.\nRatzenberger le samedi. Senna le dimanche.', isQuestion: false },
+  { text: "Il a fallu perdre le meilleur\npour décider que c'était trop.", isQuestion: false },
   { text: "Pourquoi faut-il qu'un homme meure\npour qu'on protège les suivants ?", isQuestion: true },
 ];
 
